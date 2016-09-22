@@ -1,0 +1,44 @@
+meeting1.txt
+
+*Roman Senate Style*
+   ◦ Team lead: Justin
+   ◦ Project manager: Mack
+
+
+• Meet as needed, and transform into weekly (in addition to tuesday lab)
+
+
+*Coding Style*
+   ◦ Justin will research and get back to us with good stuff
+   ◦ Comments are important
+   ◦ Variable names are important
+   ◦ Methods will be thing.getStuff(){
+       }
+   ◦ Git commenting style
+      ◦ Supposed to speak in passive tense
+      ◦ “add” not “added”
+      ◦ Commit once per thing we do/if you stop between doing things 
+
+*Info sessions*
+   ◦ Do we want to have info sessions?
+      ◦ Git
+      ◦ Test Driven Dev
+   ◦ Marco: make a write up on TDD
+
+*Storyboard Team:*
+   ◦ Storm & Kirsty
+   ◦ Review requirements and see how it looks
+   ◦ Invision = online storyboarding tool (perhaps look at)
+
+*Milestone1: Get setup and get ball rolling:*
+   ◦ 2 People story board it for (project p2)
+   ◦ Make your edits and merges on testfile.txt
+   ◦ Started well by milestone 1 
+   ◦ Get good coding standards setup
+   ◦ Good linter
+   ◦ Organize
+   ◦ Get things in a good position to get fully working on the project
+   ◦ Potential Date: Oct 4-7
+
+*Project part 1: Testfile*
+   ◦ Adding your milestone to testfile 1
