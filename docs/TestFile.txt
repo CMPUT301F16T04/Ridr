@@ -1,1 +1,3 @@
+Goals For Milestone:
 
+Justin: Research Java style, Lead learning sessions on TDD and using Git
