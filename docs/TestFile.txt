@@ -1,2 +1,10 @@
+Team Lead: Justin
+Project manager: Mackenzie
+Storyboarding: Kirsty and Storm
+Info presentation on TDD: Marco
+
 knewbury says: making an addition to our textfile!
 "making some other change" -malajeun
+
+nkaefer says: adding an addition! git is fun
+
