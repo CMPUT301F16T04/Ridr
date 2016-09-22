@@ -6,5 +6,7 @@ Info presentation on TDD: Marco
 knewbury says: making an addition to our textfile!
 "making some other change" -malajeun
 
+Justin: Research Java style, Lead learning sessions on TDD and using Git
+
 nkaefer says: adding an addition! git is fun
 
