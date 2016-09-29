@@ -10,3 +10,5 @@ Justin: Research Java style, Lead learning sessions on TDD and using Git
 
 nkaefer says: adding an addition! git is fun
 
+jferris: adding stuff
+
