@@ -1,0 +1,28 @@
+October 6 
+
+
+• Discussing requirements
+• Release planning is important to what we are going to start planning first
+• Diagrams must be done with a program
+• What do we want to use for our diagramming tool?
+    • Lucid chart? → evaluate if it looks good
+• Do we UC the entire app? 
+    • 4-5 UC and tests to pair it up
+    • Test user's whole transition through the app
+    • Does he want tests for a use case in terms of code? 
+    • Have a plan of which objects you'll make and have tests for them
+• We need to know what objects we are making, how the app is going to work
+• Drivers can be passengers
+    • User → driver
+    • User → passenger
+        • You'd have to have separate accounts to do this
+        • Or two login pages
+• You have to search by location or keyword to get a driver?
+    • Driver has to be able to see when a new request shows up, then the passenger has to confirm
+
+1.) In requests... notified if ride is accepted
+    • Pop up window in app, that takes you to another activity?
+    • Once they start the activity that they want to be picked up
+        • Has view that updates every 30s to show available drivers and then select
+        • Driver has an offer window, and that will show "Offer made" or "Offer accepted"
+    • 
