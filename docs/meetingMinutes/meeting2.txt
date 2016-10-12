@@ -25,3 +25,27 @@ October 6
     • Once they start the activity that they want to be picked up
         • Has view that updates every 30s to show available drivers and then select
         • Driver has an offer window, and that will show "Offer made" or "Offer accepted"
+
+Mack Left
+
+App flow:
+We click on app in launcher. It either opens up to a login page, or straight into the app if you've already logged in before. 
+On login page, we can create an account. For creating an account, you need a unique username and password, and contact information. 
+After logging in, the app opens up to the main page of the app. For Passengers, this is a map of their location around them. 
+There is a menu button in the top right hand side, with suboptions Profile, Current Requests. In profile, you can see the User Name, and contact information of the driver. 
+In current requests, you can see the current ride requests you have added. Back at the main menu, 
+There is a add request button in the bottom, with textbox inputs for start location, end location, and time.
+
+
+
+
+What we need to do for next Friday:
+- Come up with UI and storyboard, using Lucid chart. https://www.lucidchart.com/
+    - Kristy and Storm are on top of that, needs to be done by Monday evening for sure.
+    - Need to:
+    - Diagram the layout of our main user interface and major dialogs, with comments describing the important elements.
+    - Provide one storyboard sequence for a non-trivial but coherent scenario of using your application, with transitions between           different states of the user interface, caused by the user manipulating the controls or providing input.
+    - Document this on the Wiki on GitHub!
+
+- 
+>>>>>>> 33785fefd70c5e9d149948e21ee36ba56a2f17d8
