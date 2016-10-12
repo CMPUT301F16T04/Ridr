@@ -1,0 +1,64 @@
+Date Oct. 11, 2016
+
+
+• What did we do last week: 
+    • Most people looking at part 1
+    • Some people work on part 2
+    • Storm is doing storyboard with Kirsty
+        • Have rough sketch, but need to make something nice looking
+        • Don't have mock up, clarifying what needs to be done
+        • Need diagram of main user dialogs
+    • Have pretty much whole layout for driver, but no transition
+    • Just make it obvious to click somewhere (mark it somehow e.g. with a yellow box)
+    • Storm has no blockers:
+• Marco: 
+    • Working on part 1 unit tests
+    • No blockers
+• Mackenzie: 
+    • Blockers: wednesday
+    • Part 1 unit tests 
+    • Use cases 
+• Beardless justin:
+    • Writing use cases 
+
+Kirsty: 
+• Storyboard
+• Help with tests if time allows
+• Blockers: assignment due friday
+
+
+
+• Part 3 is a UML, how are you allocating your user stories across the time you're given
+    • How to allocate when things get done
+    
+• Will hammer out 3&4 on thursday'
+__Talking with TA__
+• Do user stories follow the card format on eclass?
+• Should follow the slides format
+• Similar content, just more formal
+• 1 Test per action
+• For the user story to be satisfied, the app must provide functionality
+• But you can test separtely
+• Later you can add a GUI test 
+• Break up your tests into several pieces
+• Once GUI is established, do tests
+• Do tests such that they're runnable, but they don't have to be runnable
+• Tests should show your intent to do something 
+    • But you don't need the code to back it up 
+• Mock tests, you'll need empty classes to make them runnable
+    • Make new empty classes as needed
+• Will help you figure out how to do stuff
+• Must keep stuff synchonized everywhere (UML, storyboard, code)
+• Don't write tests very verbosely
+    • Make them available for revision/be a bit vague, especially right now
+• User reqs take a long time, but there shouldn't be any catches
+
+• For each user story, each person must write out the use case and tests for each story
+
+
+• Justin has UC 1-6
+• Marco has 7-12
+• Mack has 13-18
+• Justinf has 19-24
+
+• Will makei 

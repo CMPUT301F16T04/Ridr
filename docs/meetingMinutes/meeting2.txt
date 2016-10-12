@@ -25,4 +25,3 @@ October 6
     • Once they start the activity that they want to be picked up
         • Has view that updates every 30s to show available drivers and then select
         • Driver has an offer window, and that will show "Offer made" or "Offer accepted"
-    • 
