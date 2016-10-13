@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import java.sql.RowIdLifetime;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -49,5 +50,13 @@ public class User {
 
     public void setRideArrayList(ArrayList<Ride> rideArrayList) {
         this.rideArrayList = rideArrayList;
+    }
+
+    public Ride createRide() {
+        //Dont know how to fix without actually writing code
+        return;
+    }
+
+    public void acceptRideOffer(Driver driver) {
     }
 }

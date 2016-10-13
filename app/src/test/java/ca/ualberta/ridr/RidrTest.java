@@ -1,10 +1,12 @@
 package ca.ualberta.ridr;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -38,7 +40,88 @@ public class RidrTest{
 
     //**Testing of User stories 13-18/
 
-    
+    /** Test for geolocation US 04.01.01*/
+    @Test
+    public void geoLocationTest() throws Exception{
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        //Add open ride to driver
+        driver.addRide();
 
+        //Sort the driver's arraylist of rides based on location for display
+        String myLocation = "100.1.0.0, 192.168.1.0";
+        assertTrue(driver.geoSort("100.0.0, 100.0.0", myLocation));
+    }
+
+    @Test
+    /** Test for keyword search US 04.02.01 */
+    public void keywordRideSearchTest() throws Exception{
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        //Add open ride to driver
+        driver.addRide();
+
+        //Search driver's list of rides for the keyword
+        assertTrue(driver.kewordSearch("James"));
+
+    }
+
+    @Test
+    //** Test for driver request accept US 05.01.01*/
+    public void driverAccceptRequestTest() throws Exception {
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        User user = new User("Steve", new Date(), "321");
+
+        Ride ride = user.createRide();
+
+        driver.acceptRide(ride);
+        assertTrue(driver.completeRide(ride));
+        assertTrue(driver.isPayed());
+    }
+
+    @Test
+    //** Test for view list of rides that have abeen accepted and are pending US 05.02.01*//
+    public void driverRideStateTest() throws Exception{
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        User user = new User("Steve", new Date(), "321");
+
+        Ride ride = user.createRide();
+        user.acceptRideOffer(driver);
+        driver.acceptRide(ride);
+        driver.completeRide(ride);
+        Ride ride2 = user.createRide();
+        driver.acceptRide(ride2);
+
+        assertTrue(driver.getPendingRides());
+        assertTrue(driver.getCompletedRides());
+    }
+
+    @Test
+    //** Check ride state for driver US 05.03.01 */
+    public void driverUserAcceptRideStateTest() throws Exception{
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        User user = new User("Steve", new Date(), "321");
+
+        Ride ride = user.createRide();
+        user.acceptRideOffer(driver);
+
+        assertTrue(driver.userAcceptedRide(ride));
+    }
+
+    @Test
+    /** test push notification to Driver 05.04.01 */
+    public void userAcceptPushTest() throws Exception{
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        User user = new User("Steve", new Date(), "321");
+
+        Ride ride = user.createRide();
+        user.acceptRideOffer(driver);
+        assertTrue(ride.pushAcceptedByUser());
+
+    }
 
 }

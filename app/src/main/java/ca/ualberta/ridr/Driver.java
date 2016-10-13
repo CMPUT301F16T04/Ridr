@@ -54,6 +54,37 @@ public class Driver {
     }
 
 
+    public void addRide() {
+    }
 
+    public boolean kewordSearch(String james) {
+        return false;
+    }
 
+    public boolean geoSort(String s, String myLocation) {
+        return false;
+    }
+
+    public void acceptRide(Ride ride) {
+    }
+
+    public boolean completeRide(Ride ride) {
+        return false;
+    }
+
+    public boolean isPayed() {
+        return false;
+    }
+
+    public boolean getPendingRides() {
+        return false;
+    }
+
+    public boolean getCompletedRides() {
+        return false;
+    }
+
+    public boolean userAcceptedRide(Ride ride) {
+        return false;
+    }
 }

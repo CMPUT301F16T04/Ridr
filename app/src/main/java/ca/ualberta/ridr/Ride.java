@@ -69,4 +69,7 @@ public class Ride {
     public String pickupAddress;
     public String dropOffAddress;
 
+    public boolean pushAcceptedByUser() {
+        return false;
+    }
 }
