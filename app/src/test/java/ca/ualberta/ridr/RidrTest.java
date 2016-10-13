@@ -54,13 +54,30 @@ public class RidrTest{
     }
 
     // Test for retrieving current ridr's request US 01.02.01*/
-    public void testgetRequests(){
+    @Test
+    public void testGetRequests(){
         User user = new User("Steve", new Date(), "321");
         user.requestRide("University of Alberta", "West Edmonton Mall");
         ArrayList<Request> requests = user.getRequests();
+        assertTrue(requests.size() > 0);
+        assertTrue(requests instanceof Collection);
+        assertTrue(requests.get(0) instanceof Request);
+    }
 
-        assertTrue(user.getRequests() instanceof Collection);
-        assertTrue(user.getRequests().get(0) instanceof Request);
+    // Test for retrieving current ridr's request US 01.03.01*/
+    @Test
+    public void testAcceptedNotification(){
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+
+        user.getRequests().get(0).addAccepted(driver);
+
+        ArrayList<Request> requests = user.getRequests();
+
+        assertTrue(requests.get(0).isAccepted());
+        assertTrue(requests.get(0).getPossibleDrivers().size() > 0);
     }
 
 
