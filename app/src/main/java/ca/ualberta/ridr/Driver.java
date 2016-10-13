@@ -7,6 +7,8 @@ import java.util.Date;
  * Created by mackenzie on 12/10/16.
  */
 public class Driver {
+    private String email;
+    private String phoneNumber;
     public String name;
     public Date dateOfBirth;
     public Vehicle vehicle;
@@ -20,6 +22,17 @@ public class Driver {
         this.bankAccountNo = bankAccountNo;
         this.rideArrayList = new ArrayList<Ride>();
     }
+
+    public Driver(String jeff, Date date, Vehicle vehicle, String bankAccountNo, String email, String phoneNumber) {
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.vehicle = vehicle;
+        this.bankAccountNo = bankAccountNo;
+        this.rideArrayList = new ArrayList<Ride>();
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+    }
+
     public String getName() {
         return name;
     }
@@ -86,5 +99,13 @@ public class Driver {
 
     public boolean userAcceptedRide(Ride ride) {
         return false;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public String getEmail() {
+        return email;
     }
 }

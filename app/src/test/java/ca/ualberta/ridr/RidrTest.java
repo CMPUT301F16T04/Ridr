@@ -94,6 +94,22 @@ public class RidrTest{
 
     }
 
+    // Test for retrieving current ridr's request US 01.05.01*/
+    @Test
+    public void testDrivrInfo(){
+        String email = "driver@email.com";
+        String phoneNumber = "555-555-5555";
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+
+        // Sanity check
+        assertTrue(driver instanceof Driver);
+
+
+        assertEquals(driver.getEmail(), email);
+        assertEquals(driver.getPhoneNumber(), phoneNumber);
+    }
+
 
     //**Testing of User stories 13-18/
 
