@@ -9,9 +9,14 @@ import java.util.Date;
 public class Driver {
     public String name;
     public Date dateOfBirth;
-    public String vehicle;
+    public Vehicle vehicle;
     public String bankAccountNo;
 
+    public Driver(String name, Date dateOfBirth, Vehicle vehicle, String bankAccountNo){
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.vehicle = vehicle;
+    }
     public String getName() {
         return name;
     }
@@ -28,13 +33,6 @@ public class Driver {
         this.dateOfBirth = dateOfBirth;
     }
 
-    public String getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(String vehicle) {
-        this.vehicle = vehicle;
-    }
 
     public String getBankAccountNo() {
         return bankAccountNo;

@@ -11,6 +11,13 @@ public class Ride {
     public User user;
     public Boolean isCompleted; //pending is denoted by isCompleted = False
 
+    public Ride(Date rideDate, Driver driver, User user, Boolean isCompleted){
+        this.rideDate = rideDate;
+        this.driver = driver;
+        this.user = user;
+        this.isCompleted = isCompleted;
+    }
+
     public String getPickupAddress() {
         return pickupAddress;
     }

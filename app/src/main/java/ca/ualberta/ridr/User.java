@@ -12,6 +12,13 @@ public class User {
     public String creditCard;
     public ArrayList<Ride> rideArrayList;
 
+    public User(String name, Date dateOfBirth, String creditCard, ArrayList<Ride> rideArrayList){
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.creditCard = creditCard;
+        this.rideArrayList = rideArrayList;
+    }
+
     public String getName() {
         return name;
     }
