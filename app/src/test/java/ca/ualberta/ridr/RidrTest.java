@@ -80,6 +80,19 @@ public class RidrTest{
         assertTrue(requests.get(0).getPossibleDrivers().size() > 0);
     }
 
+    // Test for retrieving current ridr's request US 01.04.01*/
+    @Test
+    public void testCancelRequest(){
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+
+        Request currentRequest = user.getRequests().get(0);
+
+        assertTrue(user.getRequests().get(0).equals(currentRequest));
+        user.removeRequest(currentRequest);
+        assertFalse(user.getRequests().get(0).equals(currentRequest));
+
+    }
 
 
     //**Testing of User stories 13-18/

@@ -72,4 +72,7 @@ public class User {
     public ArrayList<Request> getRequests() {
         return requests;
     }
+
+    public void removeRequest(Request currentRequest) {
+    }
 }
