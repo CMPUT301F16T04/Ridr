@@ -6,6 +6,7 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Date;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
@@ -37,6 +38,21 @@ public class RidrTest{
     public void createVehicleTest() throws Exception{
         assertTrue(new Vehicle(1994, "chevy", "truck") instanceof Vehicle);
     }
+
+    //Testing User Stories 1-6
+    // Test for creating ride request US 01.01.01*/
+
+    @Test
+    public void testRequestCreation(){
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = user.getRequests();
+
+        assertEquals(requests.get(0).getPickup(), "University of Alberta");
+        assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+    }
+
+
 
     //**Testing of User stories 13-18/
 

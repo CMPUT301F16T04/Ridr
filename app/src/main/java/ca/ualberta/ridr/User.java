@@ -12,6 +12,7 @@ public class User {
     public Date dateOfBirth;
     public String creditCard;
     public ArrayList<Ride> rideArrayList;
+    public ArrayList<Request> requests;
 
     public User(String name, Date dateOfBirth, String creditCard){
         this.name = name;
@@ -58,5 +59,12 @@ public class User {
     }
 
     public void acceptRideOffer(Driver driver) {
+    }
+
+    public void requestRide(String s, String s1) {
+    }
+
+    public ArrayList<Request> getRequests() {
+        return requests;
     }
 }
