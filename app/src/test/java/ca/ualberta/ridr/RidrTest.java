@@ -94,7 +94,7 @@ public class RidrTest{
 
     }
 
-    // Test for retrieving current ridr's request US 01.05.01*/
+    // Test for retrieving drivr's contact info US 01.05.01*/
     @Test
     public void testDrivrInfo(){
         String email = "driver@email.com";
@@ -108,6 +108,27 @@ public class RidrTest{
 
         assertEquals(driver.getEmail(), email);
         assertEquals(driver.getPhoneNumber(), phoneNumber);
+    }
+
+    // Test for retrieving ride's fair US 01.06.01*/
+    @Test
+    public void testFairEstimation(){
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+
+        String email = "driver@email.com";
+        String phoneNumber = "555-555-5555";
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+
+        Ride ride = new Ride(driver, user, "University of Alberta", "West Edmonton Mall", new Date());
+        ride.complete();
+
+        Double fare = ride.getFare();
+
+        assertTrue(ride.getCompleted());
+        assertTrue(fare == 5.0);
+
     }
 
 
