@@ -1,0 +1,185 @@
+**Searching Requests List(for US 04.01.01)**
+
+**Actor(s):** A Ridr Driver
+
+**Goal:** To allow a Driver to browse and search for open requests by geo-location
+
+**Trigger:** Driver clicks button to view list of open requests, and selects sort by geo-location
+
+**Precondition(s):** 
+
+* Driver has logged in as driver
+* There are users in the area that have open requests
+
+**Postcondition(s):** 
+
+* The driver is given a list of rides to be accepted sorted based on geo-location
+
+**Basic Flow:**
+
+1. Driver views open request(s) to pick up a rider 
+
+2. Driver sorts open request(s) by geo-location
+
+3. Driver views open request(s) sorted by geo-location
+
+**Exceptions:**
+
+4. If there are no users soliciting rides, there will be no rides to sort by geolocation
+  _____________________________________________________________________________________________________________________
+
+**Searching Requests List(for US 04.02.01)**
+
+**Actor(s):** A Ridr Driver
+
+**Goal:** To allow a Driver to browse and search for open requests by keyword
+
+**Trigger:** Driver clicks button to view list of open requests, and selects sort by keyword
+
+**Precondition(s):** 
+
+* Driver has logged in as driver
+* There are users in the area that have open requests
+
+**Postcondition(s):** 
+
+* The driver is given a list of rides to be accepted sorted based on a keyword
+
+**Basic Flow:**
+
+1. Driver views open request(s) to pick up a rider 
+
+2. Driver selects sort open requests by keyword
+
+3. Driver inputs a keyword
+
+4. Driver views open request(s) sorted by keyword
+
+**Exceptions:**
+
+5. If there are no users soliciting rides, there will be no rides to sort by keyword
+
+6. If a driver inputs a keyword that doesn't exist, no matching results will be shown 
+
+7. If a driver does not input any text, no matching results will be shown
+  _____________________________________________________________________________________________________________________
+
+**Accepting Requests List(for US 05.01.01)**
+
+**Actor(s):** A Ridr Driver
+
+**Goal:** To allow a Driver to want to accept a request they agree with, and accept payment upon completion
+
+**Trigger:** Driver clicks button to accept an open request
+
+**Precondition(s):** 
+
+* Driver has logged in as driver
+* There are users in the area that have open requests
+
+**Postcondition(s):** 
+
+* The driver has completed a ride, and has had the agreed upon funds transfered to his account
+
+**Basic Flow:**
+
+1. Driver views open request(s) to pick up a rider 
+
+2. Driver selects an open request, and accepts it 
+
+3. Driver picks up the User, and drives them to their destination 
+
+**Exceptions:**
+4. If there are no users soliciting rides, there will be no rides to accept
+
+5. If two drivers accept the same ride, at the same time, they may both be authorized to pick up the user
+
+6. If the User's credit card is declined, the driver will not be paid
+  _____________________________________________________________________________________________________________________
+
+**Accepting Requests List(for US 05.02.01)**
+
+**Actor(s):** A Ridr Driver
+
+**Goal:** To allow a Driver to view a list of rides that they have accepted, and are pending. As well as each request with its description, and locations.
+
+**Trigger:** Driver clicks button to view accepted requests
+
+**Precondition(s):** 
+
+* Driver has logged in as driver
+* The driver has already accepted 1+ requests, and had them approved by the user
+
+**Postcondition(s):** 
+
+* The driver is viewing a list of all their pending rides, with description and location
+
+**Basic Flow:**
+
+1. Driver views their accepted requests
+
+2. Driver sorts their requests by pending
+
+**Exceptions:**
+
+3. If the driver has not accepted any requests, and had them approved by a user, there will be no pending requests for them to view
+
+  _____________________________________________________________________________________________________________________
+
+**Accepting Requests List(for US 05.03.01)**
+
+**Actor(s):** A Ridr Driver
+
+**Goal:** To allow a Driver to check the state of an accepted (on the part of the driver) ride. To view if a user has accepted a ride offered by a Driver
+
+**Trigger:** Driver clicks button to view accepted requests
+
+**Precondition(s):** 
+
+* Driver has logged in as driver
+* The driver has already accepted 1+ request(s)
+
+**Postcondition(s):** 
+
+* The driver is viewing a list of all their pending rides, with user acceptance state displayed with each pending ride
+
+**Basic Flow:**
+
+1. Driver views their accepted requests
+
+2. Driver sees state, along with description, and locations
+
+**Exceptions:**
+
+3. If the driver does not have any pending or completed requests, there will be none displayed, and therefore no user acceptance state visible
+  _____________________________________________________________________________________________________________________
+
+**Accepting Requests List(for US 05.04.01)**
+
+**Actor(s):** A Ridr Driver, a Ridr User
+
+**Goal:** To allow a Driver to be notified when one of their offered rides is accepted
+
+**Trigger:** User accepts a ride offered to them by a driver
+
+**Precondition(s):** 
+
+* Driver has logged in as driver
+* User has logged in as a user
+* The driver has already accepted a User's open request
+
+**Postcondition(s):** 
+
+* The driver has been notified that a user has accepted their request
+
+**Basic Flow:**
+
+1. User views open offers
+
+2. User accepts an offer from a Driver
+
+**Exceptions:**
+
+3. 
+  _____________________________________________________________________________________________________________________
+
