@@ -10,7 +10,56 @@ public class Ride {
     public Driver driver;
     public User user;
     public Boolean isCompleted; //pending is denoted by isCompleted = False
+
+    public String getPickupAddress() {
+        return pickupAddress;
+    }
+
+    public void setPickupAddress(String pickupAddress) {
+        this.pickupAddress = pickupAddress;
+    }
+
+    public Date getRideDate() {
+        return rideDate;
+    }
+
+    public void setRideDate(Date rideDate) {
+        this.rideDate = rideDate;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public Boolean getCompleted() {
+        return isCompleted;
+    }
+
+    public void setCompleted(Boolean completed) {
+        isCompleted = completed;
+    }
+
+    public String getDropOffAddress() {
+        return dropOffAddress;
+    }
+
+    public void setDropOffAddress(String dropOffAddress) {
+        this.dropOffAddress = dropOffAddress;
+    }
+
     public String pickupAddress;
     public String dropOffAddress;
-    
+
 }
