@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 
 import static org.junit.Assert.assertEquals;
@@ -50,6 +51,16 @@ public class RidrTest{
 
         assertEquals(requests.get(0).getPickup(), "University of Alberta");
         assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+    }
+
+    // Test for retrieving current ridr's request US 01.02.01*/
+    public void testgetRequests(){
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = user.getRequests();
+
+        assertTrue(user.getRequests() instanceof Collection);
+        assertTrue(user.getRequests().get(0) instanceof Request);
     }
 
 
