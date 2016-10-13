@@ -11,11 +11,14 @@ public class Driver {
     public Date dateOfBirth;
     public Vehicle vehicle;
     public String bankAccountNo;
+    public ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, Vehicle vehicle, String bankAccountNo){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.vehicle = vehicle;
+        this.bankAccountNo = bankAccountNo;
+        this.rideArrayList = new ArrayList<Ride>();
     }
     public String getName() {
         return name;
@@ -50,7 +53,7 @@ public class Driver {
         this.rideArrayList = rideArrayList;
     }
 
-    public ArrayList<Ride> rideArrayList;
+
 
 
 }
