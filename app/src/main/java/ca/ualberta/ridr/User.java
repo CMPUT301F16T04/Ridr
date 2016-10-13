@@ -55,6 +55,11 @@ public class User {
 
     public Ride createRide() {
         //Dont know how to fix without actually writing code
+
+        /* This doesn't work because it fails encapsulation, any method on an object should only effect that object.
+         * This might need to be put in Ride
+         * - Justin
+         */
         return;
     }
 
