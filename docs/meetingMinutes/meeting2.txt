@@ -25,10 +25,6 @@ October 6
     • Once they start the activity that they want to be picked up
         • Has view that updates every 30s to show available drivers and then select
         • Driver has an offer window, and that will show "Offer made" or "Offer accepted"
-    • 
-
-
-
 
 Mack Left
 
@@ -52,3 +48,4 @@ What we need to do for next Friday:
     - Document this on the Wiki on GitHub!
 
 - 
+>>>>>>> 33785fefd70c5e9d149948e21ee36ba56a2f17d8
