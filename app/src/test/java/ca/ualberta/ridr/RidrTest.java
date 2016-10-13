@@ -321,4 +321,108 @@ public class RidrTest{
 
     }
 
+    @Test
+    /* See requests while offline as Driver for US 08.01.01 */
+    public void offlineDriverRequestListTest() throws Exception {
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        User user = new User("Steve", new Date(), "321");
+
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        driver.goOffline();
+        if(driver.isOffline()) {
+            ArrayList<Request> request = driver.getRequestArrayList();
+            assertTrue(request instanceof Collection);
+            assertTrue(request.get(0) instanceof Request);
+        }
+    }
+
+    @Test
+    /* Rider see requests while offline for US 08.02.01*/
+    public void offlineRiderRequestsListTest() throws Exception {
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        user.goOffline();
+        if(user.isOffline()) {
+            ArrayList<Request> requests = user.getRequests();
+            assertTrue(requests.size() > 0);
+            assertTrue(requests instanceof Collection);
+            assertTrue(requests.get(0) instanceof Request);
+        }
+    }
+
+    @Test
+    /* Rider able to send requests while offline, sent when online for US 08.03.01*/
+    public void offlineSendRequestTest() throws Exception {
+        User user = new User("Steve", new Date(), "321");
+        user.goOffline();
+        if(user.isOffline()) {
+            user.requestRide("University of Alberta", "West Edmonton Mall");
+        }
+        user.goOnline();
+        if(!user.isOffline()) {
+            ArrayList<Request> requests = user.getRequests();
+            assertTrue(requests.get(0).isSent());
+            assertTrue(requests.size() > 0);
+            assertEquals(requests.get(0).getPickup(), "University of Alberta");
+            assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+        }
+    }
+
+    @Test
+    /*Driver accept requests offline, accepted once online for US 08.04.01 */
+    public void offlineAcceptRequestTest() {
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        User user = new User("Steve", new Date(), "321");
+        Ride ride = user.createRide();
+
+        driver.goOffline();
+        if(driver.isOffline()) {
+            driver.acceptRide(ride);
+        }
+
+        driver.goOnline();
+        if(!driver.isOffline()) {
+            assertTrue(driver.completeRide(ride));
+            assertTrue(driver.isPayed());
+        }
+    }
+
+    @Test
+    /*User specify start and end on map for request for US 10.01.01 */
+    public void userSetLocationMapTest() {
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = user.getRequests();
+        Map map = new Map();
+        map.setStartPinLocation("University of Alberta");
+        map.setEndPinLocation("West Edmonton Mall");
+
+        assertEquals(requests.get(0).getPickup(), "University of Alberta");
+        assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+        assertEquals(map.getStartPinLocation(),requests.get(0).getPickup());
+        assertEquals(map.getEndPinLocation(),requests.get(0).getDropoff());
+    }
+
+    @Test
+    /* Driver view start and end geo locations on map for US 10.02.01*/
+    public void driverLocationMapTest() {
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        driver.addRide();
+
+        User user = new User("Steve", new Date(), "321");
+        user.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = user.getRequests();
+        Map map = new Map();
+        map.setStartPinLocation("University of Alberta");
+        map.setEndPinLocation("West Edmonton Mall");
+
+        assertEquals(requests.get(0).getPickup(), "University of Alberta");
+        assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+        assertEquals(map.getStartPinLocation(),requests.get(0).getPickup());
+        assertEquals(map.getEndPinLocation(),requests.get(0).getDropoff());
+    }
+
 }

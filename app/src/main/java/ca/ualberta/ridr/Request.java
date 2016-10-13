@@ -69,4 +69,8 @@ public class Request {
     public void setDriver(Driver driver) {
         this.driver = driver;
     }
+
+    public boolean isSent() {
+        return false;
+    }
 }

@@ -14,6 +14,7 @@ public class Driver {
     public Vehicle vehicle;
     public String bankAccountNo;
     public ArrayList<Ride> rideArrayList;
+    public ArrayList<Request> requestArrayList;
 
     public Driver(String name, Date dateOfBirth, Vehicle vehicle, String bankAccountNo){
         this.name = name;
@@ -21,6 +22,7 @@ public class Driver {
         this.vehicle = vehicle;
         this.bankAccountNo = bankAccountNo;
         this.rideArrayList = new ArrayList<Ride>();
+        this.requestArrayList = new ArrayList<Request>();
     }
 
     public Driver(String jeff, Date date, Vehicle vehicle, String bankAccountNo, String email, String phoneNumber) {
@@ -66,6 +68,13 @@ public class Driver {
         this.rideArrayList = rideArrayList;
     }
 
+    public ArrayList<Request> getRequestArrayList() {
+        return this.requestArrayList;
+    }
+
+    public void setRequestArrayList(ArrayList<Request> requestArrayList) {
+        this.requestArrayList = requestArrayList;
+    }
 
     public void addRide() {
     }
@@ -107,5 +116,15 @@ public class Driver {
 
     public String getEmail() {
         return email;
+    }
+
+    public boolean isOffline() {
+        return false;
+    }
+
+    public void goOffline() {
+    }
+
+    public void goOnline() {
     }
 }

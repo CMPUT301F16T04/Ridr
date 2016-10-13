@@ -84,4 +84,22 @@ public class User {
     public void confirmDriver(Driver driver){
 
     }
+
+    public boolean isOffline() {
+        return false;
+    }
+
+    public void goOffline() {
+    }
+
+    public void goOnline() {
+    }
+
+    public String getStartLocation() {
+        return "";
+    }
+
+    public String getDestination() {
+        return "";
+    }
 }
