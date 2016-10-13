@@ -132,6 +132,109 @@ public class RidrTest{
     }
 
 
+    // Testing for stories 7-12
+
+    // Test for Ride Completion Confirmation US 01.07.01
+    @Test
+    public void testCompletionConfirmation(){
+        User user = new User("Steve", new Date(), "321");
+
+        String email = "driver@email.com";
+        String phoneNumber = "555-555-5555";
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+
+        Ride ride = new Ride(driver, user, "University of Alberta", "West Edmonton Mall", new Date());
+
+        assertFalse(ride.getCompleted());
+
+        ride.complete();
+
+        assertTrue(ride.getCompleted());
+    }
+
+    // Test for Confirm Driver US 01.08.01
+    @Test
+    public void testConfirmDriver(){
+        User user = new User("Steve", new Date(), "321");
+
+        String email = "driver@email.com";
+        String phoneNumber = "555-555-5555";
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+
+        String emailT = "driver2@email.com";
+        String phoneNumberT = "555-555-5565";
+        Vehicle vehicleT = new Vehicle(1996, "chevy", "truck");
+        Driver driverTwo = new Driver("Joe", new Date(), vehicleT, "143", emailT, phoneNumberT);
+
+        Ride ride = new Ride(user, "University of Alberta", "West Edmonton Mall", new Date());
+        driver.acceptRide(ride);
+        driverTwo.acceptRide(ride);
+
+        assertFalse(ride.hasDriver(driver));
+        assertFalse(ride.hasDriver(driverTwo));
+        user.confirmDriver(driver);
+        assertTrue(ride.hasDriver(driver));
+        assertFalse(ride.hasDriver(driverTwo));
+
+    }
+
+    // Test for Request Status US 02.01.01
+    @Test
+    public void testRequestStatus(){
+        User user = new User("Steve", new Date(), "321");
+
+        String email = "driver@email.com";
+        String phoneNumber = "555-555-5555";
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+
+        Ride ride = new Ride(driver, user, "University of Alberta", "West Edmonton Mall", new Date());
+
+        assertFalse(ride.getCompleted());
+        assertEquals(ride.getDriver(), driver);
+        assertEquals(ride.getUser(), user);
+    }
+
+    // Test for User Profile US 03.01.01
+    @Test
+    public void testUserProfile(){
+        Date date = new Date();
+        User user = new User("Steve", date, "321");
+
+        assertEquals("Steve", user.getName());
+        assertEquals(date, user.getDateOfBirth());
+        assertEquals("321", user.getCreditCard());
+    }
+
+    // Test for Edit Profile US 03.02.01
+    @Test
+    public void test(){
+        Date date = new Date();
+        User user = new User("Steve", date, "321");
+
+        assertEquals("Steve", user.getName());
+        assertEquals(date, user.getDateOfBirth());
+        assertEquals("321", user.getCreditCard());
+        user.setCreditCard("222");
+        date = new Date();
+        user.setDateOfBirth(date);
+        assertEquals(date, user.getDateOfBirth());
+        assertEquals("222", user.getCreditCard());
+    }
+
+    //Test for Show Contact Information US 03.03.01
+    @Test
+    public void testShowContactInformation(){
+        Date date = new Date();
+        User user = new User("Steve", date, "321");
+
+        assertEquals("Steve", user.getName());
+        assertEquals(date, user.getDateOfBirth());
+        assertEquals("321", user.getCreditCard());
+    }
+
     //**Testing of User stories 13-18/
 
     /** Test for geolocation US 04.01.01*/

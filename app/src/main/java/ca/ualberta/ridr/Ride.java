@@ -13,6 +13,10 @@ public class Ride {
     private User user;
     private Boolean isCompleted; //pending is denoted by isCompleted = False
 
+    public Ride(){
+        // empty constructor
+    }
+
     public Ride(Date rideDate, Driver driver, User user, Boolean isCompleted){
         this.rideDate = rideDate;
         this.driver = driver;
@@ -27,6 +31,10 @@ public class Ride {
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.isCompleted = false;
+    }
+
+    public Ride(User user, String pickup, String dropoff, Date date){
+
     }
 
     public Double getFare() {
@@ -92,4 +100,9 @@ public class Ride {
     public void complete() {
         this.isCompleted = true;
     }
+
+    public boolean hasDriver(Driver driver){
+        return false;
+    }
+
 }

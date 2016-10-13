@@ -60,7 +60,12 @@ public class User {
          * This might need to be put in Ride
          * - Justin
          */
-        return;
+        /*
+         * Temporally fixed it by creating a dummy constructor for Ride
+         * -Marco
+         */
+        Ride ride = new Ride();
+        return ride;
     }
 
     public void acceptRideOffer(Driver driver) {
@@ -74,5 +79,9 @@ public class User {
     }
 
     public void removeRequest(Request currentRequest) {
+    }
+
+    public void confirmDriver(Driver driver){
+
     }
 }
