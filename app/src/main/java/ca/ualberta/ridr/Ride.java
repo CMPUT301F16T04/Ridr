@@ -6,10 +6,12 @@ import java.util.Date;
  * Created by mackenzie on 12/10/16.
  */
 public class Ride {
-    public Date rideDate;
-    public Driver driver;
-    public User user;
-    public Boolean isCompleted; //pending is denoted by isCompleted = False
+    private String pickup;
+    private String dropoff;
+    private Date rideDate;
+    private Driver driver;
+    private User user;
+    private Boolean isCompleted; //pending is denoted by isCompleted = False
 
     public Ride(Date rideDate, Driver driver, User user, Boolean isCompleted){
         this.rideDate = rideDate;
@@ -18,8 +20,22 @@ public class Ride {
         this.isCompleted = isCompleted;
     }
 
+    public Ride(Driver driver, User user, String pickup, String dropoff, Date date){
+        this.rideDate = date;
+        this.driver = driver;
+        this.user = user;
+        this.pickup = pickup;
+        this.dropoff = dropoff;
+        this.isCompleted = false;
+    }
+
+    public Double getFare() {
+        Double fare = 0.0;
+        return fare;
+    }
+
     public String getPickupAddress() {
-        return pickupAddress;
+        return pickup;
     }
 
     public void setPickupAddress(String pickupAddress) {
@@ -59,7 +75,7 @@ public class Ride {
     }
 
     public String getDropOffAddress() {
-        return dropOffAddress;
+        return dropoff;
     }
 
     public void setDropOffAddress(String dropOffAddress) {
@@ -71,5 +87,9 @@ public class Ride {
 
     public boolean pushAcceptedByUser() {
         return false;
+    }
+
+    public void complete() {
+        this.isCompleted = true;
     }
 }
