@@ -1,0 +1,26 @@
+October 13, 2016
+
+
+• Table Read of requirements for feedback:
+    • Justin
+        1-5 read
+        • Clarify definitions of rider, user, driver
+        • Kirsty needs cancellation in the GUI
+        • Email or call clarification → open android app
+    • Marco
+        • 6-12 read
+        • User must click on the driver, profile is displayed, and then confirm button is underneath
+            • Add a request ID to this page
+        • Justin wants a contextual action within request view, (long press on driver, then confirms)
+            • Marco likes long hold + menu, Justin is a contrarian and like only long hold
+            • Or swipe to confirm
+        • UI should be consistent with itself
+        • Are we differentiating between a request status and a ride status
+            • Request = any interaction between rider and driver
+            • We should clarify what a request and what a ride are
+            • i 
+    • Mack read stuff
+        • Add some extra detail and stuff
+• Clarify payment logic 
+• Storm must revise payment till after completion of ride 
+    • Must revise based on payment
