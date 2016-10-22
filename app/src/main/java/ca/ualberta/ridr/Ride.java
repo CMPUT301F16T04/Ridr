@@ -10,31 +10,18 @@ public class Ride {
     private String dropoff;
     private Date rideDate;
     private Driver driver;
-    private Rider Rider;
+    private Rider rider;
     private Boolean isCompleted; //pending is denoted by isCompleted = False
+    public String pickupAddress;
+    public String dropOffAddress;
 
-    public Ride(){
-        // empty constructor
-    }
-
-    public Ride(Date rideDate, Driver driver, Rider Rider, Boolean isCompleted){
-        this.rideDate = rideDate;
-        this.driver = driver;
-        this.Rider = Rider;
-        this.isCompleted = isCompleted;
-    }
-
-    public Ride(Driver driver, Rider Rider, String pickup, String dropoff, Date date){
+    public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date){
         this.rideDate = date;
         this.driver = driver;
-        this.Rider = Rider;
+        this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.isCompleted = false;
-    }
-
-    public Ride(Rider Rider, String pickup, String dropoff, Date date){
-
     }
 
     public Double getFare() {
@@ -67,11 +54,11 @@ public class Ride {
     }
 
     public Rider getRider() {
-        return Rider;
+        return rider;
     }
 
-    public void setRider(Rider Rider) {
-        this.Rider = Rider;
+    public void setRider(Rider rider) {
+        this.rider = rider;
     }
 
     public Boolean getCompleted() {
@@ -89,9 +76,6 @@ public class Ride {
     public void setDropOffAddress(String dropOffAddress) {
         this.dropOffAddress = dropOffAddress;
     }
-
-    public String pickupAddress;
-    public String dropOffAddress;
 
     public boolean pushAcceptedByRider() {
         return false;

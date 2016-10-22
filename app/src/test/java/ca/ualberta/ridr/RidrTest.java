@@ -19,20 +19,20 @@ public class RidrTest{
     @Test
     public void createRideTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        assertTrue(new Ride(new Date(), driver, Rider, false  ) instanceof Ride);
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        assertTrue(new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date()) instanceof Ride);
     }
 
     @Test
     public void createDriverTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        assertTrue(new Driver("Jeff", new Date(), vehicle, "123") instanceof Driver);
+        assertTrue(new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123") instanceof Driver);
     }
 
     @Test
     public void createRiderTest() throws Exception{
-        assertTrue(new Rider("Steve", new Date(), "321") instanceof  Rider);
+        assertTrue(new Rider("Steve", new Date(), "321", "goodemail", "9999999") instanceof  Rider);
     }
 
     @Test
@@ -45,9 +45,9 @@ public class RidrTest{
 
     @Test
     public void testRequestCreation(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
-        ArrayList<Request> requests = Rider.getRequests();
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = rider.getRequests();
 
         assertEquals(requests.get(0).getPickup(), "University of Alberta");
         assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
@@ -56,7 +56,7 @@ public class RidrTest{
     // Test for retrieving current ridr's request US 01.02.01*/
     @Test
     public void testGetRequests(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         Rider.requestRide("University of Alberta", "West Edmonton Mall");
         ArrayList<Request> requests = Rider.getRequests();
         assertTrue(requests.size() > 0);
@@ -67,14 +67,14 @@ public class RidrTest{
     // Test for retrieving current ridr's request US 01.03.01*/
     @Test
     public void testAcceptedNotification(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
-        Rider.getRequests().get(0).addAccepted(driver);
+        rider.getRequests().get(0).addAccepted(driver);
 
-        ArrayList<Request> requests = Rider.getRequests();
+        ArrayList<Request> requests = rider.getRequests();
 
         assertTrue(requests.get(0).isAccepted());
         assertTrue(requests.get(0).getPossibleDrivers().size() > 0);
@@ -83,14 +83,14 @@ public class RidrTest{
     // Test for retrieving current ridr's request US 01.04.01*/
     @Test
     public void testCancelRequest(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
 
-        Request currentRequest = Rider.getRequests().get(0);
+        Request currentRequest = rider.getRequests().get(0);
 
-        assertTrue(Rider.getRequests().get(0).equals(currentRequest));
-        Rider.removeRequest(currentRequest);
-        assertFalse(Rider.getRequests().get(0).equals(currentRequest));
+        assertTrue(rider.getRequests().get(0).equals(currentRequest));
+        rider.removeRequest(currentRequest);
+        assertFalse(rider.getRequests().get(0).equals(currentRequest));
 
     }
 
@@ -100,7 +100,7 @@ public class RidrTest{
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
         // Sanity check
         assertTrue(driver instanceof Driver);
@@ -113,15 +113,15 @@ public class RidrTest{
     // Test for retrieving ride's fair US 01.06.01*/
     @Test
     public void testFairEstimation(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
 
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
-        Ride ride = new Ride(driver, Rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
         ride.complete();
 
         Double fare = ride.getFare();
@@ -137,14 +137,14 @@ public class RidrTest{
     // Test for Ride Completion Confirmation US 01.07.01
     @Test
     public void testCompletionConfirmation(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
-        Ride ride = new Ride(driver, Rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
 
         assertFalse(ride.getCompleted());
 
@@ -156,25 +156,25 @@ public class RidrTest{
     // Test for Confirm Driver US 01.08.01
     @Test
     public void testConfirmDriver(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
         String emailT = "driver2@email.com";
         String phoneNumberT = "555-555-5565";
         Vehicle vehicleT = new Vehicle(1996, "chevy", "truck");
-        Driver driverTwo = new Driver("Joe", new Date(), vehicleT, "143", emailT, phoneNumberT);
+        Driver driverTwo = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
-        Ride ride = new Ride(Rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
         driver.acceptRide(ride);
         driverTwo.acceptRide(ride);
 
         assertFalse(ride.hasDriver(driver));
         assertFalse(ride.hasDriver(driverTwo));
-        Rider.confirmDriver(driver);
+        rider.confirmDriver(driver);
         assertTrue(ride.hasDriver(driver));
         assertFalse(ride.hasDriver(driverTwo));
 
@@ -183,25 +183,25 @@ public class RidrTest{
     // Test for Request Status US 02.01.01
     @Test
     public void testRequestStatus(){
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123", email, phoneNumber);
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
-        Ride ride = new Ride(driver, Rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
 
         assertFalse(ride.getCompleted());
         assertEquals(ride.getDriver(), driver);
-        assertEquals(ride.getRider(), Rider);
+        assertEquals(ride.getRider(), rider);
     }
 
     // Test for Rider Profile US 03.01.01
     @Test
     public void testRiderProfile(){
         Date date = new Date();
-        Rider Rider = new Rider("Steve", date, "321");
+        Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         assertEquals("Steve", Rider.getName());
         assertEquals(date, Rider.getDateOfBirth());
@@ -212,27 +212,27 @@ public class RidrTest{
     @Test
     public void test(){
         Date date = new Date();
-        Rider Rider = new Rider("Steve", date, "321");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        assertEquals("Steve", Rider.getName());
-        assertEquals(date, Rider.getDateOfBirth());
-        assertEquals("321", Rider.getCreditCard());
-        Rider.setCreditCard("222");
+        assertEquals("Steve", rider.getName());
+        assertEquals(date, rider.getDateOfBirth());
+        assertEquals("321", rider.getCreditCard());
+        rider.setCreditCard("222");
         date = new Date();
-        Rider.setDateOfBirth(date);
-        assertEquals(date, Rider.getDateOfBirth());
-        assertEquals("222", Rider.getCreditCard());
+        rider.setDateOfBirth(date);
+        assertEquals(date, rider.getDateOfBirth());
+        assertEquals("222", rider.getCreditCard());
     }
 
     //Test for Show Contact Information US 03.03.01
     @Test
     public void testShowContactInformation(){
         Date date = new Date();
-        Rider Rider = new Rider("Steve", date, "321");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        assertEquals("Steve", Rider.getName());
-        assertEquals(date, Rider.getDateOfBirth());
-        assertEquals("321", Rider.getCreditCard());
+        assertEquals("Steve", rider.getName());
+        assertEquals(date, rider.getDateOfBirth());
+        assertEquals("321", rider.getCreditCard());
     }
 
     //**Testing of Rider stories 13-18/
@@ -241,7 +241,7 @@ public class RidrTest{
     @Test
     public void geoLocationTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         //Add open ride to driver
         driver.addRide();
 
@@ -254,7 +254,7 @@ public class RidrTest{
     /** Test for keyword search US 04.02.01 */
     public void keywordRideSearchTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         //Add open ride to driver
         driver.addRide();
 
@@ -267,10 +267,10 @@ public class RidrTest{
     //** Test for driver request accept US 05.01.01*/
     public void driverAccceptRequestTest() throws Exception {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        Ride ride = Rider.createRide();
+        Ride ride = rider.createRide();
 
         driver.acceptRide(ride);
         assertTrue(driver.completeRide(ride));
@@ -281,14 +281,14 @@ public class RidrTest{
     //** Test for view list of rides that have abeen accepted and are pending US 05.02.01*//
     public void driverRideStateTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        Ride ride = Rider.createRide();
-        Rider.acceptRideOffer(driver);
+        Ride ride = rider.createRide();
+        rider.acceptRideOffer(driver);
         driver.acceptRide(ride);
         driver.completeRide(ride);
-        Ride ride2 = Rider.createRide();
+        Ride ride2 = rider.createRide();
         driver.acceptRide(ride2);
 
         assertTrue(driver.getPendingRides());
@@ -299,21 +299,21 @@ public class RidrTest{
     //** Check ride state for driver US 05.03.01 */
     public void driverRiderAcceptRideStateTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        Ride ride = Rider.createRide();
-        Rider.acceptRideOffer(driver);
+        Ride ride = rider.createRide();
+        rider.acceptRideOffer(driver);
 
-        assertTrue(driver.RiderAcceptedRide(ride));
+        assertTrue(driver.riderAcceptedRide(ride));
     }
 
     @Test
     /** test push notification to Driver 05.04.01 */
     public void RiderAcceptPushTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         Ride ride = Rider.createRide();
         Rider.acceptRideOffer(driver);
@@ -325,26 +325,26 @@ public class RidrTest{
     /* See requests while offline as Driver for US 08.01.01 */
     public void offlineDriverRequestListTest() throws Exception {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
         driver.goOffline();
         if(driver.isOffline()) {
-            ArrayList<Request> request = driver.getRequestArrayList();
-            assertTrue(request instanceof Collection);
-            assertTrue(request.get(0) instanceof Request);
+            ArrayList<Ride> rides = driver.getRides();
+            assertTrue(rides instanceof Collection);
+            assertTrue(rides.get(0) instanceof Ride);
         }
     }
 
     @Test
     /* Rider see requests while offline for US 08.02.01*/
     public void offlineRiderRequestsListTest() throws Exception {
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
-        Rider.goOffline();
-        if(Rider.isOffline()) {
-            ArrayList<Request> requests = Rider.getRequests();
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
+        rider.goOffline();
+        if(rider.isOffline()) {
+            ArrayList<Request> requests = rider.getRequests();
             assertTrue(requests.size() > 0);
             assertTrue(requests instanceof Collection);
             assertTrue(requests.get(0) instanceof Request);
@@ -354,14 +354,14 @@ public class RidrTest{
     @Test
     /* Rider able to send requests while offline, sent when online for US 08.03.01*/
     public void offlineSendRequestTest() throws Exception {
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.goOffline();
-        if(Rider.isOffline()) {
-            Rider.requestRide("University of Alberta", "West Edmonton Mall");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.goOffline();
+        if(rider.isOffline()) {
+            rider.requestRide("University of Alberta", "West Edmonton Mall");
         }
-        Rider.goOnline();
-        if(!Rider.isOffline()) {
-            ArrayList<Request> requests = Rider.getRequests();
+        rider.goOnline();
+        if(!rider.isOffline()) {
+            ArrayList<Request> requests = rider.getRequests();
             assertTrue(requests.get(0).isSent());
             assertTrue(requests.size() > 0);
             assertEquals(requests.get(0).getPickup(), "University of Alberta");
@@ -373,9 +373,9 @@ public class RidrTest{
     /*Driver accept requests offline, accepted once online for US 08.04.01 */
     public void offlineAcceptRequestTest() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Ride ride = Rider.createRide();
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Ride ride = rider.createRide();
 
         driver.goOffline();
         if(driver.isOffline()) {
@@ -392,9 +392,9 @@ public class RidrTest{
     @Test
     /*Rider specify start and end on map for request for US 10.01.01 */
     public void RiderSetLocationMapTest() {
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
-        ArrayList<Request> requests = Rider.getRequests();
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = rider.getRequests();
         Map map = new Map();
         map.setStartPinLocation("University of Alberta");
         map.setEndPinLocation("West Edmonton Mall");
@@ -409,12 +409,12 @@ public class RidrTest{
     /* Driver view start and end geo locations on map for US 10.02.01*/
     public void driverLocationMapTest() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         driver.addRide();
 
-        Rider Rider = new Rider("Steve", new Date(), "321");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
-        ArrayList<Request> requests = Rider.getRequests();
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = rider.getRequests();
         Map map = new Map();
         map.setStartPinLocation("University of Alberta");
         map.setEndPinLocation("West Edmonton Mall");
