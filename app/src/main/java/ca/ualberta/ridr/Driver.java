@@ -106,7 +106,7 @@ public class Driver {
         return false;
     }
 
-    public boolean userAcceptedRide(Ride ride) {
+    public boolean riderAcceptedRide(Ride ride) {
         return false;
     }
 
