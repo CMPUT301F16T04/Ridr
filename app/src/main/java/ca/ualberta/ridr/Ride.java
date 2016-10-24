@@ -6,20 +6,31 @@ import java.util.Date;
  * Created by mackenzie on 12/10/16.
  */
 public class Ride {
-    public Date rideDate;
-    public Driver driver;
-    public User user;
-    public Boolean isCompleted; //pending is denoted by isCompleted = False
+    private String pickup;
+    private String dropoff;
+    private Date rideDate;
+    private Driver driver;
+    private Rider rider;
+    private Boolean isCompleted; //pending is denoted by isCompleted = False
+    public String pickupAddress;
+    public String dropOffAddress;
 
-    public Ride(Date rideDate, Driver driver, User user, Boolean isCompleted){
-        this.rideDate = rideDate;
+    public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date){
+        this.rideDate = date;
         this.driver = driver;
-        this.user = user;
-        this.isCompleted = isCompleted;
+        this.rider = rider;
+        this.pickup = pickup;
+        this.dropoff = dropoff;
+        this.isCompleted = false;
+    }
+
+    public Double getFare() {
+        Double fare = 0.0;
+        return fare;
     }
 
     public String getPickupAddress() {
-        return pickupAddress;
+        return pickup;
     }
 
     public void setPickupAddress(String pickupAddress) {
@@ -42,12 +53,12 @@ public class Ride {
         this.driver = driver;
     }
 
-    public User getUser() {
-        return user;
+    public Rider getRider() {
+        return rider;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setRider(Rider rider) {
+        this.rider = rider;
     }
 
     public Boolean getCompleted() {
@@ -59,17 +70,23 @@ public class Ride {
     }
 
     public String getDropOffAddress() {
-        return dropOffAddress;
+        return dropoff;
     }
 
     public void setDropOffAddress(String dropOffAddress) {
         this.dropOffAddress = dropOffAddress;
     }
 
-    public String pickupAddress;
-    public String dropOffAddress;
-
-    public boolean pushAcceptedByUser() {
+    public boolean pushAcceptedByRider() {
         return false;
     }
+
+    public void complete() {
+        this.isCompleted = true;
+    }
+
+    public boolean hasDriver(Driver driver){
+        return false;
+    }
+
 }

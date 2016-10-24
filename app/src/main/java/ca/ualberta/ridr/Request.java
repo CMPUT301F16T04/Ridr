@@ -6,12 +6,11 @@ import java.util.ArrayList;
  * Created by Justin on 2016-10-12.
  */
 public class Request {
-    private String ridr;
+    private String rider;
     private String pickup;
     private String dropoff;
     private ArrayList<Driver> possibleDrivers;
     private Boolean accepted;
-    private Driver driver;
 
     Request(String pickup, String dropoff){
         this.pickup = pickup;
@@ -34,12 +33,12 @@ public class Request {
     public void addAccepted(Driver driver) {
     }
 
-    public String getRidr() {
-        return ridr;
+    public String getRider() {
+        return rider;
     }
 
-    public void setRidr(String ridr) {
-        this.ridr = ridr;
+    public void setRider(String rider) {
+        this.rider = rider;
     }
 
     public void setPickup(String pickup) {
@@ -62,11 +61,7 @@ public class Request {
         this.accepted = accepted;
     }
 
-    public Driver getDriver() {
-        return driver;
-    }
-
-    public void setDriver(Driver driver) {
-        this.driver = driver;
+    public boolean isSent() {
+        return false;
     }
 }

@@ -1,0 +1,76 @@
+Rider Request ride (for US 01.01.01)
+Actor(s): A Ridr
+Goal: To request a ride between two locations
+Trigger: A ridr chooses to start a new request
+Precondition: a Ridr is logged in
+Postcondition(s): System confirms Ridrs choice, System records users request 
+Basic Flow:
+1. Ridr selects request ride
+2. System prompts user for pick-up locations
+3. User enters pick-up location
+4. System promps user for drop-off location
+5. User selects a drop-off location
+
+Exception:
+2.1 Ridr enters location that doesn't exist
+2.2 System warns user location doesn't not exist
+2.3 Return to 2
+
+Current requests (for US 01.02.01)
+Actor(s): A Ridr
+Goal: To look at all current request a ridr has open.
+Trigger: A rider selects to view open requests
+Precondition(s): a Ridr is logged in
+Postcondition(s): 
+Basic Flow:
+1. Ridr selects option to view open requests
+2. System displays all current open requests
+
+Notification of acceptance (for US 01.03.01)
+Actor: A Ridr
+Goal: To receive notification when a request has been accepted
+Trigger: A ridr's request has been accepted
+Precondition: a ridr is logged into the system, a ridr is currently connected to the system, a ridr has selected his pick-up and drop-off locations
+Postcondition(s): A ridr then confirms or rejects the request
+Basic Flow:
+1. Ridr confirms their request.
+2. System sends a notification to ridr once one or more drivrs have accepted request
+
+Cancelling requests (for US 01.04.01)
+Actor: A Ridr
+Goal: To cancel a request
+Trigger: A ridr cancels a request
+Precondition(s): a ridr is logged into the system, a ridr has atleast one open request
+Postcondition(s): system removes request, a drivr who was confirmed for request can no longer see request
+Basic Flow:
+1. Ridr selects to see all open requests
+2. System displays all open requests
+3. Ridr selects request they wish to cancel
+4. System displays the selected request
+5. Ridr cancels request
+6. System moves ridr back to all open request
+7. Cancelled request is no longer visible
+
+Contacting drivr (for US 01.05.01)
+Actor: A Ridr, A Drivr
+Goal: To contact a drivr who has accepted request
+Trigger: A ridr selects drivrs info
+Precondition(s): a ridr is logged into the system, a ridr has atleast one request, atleast one request has been accepted by a drivr
+Postcondition(s): a ridr talks to a drivr
+Basic Flow:
+1. A ridr selects an accepted request
+2. System displays request
+3. Ridr selects drivr who accepted request
+4. System displays drivr contact info
+5. A ridr phones or emails drivr
+
+Estimate of fare (for US 01.06.01)
+Actor: A Ridr
+Goal: To have an estimate of a fair to offer to drivr
+Trigger: Ridr has reached drop off location
+Precondition(s): a ridr has been dropped off, a ridr is logged in
+Postcondition(s): a ridr confirms payment
+1. System prompts user to confirm drop-off
+2. Ridr confirms drop-off
+3. System displays estimate of fair to ridr
+

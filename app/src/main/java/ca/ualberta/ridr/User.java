@@ -11,14 +11,15 @@ public class User {
     public String name;
     public Date dateOfBirth;
     public String creditCard;
-    public ArrayList<Ride> rideArrayList;
-    public ArrayList<Request> requests;
+    public String email;
+    public String phoneNumber;
 
-    public User(String name, Date dateOfBirth, String creditCard){
+    public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.creditCard = creditCard;
-        this.rideArrayList = new ArrayList<Ride>();
+        this.email = email;
+        this.phoneNumber = phoneNumber;
     }
 
     public String getName() {
@@ -45,34 +46,37 @@ public class User {
         this.creditCard = creditCard;
     }
 
-    public ArrayList<Ride> getRideArrayList() {
-        return rideArrayList;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRideArrayList(ArrayList<Ride> rideArrayList) {
-        this.rideArrayList = rideArrayList;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public Ride createRide() {
-        //Dont know how to fix without actually writing code
-
-        /* This doesn't work because it fails encapsulation, any method on an object should only effect that object.
-         * This might need to be put in Ride
-         * - Justin
-         */
-        return;
+    public String getPhoneNumber() {
+        return phoneNumber;
     }
 
-    public void acceptRideOffer(Driver driver) {
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
-    public void requestRide(String s, String s1) {
+    public boolean isOffline() {
+        return false;
     }
 
-    public ArrayList<Request> getRequests() {
-        return requests;
+    public void goOffline() {
     }
 
-    public void removeRequest(Request currentRequest) {
+    public void goOnline() {
+    }
+
+    public String getStartLocation() {
+        return "";
+    }
+
+    public String getDestination() {
+        return "";
     }
 }

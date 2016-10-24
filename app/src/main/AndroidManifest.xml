@@ -15,6 +15,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".DriverMainView" />
+        <activity android:name=".SearchRequestsView" />
+        <activity android:name=".SearchResultsView" />
+        <activity android:name=".RequestsFromRidersView" />
+        <activity android:name=".LoginView" />
+        <activity android:name=".ProfileView" />
+        <activity android:name=".EditProfileView" />
+        <activity android:name=".AcceptRiderView" />
+        <activity android:name=".RiderMainView" />
+        <activity android:name=".RiderRequestView" />
+        <activity android:name=".RideConfirmationView"></activity>
     </application>
 
 </manifest>
