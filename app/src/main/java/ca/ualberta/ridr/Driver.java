@@ -6,15 +6,13 @@ import java.util.Date;
 /**
  * Created by mackenzie on 12/10/16.
  */
-public class Driver extends User{
-    private String email;
-    private String phoneNumber;
+public class Driver extends User {
     public Vehicle vehicle;
     public String bankAccountNo;
     public ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
-                  String email, String phoneNumber, Vehicle vehicle, String bankAccountNo){
+                  String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.vehicle = vehicle;
         this.bankAccountNo = bankAccountNo;
@@ -57,7 +55,7 @@ public class Driver extends User{
     public void addRide() {
     }
 
-    public boolean kewordSearch(String james) {
+    public boolean kewordSearch(String input) {
         return false;
     }
 
@@ -100,9 +98,4 @@ public class Driver extends User{
         return false;
     }
 
-    public void goOffline() {
-    }
-
-    public void goOnline() {
-    }
 }

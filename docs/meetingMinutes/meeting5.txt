@@ -1,0 +1,13 @@
+*October 20, 2016*
+• Needs notes on the UML(for MVC stuff)
+
+• Storm and Kirsty will address storyboard feedback
+• Everyone else will split up as needed 
+
+• Users are either a driver or rider
+• Rider will have 0 to many requests
+• Request must have 1 rider, but can have 0 to many drivers
+• Drivers cannot have requests
+• A ride has to have 1 driver and 1 rider
+ssi•
+

@@ -1,0 +1,29 @@
+*Oct 25, 2016*
+
+* People 
+** Justin F.
+    - Did testcases updated the code
+    - Blcokers: midterms, can't really do stuff till friday
+    - Meeting thursday to hash out what needs to be done
+** Justin B.
+    - UML Creation 
+    - BLockers: midterms till thurs
+    - What to do on Thurs
+** Kirsty
+    - Addressed feedback
+    - Updated UI
+    - Blockers: Midterms; till thurs
+** Marco
+    - Addressed UC feedback and glossary/external links
+    - Find out tasks thurs
+    - Blockers: Midy tomorrow and thurs
+** Storm 
+    - Storyboarding, UML
+    - Blockers: project due wed, g2g after thursday evening
+** Mack
+    - UML
+    - Blockers: big database proj due on 31st, 2 midterms
+
+* Romansky
+    - Not much to discuss cause planning waits till Thursday
+    - 
