@@ -1,0 +1,13 @@
+<2016-10-27 Thu>
+* Meeting
+- *Justin* wants a visual design document
+    + Specify padding and conventions, ect
+    + Justin and Kirsty will be working on it
+- Reading weeks may be alot of work if we don't do much work this week
+- Everyone should start working on this
+* Due date is 1 month
+- Everyone needs to do roughly 3 features ourselves and 1 pair program/person
+* Justin rules
+- Must check code before pushing to master
+- Make a new story for any new branch
+- Master should always be working
