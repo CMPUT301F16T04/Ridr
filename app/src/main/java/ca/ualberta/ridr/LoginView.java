@@ -8,6 +8,6 @@ public class LoginView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_view);
+        setContentView(R.layout.login_screen);
     }
 }
