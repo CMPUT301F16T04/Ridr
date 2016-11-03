@@ -28,6 +28,16 @@ public class Rider extends User {
         return requestArrayList;
     }
 
+    public ArrayList<Request> getOpenRequests(){
+        ArrayList<Request> openRequests = new ArrayList<Request>();
+        for (int i = 0; i < ; i++) {
+            if (!requestArrayList.get(i).isAccepted());
+            openRequests.add(requestArrayList.get(i));
+        }
+
+        return openRequests;
+    }
+
     public void setRequests(ArrayList<Request> requestArrayList) {
         this.requestArrayList = requestArrayList;
     }

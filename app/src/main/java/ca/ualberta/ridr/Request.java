@@ -15,6 +15,7 @@ public class Request {
     Request(String pickup, String dropoff){
         this.pickup = pickup;
         this.dropoff = dropoff;
+
     }
 
     public void setDropoff(String dropoff) {

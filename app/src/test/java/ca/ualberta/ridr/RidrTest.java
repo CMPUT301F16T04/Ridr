@@ -53,15 +53,32 @@ public class RidrTest{
         assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
     }
 
-    // Test for retrieving current ridr's request US 01.02.01*/
+    // Test for retrieving current ridr's open requests US 01.02.01*/
+    @Test
+    public void testGetOpenRequests(){
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Vehicle vehicle = new Vehicle(1900, "Ford", "Model T");
+        Driver driver = new Driver("Leroy", new Date(), "666", "leroyJenkins@hotmail.com", vehicle,\
+        "666777999");
+        Request request1 = new Request(rider, driver, "University of Alberta", " West Edmonton Mall");
+        Request request2 = new Request(rider, driver, "Rogers Place", "Whyte Ave");
+        request1.setAccepted(false);
+        request2.setAccepted(true);
+
+        // Check only unaccepted ride is open
+        assertEquals(rider.getOpenRequests().size(), 1);
+        // Check unaccepted ride is request 1
+        assertTrue(rider.getOpenRequests().get(0) == request1);
+
+
+        assertTrue(rider.getOpenRequests() instanceof Collection);
+        assertTrue(rider.getOpenRequests().get(0) instanceof Request);
+    }
+
+    // Test for retrieving current ridr's open requests US 01.02.01*/
     @Test
     public void testGetRequests(){
-        Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        Rider.requestRide("University of Alberta", "West Edmonton Mall");
-        ArrayList<Request> requests = Rider.getRequests();
-        assertTrue(requests.size() > 0);
-        assertTrue(requests instanceof Collection);
-        assertTrue(requests.get(0) instanceof Request);
+
     }
 
     // Test for retrieving current ridr's request US 01.03.01*/
