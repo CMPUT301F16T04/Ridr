@@ -30,7 +30,7 @@ public class Rider extends User {
 
     public ArrayList<Request> getOpenRequests(){
         ArrayList<Request> openRequests = new ArrayList<Request>();
-        for (int i = 0; i < ; i++) {
+        for (int i = 0; i < requestArrayList.size() ; i++) {
             if (!requestArrayList.get(i).isAccepted());
             openRequests.add(requestArrayList.get(i));
         }
