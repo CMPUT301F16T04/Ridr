@@ -8,6 +8,6 @@ public class EditProfileView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_profile_view);
+        setContentView(R.layout.edit_profile);
     }
 }

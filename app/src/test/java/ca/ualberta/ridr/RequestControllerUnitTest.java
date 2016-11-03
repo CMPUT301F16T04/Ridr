@@ -17,7 +17,7 @@ import java.util.Date;
 public class RequestControllerUnitTest {
 
     @Test
-    public void createRequestControllerTest(){
+    public void testCreateRequestController(){
         Date date = new Date();
         Rider rider = new Rider("Bob", date, "123", "email", "phone");
         RequestController RC = new RequestController();
