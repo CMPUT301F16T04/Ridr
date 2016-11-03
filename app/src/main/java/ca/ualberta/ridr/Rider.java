@@ -8,8 +8,8 @@ import java.util.Date;
  * Worked on by Marc-O and Kristy on 03/11/2016
  */
 public class Rider extends User {
-    public ArrayList<Ride> rideArrayList;
-    public ArrayList<Request> requestArrayList;
+    private ArrayList<Ride> rideArrayList;
+    private ArrayList<Request> requestArrayList;
 
     public Rider (String name, Date dateOfBirth, String creditCard, String email, String phoneNumber) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
