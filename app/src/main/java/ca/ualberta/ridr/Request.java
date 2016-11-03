@@ -4,15 +4,17 @@ import java.util.ArrayList;
 
 /**
  * Created by Justin on 2016-10-12.
+ * Worked on by Marc-O and Kristy on 03/11/2016
  */
 public class Request {
-    private String rider;
+    private Rider rider;
     private String pickup;
     private String dropoff;
     private ArrayList<Driver> possibleDrivers;
     private Boolean accepted;
 
-    Request(String pickup, String dropoff){
+    Request( Rider rider, String pickup, String dropoff){
+        this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
     }
@@ -33,11 +35,11 @@ public class Request {
     public void addAccepted(Driver driver) {
     }
 
-    public String getRider() {
+    public Rider getRider() {
         return rider;
     }
 
-    public void setRider(String rider) {
+    public void setRider(Rider rider) {
         this.rider = rider;
     }
 
