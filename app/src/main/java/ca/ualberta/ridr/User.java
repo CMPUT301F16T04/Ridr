@@ -4,10 +4,13 @@ import java.sql.RowIdLifetime;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class User {
+
     public String name;
     public Date dateOfBirth;
     public String creditCard;
@@ -21,6 +24,7 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
     }
+
 
     public String getName() {
         return name;

@@ -3,20 +3,29 @@ package ca.ualberta.ridr;
 import java.util.ArrayList;
 import java.util.Date;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
+    @JestId
+    private String id;
     public Vehicle vehicle;
-    public String bankAccountNo;
     public ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
-                  String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
+                  String email, String phoneNumber, Vehicle vehicle) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.vehicle = vehicle;
-        this.bankAccountNo = bankAccountNo;
         this.rideArrayList = new ArrayList<Ride>();
+    }
+
+    public String getId() {
+        return id;
+    }
+    public void setId(String id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -33,15 +42,6 @@ public class Driver extends User {
 
     public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
-    }
-
-
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
-
-    public void setBankAccountNo(String bankAccountNo) {
-        this.bankAccountNo = bankAccountNo;
     }
 
     public ArrayList<Ride> getRides() {
