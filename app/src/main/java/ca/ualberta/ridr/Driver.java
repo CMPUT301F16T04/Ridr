@@ -2,14 +2,15 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
-    public Vehicle vehicle;
-    public String bankAccountNo;
-    public ArrayList<Ride> rideArrayList;
+    private Vehicle vehicle;
+    private String bankAccountNo;
+    private ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
                   String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
