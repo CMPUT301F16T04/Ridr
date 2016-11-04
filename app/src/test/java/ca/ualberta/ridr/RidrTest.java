@@ -202,7 +202,7 @@ public class RidrTest{
     /* Test for Rider Profile US 03.01.01
 
     NOTE: This isn't the correct test. Test is in androidTest, and is called AddUserProfileTest.
-    Needs to be an instrumentation test, as we are working with Async 
+    Needs to be an instrumentation test, as we are working with Async
 
     @Test
     public void testUserProfile(){
