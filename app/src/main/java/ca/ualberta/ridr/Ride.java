@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by mackenzie on 12/10/16.
@@ -12,8 +13,10 @@ public class Ride {
     private Driver driver;
     private Rider rider;
     private Boolean isCompleted; //pending is denoted by isCompleted = False
-    public String pickupAddress;
-    public String dropOffAddress;
+    private String pickupAddress;
+    private String dropOffAddress;
+    private UUID id;
+
 
     public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date){
         this.rideDate = date;
@@ -22,7 +25,9 @@ public class Ride {
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.isCompleted = false;
+        this.id = UUID.randomUUID();
     }
+
 
     public Double getFare() {
         Double fare = 0.0;
@@ -89,4 +94,7 @@ public class Ride {
         return false;
     }
 
+    public boolean isEqual(Ride ride) {
+        return this.id.equals(ride.id);
+    }
 }

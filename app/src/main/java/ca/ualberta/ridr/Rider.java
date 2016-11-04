@@ -2,6 +2,7 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by jferris on 22/10/16.

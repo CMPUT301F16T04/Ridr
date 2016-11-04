@@ -24,10 +24,11 @@ public class RiderRequestView extends AppCompatActivity {
 
         Button addRequest = (Button) findViewById(R.id.createRequestButton);
         addRequest.setOnClickListener(new View.OnClickListener(){
-            public void OnCLick(View v){
+            public void onClick(View v){
 
                 //TODO pass a rider object to this view
-                reqController.createRequest(Rider, startLocation.getText().toString(), endLocation.getText().toString());
+                Rider rider = null; // for now just so that we wont get compile errors
+                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString());
             }
         });
 
