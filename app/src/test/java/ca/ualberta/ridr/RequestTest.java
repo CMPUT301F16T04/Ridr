@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import org.junit.Test;
+
 import java.util.Date;
 
 import static org.junit.Assert.assertTrue;
@@ -9,8 +11,8 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class RequestTest {
+    @Test
     public void testRequestEquals(){
-
         Request request = new Request("Edmonton", "Timbuktu");
         assertTrue(request.equals(request));
     }

@@ -11,6 +11,7 @@ import static junit.framework.TestCase.assertTrue;
  */
 
 public class DriverTest {
+    @Test
     public void testDriverEquality() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
