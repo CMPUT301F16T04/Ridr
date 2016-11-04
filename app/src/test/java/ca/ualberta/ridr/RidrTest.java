@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import android.util.Log;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -204,12 +206,48 @@ public class RidrTest{
         //instead, create a User, upload the rider and driver to elasticsearch using their controllers
         //then get it from elasticsearch, also using the controllers.
 
-        Date date = new Date();
-        Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Date date1 = new Date();
+        Rider user1 = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Date date2 = new Date();
+        Driver user2 = new Driver("Storm", new Date(), "123", "goodemail@supergood.com", "6666666", null); //null for no vehicle assigned yet
 
-        assertEquals("Steve", Rider.getName());
-        assertEquals(date, Rider.getDateOfBirth());
-        assertEquals("321", Rider.getCreditCard());
+        DriverController driverController = new DriverController();
+        RiderController riderController = new RiderController();
+
+        driverController.AddDriverTaskTest(user2);
+        riderController.AddRiderTaskTest(user1);
+
+        Driver newDriver = driverController.GetDriverTaskTest("Storm");
+        Rider newRider  = riderController.GetRiderTaskTest("Storm");
+
+        /* Code for Async tests, has to be tested in android emulator
+        Driver newDriver = null;
+        try{
+            newDriver = getDriverTask.get();
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the driver out of the async object.");
+        }*/
+
+        /* Code for Async tests, has to be tested in android emulator
+        getRiderTask.execute("Steve");
+        Rider newRider = null;
+        try{
+            newRider = getRiderTask.get();
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the rider out of the async object.");
+        }*/
+
+        //check first User, who is logged in as a rider
+        assertEquals("Steve", newRider.getName());
+        assertEquals(date1, newRider.getDateOfBirth());
+        assertEquals("321", newRider.getCreditCard());
+
+        //check second User, who is logged in as a driver
+        assertEquals("Storm", newDriver.getName());
+        assertEquals(date2, newDriver.getDateOfBirth());
+        assertEquals("123", newDriver.getCreditCard());
+        assertEquals(null, newDriver.getVehicle());
+
     }
 
     // Test for Edit Profile US 03.02.01

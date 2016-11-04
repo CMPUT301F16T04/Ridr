@@ -92,4 +92,61 @@ public class DriverController {
             client = (JestDroidClient) factory.getObject();
         }
     }
+
+
+
+
+
+
+
+    //TEST METHODS - FOR TESTS ONLY
+        public Driver GetDriverTaskTest (String... search_parameters){
+            verifySettings();
+
+            String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
+            //search string should work, is searching for the name, only returns 1 result
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex("CMPUT301F16T04")
+                    .addType("driver")
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    Driver foundDriver = result.getFirstHit(Driver.class).source; //might not work
+                    return foundDriver;
+                }
+                else {
+                    Log.i("Error", "The search query failed to find the driver that matched.");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return null;
+        }
+
+    public void AddDriverTaskTest(Driver... drivers){
+        verifySettings();
+
+        for (Driver driver: drivers) {
+            Index index = new Index.Builder(driver).index("CMPUT301F16T04").type("driver").build();
+
+            try {
+                DocumentResult result = client.execute(index);
+                if (result.isSucceeded()) {
+                    driver.setId(result.getId());
+                }
+                else {
+                    Log.i("Error", "Elastic search was not able to add the driver.");
+                }
+            }
+            catch (Exception e) {
+                Log.i("Uhoh", "We failed to add a driver to elastic search!");
+                e.printStackTrace();
+            }
+        }
+    }
 }
