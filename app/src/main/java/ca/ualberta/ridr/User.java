@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import java.sql.RowIdLifetime;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -10,12 +11,12 @@ import io.searchbox.annotations.JestId;
  * Created by mackenzie on 12/10/16.
  */
 public class User {
-
-    public String name;
-    public Date dateOfBirth;
-    public String creditCard;
-    public String email;
-    public String phoneNumber;
+    private String name;
+    private Date dateOfBirth;
+    private String creditCard;
+    private String email;
+    private String phoneNumber;
+    private UUID id;
 
     public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
         this.name = name;
@@ -23,6 +24,7 @@ public class User {
         this.creditCard = creditCard;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.id = UUID.randomUUID();
     }
 
 
@@ -82,5 +84,9 @@ public class User {
 
     public String getDestination() {
         return "";
+    }
+
+    public boolean isEqual(User user) {
+        return this.id.equals(user);
     }
 }

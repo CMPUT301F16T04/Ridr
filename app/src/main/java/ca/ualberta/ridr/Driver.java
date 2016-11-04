@@ -2,6 +2,7 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -29,19 +30,19 @@ public class Driver extends User {
     }
 
     public String getName() {
-        return name;
+        return this.getName();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.setName(name);
     }
 
     public Date getDateOfBirth() {
-        return dateOfBirth;
+        return this.getDateOfBirth();
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.setDateOfBirth(dateOfBirth);
     }
 
     public ArrayList<Ride> getRides() {
@@ -87,11 +88,11 @@ public class Driver extends User {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return this.getPhoneNumber();
     }
 
     public String getEmail() {
-        return email;
+        return this.getEmail();
     }
 
     public boolean isOffline() {
