@@ -8,6 +8,6 @@ public class AcceptRiderView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_accept_rider_view);
+        setContentView(R.layout.accept_rider);
     }
 }
