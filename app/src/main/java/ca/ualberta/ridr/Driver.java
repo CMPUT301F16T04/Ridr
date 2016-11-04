@@ -10,8 +10,9 @@ import io.searchbox.annotations.JestId;
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
+
     @JestId
-    private String id;
+    private String driverID;
     public Vehicle vehicle;
     public ArrayList<Ride> rideArrayList;
 
@@ -22,11 +23,12 @@ public class Driver extends User {
         this.rideArrayList = new ArrayList<Ride>();
     }
 
-    public String getId() {
-        return id;
+    public String getDriverID() {
+        return driverID;
     }
-    public void setId(String id) {
-        this.id = id;
+
+    public void setDriverID(String driverID) {
+        this.driverID = driverID;
     }
 
     public String getName() {

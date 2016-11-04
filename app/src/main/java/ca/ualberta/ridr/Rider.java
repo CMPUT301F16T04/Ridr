@@ -11,7 +11,7 @@ import io.searchbox.annotations.JestId;
  */
 public class Rider extends User {
     @JestId
-    private String id;
+    private String riderID;
     public ArrayList<Ride> rideArrayList;
     public ArrayList<Request> requestArrayList;
 
@@ -21,11 +21,12 @@ public class Rider extends User {
         this.requestArrayList = new ArrayList<Request>();
     }
 
-    public String getId() {
-        return id;
+    public String getRiderID() {
+        return riderID;
     }
-    public void setId(String id) {
-        this.id = id;
+
+    public void setRiderID(String riderID) {
+        this.riderID = riderID;
     }
 
     public ArrayList<Ride> getRides() {

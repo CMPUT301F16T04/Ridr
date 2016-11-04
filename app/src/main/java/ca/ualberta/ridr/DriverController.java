@@ -64,14 +64,14 @@ public class DriverController {
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
-                        driver.setId(result.getId());
+                        driver.setDriverID(result.getId());
                     }
                     else {
-                        Log.i("Error", "Elastic search was not able to add the driver.");
+                        Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
                     }
                 }
                 catch (Exception e) {
-                    Log.i("Uhoh", "We failed to add a driver to elastic search!");
+                    Log.i("Exception", "We failed to add a driver to elastic search, because of an exception!");
                     e.printStackTrace();
                 }
             }
@@ -137,14 +137,14 @@ public class DriverController {
             try {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
-                    driver.setId(result.getId());
+                    driver.setDriverID(result.getId());
                 }
                 else {
-                    Log.i("Error", "Elastic search was not able to add the driver.");
+                    Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
                 }
             }
             catch (Exception e) {
-                Log.i("Uhoh", "We failed to add a driver to elastic search!");
+                Log.i("Exception", "We failed to add a driver to elastic search, because of an exception!");
                 e.printStackTrace();
             }
         }

@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
+import android.util.Log;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,7 +18,7 @@ import static org.junit.Assert.*;
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
 @RunWith(AndroidJUnit4.class)
-public class ExampleInstrumentedTest {
+public class AddUserProfileTest {
     @Test
     public void useAppContext() throws Exception {
         // Context of the app under test.
@@ -29,40 +30,37 @@ public class ExampleInstrumentedTest {
     @Test
     // Test for Rider Profile US 03.01.01
     public void testUserProfile(){
-        //this is bad, rewrite
-        //instead, create a User, upload the rider and driver to elasticsearch using their controllers
-        //then get it from elasticsearch, also using the controllers.
 
         Date date1 = new Date();
         Rider user1 = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         Date date2 = new Date();
         Driver user2 = new Driver("Storm", new Date(), "123", "goodemail@supergood.com", "6666666", null); //null for no vehicle assigned yet
 
-        DriverController driverController = new DriverController();
-        RiderController riderController = new RiderController();
+        DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
+        RiderController.AddRiderTask addRiderTask = new RiderController.AddRiderTask();
 
-        driverController.AddDriverTaskTest(user2);
-        riderController.AddRiderTaskTest(user1);
+        addDriverTask.execute(user2);
+        addRiderTask.execute(user1);
 
-        Driver newDriver = driverController.GetDriverTaskTest("Storm");
-        Rider newRider  = riderController.GetRiderTaskTest("Storm");
+        DriverController.GetDriverTask getDriverTask = new DriverController.GetDriverTask();
+        RiderController.GetRiderTask getRiderTask = new RiderController.GetRiderTask();
 
-        /* Code for Async tests, has to be tested in android emulator
+        //Code for Async tests, has to be tested in android emulator
+        getDriverTask.execute("Storm");
         Driver newDriver = null;
         try{
             newDriver = getDriverTask.get();
         } catch (Exception e){
             Log.i("Error", "Failed to get the driver out of the async object.");
-        }*/
+        }
 
-        /* Code for Async tests, has to be tested in android emulator
         getRiderTask.execute("Steve");
         Rider newRider = null;
         try{
             newRider = getRiderTask.get();
         } catch (Exception e){
             Log.i("Error", "Failed to get the rider out of the async object.");
-        }*/
+        }
 
         //check first User, who is logged in as a rider
         assertEquals("Steve", newRider.getName());

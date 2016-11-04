@@ -199,7 +199,11 @@ public class RidrTest{
         assertEquals(ride.getRider(), rider);
     }
 
-    // Test for Rider Profile US 03.01.01
+    /* Test for Rider Profile US 03.01.01
+
+    NOTE: This isn't the correct test. Test is in androidTest, and is called AddUserProfileTest.
+    Needs to be an instrumentation test, as we are working with Async 
+
     @Test
     public void testUserProfile(){
         //this is bad, rewrite
@@ -235,7 +239,7 @@ public class RidrTest{
             newRider = getRiderTask.get();
         } catch (Exception e){
             Log.i("Error", "Failed to get the rider out of the async object.");
-        }*/
+        }
 
         //check first User, who is logged in as a rider
         assertEquals("Steve", newRider.getName());
@@ -248,7 +252,7 @@ public class RidrTest{
         assertEquals("123", newDriver.getCreditCard());
         assertEquals(null, newDriver.getVehicle());
 
-    }
+    }*/
 
     // Test for Edit Profile US 03.02.01
     @Test

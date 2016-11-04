@@ -64,14 +64,14 @@ public class RiderController {
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
-                        rider.setId(result.getId());
+                        rider.setRiderID(result.getId());
                     }
                     else {
-                        Log.i("Error", "Elastic search was not able to add the rider.");
+                        Log.i("Error", "Elastic search was not able to add the rider, as the result did not succeed.");
                     }
                 }
                 catch (Exception e) {
-                    Log.i("Uhoh", "We failed to add a rider to elastic search!");
+                    Log.i("Exception", "We failed to add a rider to elastic search, because of an exception!");
                     e.printStackTrace();
                 }
             }
@@ -135,14 +135,14 @@ public class RiderController {
             try {
                 DocumentResult result = client.execute(index);
                 if (result.isSucceeded()) {
-                    rider.setId(result.getId());
+                    rider.setRiderID(result.getId());
                 }
                 else {
-                    Log.i("Error", "Elastic search was not able to add the rider.");
+                    Log.i("Error", "Elastic search was not able to add the rider, as the result did not succeed.");
                 }
             }
             catch (Exception e) {
-                Log.i("Uhoh", "We failed to add a rider to elastic search!");
+                Log.i("Exception", "We failed to add a rider to elastic search, because of an exception!");
                 e.printStackTrace();
             }
         }
