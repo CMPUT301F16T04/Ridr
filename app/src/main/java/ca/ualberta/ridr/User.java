@@ -86,7 +86,7 @@ public class User {
         return "";
     }
 
-    public boolean isEqual(User user) {
-        return this.id.equals(user);
+    public boolean equals(User user) {
+        return this.id.equals(user.id);
     }
 }
