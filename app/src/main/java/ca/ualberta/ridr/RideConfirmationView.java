@@ -8,6 +8,6 @@ public class RideConfirmationView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_ride_confirmation_view);
+        setContentView(R.layout.ride_confirmation);
     }
 }
