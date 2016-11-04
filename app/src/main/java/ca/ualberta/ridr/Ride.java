@@ -94,7 +94,7 @@ public class Ride {
         return false;
     }
 
-    public boolean isEqual(Ride ride) {
+    public boolean equals(Ride ride) {
         return this.id.equals(ride.id);
     }
 }
