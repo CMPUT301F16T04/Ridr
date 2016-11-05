@@ -16,30 +16,19 @@ public class Rider extends User {
         this.requestArrayList = new ArrayList<>();
     }
 
-    public ArrayList<Ride> getRides() {
+    public ArrayList<Ride> getRideArrayList() {
         return rideArrayList;
     }
 
-    public void setRides(ArrayList<Ride> rideArrayList) {
+    public void setRideArrayList(ArrayList<Ride> rideArrayList) {
         this.rideArrayList = rideArrayList;
     }
 
-    public ArrayList<Request> getRequests() {
+    public ArrayList<Request> getRequestArrayList() {
         return requestArrayList;
     }
 
-    public void setRequests(ArrayList<Request> requestArrayList) {
+    public void setRequestArrayList(ArrayList<Request> requestArrayList) {
         this.requestArrayList = requestArrayList;
     }
-
-    public void acceptRideOffer(Driver driver) {
-    }
-
-    public void removeRequest(Request currentRequest) {
-    }
-
-    public void confirmDriver(Driver driver){
-
-    }
-
 }

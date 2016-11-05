@@ -56,12 +56,25 @@ public class RidrTest{
     // Test for retrieving current ridr's open requests US 01.02.01*/
     @Test
     public void testGetOpenRequests(){
+        //Initialize classes for the test
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Request request_copy = new Request(rider, "University of Alberta", " West Edmonton Mall")
 
-        Request request1 = new Request(rider, "University of Alberta", " West Edmonton Mall");
-        Request request2 = new Request(rider,  "Rogers Place", "Whyte Ave");
-        request1.setAccepted(false);
-        request2.setAccepted(true);
+        //Create controller for rider
+        RiderController riderController = new RiderController(rider);
+        //Associate requests with their rider
+        riderController.addRequest("University of Alberta", " West Edmonton Mall");
+        riderController.addRequest("Rogers Place", "Whyte Ave");
+
+        //Accept the second ride
+        riderController.acceptRequest(riderController.getOpenRequests().get(1));
+
+        //Check that the openRequests list is of the right size, and contains the correct item
+        assertEquals(riderController.getOpenRequests().size(), 1);
+        assertEquals(riderController.getOpenRequests().get(0), request_copy );
+
+
+
 
 
     }
