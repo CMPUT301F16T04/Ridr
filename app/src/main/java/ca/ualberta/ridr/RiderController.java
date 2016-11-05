@@ -28,7 +28,7 @@ public class RiderController {
             //search string should work, is searching for the name, only returns 1 result
 
             Search search = new Search.Builder(search_string)
-                    .addIndex("CMPUT301F16T04")
+                    .addIndex("cmput301f16t04")
                     .addType("rider")
                     .build();
 
@@ -59,7 +59,7 @@ public class RiderController {
             verifySettings();
 
             for (Rider rider: riders) {
-                Index index = new Index.Builder(rider).index("CMPUT301F16T04").type("rider").build();
+                Index index = new Index.Builder(rider).index("cmput301f16t04").type("rider").build();
 
                 try {
                     DocumentResult result = client.execute(index);
@@ -85,7 +85,8 @@ public class RiderController {
     private static void verifySettings() {
         // if the client hasn't been initialized then we should make it!
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            //DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
@@ -105,7 +106,7 @@ public class RiderController {
         //search string should work, is searching for the name, only returns 1 result
 
         Search search = new Search.Builder(search_string)
-                .addIndex("CMPUT301F16T04")
+                .addIndex("cmput301f16t04")
                 .addType("rider")
                 .build();
 
@@ -130,7 +131,7 @@ public class RiderController {
         verifySettings();
 
         for (Rider rider: riders) {
-            Index index = new Index.Builder(rider).index("CMPUT301F16T04").type("rider").build();
+            Index index = new Index.Builder(rider).index("cmput301f16t04").type("rider").build();
 
             try {
                 DocumentResult result = client.execute(index);
