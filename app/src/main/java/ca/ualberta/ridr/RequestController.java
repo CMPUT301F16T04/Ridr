@@ -18,6 +18,7 @@ import io.searchbox.core.SearchResult;
  */
 public class RequestController {
     private static JestDroidClient client;
+    private ArrayList<Request> requests = new ArrayList<>();
 
     public static class SearchRequestsKeyword extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
@@ -29,7 +30,7 @@ public class RequestController {
             String search_string = "{\"from\": 0, \"size\": 10000, \"query\": {\"match\": {\"message\": \"" +search_parameters[0] + "\"}}}";
 
             Search search = new Search.Builder(search_string)
-                    .addIndex("CMPUT301F16T04")
+                    .addIndex("cmput301f16t04")
                     .addType("request")
                     .build();
 
@@ -55,7 +56,7 @@ public class RequestController {
     //used from lonelyTwitter lab7
     private static void verifySettings() {
         if (client == null) {
-            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("http://cmput301.softwareprocess.es:8080");
+            DroidClientConfig.Builder builder = new DroidClientConfig.Builder("https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/");
             DroidClientConfig config = builder.build();
 
             JestClientFactory factory = new JestClientFactory();
