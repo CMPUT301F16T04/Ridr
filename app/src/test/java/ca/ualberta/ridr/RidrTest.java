@@ -63,21 +63,9 @@ public class RidrTest{
         request1.setAccepted(false);
         request2.setAccepted(true);
 
-        // Check only unaccepted ride is open
-        assertEquals(rider.getOpenRequests().size(), 1);
-        // Check unaccepted ride is request 1
-        assertTrue(rider.getOpenRequests().get(0) == request1);
-
-
-        assertTrue(rider.getOpenRequests() instanceof Collection);
-        assertTrue(rider.getOpenRequests().get(0) != null);
-    }
-
-    // Test for retrieving current ridr's open requests US 01.02.01*/
-    @Test
-    public void testGetRequests(){
 
     }
+
 
     // Test for retrieving current ridr's request US 01.03.01*/
     @Test

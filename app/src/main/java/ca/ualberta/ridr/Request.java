@@ -16,7 +16,6 @@ public class Request {
         this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
-
     }
 
     public void setDropoff(String dropoff) {
