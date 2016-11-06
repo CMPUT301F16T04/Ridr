@@ -5,4 +5,5 @@
     <color name="secondary_colour">#8e4497</color>
     <color name="light_tertiary_colour">#B0e35e69</color>
     <color name="light_urple">#B08e4497</color>
+    <color name="dark_accent">#CA535D</color>
 </resources>
