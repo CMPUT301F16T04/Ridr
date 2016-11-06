@@ -20,6 +20,8 @@ public class RequestController {
     private static JestDroidClient client;
     private ArrayList<Request> requests = new ArrayList<>();
 
+    public RequestController(){}
+
     public static class SearchRequestsKeyword extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override
         protected ArrayList<Request> doInBackground(String... search_parameters) {
@@ -63,5 +65,10 @@ public class RequestController {
             factory.setDroidClientConfig(config);
             client = (JestDroidClient) factory.getObject();
         }
+    }
+
+    public void createRequest(Rider rider, String pickup, String dropoff){
+        Request request = new Request(rider, pickup, dropoff);
+        rider.addRequest(request);
     }
 }

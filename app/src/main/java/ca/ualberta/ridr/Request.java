@@ -5,6 +5,7 @@ import java.util.UUID;
 
 /**
  * Created by Justin on 2016-10-12.
+ * Worked on by Marc-O and Kristy on 03/11/2016
  */
 public class Request {
     private Rider rider;
@@ -14,7 +15,8 @@ public class Request {
     private Boolean accepted;
     private UUID id;
 
-    Request(String pickup, String dropoff){
+    Request( Rider rider, String pickup, String dropoff){
+        this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.id = UUID.randomUUID();
