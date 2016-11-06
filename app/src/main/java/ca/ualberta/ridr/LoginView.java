@@ -3,13 +3,10 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-
-import static android.R.attr.type;
 
 public class LoginView extends Activity {
     TextView riderLogin;
