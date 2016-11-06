@@ -21,19 +21,19 @@ public class Driver extends User {
     }
 
     public String getName() {
-        return this.getName();
+        return super.getName();
     }
 
     public void setName(String name) {
-        this.setName(name);
+        super.setName(name);
     }
 
     public Date getDateOfBirth() {
-        return this.getDateOfBirth();
+        return super.getDateOfBirth();
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        this.setDateOfBirth(dateOfBirth);
+        super.setDateOfBirth(dateOfBirth);
     }
 
 
@@ -88,11 +88,11 @@ public class Driver extends User {
     }
 
     public String getPhoneNumber() {
-        return this.getPhoneNumber();
+        return super.getPhoneNumber();
     }
 
     public String getEmail() {
-        return this.getEmail();
+        return super.getEmail();
     }
 
     public boolean isOffline() {
