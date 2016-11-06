@@ -11,4 +11,6 @@ public class RequestController {
     public ArrayList<Request> getRequests(Rider rider){
         return(rider.getRequests());
     }
+
+    public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
 }
