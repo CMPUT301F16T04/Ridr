@@ -59,6 +59,7 @@ public class Request {
         this.possibleDrivers = drivers;
     }
 
+
     public Boolean isAccepted() {
         return accepted;
     }
