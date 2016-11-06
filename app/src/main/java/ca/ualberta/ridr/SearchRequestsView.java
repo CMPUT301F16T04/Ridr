@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,15 +31,9 @@ public class SearchRequestsView extends AppCompatActivity {
 
             public void onClick(View v) {
                 String text = bodyText.getText().toString();
-                RequestController.SearchRequestsKeyword searchRequestsKeyword = new RequestController.SearchRequestsKeyword();
-                searchRequestsKeyword.execute(text);
-                try {
-                    requestList = searchRequestsKeyword.get();
-                }
-                catch (Exception e) {
-                    Log.i("Error", "Failed to get the requests out of the async object.");
-                }
-                adapter.notifyDataSetChanged();
+                Intent intent = new Intent(SearchRequestsView.this, SearchResultsView.class);
+                intent.putExtra("keyword", text);
+                startActivity(intent);
             }
         });
     }
