@@ -1,12 +1,15 @@
 package ca.ualberta.ridr;
 
+import java.util.UUID;
+
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class Vehicle {
-    public int year;
-    public String make;
-    public String model;
+    private int year;
+    private String make;
+    private String model;
+    private UUID id;
 
     public int getYear() {
         return year;
@@ -36,6 +39,10 @@ public class Vehicle {
         this.year = year;
         this.make = make;
         this.model = model;
+        this.id = UUID.randomUUID();
+    }
 
+    public boolean isEqual(Vehicle vehicle){
+        return this.id.equals(vehicle);
     }
 }

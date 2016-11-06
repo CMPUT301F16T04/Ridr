@@ -1,0 +1,26 @@
+Decided we would split stuff up by the issue tracker on github
+May do some pair programming at steeps over reading week
+We should do TDD
+
+* Jfrerris
+    Did nothing, blockers none
+    Will start asap
+* Justin
+    Did a UI design doc, will be free after friday
+    Will start after Friday
+* Kirsty
+    Worked on design doc, no blockers this week. 
+    Will start soon
+* Storm 
+    Made an issue on issue tracker
+    Will work on add user profile
+        Got elastic search squared away
+    Blockers: 2 assignments
+    WIll start by friday
+* Marco
+    Havent done anything
+    Blockers: assignments due tmr
+    Will start Thurs-Fri
+* Mack
+    BLockers: 2 assignments 
+

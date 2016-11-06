@@ -8,6 +8,6 @@ public class RiderRequestView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_rider_request_view);
+        setContentView(R.layout.rider_request);
     }
 }

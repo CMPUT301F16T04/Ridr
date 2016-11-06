@@ -8,6 +8,6 @@ public class DriverMainView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_driver_main_view);
+        setContentView(R.layout.driver_main);
     }
 }

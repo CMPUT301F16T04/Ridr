@@ -2,14 +2,15 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
-    public Vehicle vehicle;
-    public String bankAccountNo;
-    public ArrayList<Ride> rideArrayList;
+    private Vehicle vehicle;
+    private String bankAccountNo;
+    private ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
                   String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
@@ -20,19 +21,19 @@ public class Driver extends User {
     }
 
     public String getName() {
-        return name;
+        return this.getName();
     }
 
     public void setName(String name) {
-        this.name = name;
+        this.setName(name);
     }
 
     public Date getDateOfBirth() {
-        return dateOfBirth;
+        return this.getDateOfBirth();
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        this.dateOfBirth = dateOfBirth;
+        this.setDateOfBirth(dateOfBirth);
     }
 
 
@@ -87,11 +88,11 @@ public class Driver extends User {
     }
 
     public String getPhoneNumber() {
-        return phoneNumber;
+        return this.getPhoneNumber();
     }
 
     public String getEmail() {
-        return email;
+        return this.getEmail();
     }
 
     public boolean isOffline() {
