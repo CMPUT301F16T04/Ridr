@@ -25,7 +25,6 @@ public class RidrTest{
         //NOTE: Does not use request MVC
         //Initialize classes for the test
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        Request request_copy = new Request(rider, "University of Alberta", " West Edmonton Mall");
 
         //Create controller for rider
         RiderController riderController = new RiderController(rider);
