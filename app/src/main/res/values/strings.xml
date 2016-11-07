@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Ridr</string>
+    <string name="rider_request_title">Requests You Have Made</string>
 </resources>
