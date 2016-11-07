@@ -2,7 +2,9 @@ package ca.ualberta.ridr;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -16,8 +18,11 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
+
+import static ca.ualberta.ridr.R.layout.profile;
 
 public class RiderRequestsMadeView extends AppCompatActivity {
 
@@ -107,6 +112,10 @@ public class RiderRequestsMadeView extends AppCompatActivity {
                 Toast toast = Toast.makeText(activity,"Clicked on a driver!", Toast.LENGTH_SHORT); //for now , will want popup screen
                 toast.setMargin(50,50);
                 toast.show();
+                //TODO pass the driver at clicked position to the next activity
+                Intent intent = new Intent(activity, AcceptDriverView.class);
+                startActivity(intent);
+                //go to driver profile
 
             }
 
