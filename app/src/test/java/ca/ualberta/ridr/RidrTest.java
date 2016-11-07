@@ -41,4 +41,65 @@ public class RidrTest{
 
         assertTrue(openRequests.size() == 1);
     }
+<<<<<<< HEAD
+=======
+
+    @Test
+    /*Driver accept requests offline, accepted once online for US 08.04.01 */
+    public void offlineAcceptRequestTest() {
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Ride ride = rider.createRide();
+
+        driver.goOffline();
+        if(driver.isOffline()) {
+            driver.acceptRide(ride);
+        }
+
+        driver.goOnline();
+        if(!driver.isOffline()) {
+            assertTrue(driver.completeRide(ride));
+            assertTrue(driver.isPayed());
+        }
+    }
+
+    @Test
+    /*Rider specify start and end on map for request for US 10.01.01 */
+    public void RiderSetLocationMapTest() {
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = rider.getRequests();
+        Map map = new Map();
+        map.setStartPinLocation("University of Alberta");
+        map.setEndPinLocation("West Edmonton Mall");
+
+        assertEquals(requests.get(0).getPickup(), "University of Alberta");
+        assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+        assertEquals(map.getStartPinLocation(),requests.get(0).getPickup());
+        assertEquals(map.getEndPinLocation(),requests.get(0).getDropoff());
+    }
+
+    @Test
+    /* Driver view start and end geo locations on map for US 10.02.01*/
+    public void driverLocationMapTest() {
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        driver.addRide();
+
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        rider.requestRide("University of Alberta", "West Edmonton Mall");
+        ArrayList<Request> requests = rider.getRequests();
+        Map map = new Map();
+        map.setStartPinLocation("University of Alberta");
+        map.setEndPinLocation("West Edmonton Mall");
+
+        assertEquals(requests.get(0).getPickup(), "University of Alberta");
+        assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
+        assertEquals(map.getStartPinLocation(),requests.get(0).getPickup());
+        assertEquals(map.getEndPinLocation(),requests.get(0).getDropoff());
+    }
+
+
+>>>>>>> design
 }

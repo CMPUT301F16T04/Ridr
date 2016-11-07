@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:alignmentMode="alignBounds"
+    android:columnOrderPreserved="false"
+    android:columnCount="2"
+    android:background="@color/secondary_colour">
+
+    <ImageView
+        android:layout_margin="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:id="@+id/imageView"
+        android:layout_weight="0.32"
+        android:src="@drawable/ridr"
+        android:scaleType="centerInside"
+        android:layout_columnSpan="2"
+        android:cropToPadding="true"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:largeHeap="true"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="-10dp"
+        android:gravity="center"
+        android:orientation="horizontal" >
+        <TextView
+            android:background="@drawable/selected_login_button"
+            android:layout_height="wrap_content"
+            android:layout_width="103dp"
+            android:layout_weight="0"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:fontFamily="sans-serif"
+            android:textSize="30dp"
+            android:id="@+id/DriverLogin"
+            android:textStyle="bold"
+            android:textColor="@color/tertiary_colour"
+            android:text="Driver"/>
+        <TextView
+            android:background="@drawable/login_button_border"
+            android:layout_height="wrap_content"
+            android:layout_width="100dp"
+            android:layout_weight="0"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:fontFamily="sans-serif"
+            android:textSize="30dp"
+            android:id="@+id/RiderLogin"
+            android:textStyle="bold"
+            android:textColor="@color/light_tertiary_colour"
+            android:text="Rider"/>
+    </LinearLayout>
+
+    <EditText
+        android:layout_columnSpan="2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="Username"
+        android:textSize="22sp"
+        android:paddingTop="10sp"
+        android:paddingBottom="5sp"
+        android:background="@color/primary_colour"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingStart="5dp" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_marginTop="5dp"
+        android:layout_columnSpan="2"
+        android:layout_height="wrap_content"
+        android:layout_width="300dp"
+        android:background="@color/tertiary_colour"
+        android:text="Submit"
+        android:textColor="@color/primary_colour"
+        android:layout_gravity="center_horizontal" />
+</GridLayout>

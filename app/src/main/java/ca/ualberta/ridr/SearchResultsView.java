@@ -8,6 +8,6 @@ public class SearchResultsView extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_search_results_view);
+        setContentView(R.layout.search_results);
     }
 }
