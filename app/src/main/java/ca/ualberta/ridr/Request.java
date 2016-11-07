@@ -22,7 +22,7 @@ public class Request {
         this.id = UUID.randomUUID();
     }
 
-    public boolean isEqual(Request request) {
+    public boolean equals(Request request) {
         return this.id.equals(request.id);
     }
     public void setDropoff(String dropoff) {
