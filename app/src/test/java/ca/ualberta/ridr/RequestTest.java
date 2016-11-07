@@ -13,7 +13,8 @@ import static org.junit.Assert.assertTrue;
 public class RequestTest {
     @Test
     public void testRequestEquals(){
-        Request request = new Request("Edmonton", "Timbuktu");
+        Rider rider = null;
+        Request request = new Request(rider,"Edmonton", "Timbuktu");
         assertTrue(request.equals(request));
     }
 }
