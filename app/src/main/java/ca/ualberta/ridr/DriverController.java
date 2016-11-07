@@ -101,7 +101,9 @@ public class DriverController {
 
 
     //TEST METHODS - FOR TESTS ONLY
-        public Driver GetDriverTaskTest (String... search_parameters){
+    public static class GetDriverTaskTest extends AsyncTask<String, Void, Driver> {
+        @Override
+        protected Driver doInBackground(String... search_parameters) {
             verifySettings();
 
             String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
@@ -109,7 +111,7 @@ public class DriverController {
 
             Search search = new Search.Builder(search_string)
                     .addIndex("cmput301f16t04")
-                    .addType("driver")
+                    .addType("drivertest")
                     .build();
 
             try {
@@ -117,37 +119,38 @@ public class DriverController {
                 if (result.isSucceeded()) {
                     Driver foundDriver = result.getFirstHit(Driver.class).source; //might not work
                     return foundDriver;
-                }
-                else {
+                } else {
                     Log.i("Error", "The search query failed to find the driver that matched.");
                 }
-            }
-            catch (Exception e) {
+            } catch (Exception e) {
                 Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
             }
-
             return null;
         }
+    }
 
-    public void AddDriverTaskTest(Driver... drivers){
-        verifySettings();
+    public static class AddDriverTaskTest extends AsyncTask<Driver, Void, Void> {
 
-        for (Driver driver: drivers) {
-            Index index = new Index.Builder(driver).index("cmput301f16t04").type("driver").build();
+        @Override
+        protected Void doInBackground(Driver... drivers) {
+            verifySettings();
 
-            try {
-                DocumentResult result = client.execute(index);
-                if (result.isSucceeded()) {
-                    driver.setDriverID(result.getId());
-                }
-                else {
-                    Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
+            for (Driver driver : drivers) {
+                Index index = new Index.Builder(driver).index("cmput301f16t04").type("drivertest").build();
+
+                try {
+                    DocumentResult result = client.execute(index);
+                    if (result.isSucceeded()) {
+                        driver.setDriverID(result.getId());
+                    } else {
+                        Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
+                    }
+                } catch (Exception e) {
+                    Log.i("Exception", "We failed to add a driver to elastic search, because of an exception!");
+                    e.printStackTrace();
                 }
             }
-            catch (Exception e) {
-                Log.i("Exception", "We failed to add a driver to elastic search, because of an exception!");
-                e.printStackTrace();
-            }
+            return null;
         }
     }
 }

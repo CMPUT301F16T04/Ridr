@@ -99,53 +99,57 @@ public class RiderController {
 
 
     //TEST METHODS - FOR TESTS ONLY
-    public Rider GetRiderTaskTest (String... search_parameters){
-        verifySettings();
+    public static class GetRiderTaskTest extends AsyncTask<String, Void, Rider> {
+        @Override
+        protected Rider doInBackground(String... search_parameters) {
+            verifySettings();
 
-        String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
-        //search string should work, is searching for the name, only returns 1 result
+            String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
+            //search string should work, is searching for the name, only returns 1 result
 
-        Search search = new Search.Builder(search_string)
-                .addIndex("cmput301f16t04")
-                .addType("rider")
-                .build();
-
-        try {
-            SearchResult result = client.execute(search);
-            if (result.isSucceeded()) {
-                Rider foundRider = result.getFirstHit(Rider.class).source; //might not work
-                return foundRider;
-            }
-            else {
-                Log.i("Error", "The search query failed to find the rider that matched.");
-            }
-        }
-        catch (Exception e) {
-            Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
-        }
-
-        return null;
-    }
-
-    public void AddRiderTaskTest(Rider... riders){
-        verifySettings();
-
-        for (Rider rider: riders) {
-            Index index = new Index.Builder(rider).index("cmput301f16t04").type("rider").build();
+            Search search = new Search.Builder(search_string)
+                    .addIndex("cmput301f16t04")
+                    .addType("ridertest")
+                    .build();
 
             try {
-                DocumentResult result = client.execute(index);
+                SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    rider.setRiderID(result.getId());
+                    Rider foundRider = result.getFirstHit(Rider.class).source; //might not work
+                    return foundRider;
+                } else {
+                    Log.i("Error", "The search query failed to find the rider that matched.");
                 }
-                else {
-                    Log.i("Error", "Elastic search was not able to add the rider, as the result did not succeed.");
+            } catch (Exception e) {
+                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+            }
+
+            return null;
+        }
+    }
+
+    public static class AddRiderTaskTest extends AsyncTask<Rider, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Rider... riders) {
+            verifySettings();
+
+            for (Rider rider : riders) {
+                Index index = new Index.Builder(rider).index("cmput301f16t04").type("ridertest").build();
+
+                try {
+                    DocumentResult result = client.execute(index);
+                    if (result.isSucceeded()) {
+                        rider.setRiderID(result.getId());
+                    } else {
+                        Log.i("Error", "Elastic search was not able to add the rider, as the result did not succeed.");
+                    }
+                } catch (Exception e) {
+                    Log.i("Exception", "We failed to add a rider to elastic search, because of an exception!");
+                    e.printStackTrace();
                 }
             }
-            catch (Exception e) {
-                Log.i("Exception", "We failed to add a rider to elastic search, because of an exception!");
-                e.printStackTrace();
-            }
+            return null;
         }
     }
 }

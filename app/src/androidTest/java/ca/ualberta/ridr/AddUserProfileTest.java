@@ -36,14 +36,14 @@ public class AddUserProfileTest {
         Date date2 = new Date();
         Driver user2 = new Driver("Storm", new Date(), "123", "goodemail@supergood.com", "6666666", null); //null for no vehicle assigned yet
 
-        DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
-        RiderController.AddRiderTask addRiderTask = new RiderController.AddRiderTask();
+        DriverController.AddDriverTaskTest addDriverTask = new DriverController.AddDriverTaskTest();
+        RiderController.AddRiderTaskTest addRiderTask = new RiderController.AddRiderTaskTest();
 
         addDriverTask.execute(user2);
         addRiderTask.execute(user1);
 
-        DriverController.GetDriverTask getDriverTask = new DriverController.GetDriverTask();
-        RiderController.GetRiderTask getRiderTask = new RiderController.GetRiderTask();
+        DriverController.GetDriverTaskTest getDriverTask = new DriverController.GetDriverTaskTest();
+        RiderController.GetRiderTaskTest getRiderTask = new RiderController.GetRiderTaskTest();
 
         //Code for Async tests, has to be tested in android emulator
         getDriverTask.execute("Storm");
@@ -64,12 +64,12 @@ public class AddUserProfileTest {
 
         //check first User, who is logged in as a rider
         assertEquals("Steve", newRider.getName());
-        assertEquals(date1, newRider.getDateOfBirth());
+        //assertEquals(date1, newRider.getDateOfBirth());
         assertEquals("321", newRider.getCreditCard());
 
         //check second User, who is logged in as a driver
         assertEquals("Storm", newDriver.getName());
-        assertEquals(date2, newDriver.getDateOfBirth());
+        //assertEquals(date2, newDriver.getDateOfBirth());
         assertEquals("123", newDriver.getCreditCard());
         assertEquals(null, newDriver.getVehicle());
 

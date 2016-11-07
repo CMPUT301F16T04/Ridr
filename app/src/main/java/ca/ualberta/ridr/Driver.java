@@ -31,22 +31,6 @@ public class Driver extends User {
         this.driverID = driverID;
     }
 
-    public String getName() {
-        return this.getName();
-    }
-
-    public void setName(String name) {
-        this.setName(name);
-    }
-
-    public Date getDateOfBirth() {
-        return this.getDateOfBirth();
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.setDateOfBirth(dateOfBirth);
-    }
-
     public ArrayList<Ride> getRides() {
         return rideArrayList;
     }
@@ -87,14 +71,6 @@ public class Driver extends User {
 
     public boolean riderAcceptedRide(Ride ride) {
         return false;
-    }
-
-    public String getPhoneNumber() {
-        return this.getPhoneNumber();
-    }
-
-    public String getEmail() {
-        return this.getEmail();
     }
 
     public boolean isOffline() {
