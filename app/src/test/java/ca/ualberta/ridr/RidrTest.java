@@ -22,6 +22,7 @@ public class RidrTest{
 
     @Test
     public void testGetOpenRequests(){
+        //NOTE: Does not use request MVC
         //Initialize classes for the test
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         Request request_copy = new Request(rider, "University of Alberta", " West Edmonton Mall");
@@ -29,16 +30,16 @@ public class RidrTest{
         //Create controller for rider
         RiderController riderController = new RiderController(rider);
         //Associate requests with their rider
-        riderController.addRequest("University of Alberta", " West Edmonton Mall");
-        riderController.addRequest("Rogers Place", "Whyte Ave");
+        Request req1 = new Request(rider,"University of Alberta", " West Edmonton Mall");
+        Request req2 = new Request(rider, "Rogers Place", "Whyte Ave");
+        req2.setAccepted(true);
 
-        //Accept the second ride
-        Request request_accepted = new Request(rider, "Rogers Place", "Whyte Ave");
-        riderController.acceptRequest(request_accepted);
+        riderController.addRequest(req1);
+        riderController.addRequest(req2);
 
         //Check that the openRequests list is of the right size, and contains the correct item
         ArrayList<Request> openRequests = riderController.getOpenRequests();
-        Log.v(TAG, "index=" + openRequests.size());
-        assertEquals(openRequests.size(), 1);
+
+        assertTrue(openRequests.size() == 1);
     }
 }

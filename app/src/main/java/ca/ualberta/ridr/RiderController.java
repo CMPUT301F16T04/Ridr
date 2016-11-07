@@ -17,9 +17,11 @@ public class RiderController {
     /**
      * Adds a request to the rider from textual input
      */
-    public void addRequest(String s, String s1) {
-        Request request = new Request(rider, s, s1);
-        rider.getRequestArrayList().add(request);
+    public void addRequest(Request request) {
+        ArrayList<Request> requestList = rider.getRequestArrayList();
+        requestList.add(request);
+        rider.setRequestArrayList(requestList);
+
     }
 
     /**
@@ -27,24 +29,20 @@ public class RiderController {
      */
     public void acceptRequest(Request request) {
         // Needs to be made MVC
-        for (int i = 0; i < rider.getRequestArrayList().size(); i++) {
-            if (rider.getRequestArrayList().get(i) == request) {
-                rider.getRequestArrayList().get(i).setAccepted(true);
-                break;
-            }
-        }
+
     }
 
     /**
      * Returns an arrayList of all open requests based on the rider's request list
      */
     public ArrayList<Request> getOpenRequests(){
-        ArrayList<Request> openRequests = new ArrayList<>();
+        ArrayList<Request> openRequests = rider.getRequestArrayList();
+
         for (int i = 0; i < rider.getRequestArrayList().size(); i++) {
-            Request request = rider.getRequestArrayList().get(i);
+            Request request = openRequests.get(i);
             if (request.isAccepted()) {
                 // Need to make this MVC
-                openRequests.add(request);
+                openRequests.remove(i);
             }
         }
         return openRequests;
