@@ -7,6 +7,9 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.util.List;
+
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -43,7 +46,7 @@ public class DriverController {
                 }
             }
             catch (Exception e) {
-                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch driver server!");
             }
 
             return null;
@@ -64,14 +67,14 @@ public class DriverController {
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
-                        driver.setDriverID(result.getId());
+                        driver.setElasticID(result.getId());
                     }
                     else {
                         Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
                     }
                 }
                 catch (Exception e) {
-                    Log.i("Exception", "We failed to add a driver to elastic search, because of an exception!");
+                    Log.i(e.toString(), "We failed to add a driver to elastic search, because of an exception!");
                     e.printStackTrace();
                 }
             }
@@ -117,13 +120,13 @@ public class DriverController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    Driver foundDriver = result.getFirstHit(Driver.class).source; //might not work
-                    return foundDriver;
+                    List<Driver> foundDriver = result.getSourceAsObjectList(Driver.class); //might not work
+                    return foundDriver.get(0);
                 } else {
                     Log.i("Error", "The search query failed to find the driver that matched.");
                 }
             } catch (Exception e) {
-                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch driver server!");
             }
             return null;
         }
@@ -141,16 +144,28 @@ public class DriverController {
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
-                        driver.setDriverID(result.getId());
+                        driver.setElasticID(result.getId());
                     } else {
                         Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
                     }
                 } catch (Exception e) {
-                    Log.i("Exception", "We failed to add a driver to elastic search, because of an exception!");
+                    Log.i(e.toString(), "We failed to add a driver to elastic search, because of an exception!");
                     e.printStackTrace();
                 }
             }
             return null;
+        }
+    }
+
+    public void deleteDriverTests(String ID){
+        verifySettings();
+        try {
+            client.execute(new Delete.Builder(ID)
+                    .index("cmput301f16t04")
+                    .type("drivertest")
+                    .build());
+        } catch (Exception e){
+            Log.i("ERROR", "Couldn't delete previous driver test objects from elastic search");
         }
     }
 }

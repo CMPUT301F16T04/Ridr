@@ -7,6 +7,9 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
+import java.util.List;
+
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -43,7 +46,7 @@ public class RiderController {
                 }
             }
             catch (Exception e) {
-                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch rider server!");
             }
 
             return null;
@@ -64,14 +67,14 @@ public class RiderController {
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
-                        rider.setRiderID(result.getId());
+                        rider.setElasticID(result.getId());
                     }
                     else {
                         Log.i("Error", "Elastic search was not able to add the rider, as the result did not succeed.");
                     }
                 }
                 catch (Exception e) {
-                    Log.i("Exception", "We failed to add a rider to elastic search, because of an exception!");
+                    Log.i(e.toString(), "We failed to add a rider to elastic search, because of an exception!");
                     e.printStackTrace();
                 }
             }
@@ -115,13 +118,13 @@ public class RiderController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    Rider foundRider = result.getFirstHit(Rider.class).source; //might not work
-                    return foundRider;
+                    List<Rider> foundRider = result.getSourceAsObjectList(Rider.class); //might not work
+                    return foundRider.get(0);
                 } else {
                     Log.i("Error", "The search query failed to find the rider that matched.");
                 }
             } catch (Exception e) {
-                Log.i("Error", "Something went wrong when we tried to communicate with the elasticsearch server!");
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch rider server!");
             }
 
             return null;
@@ -140,16 +143,28 @@ public class RiderController {
                 try {
                     DocumentResult result = client.execute(index);
                     if (result.isSucceeded()) {
-                        rider.setRiderID(result.getId());
+                        rider.setElasticID(result.getId());
                     } else {
                         Log.i("Error", "Elastic search was not able to add the rider, as the result did not succeed.");
                     }
                 } catch (Exception e) {
-                    Log.i("Exception", "We failed to add a rider to elastic search, because of an exception!");
+                    Log.i(e.toString(), "We failed to add a rider to elastic search, because of an exception!");
                     e.printStackTrace();
                 }
             }
             return null;
+        }
+    }
+
+    public void deleteRiderTests(String ID){
+        verifySettings();
+        try {
+            client.execute(new Delete.Builder(ID)
+                    .index("cmput301f16t04")
+                    .type("ridertest")
+                    .build());
+        } catch (Exception e){
+            Log.i("ERROR", "Couldn't delete previous rider test objects from elastic search");
         }
     }
 }

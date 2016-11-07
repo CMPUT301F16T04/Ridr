@@ -2,7 +2,6 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -12,7 +11,7 @@ import io.searchbox.annotations.JestId;
 public class Driver extends User {
 
     @JestId
-    private String driverID;
+    private String elasticID;
     public Vehicle vehicle;
     public ArrayList<Ride> rideArrayList;
 
@@ -23,12 +22,12 @@ public class Driver extends User {
         this.rideArrayList = new ArrayList<Ride>();
     }
 
-    public String getDriverID() {
-        return driverID;
+    public String getElasticID() {
+        return elasticID;
     }
 
-    public void setDriverID(String driverID) {
-        this.driverID = driverID;
+    public void setElasticID(String elasticID) {
+        this.elasticID = elasticID;
     }
 
     public ArrayList<Ride> getRides() {

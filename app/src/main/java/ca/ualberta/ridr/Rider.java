@@ -2,7 +2,6 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -11,7 +10,7 @@ import io.searchbox.annotations.JestId;
  */
 public class Rider extends User {
     @JestId
-    private String riderID;
+    private String elasticID;
     public ArrayList<Ride> rideArrayList;
     public ArrayList<Request> requestArrayList;
 
@@ -21,12 +20,12 @@ public class Rider extends User {
         this.requestArrayList = new ArrayList<Request>();
     }
 
-    public String getRiderID() {
-        return riderID;
+    public String getElasticID() {
+        return elasticID;
     }
 
-    public void setRiderID(String riderID) {
-        this.riderID = riderID;
+    public void setElasticID(String elasticID) {
+        this.elasticID = elasticID;
     }
 
     public ArrayList<Ride> getRides() {
