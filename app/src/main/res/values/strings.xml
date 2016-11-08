@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Ridr</string>
+    <string name="title_activity_geo_view">Ridr Map</string>
 </resources>
