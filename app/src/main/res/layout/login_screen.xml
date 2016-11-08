@@ -82,4 +82,22 @@
         android:textColor="@color/primary_colour"
         android:layout_gravity="center_horizontal" />
 
+    <RelativeLayout
+        android:layout_height="241dp"
+        android:layout_row="4"
+        android:layout_column="0"
+        android:layout_width="346dp">
+
+        <Button
+            android:text="@string/add_account_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/add_account_login_button"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="20dp"
+            android:backgroundTint="@android:color/darker_gray"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true" />
+    </RelativeLayout>
+
 </GridLayout>

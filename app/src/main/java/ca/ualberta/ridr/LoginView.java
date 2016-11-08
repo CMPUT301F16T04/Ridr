@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.view.MotionEvent;
@@ -12,6 +13,7 @@ public class LoginView extends Activity {
     TextView riderLogin;
     TextView driverLogin;
     Button loginButton;
+    Button createAccountButton;
     boolean asDriver;
 
     @Override
@@ -21,9 +23,10 @@ public class LoginView extends Activity {
         asDriver = true;
         driverLogin = (TextView) findViewById(R.id.DriverLogin);
         riderLogin = (TextView) findViewById(R.id.RiderLogin);
-
         loginButton = (Button) findViewById(R.id.loginButton);
+        createAccountButton = (Button) findViewById(R.id.add_account_login_button);
 
+        //login button on touch logic
         loginButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -35,8 +38,20 @@ public class LoginView extends Activity {
                 return false;
             }
         });
+
+        //driver vs rider login logic
         driverLogin.setOnClickListener(changeUserType);
         riderLogin.setOnClickListener(changeUserType);
+
+        //add account intent launcher
+        createAccountButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view){
+                //launches to account creator activity
+                Intent addHabitIntent = new Intent(LoginView.this, AddUser.class);
+                startActivity(addHabitIntent);
+            }
+        });
 
 
     }
