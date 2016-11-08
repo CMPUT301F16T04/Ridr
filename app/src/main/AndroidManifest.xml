@@ -21,13 +21,14 @@
         <activity android:name=".SearchRequestsView" />
         <activity android:name=".SearchResultsView" />
         <activity android:name=".RequestsFromRidersView" />
-        <activity android:name=".MainActivity"/>
+        <activity android:name=".MainActivity" />
         <activity android:name=".ProfileView" />
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView" />
         <activity android:name=".RiderMainView" />
         <activity android:name=".RiderRequestView" />
-        <activity android:name=".RideConfirmationView"></activity>
+        <activity android:name=".RideConfirmationView" />
+        <activity android:name=".AddUser"></activity>
     </application>
 
 </manifest>
