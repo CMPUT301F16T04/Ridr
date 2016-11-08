@@ -18,6 +18,8 @@ public class Request {
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.id = UUID.randomUUID();
+        this.accepted = Boolean.FALSE;
+        this.possibleDrivers = new ArrayList<Driver>();
     }
 
     public boolean equals(Request request) {

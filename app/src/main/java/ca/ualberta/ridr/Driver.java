@@ -52,6 +52,10 @@ public class Driver extends User {
         return rideArrayList;
     }
 
+    public ArrayList<Request> getRequests() {
+        return requestArrayList;
+    }
+
     public void setRides(ArrayList<Ride> rideArrayList) {
         this.rideArrayList = rideArrayList;
     }
