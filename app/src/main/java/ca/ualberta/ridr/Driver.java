@@ -11,6 +11,8 @@ public class Driver extends User {
     private Vehicle vehicle;
     private String bankAccountNo;
     private ArrayList<Ride> rideArrayList;
+    private ArrayList<Request> requestArrayList;
+
 
     public Driver(String name, Date dateOfBirth, String creditCard,
                   String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
@@ -18,6 +20,7 @@ public class Driver extends User {
         this.vehicle = vehicle;
         this.bankAccountNo = bankAccountNo;
         this.rideArrayList = new ArrayList<Ride>();
+        this.requestArrayList = new ArrayList<Request>();
     }
 
     public String getName() {
@@ -65,6 +68,9 @@ public class Driver extends User {
     }
 
     public void acceptRide(Ride ride) {
+    }
+    public void acceptRequest(Request request) {
+        requestArrayList.add(request);
     }
 
     public boolean completeRide(Ride ride) {

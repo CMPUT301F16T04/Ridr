@@ -37,6 +37,7 @@ public class Request {
     }
 
     public void addAccepted(Driver driver) {
+        possibleDrivers.add(driver);
     }
 
     public String getRider() {
