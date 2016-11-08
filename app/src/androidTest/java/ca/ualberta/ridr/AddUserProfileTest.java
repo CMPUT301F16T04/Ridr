@@ -48,22 +48,21 @@ public class AddUserProfileTest {
             Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
         }
 
-        DriverController.GetDriverByNameTaskTest getDriverTask = new DriverController.GetDriverByNameTaskTest();
-        RiderController.GetRiderByNameTaskTest getRiderTask = new RiderController.GetRiderByNameTaskTest();
+        //get objects by name
+        DriverController.GetDriverByNameTaskTest GetDriverByNameTask = new DriverController.GetDriverByNameTaskTest();
+        RiderController.GetRiderByNameTaskTest GetRiderByNameTask = new RiderController.GetRiderByNameTaskTest();
 
         //Code for Async tests, has to be tested in android emulator
         Driver newDriver = null;
         try{
-            newDriver = getDriverTask.execute("Storm").get();//this will make the main thread wait until
+            newDriver = GetDriverByNameTask.execute("Storm").get();//this will make the main thread wait until
             //done, which is what we want for tests. Not for main program!
         } catch (Exception e){
             Log.i("Error", "Failed to get the driver out of the async object.");
         }
-
-
         Rider newRider = null;
         try{
-            newRider = getRiderTask.execute("Steve").get(); //this will make the main thread wait until
+            newRider = GetRiderByNameTask.execute("Steve").get(); //this will make the main thread wait until
             //done, which is what we want for tests. Not for main program!
         } catch (Exception e){
             Log.i("Error", "Failed to get the rider out of the async object.");
@@ -75,26 +74,60 @@ public class AddUserProfileTest {
             Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
         }
 
-
         //check first User, who is logged in as a rider
         assertEquals("Steve", newRider.getName());
-        //assertEquals(date1, newRider.getDateOfBirth()); works, but fails for some reason
         assertEquals("321", newRider.getCreditCard());
         assertEquals(user1.getElasticID(), newRider.getElasticID());
 
-
         //check second User, who is logged in as a driver
         assertEquals("Storm", newDriver.getName());
-        //assertEquals(date2, newDriver.getDateOfBirth()); //works, but fails for some reason
         assertEquals("123", newDriver.getCreditCard());
         assertEquals(null, newDriver.getVehicle());
         assertEquals(user2.getElasticID(), newDriver.getElasticID());
 
+        //get objects by UUID
+        DriverController.GetDriverByUUIDTaskTest GetDriverByUUIDTask = new DriverController.GetDriverByUUIDTaskTest();
+        RiderController.GetRiderByUUIDTaskTest GetRiderByUUIDTask = new RiderController.GetRiderByUUIDTaskTest();
+
+        //Code for Async tests, has to be tested in android emulator
+        newDriver = null;
+        try{
+            newDriver = GetDriverByUUIDTask.execute(user2.getUUID().toString()).get();//this will make the main thread wait until
+            //done, which is what we want for tests. Not for main program!
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the driver out of the async object.");
+        }
+        newRider = null;
+        try{
+            newRider = GetRiderByUUIDTask.execute(user1.getUUID().toString()).get(); //this will make the main thread wait until
+            //done, which is what we want for tests. Not for main program!
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the rider out of the async object.");
+        }
+
+        try{
+            Thread.sleep(10000);//wait 10 seconds, for all async tasks to complete
+        } catch (Exception e){
+            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+        }
+
+        //check first User, who is logged in as a rider
+        assertEquals("Steve", newRider.getName());
+        assertEquals("321", newRider.getCreditCard());
+        assertEquals(user1.getElasticID(), newRider.getElasticID());
+
+        //check second User, who is logged in as a driver
+        assertEquals("Storm", newDriver.getName());
+        assertEquals("123", newDriver.getCreditCard());
+        assertEquals(null, newDriver.getVehicle());
+        assertEquals(user2.getElasticID(), newDriver.getElasticID());
+
+
         //delete our objects in test type, so next tests pass
         DriverController DriverControllerClass = new DriverController();
         DriverControllerClass.deleteDriverTests(newDriver.getElasticID());
-        //RiderController RiderControllerClass = new RiderController();
-        //RiderControllerClass.deleteRiderTests(newRider.getElasticID());
+        RiderController RiderControllerClass = new RiderController();
+        RiderControllerClass.deleteRiderTests(newRider.getElasticID());
 
     }
 }

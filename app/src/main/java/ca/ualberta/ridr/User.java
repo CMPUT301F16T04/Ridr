@@ -28,6 +28,10 @@ public class User {
     }
 
 
+    public UUID getUUID() {
+        return id;
+    }
+
     public String getName() {
         return name;
     }
