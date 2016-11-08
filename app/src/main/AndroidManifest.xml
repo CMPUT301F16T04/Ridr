@@ -22,7 +22,8 @@
         <activity android:name=".MainActivity"/>
         <activity android:name=".ProfileView" />
         <activity android:name=".EditProfileView" />
-        <activity android:name=".AcceptRiderView" />
+        <activity android:name=".AcceptRiderView"
+            android:exported="true"/>
         <activity android:name=".RiderMainView" />
         <activity android:name=".RiderRequestView" />
         <activity android:name=".RideConfirmationView"></activity>

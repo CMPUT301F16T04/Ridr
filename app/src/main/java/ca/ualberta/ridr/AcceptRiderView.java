@@ -27,8 +27,9 @@ public class AcceptRiderView extends AppCompatActivity {
         acceptRider = (Button) findViewById(R.id.accept_rider);
 
         final Request request = null;
+        //running from isolated activity wont work without real data though and lets not spent too much time mocking here
 
-        isFrom = "Request From"+ request.getRider();
+        isFrom = "Request From "+ request.getRider();
 
         requestFrom.setText(isFrom);
 
