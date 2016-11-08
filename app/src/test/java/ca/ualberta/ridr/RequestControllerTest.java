@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -37,9 +39,13 @@ public class RequestControllerTest {
 
         rider.addRequest(request);
 
+        //check that it was successfully added
+        assertEquals(rider.getRequests().size(), 1);
+
         RC.removeRequest(request, rider);
-        //idk fix this later
-        assertEquals(rider.getRequests().get(0).getRider(), rider.toString());
+
+        //then the real check is to make sure the controller can remove it
+        assertEquals(rider.getRequests().size(), 0);
 
     }
 
