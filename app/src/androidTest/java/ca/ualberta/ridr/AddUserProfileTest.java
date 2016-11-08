@@ -28,7 +28,9 @@ public class AddUserProfileTest {
     }
 
     @Test
-    // Test for Rider Profile US 03.01.01
+    /**
+     * Test for Rider Profile US 03.01.01
+     */
     public void testUserProfile(){
 
         Date date1 = new Date();

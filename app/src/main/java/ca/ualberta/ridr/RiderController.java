@@ -20,7 +20,9 @@ import io.searchbox.core.SearchResult;
 public class RiderController {
     private static JestDroidClient client;
 
-    //this class gets Riders!
+    /**
+     *  This class gets Riders by name string
+     */
     public static class GetRiderByNameTask extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -52,7 +54,9 @@ public class RiderController {
         }
     }
 
-    //gets rider by UUID
+    /**
+     * Gets rider by UUID string
+     */
     public static class GetRiderByUUIDTask extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -83,7 +87,9 @@ public class RiderController {
     }
 
 
-    //this class adds a Rider!
+    /**
+     * this class adds a Rider object
+     */
     public static class AddRiderTask extends AsyncTask<Rider, Void, Void> {
 
         @Override
@@ -131,6 +137,9 @@ public class RiderController {
 
 
     //TEST CLASSES - FOR TESTS ONLY
+    /**
+     *  This class gets Riders by name string, is a test
+     */
     public static class GetRiderByNameTaskTest extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -160,6 +169,9 @@ public class RiderController {
         }
     }
 
+    /**
+     *  This class gets Riders by UUID string, is a test
+     */
     public static class GetRiderByUUIDTaskTest extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -189,8 +201,10 @@ public class RiderController {
         }
     }
 
+    /**
+     * this class adds a Rider object
+     */
     public static class AddRiderTaskTest extends AsyncTask<Rider, Void, Void> {
-
         @Override
         protected Void doInBackground(Rider... riders) {
             verifySettings();
@@ -214,6 +228,10 @@ public class RiderController {
         }
     }
 
+    /**
+     * Deletes a rider in the rider tests, using ElasticID as a parameter
+     * @param ID
+     */
     public void deleteRiderTests(String ID){
         verifySettings();
         try {
