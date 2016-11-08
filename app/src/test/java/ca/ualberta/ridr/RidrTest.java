@@ -221,8 +221,8 @@ public class RidrTest{
         driverController.AddDriverTaskTest(user2);
         riderController.AddRiderTaskTest(user1);
 
-        Driver newDriver = driverController.GetDriverTaskTest("Storm");
-        Rider newRider  = riderController.GetRiderTaskTest("Storm");
+        Driver newDriver = driverController.GetDriverByNameTaskTest("Storm");
+        Rider newRider  = riderController.GetRiderByNameTaskTest("Storm");
 
         /* Code for Async tests, has to be tested in android emulator
         Driver newDriver = null;

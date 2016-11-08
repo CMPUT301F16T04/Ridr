@@ -7,7 +7,6 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
-import java.util.List;
 
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
@@ -22,12 +21,12 @@ public class DriverController {
     private static JestDroidClient client;
 
     //this class gets Drivers!
-    public static class GetDriverTask extends AsyncTask<String, Void, Driver> {
+    public static class GetDriverByNameTask extends AsyncTask<String, Void, Driver> {
         @Override
         protected Driver doInBackground(String... search_parameters) {
             verifySettings();
 
-            String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"name\":\"" + search_parameters[0] + "\"}}}}}";
             //search string should work, is searching for the name, only returns 1 result
 
             Search search = new Search.Builder(search_string)
@@ -49,6 +48,34 @@ public class DriverController {
                 Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch driver server!");
             }
 
+            return null;
+        }
+    }
+
+    public static class GetDriverByUUIDTask extends AsyncTask<String, Void, Driver> {
+        @Override
+        protected Driver doInBackground(String... search_parameters) {
+            verifySettings();
+
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" + search_parameters[0] + "\"}}}}}";
+            //search string should work, is searching for the UUID, only returns 1 result
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex("cmput301f16t04")
+                    .addType("driver")
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    Driver foundDriver = result.getFirstHit(Driver.class).source; //might not work
+                    return foundDriver;
+                } else {
+                    Log.i("Error", "The search query failed to find the driver that matched.");
+                }
+            } catch (Exception e) {
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch driver server!");
+            }
             return null;
         }
     }
@@ -103,13 +130,41 @@ public class DriverController {
 
 
 
-    //TEST METHODS - FOR TESTS ONLY
-    public static class GetDriverTaskTest extends AsyncTask<String, Void, Driver> {
+    //TEST CLASSES - FOR TESTS ONLY
+    public static class GetDriverByUUIDTaskTest extends AsyncTask<String, Void, Driver> {
         @Override
         protected Driver doInBackground(String... search_parameters) {
             verifySettings();
 
-            String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" + search_parameters[0] + "\"}}}}}";
+            //search string should work, is searching for the UUID, only returns 1 result
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex("cmput301f16t04")
+                    .addType("drivertest")
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    Driver foundDriver = result.getFirstHit(Driver.class).source; //might not work
+                    return foundDriver;
+                } else {
+                    Log.i("Error", "The search query failed to find the driver that matched.");
+                }
+            } catch (Exception e) {
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch driver server!");
+            }
+            return null;
+        }
+    }
+
+    public static class GetDriverByNameTaskTest extends AsyncTask<String, Void, Driver> {
+        @Override
+        protected Driver doInBackground(String... search_parameters) {
+            verifySettings();
+
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"name\":\"" + search_parameters[0] + "\"}}}}}";
             //search string should work, is searching for the name, only returns 1 result
 
             Search search = new Search.Builder(search_string)
@@ -120,8 +175,8 @@ public class DriverController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    List<Driver> foundDriver = result.getSourceAsObjectList(Driver.class); //might not work
-                    return foundDriver.get(0);
+                    Driver foundDriver = result.getFirstHit(Driver.class).source; //might not work
+                    return foundDriver;
                 } else {
                     Log.i("Error", "The search query failed to find the driver that matched.");
                 }

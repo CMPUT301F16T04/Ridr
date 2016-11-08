@@ -48,8 +48,8 @@ public class AddUserProfileTest {
             Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
         }
 
-        DriverController.GetDriverTaskTest getDriverTask = new DriverController.GetDriverTaskTest();
-        RiderController.GetRiderTaskTest getRiderTask = new RiderController.GetRiderTaskTest();
+        DriverController.GetDriverByNameTaskTest getDriverTask = new DriverController.GetDriverByNameTaskTest();
+        RiderController.GetRiderByNameTaskTest getRiderTask = new RiderController.GetRiderByNameTaskTest();
 
         //Code for Async tests, has to be tested in android emulator
         Driver newDriver = null;
@@ -93,8 +93,8 @@ public class AddUserProfileTest {
         //delete our objects in test type, so next tests pass
         DriverController DriverControllerClass = new DriverController();
         DriverControllerClass.deleteDriverTests(newDriver.getElasticID());
-        RiderController RiderControllerClass = new RiderController();
-        RiderControllerClass.deleteRiderTests(newRider.getElasticID());
+        //RiderController RiderControllerClass = new RiderController();
+        //RiderControllerClass.deleteRiderTests(newRider.getElasticID());
 
     }
 }

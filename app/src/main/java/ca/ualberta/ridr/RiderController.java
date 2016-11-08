@@ -7,7 +7,6 @@ import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
-import java.util.List;
 
 import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
@@ -22,12 +21,12 @@ public class RiderController {
     private static JestDroidClient client;
 
     //this class gets Riders!
-    public static class GetRiderTask extends AsyncTask<String, Void, Rider> {
+    public static class GetRiderByNameTask extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
             verifySettings();
 
-            String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"name\":\"" + search_parameters[0] + "\"}}}}}";
             //search string should work, is searching for the name, only returns 1 result
 
             Search search = new Search.Builder(search_string)
@@ -46,6 +45,36 @@ public class RiderController {
                 }
             }
             catch (Exception e) {
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch rider server!");
+            }
+
+            return null;
+        }
+    }
+
+    //gets rider by UUID
+    public static class GetRiderByUUIDTask extends AsyncTask<String, Void, Rider> {
+        @Override
+        protected Rider doInBackground(String... search_parameters) {
+            verifySettings();
+
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" + search_parameters[0] + "\"}}}}}";
+            //search string should work, is searching for the uuid, only returns 1 result
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex("cmput301f16t04")
+                    .addType("rider")
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    Rider foundRider = result.getFirstHit(Rider.class).source; //might not work
+                    return foundRider;
+                } else {
+                    Log.i("Error", "The search query failed to find the rider that matched.");
+                }
+            } catch (Exception e) {
                 Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch rider server!");
             }
 
@@ -101,13 +130,13 @@ public class RiderController {
 
 
 
-    //TEST METHODS - FOR TESTS ONLY
-    public static class GetRiderTaskTest extends AsyncTask<String, Void, Rider> {
+    //TEST CLASSES - FOR TESTS ONLY
+    public static class GetRiderByNameTaskTest extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
             verifySettings();
 
-            String search_string = "{\"from\": 0, \"size\": 1, \"query\": {\"match\": {\"name\": \"" + search_parameters[0] + "\"}}}}";
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"name\":\"" + search_parameters[0] + "\"}}}}}";
             //search string should work, is searching for the name, only returns 1 result
 
             Search search = new Search.Builder(search_string)
@@ -118,8 +147,37 @@ public class RiderController {
             try {
                 SearchResult result = client.execute(search);
                 if (result.isSucceeded()) {
-                    List<Rider> foundRider = result.getSourceAsObjectList(Rider.class); //might not work
-                    return foundRider.get(0);
+                    Rider foundRider = result.getFirstHit(Rider.class).source; //might not work
+                    return foundRider;
+                } else {
+                    Log.i("Error", "The search query failed to find the rider that matched.");
+                }
+            } catch (Exception e) {
+                Log.i(e.toString(), "Something went wrong when we tried to communicate with the elasticsearch rider server!");
+            }
+
+            return null;
+        }
+    }
+
+    public static class GetRiderByUUIDTaskTest extends AsyncTask<String, Void, Rider> {
+        @Override
+        protected Rider doInBackground(String... search_parameters) {
+            verifySettings();
+
+            String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" + search_parameters[0] + "\"}}}}}";
+            //search string should work, is searching for the uuid, only returns 1 result
+
+            Search search = new Search.Builder(search_string)
+                    .addIndex("cmput301f16t04")
+                    .addType("ridertest")
+                    .build();
+
+            try {
+                SearchResult result = client.execute(search);
+                if (result.isSucceeded()) {
+                    Rider foundRider = result.getFirstHit(Rider.class).source; //might not work
+                    return foundRider;
                 } else {
                     Log.i("Error", "The search query failed to find the rider that matched.");
                 }
