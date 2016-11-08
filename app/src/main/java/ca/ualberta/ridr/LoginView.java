@@ -53,7 +53,6 @@ public class LoginView extends Activity {
             }
         });
 
-
     }
 
 
