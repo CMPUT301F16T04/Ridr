@@ -8,7 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="ca.ualberta.ridr.AddUser"
+    tools:context="ca.ualberta.ridr.AddUserView"
     android:animationCache="true"
     android:background="@color/secondary_colour">
 
@@ -35,11 +35,11 @@
         android:layout_below="@+id/username_add_account_text"
         android:layout_marginBottom="10dp"
         android:textColor="@android:color/darker_gray"
-        android:text="@string/username_add_account_edit_text"
         android:textSize="18sp"
         android:layout_alignStart="@+id/create_account_subtitle_text"
         android:layout_alignEnd="@+id/create_account_subtitle_text"
-        android:gravity="center_vertical|center_horizontal" />
+        android:gravity="center_vertical|center_horizontal"
+        android:text="@string/username_add_account_edit_text" />
 
     <EditText
         android:layout_width="wrap_content"

@@ -13,7 +13,7 @@
     <string name="username_add_account">Unique Username:</string>
     <string name="username_add_account_edit_text">Rider/Driver Username</string>
     <string name="dob_add_account">Date Of Birth:</string>
-    <string name="dob_add_account_edit_text">Format: DD/MM/YYYY</string>
+    <string name="dob_add_account_edit_text">Format: YYYY/MM/DD</string>
     <string name="email_add_account">Email:</string>
     <string name="email_add_account_edit_text">john@example.com</string>
     <string name="phone_add_account">Phone Number:</string>
