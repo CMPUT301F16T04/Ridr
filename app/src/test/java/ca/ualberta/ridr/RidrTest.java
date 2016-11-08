@@ -174,7 +174,7 @@ public class RidrTest{
 
         assertFalse(ride.hasDriver(driver));
         assertFalse(ride.hasDriver(driverTwo));
-        rider.confirmDriver(driver);
+        //rider.confirmDriver(driver); //wasnt doing anything anyways....
         assertTrue(ride.hasDriver(driver));
         assertFalse(ride.hasDriver(driverTwo));
 

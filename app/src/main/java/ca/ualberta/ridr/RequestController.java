@@ -9,17 +9,13 @@ import java.util.Date;
 public class RequestController {
     RequestController(){}
 
+    //actually should I have this in teh request controller or should it be in the Rider controller?
     public ArrayList<Request> getRequests(Rider rider){
         return(rider.getRequests());
     }
 
     public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
 
-    public String getPickup(Request request){return(request.getPickup());}
-
-    public String getDropoff(Request request){return(request.getDropoff());}
-
-    //think we need...
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
 }

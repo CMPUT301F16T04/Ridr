@@ -37,15 +37,15 @@ public class AcceptDriverView extends AppCompatActivity {
                 Rider rider = null;
                 Request request = null;
 
+                //need to remove these eventually when we retrieve real data
                 RequestController RC = new RequestController();
                 RideController RideC = new RideController();
 
-                Ride ride = new Ride(driver, rider, RC.getPickup(request), RC.getDropoff(request), new Date());
+                RideC.confirmDriver(driver, request, rider);
 
-                //do we remove the request now from the riders list of requests to add it to list of rides?
+                //do we remove the request now from the riders list? probably?
                 RC.removeRequest(request, rider);
 
-                RideC.addRide(rider, driver, request);
             }
         });
     }
