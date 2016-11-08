@@ -21,19 +21,19 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editEndLocationText"
-        android:layout_above="@+id/createRequestButton"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true"
-        android:text="Enter End Location" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/editStarLocationText"
         android:layout_above="@+id/editEndLocationText"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:text="Enter Start Location" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editEndLocationText"
+        android:text="Enter Destination"
+        android:layout_above="@+id/createRequestButton"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
