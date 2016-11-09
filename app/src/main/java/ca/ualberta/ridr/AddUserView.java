@@ -27,11 +27,6 @@ public class AddUserView extends Activity {
     EditText phoneEditText;
     EditText creditEditText;
     Button createAccountButton;
-    Boolean firstClickUsername = false;
-    Boolean firstClickDOB = false;
-    Boolean firstClickEmail = false;
-    Boolean firstClickPhone = false;
-    Boolean firstClickCredit = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,63 +41,6 @@ public class AddUserView extends Activity {
         creditEditText = (EditText) findViewById(R.id.credit_add_account_edit_text);
         createAccountButton = (Button) findViewById(R.id.create_account_button);
 
-        //first click logic
-        usernameEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!firstClickUsername) {
-                    usernameEditText.setTextColor(Color.BLACK);
-                    usernameEditText.setText("");
-                    firstClickUsername = true;
-                }
-                return false;
-            }
-        });
-        dobEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!firstClickDOB) {
-                    dobEditText.setTextColor(Color.BLACK);
-                    dobEditText.setText("");
-                    firstClickDOB = true;
-                }
-                return false;
-            }
-        });
-        emailEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!firstClickEmail) {
-                    emailEditText.setTextColor(Color.BLACK);
-                    emailEditText.setText("");
-                    firstClickEmail = true;
-                }
-                return false;
-            }
-        });
-        phoneEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!firstClickPhone) {
-                    phoneEditText.setTextColor(Color.BLACK);
-                    phoneEditText.setText("");
-                    firstClickPhone = true;
-                }
-                return false;
-            }
-        });
-        creditEditText.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                if(!firstClickCredit) {
-                    creditEditText.setTextColor(Color.BLACK);
-                    creditEditText.setText("");
-                    firstClickCredit = true;
-                }
-                return false;
-            }
-        });
-
         //text formatting listener for phone edit text
         phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
@@ -114,10 +52,6 @@ public class AddUserView extends Activity {
 
                 //if the username edit text is empty or hasn't been changed
                 String formattedNameString = usernameEditText.getText().toString().trim();
-                if(!firstClickUsername){
-                    usernameEditText.setError("You must supply a name.");
-                    return;
-                }
                 if(TextUtils.isEmpty(formattedNameString)){
                     usernameEditText.setError("The Name Field cannot be empty.");
                     return;
@@ -125,10 +59,6 @@ public class AddUserView extends Activity {
 
                 //if the dob edit text is empty or hasn't been changed
                 String formattedDateString = dobEditText.getText().toString().trim();
-                if(!firstClickDOB){
-                    dobEditText.setError("You must provide a date of birth.");
-                    return;
-                }
                 if(TextUtils.isEmpty(formattedDateString)){
                     dobEditText.setError("The Date Field cannot be empty. It must be in format YYYY/MM/DD.");
                     return;
@@ -141,10 +71,6 @@ public class AddUserView extends Activity {
 
                 //if the email edit text is empty or hasn't been changed
                 String formattedEmailString = emailEditText.getText().toString().trim();
-                if(!firstClickEmail){
-                    emailEditText.setError("You must provide an email.");
-                    return;
-                }
                 if(TextUtils.isEmpty(formattedEmailString)){
                     emailEditText.setError("The Email Field cannot be empty, " +
                             "and you must provide an email using the pattern john@example.com.");
@@ -157,11 +83,7 @@ public class AddUserView extends Activity {
                     return;
                 }
 
-                //if the email edit text is empty or hasn't been changed
-                if(!firstClickPhone){
-                    phoneEditText.setError("You must provide a phone number.");
-                    return;
-                }
+                //if the phone edit text is empty or hasn't been changed
                 String unformattedPhoneString = phoneEditText.getText().toString().trim();
                 //code is commented out as it doesn't currently work, and doesn't need to at this moment
                 //TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
@@ -177,21 +99,16 @@ public class AddUserView extends Activity {
                     return;
                 }
 
-                //if the email edit text is empty or hasn't been changed
+                //if the credit edit text is empty or hasn't been changed
                 //I didn't think parsing credit info was important at this moment, but here's how to do it
                 //http://stackoverflow.com/questions/11790102/format-credit-card-in-edit-text-in-android
                 String formattedCreditString = creditEditText.getText().toString().trim();
-                if(!firstClickCredit){
-                    creditEditText.setError("You must provide a credit card, for payment processing. Pattern must be exactly " +
-                            "1234-5678-8765-4321");
-                    return;
-                }
                 if(TextUtils.isEmpty(formattedCreditString)){
                     creditEditText.setError("The Credit Card Field cannot be empty, and pattern must be exactly XXXXBBBBYYYYAAAA.");
                     return;
                 }
                 if(formattedCreditString.length() != 16){
-                    creditEditText.setError("The Credit Card Field cannot be empty, and pattern must be exactly XXXXBBBBYYYYAAAA.");
+                    creditEditText.setError("The Credit Card Field must be 16 characters in length, and pattern must be exactly XXXXBBBBYYYYAAAA.");
                     return;
                 }
 
