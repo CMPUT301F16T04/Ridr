@@ -1,8 +1,12 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.telephony.PhoneNumberFormattingTextWatcher;
+import android.telephony.PhoneNumberUtils;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
@@ -98,6 +102,9 @@ public class AddUserView extends Activity {
             }
         });
 
+        //text formatting listener for phone edit text
+        phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
+
         //Create account Button code.
         createAccountButton.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -122,7 +129,7 @@ public class AddUserView extends Activity {
                     return;
                 }
                 if(TextUtils.isEmpty(formattedDateString)){
-                    dobEditText.setError("The Date Field cannot be empty.");
+                    dobEditText.setError("The Date Field cannot be empty. It must be in format YYYY/MM/DD.");
                     return;
                 }
                 Date DOB = returnsValidDate(formattedDateString);
@@ -138,29 +145,52 @@ public class AddUserView extends Activity {
                     return;
                 }
                 if(TextUtils.isEmpty(formattedEmailString)){
-                    emailEditText.setError("The Email Field cannot be empty.");
+                    emailEditText.setError("The Email Field cannot be empty, " +
+                            "and you must provide an email using the pattern john@example.com.");
+                    return;
+                }
+                if(!android.util.Patterns.EMAIL_ADDRESS.matcher(formattedEmailString).matches()){
+                    //got idea from http://stackoverflow.com/questions/12947620/email-address-validation-in-android-on-edittext?noredirect=1&lq=1
+                    //from answer by user1737884
+                    emailEditText.setError("A valid email with the pattern john@example.com must be used.");
                     return;
                 }
 
                 //if the email edit text is empty or hasn't been changed
-                String formattedPhoneString = phoneEditText.getText().toString().trim();
                 if(!firstClickPhone){
                     phoneEditText.setError("You must provide a phone number.");
                     return;
                 }
+                String unformattedPhoneString = phoneEditText.getText().toString().trim();
+                //code is commented out as it doesn't currently work, and doesn't need to at this moment
+                //TelephonyManager tm = (TelephonyManager)getSystemService(Context.TELEPHONY_SERVICE);
+                String formattedPhoneString = PhoneNumberUtils.formatNumber(unformattedPhoneString);
+                //gets country code from sim card
+                //idea from http://stackoverflow.com/questions/12210696/how-to-get-country-or-its-iso-code from Sahil Mahajan Mj
                 if(TextUtils.isEmpty(formattedPhoneString)){
-                    phoneEditText.setError("The Phone Field cannot be empty.");
+                    phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern 1 123-456-7890.");
+                    return;
+                }
+                if(formattedPhoneString.length() != 14){
+                    phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern 1 123-456-7890.");
                     return;
                 }
 
                 //if the email edit text is empty or hasn't been changed
+                //I didn't think parsing credit info was important at this moment, but here's how to do it
+                //http://stackoverflow.com/questions/11790102/format-credit-card-in-edit-text-in-android
                 String formattedCreditString = creditEditText.getText().toString().trim();
                 if(!firstClickCredit){
-                    creditEditText.setError("You must provide a credit card, for payment processing.");
+                    creditEditText.setError("You must provide a credit card, for payment processing. Pattern must be exactly " +
+                            "1234-5678-8765-4321");
                     return;
                 }
                 if(TextUtils.isEmpty(formattedCreditString)){
-                    creditEditText.setError("The Credit Card Field cannot be empty.");
+                    creditEditText.setError("The Credit Card Field cannot be empty, and pattern must be exactly XXXXBBBBYYYYAAAA.");
+                    return;
+                }
+                if(formattedCreditString.length() != 16){
+                    creditEditText.setError("The Credit Card Field cannot be empty, and pattern must be exactly XXXXBBBBYYYYAAAA.");
                     return;
                 }
 
@@ -175,7 +205,7 @@ public class AddUserView extends Activity {
                 DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
                 addRiderTask.execute(rider);
                 addDriverTask.execute(driver);
-                
+
                 finish();
             }
         });
