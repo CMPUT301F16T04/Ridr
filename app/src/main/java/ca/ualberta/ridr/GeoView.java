@@ -6,6 +6,8 @@ import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
+import android.view.View;
+import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -104,15 +106,63 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         map.setMyLocationEnabled(true);
 
         // This method is not needed for loading requests, but demonstrates how to drop a marker
-        map.setOnMapLongClickListener(addMarker);
-        map.addMarker(new MarkerOptions().position(request.getPickupPos()));
+        // map.setOnMapLongClickListener(addMarker);
+
+        map.addMarker(new MarkerOptions().position(request.getPickupPos()).title(request.getPickup())).setTag(request);
+
+        // Add night view for nice viewing when it's dark out
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         if(nightTime(time.format(current.getTime()))) {
             MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_night_style);
             map.setMapStyle(style);
         }
-    }
 
+        map.setOnMarkerClickListener(new OnMarkerClickListener(){
+
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                return false;
+            }
+        });
+
+        // Example of how to remove a marker using this as a hack for onLongClick
+//        map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
+//            @Override
+//            public void onMarkerDragStart(Marker marker) {
+//                marker.remove();
+//            }
+//        });
+
+        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
+            @Override
+            public View getInfoWindow(Marker marker) {
+                return null;
+            };
+
+            @Override
+            public View getInfoContents(Marker marker) {
+                Request currentRequest = (Request) marker.getTag();
+                View infoView = getLayoutInflater().inflate(R.layout.info_window_fragment, null);
+                TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
+                TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
+                TextView fareView = (TextView) infoView.findViewById(R.id.amount);
+
+                pickUpView.setText("Pickup: " + currentRequest.getPickup());
+                dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
+                fareView.setText("Amount: " + "$20");
+
+                return infoView;
+            }
+        });
+    }
+    private String makeSnippet(Request request){
+        String snippet;
+        snippet = "Pickup: " + request.getPickup() + '\n';
+        snippet += "Drop-off " + request.getDropoff()  + '\n';
+        snippet += "Fare: " + "$20";
+        return snippet;
+    };
     @Override
     // Need this for ConnectionsCallback, doesn't need to do anything AFAIK
     public void onConnectionSuspended(int i){
