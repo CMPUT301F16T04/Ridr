@@ -1,27 +1,34 @@
 package ca.ualberta.ridr;
 
-import android.content.pm.PackageManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 
+import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-public class GeoView extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks {
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class GeoView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
-    private Location lastLocation;
-    private String lastLat;
-    private String lastLong;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,29 +37,15 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Goo
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        System.out.println("Null");
-        //map.setMyLocationEnabled(true); // Have a nice my location button on the map
+
+        // Create a connection to the GooglePlay api client
+
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
                     .addApi(LocationServices.API)
                     .build();
-        }
-    }
-
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        map = googleMap;
-
-        // Add a marker in Sydney, Australia, and move the camera.
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if(lastLocation != null) {
-            System.out.print("Not Null");
-            LatLng lastLatLong = new LatLng(lastLocation.getLatitude(), lastLocation.getLongitude());
-            map.moveCamera(CameraUpdateFactory.newLatLng(lastLatLong));
-        } else{
-            System.out.println("Null");
         }
     }
 
@@ -61,41 +54,103 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Goo
         super.onStart();
     }
 
+    protected void onResume(){
+        super.onResume();
+        mGoogleApiClient.reconnect();
+        update();
+    }
+
+    protected void onPause(){
+        mGoogleApiClient.disconnect();
+        super.onPause();
+    }
+    private void update(){
+
+    }
+
     protected void onStop() {
         mGoogleApiClient.disconnect();
         super.onStop();
     }
 
-    @Override
-    public void onConnected(@Nullable Bundle bundle) {
-        if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            System.out.print("Broken");
-            return;
-        }
-        lastLocation = LocationServices.FusedLocationApi.getLastLocation(
-                mGoogleApiClient);
-        if(lastLocation != null) {
-            System.out.println("Null");
-
-            map.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(lastLocation.getLatitude(), lastLocation.getLatitude())));
-        } else{
-            System.out.println("Null");
-        }
+    // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
+    public void onConnectionFailed(ConnectionResult result) {
+        new AlertDialog.Builder(this)
+                .setTitle("Connection Failure")
+                .setMessage(result.getErrorMessage())
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
+    public void onMapReady(GoogleMap googleMap) {
+        map = googleMap;
+        Calendar current = Calendar.getInstance();
+        map.setMyLocationEnabled(true);
 
+        // This method is not needed for loading requests, but demonstrates how to drop a marker
+        map.setOnMapLongClickListener(addMarker);
+
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+        if(nightTime(time.format(current.getTime()))) {
+            MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_night_style);
+            map.setMapStyle(style);
+        }
     }
 
-    public void onConnectionFailed(){
+    @Override
+    public void onConnectionSuspended(int i){
 
     }
+    @Override
+    public void onConnected(Bundle connectionHint){
+        System.out.println("Connected");
+        LatLng lastLocation = getCurrentLocation();
+        if(lastLocation != null && map != null) {
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastLocation, 12));
+        }
+    }
+
+    @Nullable
+    private LatLng getCurrentLocation(){
+        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(currentLocation != null) {
+            System.out.println("grabbing current location succesful");
+            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        }
+        System.out.println("Grabbing current location failed");
+        return null;
+    }
+
+    // OnLongClickListener for a marker
+    GoogleMap.OnMapLongClickListener addMarker = new GoogleMap.OnMapLongClickListener(){
+        @Override
+        public void onMapLongClick(LatLng pos){
+            if(map != null) {
+                // Move camera to long click position
+                map.moveCamera(CameraUpdateFactory.newLatLng(pos));
+
+                // Drop marker at location
+                map.addMarker(new MarkerOptions().position(pos));
+            }
+        }
+    };
+
+
+    public boolean  nightTime(String time){
+        try {
+            Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
+            Date nightTime = new SimpleDateFormat("HH:mm:ss").parse("18:00:00");
+            return currentTime.getTime() > nightTime.getTime();
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 }
