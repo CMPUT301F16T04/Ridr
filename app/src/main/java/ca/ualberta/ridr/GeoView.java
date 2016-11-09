@@ -14,11 +14,14 @@ import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.vision.text.Text;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -43,8 +46,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         mapFragment.getMapAsync(this);
         request = new Request("University of Alberta", "Home", new LatLng(53.525288, -113.525454), new LatLng(53.4848, -113.5051));
         // Create a connection to the GooglePlay api client
-        this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
-
+        //this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -53,13 +55,13 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                     .addApi(LocationServices.API)
                     .build();
         }
+
     }
 
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
     }
-
     protected void onResume(){
         super.onResume();
         mGoogleApiClient.reconnect();
@@ -138,19 +140,19 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         return null;
     }
 
-    // OnLongClickListener for a marker
-    GoogleMap.OnMapLongClickListener addMarker = new GoogleMap.OnMapLongClickListener(){
-        @Override
-        public void onMapLongClick(LatLng pos){
-            if(map != null) {
-                // Move camera to long click position
-                map.moveCamera(CameraUpdateFactory.newLatLng(pos));
-
-                // Drop marker at location
-                map.addMarker(new MarkerOptions().position(pos));
-            }
-        }
-    };
+//    // OnLongClickListener for a marker
+//    GoogleMap.OnMapLongClickListener addMarker = new GoogleMap.OnMapLongClickListener(){
+//        @Override
+//        public void onMapLongClick(LatLng pos){
+//            if(map != null) {
+//                // Move camera to long click position
+//                map.moveCamera(CameraUpdateFactory.newLatLng(pos));
+//
+//                // Drop marker at location
+//                map.addMarker(new MarkerOptions().position(pos));
+//            }
+//        }
+//    };
 
     // Let's be fancy and add night time viewing
     // Plus this is easier on the eyes in night
