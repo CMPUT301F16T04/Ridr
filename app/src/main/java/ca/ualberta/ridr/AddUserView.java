@@ -18,6 +18,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.concurrent.Exchanger;
 
 public class AddUserView extends Activity {
     EditText usernameEditText;
@@ -168,11 +169,11 @@ public class AddUserView extends Activity {
                 //gets country code from sim card
                 //idea from http://stackoverflow.com/questions/12210696/how-to-get-country-or-its-iso-code from Sahil Mahajan Mj
                 if(TextUtils.isEmpty(formattedPhoneString)){
-                    phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern 1 123-456-7890.");
+                    phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern (123) 456-7890, or 1 123-456-7890.");
                     return;
                 }
                 if(formattedPhoneString.length() != 14){
-                    phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern 1 123-456-7890.");
+                    phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern (123) 456-7890, or 1 123-456-7890.");
                     return;
                 }
 
@@ -194,13 +195,44 @@ public class AddUserView extends Activity {
                     return;
                 }
 
-                //successful account creation
-                Toast.makeText(AddUserView.this, "Making Account!", Toast.LENGTH_SHORT).show();
-                //save account in elastic search
+                //make the objects
                 Rider rider = new Rider(formattedNameString, DOB,
                         formattedCreditString, formattedEmailString, formattedPhoneString);
                 Driver driver = new Driver(formattedNameString, DOB,
                         formattedCreditString, formattedEmailString, formattedPhoneString, null);
+
+                //check that account doesn't already exist
+                RiderController.GetRiderByNameTask getRiderByNameTask = new RiderController.GetRiderByNameTask();
+                DriverController.GetDriverByNameTask getDriverByNameTask = new DriverController.GetDriverByNameTask();
+                //checks both rider and driver servers, as there might accidentally be a certain user in one server and not the other
+                try{
+                    Rider onlineRider = getRiderByNameTask.execute(rider.getName()).get();
+                    //not really asynchronous anymore, could potentially fix with a loading bar
+                    if(onlineRider != null){
+                        //if we found another rider with the same name
+                        Toast.makeText(AddUserView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (Exception e){
+                    Toast.makeText(AddUserView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                try{
+                    Driver onlineDriver = getDriverByNameTask.execute(driver.getName()).get();
+                    //not really asynchronous anymore, could potentially fix with a loading bar
+                    if(onlineDriver != null){
+                        //if we found another driver with the same name
+                        Toast.makeText(AddUserView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                } catch (Exception e){
+                    Toast.makeText(AddUserView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                //successful account creation
+                Toast.makeText(AddUserView.this, "Making Account!", Toast.LENGTH_SHORT).show();
+                //save account in elastic search
                 RiderController.AddRiderTask addRiderTask = new RiderController.AddRiderTask();
                 DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
                 addRiderTask.execute(rider);

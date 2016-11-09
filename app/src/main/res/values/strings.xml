@@ -17,7 +17,7 @@
     <string name="email_add_account">Email:</string>
     <string name="email_add_account_edit_text">john@example.com</string>
     <string name="phone_add_account">Phone Number:</string>
-    <string name="phone_add_account_edit_text">Example: 1 123-456-7890</string>
+    <string name="phone_add_account_edit_text">(123) 456-7890 or 1 123-456-7890</string>
     <string name="credit_add_account">Credit Card Number:</string>
     <string name="credit_add_account_edit_text">Example: XXXXBBBBYYYYAAAA</string>
 
