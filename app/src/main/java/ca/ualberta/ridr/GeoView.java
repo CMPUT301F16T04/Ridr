@@ -155,14 +155,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                 return infoView;
             }
         });
-    }
-    private String makeSnippet(Request request){
-        String snippet;
-        snippet = "Pickup: " + request.getPickup() + '\n';
-        snippet += "Drop-off " + request.getDropoff()  + '\n';
-        snippet += "Fare: " + "$20";
-        return snippet;
-    };
+    
     @Override
     // Need this for ConnectionsCallback, doesn't need to do anything AFAIK
     public void onConnectionSuspended(int i){
