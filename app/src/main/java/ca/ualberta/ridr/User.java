@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by mackenzie on 12/10/16.
  */
@@ -15,6 +17,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private UUID id;
+
     public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -22,6 +25,11 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.id = UUID.randomUUID();
+    }
+
+
+    public UUID getUUID() {
+        return id;
     }
 
     public String getName() {

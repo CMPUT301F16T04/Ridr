@@ -27,7 +27,7 @@
     <shape xmlns:android="http://schemas.android.com/apk/res/android">
         <corners android:topLeftRadius="6dp" android:topRightRadius="6dp"
             android:bottomLeftRadius="0.1dp" android:bottomRightRadius="0.1dp"/>
-        <solid android:color="@color/light_urple"/>
+        <solid android:color="@color/light_secondary_colour"/>
     </shape>
     </item>
 </layer-list>
