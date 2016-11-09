@@ -39,7 +39,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         mapFragment.getMapAsync(this);
 
         // Create a connection to the GooglePlay api client
-
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -88,6 +87,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     }
 
     @Override
+    //Basic thing to do when the map is setup
     public void onMapReady(GoogleMap googleMap) {
         map = googleMap;
         Calendar current = Calendar.getInstance();
@@ -104,10 +104,12 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     }
 
     @Override
+    // Need this for ConnectionsCallback, doesn't need to do anything AFAIK
     public void onConnectionSuspended(int i){
 
     }
     @Override
+    //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
         System.out.println("Connected");
         LatLng lastLocation = getCurrentLocation();
@@ -117,6 +119,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     }
 
     @Nullable
+    // Simple function to grab current location in LatLong
     private LatLng getCurrentLocation(){
         Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if(currentLocation != null) {
@@ -141,7 +144,8 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     };
 
-
+    // Let's be fancy and add night time viewing
+    // Plus this is easier on the eyes in night
     public boolean  nightTime(String time){
         try {
             Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
