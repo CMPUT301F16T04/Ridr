@@ -13,6 +13,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/**
+ * Modified by nkaefer on 2016/11/08
+ */
 public class LoginView extends Activity {
     TextView riderLogin;
     TextView driverLogin;
@@ -56,6 +59,7 @@ public class LoginView extends Activity {
                     return;
                 }
 
+                //code for switching between a rider login and a driver login
                 if(asDriver){
                     Intent driverScreenIntent = new Intent(LoginView.this, RequestsFromRidersView.class);
                     DriverController.GetDriverByNameTask getDriverByNameTask = new DriverController.GetDriverByNameTask();
@@ -115,7 +119,7 @@ public class LoginView extends Activity {
 
     }
 
-
+    //switches between user login type
     View.OnClickListener changeUserType = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

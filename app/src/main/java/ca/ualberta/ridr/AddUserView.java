@@ -20,6 +20,9 @@ import java.util.Date;
 import java.util.Locale;
 import java.util.concurrent.Exchanger;
 
+/**
+ * Modified by nkaefer on 2016/11/08
+ */
 public class AddUserView extends Activity {
     EditText usernameEditText;
     EditText dobEditText;
@@ -164,7 +167,11 @@ public class AddUserView extends Activity {
 
     }
 
-
+    /**
+     * Returns a date if the input string is a valid date, and null if it isn't
+     * @param formattedDateString
+     * @return
+     */
     private Date returnsValidDate(String formattedDateString){
         //got idea from http://www.java2s.com/Tutorial/Java/0120__Development/CheckifaStringisavaliddate.htm
 
