@@ -41,7 +41,6 @@ public class RiderController {
         for (int i = 0; i < rider.getRequestArrayList().size(); i++) {
             Request request = openRequests.get(i);
             if (request.isAccepted()) {
-                // Need to make this MVC
                 openRequests.remove(i);
             }
         }
