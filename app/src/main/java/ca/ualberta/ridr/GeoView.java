@@ -22,13 +22,17 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.UUID;
 
 public class GeoView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
+    private Request request;
+    private UUID userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,11 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        request = new Request("University of Alberta", "Home", new LatLng(53.525288, -113.525454), new LatLng(53.4848, -113.5051));
         // Create a connection to the GooglePlay api client
+        this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
+
+
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -72,6 +79,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         super.onStop();
     }
 
+    
     // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
     public void onConnectionFailed(ConnectionResult result) {
         new AlertDialog.Builder(this)
@@ -95,7 +103,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         // This method is not needed for loading requests, but demonstrates how to drop a marker
         map.setOnMapLongClickListener(addMarker);
-
+        map.addMarker(new MarkerOptions().position(request.getPickupPos()));
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         if(nightTime(time.format(current.getTime()))) {
             MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_night_style);
