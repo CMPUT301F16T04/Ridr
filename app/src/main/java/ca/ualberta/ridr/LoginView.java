@@ -54,48 +54,46 @@ public class LoginView extends Activity {
             public void onClick(View view) {
                 //launches to next activity activity
                 //check for empty textbox
-                if(TextUtils.isEmpty(usernameLogin.getText().toString())){
+
+                if (TextUtils.isEmpty(usernameLogin.getText().toString())) {
                     Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //code for switching between a rider login and a driver login
-                if(asDriver){
+                if (asDriver) {
                     Intent driverScreenIntent = new Intent(LoginView.this, RequestsFromRidersView.class);
                     DriverController.GetDriverByNameTask getDriverByNameTask = new DriverController.GetDriverByNameTask();
-                    try{
+                    try {
                         Driver myDriver = getDriverByNameTask.execute(usernameLogin.getText().toString().trim()).get();
                         //not really asynchronous anymore, could potentially fix with a loading bar
-                        if(myDriver == null) {
+                        if (myDriver == null) {
                             //if we found another driver with the same name
                             Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else{
+                        } else {
                             driverScreenIntent.putExtra("UUID", myDriver.getUUID().toString());
                             startActivity(driverScreenIntent);
                         }
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                }
-                else{
+                } else {
                     Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
                     RiderController.GetRiderByNameTask getRiderByNameTask = new RiderController.GetRiderByNameTask();
-                    try{
+                    try {
                         Rider myRider = getRiderByNameTask.execute(usernameLogin.getText().toString().trim()).get();
                         //not really asynchronous anymore, could potentially fix with a loading bar
-                        if(myRider == null) {
+                        if (myRider == null) {
                             //if we found another driver with the same name
                             Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
                             return;
-                        }
-                        else{
+                        } else {
                             riderScreenIntent.putExtra("UUID", myRider.getUUID().toString());
                             startActivity(riderScreenIntent);
                         }
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                         return;
                     }
