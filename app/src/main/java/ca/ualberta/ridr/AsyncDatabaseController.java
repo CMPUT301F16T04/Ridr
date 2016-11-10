@@ -15,14 +15,14 @@ import io.searchbox.core.SearchResult;
  * TO impliment database tasks for a given rider
  */
 public class AsyncDatabaseController extends AsyncTask<String, Void, Class> {
-    private Object o;
+    private Class c;
     private static JestDroidClient client;
     private static String databaseLink
             = "https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/";
 
     // Constructor for controller
-    public AsyncDatabaseController(Object o) {
-        this.o = o;
+    public AsyncDatabaseController(Class c) {
+        this.c = c;
     }
 
     /**
@@ -34,7 +34,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, Class> {
     @Override
     protected Class doInBackground(String... search_parameters) {
         verifySettings();
-        String typeString = o.getClass().toString().toLowerCase();
+        String typeString = c.getClass().toString().toLowerCase();
 
         String search_string =
                 "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" + search_parameters[0] + "\"}}}}}";
@@ -75,6 +75,6 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, Class> {
 
 public  class asycOperation<T> {
     public class get(String type, String id) {
-        return AsyncDatabaseController.execute(st);
+        return AsyncDatabaseController.execute(type, id);
     }
 }
