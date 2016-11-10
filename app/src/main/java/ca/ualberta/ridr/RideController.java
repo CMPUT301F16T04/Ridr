@@ -9,7 +9,8 @@ public class RideController {
     RideController(){}
 
 
-    public void confirmDriver(Driver driver, Request request, Rider rider) {
-        rider.confirmDriver(driver, request);
+    public void createRide(Driver driver, Request request, Rider rider) {
+        Ride ride = new Ride(driver, rider,  request.getPickup(), request.getDropoff(), new Date());
+        rider.confirmDriver(ride);
     }
 }

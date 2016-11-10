@@ -27,7 +27,8 @@
         <activity android:name=".RiderRequestView" />
         <activity android:name=".RideConfirmationView" />
         <activity android:name=".RiderRequestsMadeView" />
-        <activity android:name=".AcceptDriverView"></activity>
+        <activity android:name=".AcceptDriverView"
+            android:exported="true"></activity>
     </application>
 
 </manifest>

@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.app.Activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -9,7 +10,7 @@ import android.widget.TextView;
 
 import java.util.Date;
 
-public class AcceptDriverView extends AppCompatActivity {
+public class AcceptDriverView extends Activity {
 
     private TextView driverInfo;
     private Button accept;
@@ -23,7 +24,9 @@ public class AcceptDriverView extends AppCompatActivity {
         accept = (Button) findViewById(R.id.accept_button);
 
         //TODO get the driver using the info passed from the previous activity
-        final Driver driver = null;
+        //will need to remove these, just here to test UI
+        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        final Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         String driver_description = driver.toString();
 
         driverInfo.setText(driver_description);
@@ -34,14 +37,15 @@ public class AcceptDriverView extends AppCompatActivity {
                 //TODO also need the id of the rider currently logged in so we can create a ride and add it to their rides at this point
                 //also need to know what request we are dealing with so that we can create the ride...
 
-                Rider rider = null;
-                Request request = null;
+                //will need to remove these eventually too
+                Rider rider = new Rider("joe", new Date(), "credit", "email", "phone");
+                Request request = new Request("start", "end");
 
                 //need to remove these eventually when we retrieve real data
                 RequestController RC = new RequestController();
                 RideController RideC = new RideController();
 
-                RideC.confirmDriver(driver, request, rider);
+                RideC.createRide(driver, request, rider);
 
                 //do we remove the request now from the riders list? probably?
                 RC.removeRequest(request, rider);

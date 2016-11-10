@@ -21,7 +21,7 @@ public class RideControllerTest {
 
         RideController RC = new RideController();
 
-        RC.confirmDriver(driver, request, rider);
+        RC.createRide(driver, request, rider);
 
         assertTrue(rider.getRides().get(0).getDriver().equals(driver));
 

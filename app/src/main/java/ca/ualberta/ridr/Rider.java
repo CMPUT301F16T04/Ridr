@@ -64,8 +64,7 @@ public class Rider extends User {
         requestArrayList.remove(currentRequest);
     }
 
-    public void confirmDriver(Driver driver, Request request){
-        Ride ride = new Ride(driver, this, request.getPickup(), request.getDropoff(), new Date());
+    public void confirmDriver(Ride ride){
         rideArrayList.add(ride);
     }
 
