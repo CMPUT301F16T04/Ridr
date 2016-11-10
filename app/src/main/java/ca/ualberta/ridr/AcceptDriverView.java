@@ -12,24 +12,33 @@ import java.util.Date;
 
 public class AcceptDriverView extends Activity {
 
-    private TextView driverInfo;
+    private TextView driverEmail;
+    private TextView driverPhone;
     private Button accept;
+    private TextView xProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_driver);
 
-        driverInfo = (TextView) findViewById(R.id.driver_info);
+        driverEmail = (TextView) findViewById(R.id.driver_email);
+        driverPhone = (TextView) findViewById(R.id.driver_phone);
+        xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
         //TODO get the driver using the info passed from the previous activity
         //will need to remove these, just here to test UI
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         final Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
-        String driver_description = driver.toString();
+        String driverEmailStr = driver.getEmail();
+        String driverPhoneStr = driver.getPhoneNumber();
 
-        driverInfo.setText(driver_description);
+        String profileString = "'s Profile";
+
+        driverEmail.setText(driverEmailStr);
+        driverPhone.setText(driverPhoneStr);
+        xProfile.setText(driver.getName() + profileString);
 
         accept.setOnClickListener(new View.OnClickListener() {
             @Override

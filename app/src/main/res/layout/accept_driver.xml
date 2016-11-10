@@ -10,21 +10,44 @@
     android:weightSum="1">
 
     <TextView
-        android:text="TextView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:textSize="20sp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
-        android:id="@+id/driver_info"
-        android:layout_weight="1.01" />
+        android:layout_marginRight="10dp"
+        android:id="@+id/x_profile"
+        android:textSize="40sp"
+        android:layout_weight="0.15" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:textSize="30sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/driver_email"
+        android:layout_weight="0.11" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/driver_phone"
+        android:layout_weight="0.72" />
 
     <Button
         android:text="Accept"
-        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="0dp"
         android:layout_marginBottom="5dp"
         android:background="@color/tertiary_colour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/accept_button" />
+
 </LinearLayout>
