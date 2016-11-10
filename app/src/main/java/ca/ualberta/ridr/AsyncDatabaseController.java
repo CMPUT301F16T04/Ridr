@@ -95,11 +95,12 @@ public class AsyncDatabaseController<T> {
         String typeString = c.getClass().toString().toLowerCase();
 
         String search_string =
-                "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" + search_parameters[0] + "\"}}}}}";
+                "{\"query\": { \"bool\": { \"must\": { \"match\": { \"id\":\"" +
+                        "\"769086de-0304-4ee2-be6d-ac788f0ba6cf\"" + "}}}}}";
 
         Search search = new Search.Builder(search_string)
-                .addIndex("cmput301f16t04")
-                .addType(typeString)
+                .addIndex("ridr")
+                .addType("")
                 .build();
         try {
             SearchResult result = client.execute(search);
