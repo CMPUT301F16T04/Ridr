@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -14,12 +15,15 @@ public class Request {
     private ArrayList<Driver> possibleDrivers;
     private Boolean accepted;
     private UUID id;
+    private float fare;
+    private Date pickUpDate;
 
-    Request( Rider rider, String pickup, String dropoff){
+    Request( Rider rider, String pickup, String dropoff, Date time){
         this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.id = UUID.randomUUID();
+        this.pickUpDate = time;
     }
 
     public boolean equals(Request request) {
@@ -71,5 +75,19 @@ public class Request {
 
     public boolean isSent() {
         return false;
+    }
+
+    public float getFare(){
+        return fare;
+    }
+
+    public float estimateFare(float distance){
+        float gasCostFactor = 4; // calculate something later
+        fare = distance * gasCostFactor;
+        return fare;
+    }
+
+    public Date getDate(){
+        return pickUpDate;
     }
 }

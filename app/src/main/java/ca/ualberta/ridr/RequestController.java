@@ -6,9 +6,14 @@ package ca.ualberta.ridr;
  */
 public class RequestController {
     RequestController(){}
+    private Request request;
 
     public void createRequest(Rider rider, String pickup, String dropoff){
-        Request request = new Request(rider, pickup, dropoff);
+        request = new Request(rider, pickup, dropoff);
         rider.addRequest(request);
+    }
+
+    public float getFareEstimate(float distance){
+        return request.estimateFare(distance);
     }
 }

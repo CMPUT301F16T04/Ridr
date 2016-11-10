@@ -21,19 +21,64 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editStarLocationText"
-        android:layout_above="@+id/editEndLocationText"
-        android:layout_alignParentEnd="true"
+        android:inputType="textPersonName"
+        android:text="Enter a Fare"
+        android:ems="10"
+        android:id="@+id/editFare"
+        android:layout_above="@+id/textPickUpDate"
         android:layout_alignParentStart="true"
-        android:text="Enter Start Location" />
+        android:layout_alignParentEnd="true" />
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/editEndLocationText"
         android:text="Enter Destination"
+        android:layout_above="@+id/editFare"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/editStarLocationText"
+        android:text="Enter Start Location"
+        android:layout_above="@+id/editEndLocationText"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+    <TextView
+        android:text="What time do you want to be picked up?:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textPickUpDate"
+        android:textAppearance="@android:style/TextAppearance.Material.Medium"
+        android:layout_marginBottom="74dp"
         android:layout_above="@+id/createRequestButton"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
+
+    <!-- Date and time picker xml implementation from
+    http://stackoverflow.com/questions/2055509/datetime-picker-in-android-application-->
+    <DatePicker
+        android:id="@+id/datePicker"
+        android:layout_width="match_parent"
+        android:calendarViewShown="true"
+        android:spinnersShown="false"
+        android:layout_weight="4"
+        android:layout_height="0dp" />
+
+    <TimePicker
+        android:id="@+id/timePicker"
+        android:layout_weight="4"
+        android:layout_width="match_parent"
+        android:layout_height="0dp" />
+
+    <Button
+        android:id="@+id/dateTimeSet"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:text="Set"
+        android:layout_height="0dp"/>
 
 </RelativeLayout>

@@ -18,8 +18,10 @@ public class RiderMainView extends Activity {
 
     private EditText startLocation;
     private EditText endLocation;
+    private EditText fareInput;
+    private EditText pickupTime;
 
-    private UUID currentUUID;
+    private UUID currentUUID; // UUID of the currently logged-in rider
 
     RequestController reqController = new RequestController();
     RiderController riderController = new RiderController();
@@ -42,18 +44,18 @@ public class RiderMainView extends Activity {
 
         startLocation = (EditText) findViewById(R.id.editStartLocationText);
         endLocation = (EditText) findViewById(R.id.editEndLocationText);
+        fareInput = (EditText) findViewById(R.id.editFare);
 
         Button addRequest = (Button) findViewById(R.id.createRequestButton);
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 Rider rider = null; // for now just so that we wont get compile errors
-                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString());
+                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString(), pickupTime.getText().toDate());
                 Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
                 // reset fields
-                startLocation.setText("Enter Start Location");
-                endLocation.setText("Enter Destination");
+                resetText();
             }
         });
 
@@ -79,5 +81,12 @@ public class RiderMainView extends Activity {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+
+    private void resetText(){
+        //reset text inputs in the view
+        startLocation.setText("Enter Start Location");
+        endLocation.setText("Enter Destination");
     }
 }
