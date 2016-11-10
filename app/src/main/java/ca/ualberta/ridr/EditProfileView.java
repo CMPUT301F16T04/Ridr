@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,7 +12,7 @@ import android.widget.Toast;
 import java.util.Date;
 import java.util.UUID;
 
-public class EditProfileView extends AppCompatActivity {
+public class EditProfileView extends Activity {
 
     private EditText editDateOfBirth;
     private EditText editCreditCard;
