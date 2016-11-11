@@ -53,9 +53,9 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
                 return createRequest(parameters[0], parameters[1]);
             } else if(action == "getAllFromIndex"){
                 return getRequest(parameters[0],parameters[1]).getJsonObject();
-            } /*else if(action == "getAllFromIndexFiltered") {
+            } else if(action == "getAllFromIndexFiltered") {
                 return getRequest(parameters[0], parameters[1]).getJsonObject();
-            }*/
+            }
         } catch (Exception e) {
             Log.i(e.toString(),
                     "Something went wrong when we tried to communicate with the elasticsearch  server!");

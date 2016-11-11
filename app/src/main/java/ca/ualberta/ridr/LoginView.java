@@ -28,11 +28,11 @@ public class LoginView extends Activity {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 //System.out.println(new asyncOperations().getAllFromIndexFiltered("user", "id", "AAAAAAAAAAAAAAAAAAAAAAAAAAA"));
-                /*if(event.getAction() == MotionEvent.ACTION_DOWN){
+                if(event.getAction() == MotionEvent.ACTION_DOWN){
                     loginButton.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.dark_tertiary_colour));
                 } else if(event.getAction() == MotionEvent.ACTION_UP) {
                     loginButton.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.tertiary_colour));
-                }*/
+                }
                 return false;
             }
         });

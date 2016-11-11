@@ -38,7 +38,7 @@ public class asyncOperations {
         }
     }
 
-    /*public JsonObject getAllFromIndexFiltered(String dataClass, String variable, String variableValue ) {
+    public JsonObject getAllFromIndexFiltered(String dataClass, String variable, String variableValue ) {
         controller = new AsyncDatabaseController("getAllFromIndexFiltered");
         try{
             String searchString = "{\"query\": { \"multi_match\": { \"query\": \""+variableValue+"\" " +
@@ -48,7 +48,7 @@ public class asyncOperations {
         } catch(Exception e){
             return null;
         }
-    }*/
+    }
 
 
     public JsonObject create(String type, String jsonObject){
