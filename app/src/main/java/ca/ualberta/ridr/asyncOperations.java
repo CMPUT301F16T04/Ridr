@@ -38,10 +38,11 @@ public class asyncOperations {
         }
     }
 
-    /*public JsonObject getAllFromIndexFiltered(String dataClass, String index, String variable, String variableValue ) {
+    /*public JsonObject getAllFromIndexFiltered(String dataClass, String variable, String variableValue ) {
         controller = new AsyncDatabaseController("getAllFromIndexFiltered");
         try{
-            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" + value + "\"}}}}}";
+            String searchString = "{\"query\": { \"multi_match\": { \"query\": \""+variableValue+"\" " +
+                    "fields: [ \""+variable+"\"]}}}";
 
             return controller.execute(dataClass, searchString).get();
         } catch(Exception e){
