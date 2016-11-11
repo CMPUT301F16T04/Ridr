@@ -15,10 +15,10 @@ public class asyncOperations {
         super();
     }
 
-    public JsonObject get(String type, String id) {
+    public JsonObject get(String dataClass, String type, String id) {
         controller = new AsyncDatabaseController();
         try{
-            return controller.execute(type, id).get();
+            return controller.execute(dataClass,type, id).get();
         } catch(Exception e){
             return null;
         }

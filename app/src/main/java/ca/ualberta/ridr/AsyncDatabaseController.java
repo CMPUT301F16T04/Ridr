@@ -21,6 +21,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
     private static JestDroidClient client;
     private static String databaseLink
             = "https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/";
+    private static String databaseName = "ridr";
 
     // Constructor for controller
     public AsyncDatabaseController() {
@@ -30,19 +31,18 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
     /**
      * Queries elastic search for an object with matching UUID
      *
-     * @param search_parameters
      * @return
      */
     @Override
     protected JsonObject doInBackground(String... parameters) {
         verifySettings();
 
-        String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ parameters[0]+"\":\"" + parameters[1] + "\"}}}}}";
+        String search_string = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ parameters[1]+"\":\"" + parameters[2] + "\"}}}}}";
         //search string should work, is searching for the name, only returns 1 result
 
         Search search = new Search.Builder(search_string)
-                .addIndex("cmput301f16t04")
-                .addType("driver")
+                .addIndex(databaseName)
+                .addType(parameters[0])
                 .build();
         try {
             SearchResult result = client.execute(search);
