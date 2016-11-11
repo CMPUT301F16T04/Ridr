@@ -114,10 +114,9 @@ public class LoginView extends Activity {
         createAccountButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view){
-                System.out.println(new asyncOperations().getAllFromIndex("user"));
                 //launches to account creator activity
-                //Intent addAccountIntent = new Intent(LoginView.this, AddUserView.class);
-                //startActivity(addAccountIntent);
+                Intent addAccountIntent = new Intent(LoginView.this, AddUserView.class);
+                startActivity(addAccountIntent);
             }
         });
 

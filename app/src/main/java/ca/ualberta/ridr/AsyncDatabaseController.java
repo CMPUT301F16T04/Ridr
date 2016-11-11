@@ -52,7 +52,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             } else if(action == "create"){
                 return createRequest(parameters[0], parameters[1]);
             } else if(action == "getAllFromIndex"){
-                return extractFirstElement((SearchResult) getRequest(parameters[0], parameters[1]));
+                return getRequest(parameters[0],parameters[1]).getJsonObject();
             }
         } catch (Exception e) {
             Log.i(e.toString(),

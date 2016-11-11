@@ -27,12 +27,12 @@ public class asyncOperations {
         }
     }
 
-    public JsonObject getAllFromIndex(String dataClass) {
+    public JsonArray getAllFromIndex(String dataClass) {
         controller = new AsyncDatabaseController("getAllFromIndex");
         try{
             String searchString = "{\"query\": { \"match_all\": { }}}";
 
-            return controller.execute(dataClass, searchString).get();
+            return extractAllElements(controller.execute(dataClass, searchString).get());
         } catch(Exception e){
             return null;
         }
