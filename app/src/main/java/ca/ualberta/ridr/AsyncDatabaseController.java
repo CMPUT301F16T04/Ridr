@@ -46,17 +46,20 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
 
         //search string should work, is searching for the name, only returns 1 result
 
+        // Depending on action run a different async request, returns a JSONObject of the request
+        //if successful  or null if something went wrong
         try {
             if(action == "get") {
                 return getRequest(parameters[0], parameters[1]).getJsonObject();
             } else if(action == "create"){
-                return createRequest(parameters[0], parameters[1]);
+                return createRequest(parameters[0], parameters[1], parameters[2]);
             } else if(action == "getAllFromIndex"){
                 return getRequest(parameters[0],parameters[1]).getJsonObject();
             }
         } catch (Exception e) {
             Log.i(e.toString(),
                     "Something went wrong when we tried to communicate with the elasticsearch  server!");
+            return null;
         }
 
         return null;
@@ -77,6 +80,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
 
     @Nullable
     private JestResult getRequest(String type, String  searchString) throws IOException {
+        // As the name implies builds a search object and returns the result
         Search search = new Search.Builder(searchString)
                 .addIndex(databaseName)
                 .addType(type)
@@ -92,13 +96,17 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
     }
 
     @Nullable
-    private JsonObject createRequest(String type, Object value) throws IOException {
-        Index index = new Index.Builder(value).index(databaseName).type(type).build();
+    private JsonObject createRequest(String type, String ID, String jsonValue) throws IOException {
+        // Takes strings of the type of object, [user, ride, request], the id of the object to create
+        // and the json version of that object and posts it to the server
+        // It returns a jsonObject representing the results of the operation or null if it failed
+        Index index = new Index.Builder(jsonValue).index(databaseName).type(type).index(ID).build();
         DocumentResult result = client.execute(index);
         if (result.isSucceeded()) {
             return result.getJsonObject();
-        } else {
-            Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
+        }
+        else {
+            Log.i("Error", "The search query failed to find the Class that matched.");
             return null;
         }
     }
