@@ -22,12 +22,32 @@ public class Ride {
     private UUID id;
 
 
-    public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date){
+    public LatLng getPickupCoords() {
+        return pickupCoords;
+    }
+
+    public void setPickupCoords(LatLng pickupCoords) {
+        this.pickupCoords = pickupCoords;
+    }
+
+    public LatLng getDropOffCoords() {
+        return dropOffCoords;
+    }
+
+    public void setDropOffCoords(LatLng dropOffCoords) {
+        this.dropOffCoords = dropOffCoords;
+    }
+
+
+
+    public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
         this.rideDate = date;
         this.driver = driver;
         this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
+        this.pickupCoords = pickupCoords;
+        this.dropOffCoords = dropOffCoords;
         this.isCompleted = false;
         this.id = UUID.randomUUID();
     }

@@ -1,9 +1,9 @@
 package ca.ualberta.ridr;
 
-import java.lang.reflect.Array;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 /**
  * Created by jferris on 22/10/16.
@@ -51,7 +51,7 @@ public class Rider extends User {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), new LatLng(53.5232, -113.5263), new LatLng(53.5225, -113.6242));
         return ride;
     }
 

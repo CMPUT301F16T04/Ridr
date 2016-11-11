@@ -14,6 +14,8 @@ public class User {
     private String creditCard;
     private String email;
     private String phoneNumber;
+    private Boolean isRider;
+    private Boolean isDriver;
     private UUID id;
 
     public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
@@ -75,6 +77,19 @@ public class User {
     public void goOnline() {
     }
 
+    public void setRiderStatus(boolean status) {
+        this.isRider = status;
+    }
+    public boolean isRider(){
+        return isRider;
+    }
+
+    public void setDriverStatus(boolean status) {
+        this.isDriver = status;
+    }
+    public boolean isDriver(){
+        return isDriver;
+    }
     public String getStartLocation() {
         return "";
     }

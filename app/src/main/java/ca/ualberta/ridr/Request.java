@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 /**
@@ -17,13 +18,46 @@ public class Request {
     private transient ArrayList<Driver> possibleDrivers;
     private Boolean accepted;
     private UUID id;
+    private Date date;
 
-    Request(String pickup, String dropoff){
+
+
+
+    Request(String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
+        this.pickupCoords = pickupCoords;
+        this.dropOffCoords = dropOffCoords;
+        this.date = date;
         this.id = UUID.randomUUID();
     }
 
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
+
+
+
+    public LatLng getPickupCoords() {
+        return pickupCoords;
+    }
+
+    public void setPickupCoords(LatLng pickupCoords) {
+        this.pickupCoords = pickupCoords;
+    }
+
+    public LatLng getDropOffCoords() {
+        return dropOffCoords;
+    }
+
+    public void setDropOffCoords(LatLng dropOffCoords) {
+        this.dropOffCoords = dropOffCoords;
+    }
     public boolean equals(Request request) {
         return this.id.equals(request.id);
     }
