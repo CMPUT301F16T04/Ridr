@@ -101,4 +101,8 @@ public class User {
     public boolean equals(User user) {
         return this.id.equals(user.id);
     }
+
+    public UUID getID(){
+        return id;
+    }
 }

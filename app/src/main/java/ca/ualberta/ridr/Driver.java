@@ -20,6 +20,7 @@ public class Driver extends User {
         this.vehicle = vehicle;
         this.bankAccountNo = bankAccountNo;
         this.rideArrayList = new ArrayList<Ride>();
+        this.setDriverStatus(true);
     }
 
     public String getName() {

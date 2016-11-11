@@ -40,6 +40,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
      *
      * @return
      */
+    @Nullable
     @Override
     protected JsonObject doInBackground(String... parameters) {
         verifySettings();
@@ -52,7 +53,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             if(action == "get") {
                 return getRequest(parameters[0], parameters[1]).getJsonObject();
             } else if(action == "create"){
-                return createRequest(parameters[0], parameters[1], parameters[2]);
+                return createRequest(parameters[0], parameters[1], parameters[2]).getJsonObject();
             } else if(action == "getAllFromIndex"){
                 return getRequest(parameters[0],parameters[1]).getJsonObject();
             } else if(action == "getAllFromIndexFiltered") {
@@ -98,14 +99,14 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
     }
 
     @Nullable
-    private JsonObject createRequest(String type, String ID, String jsonValue) throws IOException {
+    private JestResult createRequest(String type, String ID, String jsonValue) throws IOException {
         // Takes strings of the type of object, [user, ride, request], the id of the object to create
         // and the json version of that object and posts it to the server
         // It returns a jsonObject representing the results of the operation or null if it failed
-        Index index = new Index.Builder(jsonValue).index(databaseName).type(type).index(ID).build();
+        Index index = new Index.Builder(jsonValue).index(databaseName).type(type).id(ID).build();
         DocumentResult result = client.execute(index);
         if (result.isSucceeded()) {
-            return result.getJsonObject();
+            return result;
         }
         else {
             Log.i("Error", "The search query failed to find the Class that matched.");
