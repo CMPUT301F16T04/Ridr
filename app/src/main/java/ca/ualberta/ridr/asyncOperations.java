@@ -2,6 +2,7 @@ package ca.ualberta.ridr;
 
 import android.os.AsyncTask;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
@@ -20,7 +21,7 @@ public class asyncOperations {
         try{
             String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" + value + "\"}}}}}";
 
-            return controller.execute(dataClass, searchString).get();
+            return extractFirstElement(controller.execute(dataClass, searchString).get());
         } catch(Exception e){
             return null;
         }
@@ -60,6 +61,13 @@ public class asyncOperations {
         }
     }
 
+    private JsonArray extractAllElements(JsonObject result){
+        return result.getAsJsonObject("hits").getAsJsonArray("hits");
+
+    }
+    private JsonObject extractFirstElement(JsonObject result){
+        return result.getAsJsonObject("hits").getAsJsonArray("hits").get(0).getAsJsonObject().getAsJsonObject("_source");
+    }
     // How the fuck do we update or create?
     public static boolean update(){
         return true;
