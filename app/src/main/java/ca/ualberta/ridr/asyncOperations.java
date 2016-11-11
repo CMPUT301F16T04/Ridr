@@ -16,10 +16,12 @@ public class asyncOperations {
         super();
     }
 
-    public JsonObject get(String dataClass, String type, String value) {
+    public JsonObject get(String dataClass, String attribute, String value) {
+        // This takes an objectType, attribute, and value and returns the first match that elastic
+        // search finds
         controller = new AsyncDatabaseController("get");
         try{
-            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" + value + "\"}}}}}";
+            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ attribute+"\":\"" + value + "\"}}}}}";
 
             return extractFirstElement(controller.execute(dataClass, searchString).get());
         } catch(Exception e){
@@ -51,10 +53,11 @@ public class asyncOperations {
     }
 
 
-    public JsonObject create(String type, String jsonObject){
+    public JsonObject create(String type,String id, String jsonObject){
+        // Pass a jsonified object and have it stored on elasticsearch
         controller = new AsyncDatabaseController("create");
         try{
-            return controller.execute(type, jsonObject).get();
+            return controller.execute(type, id, jsonObject).get();
         } catch(Exception e){
             return null;
         }
