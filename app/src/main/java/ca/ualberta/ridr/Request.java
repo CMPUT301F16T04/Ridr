@@ -10,7 +10,9 @@ public class Request {
     private String rider;
     private String pickup;
     private String dropoff;
-    private ArrayList<Driver> possibleDrivers;
+    private LatLng pickupCoords;
+    private LatLng dropOffCoords;
+    private transient ArrayList<Driver> possibleDrivers;
     private Boolean accepted;
     private UUID id;
 

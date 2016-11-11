@@ -14,6 +14,8 @@ public class Ride {
     private Rider rider;
     private Boolean isCompleted; //pending is denoted by isCompleted = False
     private String pickupAddress;
+    private LatLng pickupCoords;
+    private LatLng dropOffCoords;
     private String dropOffAddress;
     private UUID id;
 

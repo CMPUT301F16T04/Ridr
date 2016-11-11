@@ -8,9 +8,11 @@ import java.util.UUID;
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
-    private Vehicle vehicle;
-    private String bankAccountNo;
-    private ArrayList<Ride> rideArrayList;
+    // These are all marked transient as we don't want them serialized when we pass this object to
+    // our AsyncDatabaseController
+    private transient Vehicle vehicle;
+    private transient String bankAccountNo;
+    private transient ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
                   String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {

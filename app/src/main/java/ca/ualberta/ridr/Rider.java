@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -8,8 +9,8 @@ import java.util.UUID;
  * Created by jferris on 22/10/16.
  */
 public class Rider extends User {
-    private ArrayList<Ride> rideArrayList;
-    private ArrayList<Request> requestArrayList;
+    private transient ArrayList<Ride> rideArrayList;
+    private transient ArrayList<Request> requestArrayList;
 
     public Rider (String name, Date dateOfBirth, String creditCard, String email, String phoneNumber) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);

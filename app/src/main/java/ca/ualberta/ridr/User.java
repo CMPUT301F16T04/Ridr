@@ -15,6 +15,7 @@ public class User {
     private String email;
     private String phoneNumber;
     private UUID id;
+
     public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
