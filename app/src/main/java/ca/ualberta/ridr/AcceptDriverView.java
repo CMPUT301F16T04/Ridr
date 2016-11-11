@@ -1,12 +1,18 @@
 package ca.ualberta.ridr;
 
+import android.Manifest;
 import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.Date;
 
@@ -61,5 +67,26 @@ public class AcceptDriverView extends Activity {
 
             }
         });
+        driverPhone.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+
+                // pretty well found at link: http://stackoverflow.com/questions/11699819/how-do-i-get-the-dialer-to-open-with-phone-number-displayed
+                // accessed on Nov. 10 2016
+                // answered by AAnkit
+                Intent callIntent = new Intent(Intent.ACTION_DIAL);
+                callIntent.setData(Uri.parse("tel:"+driver.getPhoneNumber()));
+                startActivity(callIntent);
+            }
+        });
+        driverEmail.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                Toast.makeText(AcceptDriverView.this, "going to send an email!", Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
+
 }
