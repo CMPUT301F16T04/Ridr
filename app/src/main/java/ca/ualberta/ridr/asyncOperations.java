@@ -15,10 +15,23 @@ public class asyncOperations {
         super();
     }
 
-    public JsonObject get(String dataClass, String type, String id) {
-        controller = new AsyncDatabaseController();
+    public JsonObject get(String dataClass, String type, String value) {
+        controller = new AsyncDatabaseController("get");
         try{
-            return controller.execute(dataClass,type, id).get();
+            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" + value + "\"}}}}}";
+
+            return controller.execute(dataClass, searchString).get();
+        } catch(Exception e){
+            return null;
+        }
+    }
+
+    public JsonObject create(String type, String jsonObject){
+        controller = new AsyncDatabaseController("create");
+        try{
+           // String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" +  + "\"}}}}}";
+
+            return controller.execute(type, jsonObject).get();
         } catch(Exception e){
             return null;
         }
