@@ -28,10 +28,10 @@ public class asyncOperations {
     }
 
     public JsonArray getAllFromIndex(String dataClass) {
+        // Gets all values stored in a specified elastic search index
         controller = new AsyncDatabaseController("getAllFromIndex");
         try{
             String searchString = "{\"query\": { \"match_all\": { }}}";
-
             return extractAllElements(controller.execute(dataClass, searchString).get());
         } catch(Exception e){
             return null;
