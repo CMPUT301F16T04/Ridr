@@ -24,11 +24,12 @@ public class Request {
         this.id = UUID.randomUUID();
     }
 
-    Request(String pickup, String dropoff, LatLng pickupPos, LatLng dropoffPos){
+    Request(Rider rider, String pickup, String dropoff, LatLng pickupPos, LatLng dropoffPos){
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupPos = pickupPos;
         this.dropoffPos = dropoffPos;
+        this.rider = rider.getID().toString();
         this.id = UUID.randomUUID();
     }
 

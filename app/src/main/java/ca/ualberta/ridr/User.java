@@ -74,6 +74,10 @@ public class User {
     public void goOnline() {
     }
 
+    public UUID getID(){
+        return this.id;
+    }
+
     public String getStartLocation() {
         return "";
     }
