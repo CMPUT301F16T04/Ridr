@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="match_parent"
     android:layout_width="match_parent">
-
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:id="@+id/map"
@@ -14,31 +13,11 @@
         map:uiCompass="true"
         map:uiZoomControls="true"
         tools:context="ca.ualberta.ridr.GeoView" />
-    <EditText
+    <fragment
+        android:id="@+id/place_autocomplete_fragment"
         android:layout_width="match_parent"
-        android:layout_marginLeft="55dp"
-        android:layout_marginRight="55dp"
-        android:layout_marginBottom="70dp"
-        android:background="@drawable/secondary_rounded_corners"
-        android:textSize="22sp"
-        android:maxLines="1"
-        android:layout_alignParentBottom="true"
-        android:hint="Search for requests"
-        android:textColorHint="@color/light_gray"
-        android:paddingLeft="8dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:textColor="@android:color/black"
-        android:shadowColor="@color/tertiary_colour"
-        android:layout_height="wrap_content" />
-    <Button
-        android:background="@drawable/tertiary_rounded_corners"
-        android:hint="Search Location"
-        android:textColorHint="@color/primary_colour"
-        android:layout_alignParentBottom="true"
-        android:layout_width="match_parent"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="55dp"
-        android:layout_marginBottom="10dp"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+        />
 </RelativeLayout>
