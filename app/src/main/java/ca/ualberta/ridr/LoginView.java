@@ -54,8 +54,9 @@ public class LoginView extends Activity {
             public void onClick(View view) {
                 //launches to next activity activity
                 //check for empty textbox
-
-                if (TextUtils.isEmpty(usernameLogin.getText().toString())) {
+                System.out.println("SHIT");
+                System.out.println(new asyncOperations().get("user","id", "AAAAAAAAAAAAAAAAAAAAAAAAAAA"));
+                /*if (TextUtils.isEmpty(usernameLogin.getText().toString())) {
                     Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -97,7 +98,7 @@ public class LoginView extends Activity {
                         Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                }
+                }*/
             }
         });
 
