@@ -45,12 +45,13 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
 
         //search string should work, is searching for the name, only returns 1 result
 
-
         try {
             if(action == "get") {
                 return extractFirstElement((SearchResult) getRequest(parameters[0], parameters[1]));
             } else if(action == "create"){
                 return createRequest(parameters[0], parameters[1]);
+            } else if(action == "getAllFromIndex"){
+                return extractFirstElement((SearchResult) getRequest(parameters[0], parameters[1]));
             }
         } catch (Exception e) {
             Log.i(e.toString(),
@@ -71,6 +72,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             client = (JestDroidClient) factory.getObject();
         }
     }
+
 
     @Nullable
     private JestResult getRequest(String type, String  searchString) throws IOException {

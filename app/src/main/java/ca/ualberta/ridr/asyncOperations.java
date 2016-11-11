@@ -26,6 +26,29 @@ public class asyncOperations {
         }
     }
 
+    public JsonObject getAllFromIndex(String dataClass) {
+        controller = new AsyncDatabaseController("getAllFromIndex");
+        try{
+            String searchString = "{\"query\": { \"match_all\": { }}}";
+
+            return controller.execute(dataClass, searchString).get();
+        } catch(Exception e){
+            return null;
+        }
+    }
+
+    /*public JsonObject getAllFromIndexFiltered(String dataClass, String index, String variable, String variableValue ) {
+        controller = new AsyncDatabaseController("getAllFromIndexFiltered");
+        try{
+            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" + value + "\"}}}}}";
+
+            return controller.execute(dataClass, searchString).get();
+        } catch(Exception e){
+            return null;
+        }
+    }*/
+
+
     public JsonObject create(String type, String jsonObject){
         controller = new AsyncDatabaseController("create");
         try{
