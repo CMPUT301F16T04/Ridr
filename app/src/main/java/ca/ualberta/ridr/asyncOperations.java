@@ -53,8 +53,6 @@ public class asyncOperations {
     public JsonObject create(String type, String jsonObject){
         controller = new AsyncDatabaseController("create");
         try{
-           // String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ type+"\":\"" +  + "\"}}}}}";
-
             return controller.execute(type, jsonObject).get();
         } catch(Exception e){
             return null;
@@ -68,8 +66,5 @@ public class asyncOperations {
     private JsonObject extractFirstElement(JsonObject result){
         return result.getAsJsonObject("hits").getAsJsonArray("hits").get(0).getAsJsonObject().getAsJsonObject("_source");
     }
-    // How the fuck do we update or create?
-    public static boolean update(){
-        return true;
-    }
+
 }
