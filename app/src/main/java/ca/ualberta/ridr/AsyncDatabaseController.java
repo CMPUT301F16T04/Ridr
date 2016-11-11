@@ -5,6 +5,7 @@ import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
@@ -48,7 +49,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
 
         try {
             if(action == "get") {
-                return extractFirstElement((SearchResult) getRequest(parameters[0], parameters[1]));
+                return getRequest(parameters[0], parameters[1]).getJsonObject();
             } else if(action == "create"){
                 return createRequest(parameters[0], parameters[1]);
             }
@@ -98,11 +99,6 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             Log.i("Error", "Elastic search was not able to add the driver, as the result did not succeed.");
             return null;
         }
-    }
-
-
-    private JsonObject extractFirstElement(SearchResult result){
-        return result.getJsonObject().getAsJsonObject("hits").getAsJsonArray("hits").get(0).getAsJsonObject().getAsJsonObject("_source");
     }
 
 }
