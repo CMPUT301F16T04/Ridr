@@ -57,7 +57,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        request = new Request("University of Alberta", "10615 47 Ave NW", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067));
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
+
         // Create a connection to the GooglePlay api client
         //this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
 
@@ -137,7 +139,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         map.setMyLocationEnabled(true);
 
 
-        map.addMarker(new MarkerOptions().position(request.getPickupPos()).title(request.getPickup())).setTag(request);
+        map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup())).setTag(request);
 
         // Add night view for nice viewing when it's dark out
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");

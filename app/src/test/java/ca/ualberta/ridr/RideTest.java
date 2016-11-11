@@ -1,6 +1,5 @@
 package ca.ualberta.ridr;
 
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.Date;
@@ -18,7 +17,7 @@ public class RideTest {
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
         assertTrue(ride.equals(ride));
     }
 }

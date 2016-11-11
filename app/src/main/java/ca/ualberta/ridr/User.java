@@ -1,7 +1,5 @@
 package ca.ualberta.ridr;
 
-import java.sql.RowIdLifetime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -14,7 +12,10 @@ public class User {
     private String creditCard;
     private String email;
     private String phoneNumber;
+    private Boolean isRider;
+    private Boolean isDriver;
     private UUID id;
+
     public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -74,19 +75,25 @@ public class User {
     public void goOnline() {
     }
 
-    public UUID getID(){
-        return this.id;
+    public void setRiderStatus(boolean status) {
+        this.isRider = status;
+    }
+    public boolean isRider(){
+        return isRider;
     }
 
-    public String getStartLocation() {
-        return "";
+    public void setDriverStatus(boolean status) {
+        this.isDriver = status;
     }
-
-    public String getDestination() {
-        return "";
+    public boolean isDriver(){
+        return isDriver;
     }
 
     public boolean equals(User user) {
         return this.id.equals(user.id);
+    }
+
+    public UUID getID(){
+        return id;
     }
 }
