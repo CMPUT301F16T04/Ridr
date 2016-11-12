@@ -15,6 +15,7 @@ import android.widget.TextView;
 public class DateSelector extends DialogFragment implements DatePickerDialog.OnDateSetListener{
 
     //fragment that displays a date picker
+    // based off of code from http://stackoverflow.com/questions/27225815/android-how-to-show-datepicker-in-fragment
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState){

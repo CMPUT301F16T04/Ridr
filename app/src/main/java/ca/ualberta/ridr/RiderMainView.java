@@ -33,14 +33,6 @@ public class RiderMainView extends Activity {
     private Button timeButton;
     //private Toolbar toolbar;
 
-    private String pickUpDateString;
-    private String pickUpTimeString;
-
-    private Calendar cal;
-    private DatePickerDialog datePicker;
-
-    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-
     private UUID currentUUID; // UUID of the currently logged-in rider
 
     RequestController reqController = new RequestController();
@@ -84,13 +76,21 @@ public class RiderMainView extends Activity {
             }
         });
 
-
+        timeButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                // make a date fragment when clicked
+                DialogFragment frag = new TimeSelector();
+                frag.show(getFragmentManager(), "TimePicker");
+            }
+        });
 
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 Rider rider = null; // for now just so that we wont get compile errors
-                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() , "date", "time");
+                //TODO make test for request controller
+                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() ,
+                        dateTextView.getText().toString(), timeTextView.getText().toString());
                 Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
                 // reset fields
