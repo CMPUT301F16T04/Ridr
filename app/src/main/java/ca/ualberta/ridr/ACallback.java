@@ -5,5 +5,7 @@ package ca.ualberta.ridr;
  */
 // This is the laziest way I can think to write asynchronous code
 public interface ACallback {
+    // This interface is used when a controller updates it's data
+    // It will call this callback on whoever instantiated that controller
     public void callback();
 }

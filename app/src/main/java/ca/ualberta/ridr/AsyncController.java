@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
@@ -54,13 +55,42 @@ public class AsyncController {
     }
 
 
-    public JsonObject create(String type,String id, String jsonObject){
+    public JsonObject create(String dataClass,String id, String jsonObject){
         // Pass a jsonified object and have it stored on elasticsearch
         controller = new AsyncDatabaseController("create");
         try{
-            return controller.execute(type, id, jsonObject).get();
+            return controller.execute(dataClass, id, jsonObject).get();
         } catch(Exception e){
             Log.d("Elastic Search Creation", e.toString());
+            return null;
+        }
+    }
+
+    public JsonArray geoDistanceQuery(final String dataClass,final LatLng center, final String kmDistance){
+        controller = new AsyncDatabaseController("get");
+        String query =
+                "{"+
+                    "\"query\": {" +
+                        "\"bool\" : {"+
+                            "\"must\" : {"+
+                                "\"match_all\" : {}" +
+                            "}," +
+                            "\"filter\" : {"+
+                                "\"geo_distance\" : {" +
+                                    "\"distance\" : \""+ kmDistance+ "km\"," +
+                                    "\"pickupCoord\" : {" +
+                                            "\"lat\" :" + center.latitude + "," +
+                                            "\"lon\" :" + center.longitude +
+                                    "}" +
+                                "}" +
+                            "}" +
+                        "}" +
+                    "}"+
+                "}";
+        try{
+            return extractAllElements(controller.execute(dataClass, query).get());
+        } catch(Exception e){
+            Log.d("Elastic search filter", e.toString());
             return null;
         }
     }

@@ -10,10 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
@@ -34,17 +31,13 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.UUID;
 
 import static android.widget.Toast.makeText;
@@ -53,11 +46,12 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
-    private ArrayList<Request> filteredReqeusts;
+    //private ArrayList<Request> filteredReqeusts;
     private UUID userID;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
+    private boolean firstLoad;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +60,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        firstLoad = false;
 
         requests = new RequestController(this);
         if (mGoogleApiClient == null) {
@@ -77,8 +72,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                     .addApi(Places.PLACE_DETECTION_API)
                     .build();
         }
-
-        Button clickMe = (Button) findViewById(R.id.test);
 
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
@@ -119,13 +112,19 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     public void onConnected(Bundle connectionHint){
         System.out.println("Connected");
         lastKnownPlace = getCurrentLocation();
-        if(lastKnownPlace != null) {
+        if(lastKnownPlace != null && firstLoad != true) {
+            firstLoad = true;
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
+            AsyncController controller = new AsyncController();
+            Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
+            userID = rider.getID();
+            requests.getUserRequest(userID);
         }
-        requests.getUserRequest(userID);
+
     }
 
     // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
+    // Currently this shows an alert notifying the user that the connection failed
     public void onConnectionFailed(ConnectionResult result) {
         new AlertDialog.Builder(this)
                 .setTitle("Connection Failure")
@@ -140,11 +139,17 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     }
 
     @Override
-    //Basic thing to do when the map is setup
+    // Basic thing to do when the map is setup
+    // Callback for when the googleMap object is set up
     public void onMapReady(GoogleMap googleMap) {
+        // Make our map a map
         map = googleMap;
-        Calendar current = Calendar.getInstance();
+
+        // Allow the user to go home at any time
         map.setMyLocationEnabled(true);
+
+        // What time is it?
+        Calendar current = Calendar.getInstance();
         // Add night view for nice viewing when it's dark out
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         if (nightTime(time.format(current.getTime()))) {
@@ -152,6 +157,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
             map.setMapStyle(style);
         }
 
+        // Let's listen for clicks on our markers to display information
         map.setOnMarkerClickListener(new OnMarkerClickListener() {
 
             @Override
@@ -161,6 +167,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
             }
         });
 
+        // Let's display some arbitrary date when our markrs are clicked
         map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
             @Override
             public View getInfoWindow(Marker marker) {
@@ -177,18 +184,12 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
                 pickUpView.setText("Pickup: " + currentRequest.getPickup());
                 dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
-                fareView.setText("Amount: " + "$20");
+                fareView.setText("Amount: $" + currentRequest.getFare());
 
                 return infoView;
             }
         });
 
-        System.out.println("Creating test data");
-        AsyncController controller = new AsyncController();
-
-
-        Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
-        Log.i("Rider id", rider.getID().toString());
     }
 
     @Nullable
@@ -196,19 +197,16 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private LatLng getCurrentLocation(){
         Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
         if(currentLocation != null) {
-            System.out.println("grabbing current location succesful");
             return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         }
-        System.out.println("Grabbing current location failed");
         return null;
     }
 
     PlaceSelectionListener searchForRequests = new PlaceSelectionListener() {
         @Override
         public void onPlaceSelected(Place place) {
-            // TODO: Get info about the selected place.
-
-            Log.i("Places", "Place: " + place.getName());
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
+            requests.findAllRequestsWithinDistance(place.getLatLng(), "2");
         }
 
         @Override
@@ -218,20 +216,24 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     };
 
+
+    // This interface is used when a controller updates it's data
+    // It will call this callback on whoever instantiated that controller
     public void callback(){
+        final ArrayList<Request> filteredReqeusts;
         if(requests.size() > 0 ){
             filteredReqeusts = requests.getList();
+            this.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    addMarkers(filteredReqeusts);
+                }
+            });
         }
-        this.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                addMarkers();
-            }
-        });
-
     }
 
-    public void addMarkers(){
+    // Simple function
+    public void addMarkers(ArrayList<Request> filteredReqeusts){
         map.clear();
         if(filteredReqeusts.size() > 0 ) {
             for (Request request : filteredReqeusts) {
