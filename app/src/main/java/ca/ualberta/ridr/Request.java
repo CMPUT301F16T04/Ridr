@@ -126,6 +126,8 @@ public class Request {
     }
 
     public String toJson(){
+        // Attempt to conver request into a JsonObject
+        // If fail return a null pointer
         JsonObject toReturn = new JsonObject();
         try {
             toReturn.addProperty("rider", this.rider);
@@ -147,6 +149,8 @@ public class Request {
 
     // Take a jsonObject as input and creates request out of it's keys
     public Request(JsonObject request) throws ParseException {
+        // There is one major limitation in what I have done so far,
+        // currently I don't have or store a list of possible drivers
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
         this.rider = request.get("rider").getAsString();
