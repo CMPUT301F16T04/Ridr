@@ -1,7 +1,15 @@
 package ca.ualberta.ridr;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -13,23 +21,24 @@ public class Request {
     private String rider;
     private String pickup;
     private String dropoff;
-    private LatLng pickupCoords;
-    private LatLng dropOffCoords;
+    private LatLng pickupCoord;
+    private LatLng dropOffCoord;
     private transient ArrayList<Driver> possibleDrivers;
     private Boolean accepted;
     private UUID id;
+    private float fare;
     private Date date;
 
-
-
-
-    Request(String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
+    Request(Rider rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
-        this.pickupCoords = pickupCoords;
-        this.dropOffCoords = dropOffCoords;
+        this.pickupCoord = pickupCoords;
+        this.dropOffCoord = dropOffCoords;
         this.date = date;
+        this.rider = rider.getID().toString();
         this.id = UUID.randomUUID();
+        this.fare = 20;
+        this.accepted = false;
     }
 
 
@@ -44,19 +53,19 @@ public class Request {
 
 
     public LatLng getPickupCoords() {
-        return pickupCoords;
+        return pickupCoord;
     }
 
     public void setPickupCoords(LatLng pickupCoords) {
-        this.pickupCoords = pickupCoords;
+        this.pickupCoord = pickupCoords;
     }
 
     public LatLng getDropOffCoords() {
-        return dropOffCoords;
+        return dropOffCoord;
     }
 
     public void setDropOffCoords(LatLng dropOffCoords) {
-        this.dropOffCoords = dropOffCoords;
+        this.dropOffCoord = dropOffCoords;
     }
     public boolean equals(Request request) {
         return this.id.equals(request.id);
@@ -107,5 +116,59 @@ public class Request {
 
     public boolean isSent() {
         return false;
+    }
+
+    public float getFare(){
+        return fare;
+    }
+    public UUID getID() {
+        return id;
+    }
+
+    public String toJson(){
+        JsonObject toReturn = new JsonObject();
+        try {
+            toReturn.addProperty("rider", this.rider);
+            toReturn.addProperty("pickup", this.pickup);
+            toReturn.addProperty("dropoff", this.dropoff);
+            toReturn.addProperty("pickupCoord", String.valueOf(buildGeoPoint(pickupCoord)));
+            toReturn.addProperty("dropoffCoord", String.valueOf(buildGeoPoint(dropOffCoord)));
+            toReturn.addProperty("id", this.id.toString());
+            toReturn.addProperty("accepted", this.accepted);
+            toReturn.addProperty("date", date.toString());
+            toReturn.addProperty("fare", fare);
+            return toReturn.toString();
+        } catch(Exception e){
+            Log.d("Error", e.toString());
+            return null;
+
+        }
+    }
+
+    // Take a jsonObject as input and creates request out of it's keys
+    public Request(JsonObject request) throws ParseException {
+        DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
+
+        this.rider = request.get("rider").getAsString();
+        this.pickup = request.get("pickup").getAsString();
+        this.dropoff = request.get("dropoff").getAsString();
+        this.dropOffCoord = buildLatLng(request.getAsJsonObject("dropoffCoord"));
+        this.pickupCoord = buildLatLng(request.getAsJsonObject("pickupCoord"));
+        this.accepted = request.get("accepted").getAsBoolean();
+        this.date = formatter.parse(request.get("date").getAsString());
+        this.id = UUID.fromString(request.get("id").getAsString());
+        this.fare = request.get("fare").getAsFloat();
+
+    }
+
+    private JsonObject buildGeoPoint(LatLng coords){
+        JsonObject newLatLng = new JsonObject();
+        newLatLng.addProperty("lat", coords.latitude);
+        newLatLng.addProperty("lon", coords.longitude);
+        return newLatLng;
+
+    }
+    private LatLng buildLatLng(JsonObject coords){
+        return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
 }
