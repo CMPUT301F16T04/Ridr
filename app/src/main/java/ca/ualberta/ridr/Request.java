@@ -16,14 +16,16 @@ public class Request {
     private Boolean accepted;
     private UUID id;
     private float fare;
-    private Date pickUpDate;
+    private String pickUpDate;
+    private String pickUpTime;
 
-    Request( Rider rider, String pickup, String dropoff, Date time){
+    Request( Rider rider, String pickup, String dropoff, String date, String time){
         this.rider = rider;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.id = UUID.randomUUID();
-        this.pickUpDate = time;
+        this.pickUpDate = date;
+        this.pickUpTime = time;
     }
 
     public boolean equals(Request request) {
@@ -87,7 +89,7 @@ public class Request {
         return fare;
     }
 
-    public Date getDate(){
+    public String getDate(){
         return pickUpDate;
     }
 }

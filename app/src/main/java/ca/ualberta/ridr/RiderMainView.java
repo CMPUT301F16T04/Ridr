@@ -1,17 +1,22 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.app.DatePickerDialog;
+import android.app.DialogFragment;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.UUID;
 
 public class RiderMainView extends Activity {
@@ -19,18 +24,36 @@ public class RiderMainView extends Activity {
     private EditText startLocation;
     private EditText endLocation;
     private EditText fareInput;
-    private EditText pickupTime;
+
+    private TextView dateTextView;
+    private TextView timeTextView;
+
+    private Button addRequest;
+    private Button dateButton;
+    private Button timeButton;
+    //private Toolbar toolbar;
+
+    private String pickUpDateString;
+    private String pickUpTimeString;
+
+    private Calendar cal;
+    private DatePickerDialog datePicker;
+
+    private SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
 
     private UUID currentUUID; // UUID of the currently logged-in rider
 
     RequestController reqController = new RequestController();
-    RiderController riderController = new RiderController();
+    //RiderController riderController = new RiderController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.rider_main);
+
+        //toolbar = (Toolbar) findViewById(R.id.makeRequestToolbar);
+        //setSupportActionBar(toolbar);
 
         //retrieve the current rider's UUID
         Intent intent = getIntent();
@@ -46,18 +69,36 @@ public class RiderMainView extends Activity {
         endLocation = (EditText) findViewById(R.id.editEndLocationText);
         fareInput = (EditText) findViewById(R.id.editFare);
 
-        Button addRequest = (Button) findViewById(R.id.createRequestButton);
+        dateTextView = (TextView) findViewById(R.id.dateText);
+        timeTextView = (TextView) findViewById(R.id.timeText);
+
+        addRequest = (Button) findViewById(R.id.createRequestButton);
+        dateButton = (Button) findViewById(R.id.dateButton);
+        timeButton = (Button) findViewById(R.id.timeButton);
+
+        dateButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                //makes a date fragment when clicked
+                DialogFragment frag = new DateSelector();
+                frag.show(getFragmentManager(), "DatePicker");
+            }
+        });
+
+
+
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
 
                 Rider rider = null; // for now just so that we wont get compile errors
-                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString(), pickupTime.getText().toDate());
+                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() , "date", "time");
                 Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
                 // reset fields
                 resetText();
             }
         });
+
+
 
 
     }
@@ -89,4 +130,13 @@ public class RiderMainView extends Activity {
         startLocation.setText("Enter Start Location");
         endLocation.setText("Enter Destination");
     }
+
+//    private void setDateField(){
+//        datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener(){
+//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayofMonth){
+//                cal.set(year, monthOfYear, dayofMonth);
+//                dateTextView.setText(dateFormat.format(cal.getTime()));
+//            }
+//        })
+//    }
 }

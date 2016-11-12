@@ -8,8 +8,8 @@ public class RequestController {
     RequestController(){}
     private Request request;
 
-    public void createRequest(Rider rider, String pickup, String dropoff){
-        request = new Request(rider, pickup, dropoff);
+    public void createRequest(Rider rider, String pickup, String dropoff, String date, String time){
+        request = new Request(rider, pickup, dropoff, date, time);
         rider.addRequest(request);
     }
 

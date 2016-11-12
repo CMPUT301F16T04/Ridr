@@ -7,6 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/light_secondary_colour"
     tools:context="ca.ualberta.ridr.RiderMainView">
 
     <Button
@@ -16,7 +17,8 @@
         android:id="@+id/createRequestButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:background="@color/light_tertiary_colour"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -47,38 +49,73 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true" />
 
+    <Button
+        android:text="Select Date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/dateText"
+        android:layout_alignParentEnd="true"
+        android:id="@+id/dateButton"
+        android:background="@color/light_tertiary_colour"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="time"
+        android:ems="10"
+        android:layout_marginBottom="27dp"
+        android:id="@+id/timeText"
+        android:layout_above="@+id/createRequestButton"
+        android:layout_alignParentStart="true"
+        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+
     <TextView
         android:text="What time do you want to be picked up?:"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/textPickUpDate"
         android:textAppearance="@android:style/TextAppearance.Material.Medium"
-        android:layout_marginBottom="74dp"
-        android:layout_above="@+id/createRequestButton"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_above="@+id/dateButton"
+        android:layout_alignParentStart="true" />
 
-    <!-- Date and time picker xml implementation from
-    http://stackoverflow.com/questions/2055509/datetime-picker-in-android-application-->
-    <DatePicker
-        android:id="@+id/datePicker"
-        android:layout_width="match_parent"
-        android:calendarViewShown="true"
-        android:spinnersShown="false"
-        android:layout_weight="4"
-        android:layout_height="0dp" />
-
-    <TimePicker
-        android:id="@+id/timePicker"
-        android:layout_weight="4"
-        android:layout_width="match_parent"
-        android:layout_height="0dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="date"
+        android:ems="10"
+        android:layout_marginBottom="30dp"
+        android:id="@+id/dateText"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:layout_above="@+id/timeText"
+        android:layout_alignParentStart="true" />
 
     <Button
-        android:id="@+id/dateTimeSet"
-        android:layout_weight="1"
+        android:text="Slect Time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/timeButton"
+        android:background="@color/light_tertiary_colour"
+        android:layout_alignTop="@+id/timeText"
+        android:layout_alignParentEnd="true" />
+
+
+    <!--
+        <Button
+            android:id="@+id/dateTimeSet"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:text="Set"
+            android:layout_height="0dp"/>
+    -->
+
+    <!-- toolbar menu -->
+    <!--
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/makeRequestToolbar"
         android:layout_width="match_parent"
-        android:text="Set"
-        android:layout_height="0dp"/>
+        android:layout_height="30dp"
+        android:background="@color/light_tertiary_colour"
+        />
+    -->
 
 </RelativeLayout>
