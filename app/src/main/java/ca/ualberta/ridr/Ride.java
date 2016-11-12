@@ -24,26 +24,26 @@ public class Ride {
     private String driver;
     private String rider;
     private Boolean isCompleted; //pending is denoted by isCompleted = False
-    private LatLng pickupCoord;
-    private LatLng dropOffCoord;
+    private LatLng pickupCoords;
+    private LatLng dropOffCoords;
     private UUID id;
     private float fare;
 
 
     public LatLng getPickupCoords() {
-        return pickupCoord;
+        return pickupCoords;
     }
 
     public void setPickupCoords(LatLng pickupCoords) {
-        this.pickupCoord = pickupCoords;
+        this.pickupCoords = pickupCoords;
     }
 
     public LatLng getDropOffCoords() {
-        return dropOffCoord;
+        return dropOffCoords;
     }
 
     public void setDropOffCoords(LatLng dropOffCoords) {
-        this.dropOffCoord = dropOffCoords;
+        this.dropOffCoords = dropOffCoords;
     }
 
 
@@ -54,8 +54,8 @@ public class Ride {
         this.rider = rider.getID().toString();
         this.pickup = pickup;
         this.dropoff = dropoff;
-        this.pickupCoord = pickupCoords;
-        this.dropOffCoord = dropOffCoords;
+        this.pickupCoords = pickupCoords;
+        this.dropOffCoords = dropOffCoords;
         this.isCompleted = false;
         this.id = UUID.randomUUID();
         this.fare  = 20;
@@ -137,8 +137,8 @@ public class Ride {
             toReturn.put("driver", this.driver);
             toReturn.put("pickup", this.pickup);
             toReturn.put("dropoff", this.dropoff);
-            toReturn.put("pickupCoords", buildGeoPoint(pickupCoord));
-            toReturn.put("dropOffCoords", buildGeoPoint(dropOffCoord));
+            toReturn.put("pickupCoords", buildGeoPoint(pickupCoords));
+            toReturn.put("dropOffCoords", buildGeoPoint(dropOffCoords));
             toReturn.put("id", this.id.toString());
             toReturn.put("isCompleted", this.isCompleted);
             toReturn.put("date", rideDate.toString());

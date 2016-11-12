@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -45,6 +44,11 @@ public class AcceptDriverView extends Activity {
         final Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
 
 
+        final Rider rider = new Rider("joe", new Date(), "credit", "email", "phone");
+        LatLng coords = new LatLng(0,0);
+        final Request request = new Request(rider, "start", "end", coords, coords, new Date());
+
+
         String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
 
@@ -61,9 +65,6 @@ public class AcceptDriverView extends Activity {
                 //also need to know what request we are dealing with so that we can create the ride...
 
                 //will need to remove these eventually too
-                Rider rider = new Rider("joe", new Date(), "credit", "email", "phone");
-                LatLng coords = new LatLng(0,0);
-                Request request = new Request(rider, "start", "end", coords, coords, new Date());
 
 
                 //need to remove these eventually when we retrieve real data

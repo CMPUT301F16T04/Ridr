@@ -5,6 +5,7 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 import org.json.JSONException;
@@ -168,6 +169,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
+        this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
 
     }
 
@@ -180,5 +182,9 @@ public class Request {
     }
     private LatLng buildLatLng(JsonObject coords){
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
+    }
+    private ArrayList<Driver> buildPossibleDriversList(JsonArray array){
+        ArrayList<Driver> drivers = new ArrayList<Driver>();
+        return(drivers);
     }
 }
