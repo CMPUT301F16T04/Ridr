@@ -14,6 +14,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+
 import java.util.Date;
 
 public class AcceptDriverView extends Activity {
@@ -35,8 +38,13 @@ public class AcceptDriverView extends Activity {
 
         //TODO get the driver using the info passed from the previous activity
         //will need to remove these, just here to test UI
-        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        final Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        //Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+        //final Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+
+        String driverId = "fd6b75de-3c8e-4e24-9c84-1dc19da74f7d";
+        final Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+
+
         String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
 
@@ -54,7 +62,8 @@ public class AcceptDriverView extends Activity {
 
                 //will need to remove these eventually too
                 Rider rider = new Rider("joe", new Date(), "credit", "email", "phone");
-                Request request = new Request("start", "end");
+                LatLng coords = new LatLng(0,0);
+                Request request = new Request("start", "end", coords, coords, new Date());
 
                 //need to remove these eventually when we retrieve real data
                 RequestController RC = new RequestController();
