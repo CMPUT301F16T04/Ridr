@@ -7,6 +7,9 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -125,20 +128,21 @@ public class Request {
         return id;
     }
 
-    public String toJson(){
+    public String toJsonString(){
         // Attempt to conver request into a JsonObject
         // If fail return a null pointer
-        JsonObject toReturn = new JsonObject();
+        // Need to use the java standard JSON object here because we are nesting JSON items
+        JSONObject toReturn = new JSONObject();
         try {
-            toReturn.addProperty("rider", this.rider);
-            toReturn.addProperty("pickup", this.pickup);
-            toReturn.addProperty("dropoff", this.dropoff);
-            toReturn.addProperty("pickupCoord", String.valueOf(buildGeoPoint(pickupCoord)));
-            toReturn.addProperty("dropoffCoord", String.valueOf(buildGeoPoint(dropOffCoord)));
-            toReturn.addProperty("id", this.id.toString());
-            toReturn.addProperty("accepted", this.accepted);
-            toReturn.addProperty("date", date.toString());
-            toReturn.addProperty("fare", fare);
+            toReturn.put("rider", this.rider);
+            toReturn.put("pickup", this.pickup);
+            toReturn.put("dropoff", this.dropoff);
+            toReturn.put("pickupCoord", buildGeoPoint(pickupCoord));
+            toReturn.put("dropOffCoord", buildGeoPoint(dropOffCoord));
+            toReturn.put("id", this.id.toString());
+            toReturn.put("accepted", this.accepted);
+            toReturn.put("date", date.toString());
+            toReturn.put("fare", fare);
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -151,12 +155,13 @@ public class Request {
     public Request(JsonObject request) throws ParseException {
         // There is one major limitation in what I have done so far,
         // currently I don't have or store a list of possible drivers
+        // Because of the differences between JsonObject and JSONObject.
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
         this.rider = request.get("rider").getAsString();
         this.pickup = request.get("pickup").getAsString();
         this.dropoff = request.get("dropoff").getAsString();
-        this.dropOffCoord = buildLatLng(request.getAsJsonObject("dropoffCoord"));
+        this.dropOffCoord = buildLatLng(request.getAsJsonObject("dropOffCoord"));
         this.pickupCoord = buildLatLng(request.getAsJsonObject("pickupCoord"));
         this.accepted = request.get("accepted").getAsBoolean();
         this.date = formatter.parse(request.get("date").getAsString());
@@ -165,10 +170,10 @@ public class Request {
 
     }
 
-    private JsonObject buildGeoPoint(LatLng coords){
-        JsonObject newLatLng = new JsonObject();
-        newLatLng.addProperty("lat", coords.latitude);
-        newLatLng.addProperty("lon", coords.longitude);
+    private JSONObject buildGeoPoint(LatLng coords) throws JSONException {
+        JSONObject newLatLng = new JSONObject();
+        newLatLng.put("lat", coords.latitude);
+        newLatLng.put("lon", coords.longitude);
         return newLatLng;
 
     }
