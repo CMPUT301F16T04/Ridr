@@ -41,7 +41,7 @@ public class AcceptDriverView extends Activity {
         //Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         //final Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
 
-        String driverId = "fd6b75de-3c8e-4e24-9c84-1dc19da74f7d";
+        String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
         final Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
 
 
@@ -63,7 +63,8 @@ public class AcceptDriverView extends Activity {
                 //will need to remove these eventually too
                 Rider rider = new Rider("joe", new Date(), "credit", "email", "phone");
                 LatLng coords = new LatLng(0,0);
-                Request request = new Request("start", "end", coords, coords, new Date());
+                Request request = new Request(rider, "start", "end", coords, coords, new Date());
+
 
                 //need to remove these eventually when we retrieve real data
                 RequestController RC = new RequestController();

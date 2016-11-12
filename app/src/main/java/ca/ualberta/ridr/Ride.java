@@ -58,6 +58,7 @@ public class Ride {
         this.dropOffCoord = dropOffCoords;
         this.isCompleted = false;
         this.id = UUID.randomUUID();
+        this.fare  = 20;
     }
 
 
@@ -65,6 +66,8 @@ public class Ride {
         Double fare = 0.0;
         return fare;
     }
+
+    public UUID getId(){return id;}
 
     public String getPickupAddress() {
         return pickup;
