@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
@@ -59,6 +60,7 @@ public class AsyncController {
         try{
             return controller.execute(type, id, jsonObject).get();
         } catch(Exception e){
+            Log.d("Elastic Search Creation", e.toString());
             return null;
         }
     }

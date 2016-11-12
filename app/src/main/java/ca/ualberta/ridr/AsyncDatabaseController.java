@@ -103,12 +103,14 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
         // Takes strings of the type of object, [user, ride, request], the id of the object to create
         // and the json version of that object and posts it to the server
         // It returns a jsonObject representing the results of the operation or null if it failed
+        System.out.println(jsonValue);
         Index index = new Index.Builder(jsonValue).index(databaseName).type(type).id(ID).build();
         DocumentResult result = client.execute(index);
         if (result.isSucceeded()) {
             return result;
         }
         else {
+            Log.d("error", result.getJsonObject().toString());
             Log.i("Error", "The search query failed to find the Class that matched.");
             return null;
         }
