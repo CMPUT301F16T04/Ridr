@@ -32,14 +32,14 @@ public class Request {
     private UUID id;
     private float fare;
     private Date date;
-    
+
     Request(Rider rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupCoord = pickupCoords;
         this.dropOffCoord = dropOffCoords;
         this.date = date;
-        this.rider = rider.getID().toString();
+        this.rider = rider;
         this.id = UUID.randomUUID();
         this.fare = 20;
         this.accepted = false;
@@ -148,7 +148,6 @@ public class Request {
         } catch(Exception e){
             Log.d("Error", e.toString());
             return null;
-
         }
     }
 
@@ -168,7 +167,17 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
+    }
 
+    public ArrayList<String> queryableRequestVariables() {
+        ArrayList<String> stringArray = new ArrayList<>();
+        stringArray.add(this.dropoff);
+        stringArray.add(this.pickup);
+        stringArray.add(this.rider.getName());
+        stringArray.add(this.rider.getEmail());
+        stringArray.add(this.rider.getPhoneNumber());
+
+        return stringArray;
     }
 
     private JSONObject buildGeoPoint(LatLng coords) throws JSONException {
@@ -176,9 +185,10 @@ public class Request {
         newLatLng.put("lat", coords.latitude);
         newLatLng.put("lon", coords.longitude);
         return newLatLng;
-
     }
+
     private LatLng buildLatLng(JsonObject coords){
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
+
 }
