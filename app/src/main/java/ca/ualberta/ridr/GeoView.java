@@ -43,18 +43,20 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.UUID;
 
 import static android.widget.Toast.makeText;
 
-public class GeoView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener {
+public class GeoView extends FragmentActivity implements OnMapReadyCallback, Observer, ConnectionCallbacks, OnConnectionFailedListener {
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
-    ArrayList<Request> requests;
     private UUID userID;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
+    private RequestController requests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,8 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         // Create a connection to the GooglePlay api client
         //this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
-        requests = new ArrayList<>();
+
+        requests = new RequestController();
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -198,7 +201,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
         Log.i("Rider id", rider.getID().toString());
-        addAllRequest(rider.getID());
         addMarkers();
     }
 
@@ -229,19 +231,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     };
 
-    public void addAllRequest(UUID userID){
-        AsyncController controller = new AsyncController();
-
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
-        Log.i("Rider", queryResults.toString());
-        for(JsonElement result : queryResults){
-           try {
-               requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-           } catch (Exception e){
-               Log.i("Error parsing requests", e.toString());
-           }
-        }
-    }
 
     public void addMarkers(){
         map.clear();
@@ -269,6 +258,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         return false;
     }
 
+    @Override
+    public void update(Observable o, Object arg) {
+        
+    }
 }
 
 
