@@ -112,13 +112,11 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     public void onConnected(Bundle connectionHint){
         System.out.println("Connected");
         lastKnownPlace = getCurrentLocation();
-        if(lastKnownPlace != null && firstLoad != true) {
+        if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
             AsyncController controller = new AsyncController();
-            Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
-            userID = rider.getID();
-            requests.getUserRequest(userID);
+            requests.getAllRequests();
         }
 
     }

@@ -51,9 +51,30 @@ public class RequestController {
                 cbInterface.callback();
             }
         });
+    }
+
+        public void getAllRequests() {
+            // Get all user requests from the database
+            Thread getUser = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    AsyncController controller = new AsyncController();
+                    JsonArray queryResults = controller.getAllFromIndex("request");
+                    for (JsonElement result : queryResults) {
+                        try {
+                            requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                        } catch (Exception e) {
+                            Log.i("Error parsing requests", e.toString());
+                        }
+                    }
+                    cbInterface.callback();
+                }
+        });
+
         getUser.start();
     }
 
+    // Pretty hard to test
     public void findAllRequestsWithinDistance(final LatLng center, final String distance){
         Thread getUser = new Thread(new Runnable() {
             @Override
