@@ -49,10 +49,11 @@ import java.util.UUID;
 
 import static android.widget.Toast.makeText;
 
-public class GeoView extends FragmentActivity implements OnMapReadyCallback, Observer, ConnectionCallbacks, OnConnectionFailedListener {
+public class GeoView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, ACallback {
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
+    private ArrayList<Request> filteredReqeusts;
     private UUID userID;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
@@ -65,13 +66,8 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-//        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-//        request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
 
-        // Create a connection to the GooglePlay api client
-        //this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
-
-        requests = new RequestController();
+        requests = new RequestController(this);
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -83,12 +79,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
         }
 
         Button clickMe = (Button) findViewById(R.id.test);
-        clickMe.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                addMarkers();
-            }
-        });
+
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -131,6 +122,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
         if(lastKnownPlace != null) {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
         }
+        requests.getUserRequest(userID);
     }
 
     // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
@@ -153,10 +145,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
         map = googleMap;
         Calendar current = Calendar.getInstance();
         map.setMyLocationEnabled(true);
-
-
-
-
         // Add night view for nice viewing when it's dark out
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         if (nightTime(time.format(current.getTime()))) {
@@ -201,7 +189,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
 
         Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
         Log.i("Rider id", rider.getID().toString());
-        addMarkers();
     }
 
     @Nullable
@@ -231,18 +218,26 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
         }
     };
 
+    public void callback(){
+        if(requests.size() > 0 ){
+            filteredReqeusts = requests.getList();
+        }
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                addMarkers();
+            }
+        });
+
+    }
 
     public void addMarkers(){
         map.clear();
-        if(requests.size() > 0 ) {
-            for (Request request : requests) {
+        if(filteredReqeusts.size() > 0 ) {
+            for (Request request : filteredReqeusts) {
                 map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup())).setTag(request);
             }
         }
-    }
-
-    public void clearRequests(){
-        map.clear();
     }
 
     // Let's be fancy and add night time viewing
@@ -256,11 +251,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Obs
             e.printStackTrace();
         }
         return false;
-    }
-
-    @Override
-    public void update(Observable o, Object arg) {
-        
     }
 }
 

@@ -16,24 +16,40 @@ import java.util.UUID;
  */
 public class RequestController extends Observable {
     private ArrayList<Request> requests;
+    private ACallback cbInterface;
 
-
-    public RequestController(){
+    public RequestController(ACallback cbInterface){
+        this.cbInterface = cbInterface;
         this.requests = new ArrayList<>();
     }
 
-    public void addAllRequest(UUID userID){
-        AsyncController controller = new AsyncController();
+    public int size(){
+        return requests.size();
+    }
 
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
-        Log.i("Rider", queryResults.toString());
-        for(JsonElement result : queryResults){
-            try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-                notify();
-            } catch (Exception e){
-                Log.i("Error parsing requests", e.toString());
+    public ArrayList<Request> getList(){
+        return requests;
+    }
+    public void getUserRequest(final UUID userID) {
+        // Get all user requests from the database
+        Thread getUser = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                AsyncController controller = new AsyncController();
+                System.out.println("Adding request");
+                JsonArray queryResults = controller.getAllFromIndex("request");
+                Log.i("Rider", queryResults.toString());
+                for (JsonElement result : queryResults) {
+                    try {
+                        System.out.println("Adding request");
+                        requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                    } catch (Exception e) {
+                        Log.i("Error parsing requests", e.toString());
+                    }
+                }
+                cbInterface.callback();
             }
-        }
+        });
+        getUser.start();
     }
 }
