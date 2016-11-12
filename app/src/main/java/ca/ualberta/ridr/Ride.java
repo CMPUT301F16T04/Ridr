@@ -58,6 +58,7 @@ public class Ride {
         this.dropOffCoord = dropOffCoords;
         this.isCompleted = false;
         this.id = UUID.randomUUID();
+        this.fare = 20;
     }
 
 
