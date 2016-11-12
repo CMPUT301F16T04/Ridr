@@ -16,6 +16,11 @@ import android.widget.Toast;
 /**
  * Modified by nkaefer on 2016/11/08
  */
+import com.google.gson.Gson;
+
+import java.util.Date;
+import java.util.UUID;
+
 public class LoginView extends Activity {
     TextView riderLogin;
     TextView driverLogin;
@@ -39,6 +44,7 @@ public class LoginView extends Activity {
         loginButton.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
+
                 if(event.getAction() == MotionEvent.ACTION_DOWN){
                     loginButton.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.dark_tertiary_colour));
                 } else if(event.getAction() == MotionEvent.ACTION_UP) {

@@ -64,15 +64,15 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.22627417"
-     inkscape:cx="-419.49716"
-     inkscape:cy="-2660.1259"
+     inkscape:cx="2163.9659"
+     inkscape:cy="-1422.689"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
-     inkscape:window-width="1280"
-     inkscape:window-height="690"
-     inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-width="1536"
+     inkscape:window-height="801"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
      inkscape:window-maximized="1"
      showguides="false"
      inkscape:guide-bbox="true"
@@ -3067,18 +3067,6 @@
          y="1691.0768">ProfileView</tspan></text>
     <text
        xml:space="preserve"
-       style="font-style:normal;font-weight:normal;font-size:139.73756409px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
-       x="2241.1213"
-       y="3851.9658"
-       id="text3969"
-       sodipodi:linespacing="125%"
-       transform="scale(0.59782387,1.6727335)"><tspan
-         sodipodi:role="line"
-         id="tspan3971"
-         x="2241.1213"
-         y="3851.9658">no current .java file or .xml file for this view</tspan></text>
-    <text
-       xml:space="preserve"
        style="font-style:normal;font-weight:normal;font-size:74.8462677px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        x="-2393.5437"
        y="2260.6099"
@@ -3302,5 +3290,16 @@
          id="tspan3956"
          x="2777.498"
          y="1188.1287">AcceptRiderView</tspan></text>
-  </g>
+    <flowRoot
+       xml:space="preserve"
+       id="flowRoot3946"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
+       transform="matrix(4.0781228,0.06845931,0.01576044,5.6106604,-3829.3598,-29109.673)"><flowRegion
+         id="flowRegion3948"><rect
+           id="rect3950"
+           width="1202.0815"
+           height="145.84077"
+           x="1237.4369"
+           y="6280.5332" /></flowRegion><flowPara
+         id="flowPara3952">AddUserView</flowPara></flowRoot>  </g>
 </svg>
