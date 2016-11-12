@@ -32,11 +32,9 @@ import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -189,12 +187,19 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         AsyncController controller = new AsyncController();
 
         JsonArray results = controller.getAllFromIndex("request");
+        JsonObject driverResults = controller.get("user", "name", "Justin Barclay");
+        Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
+
+        Request request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.50505), new Date() );
+
+        System.out.println(controller.create("request", request.getID().toString(), request.toJson()));
+
         for(JsonElement item : results){
             try{
-                Request test;
-                System.out.println(item.getAsJsonObject().getAsJsonObject("_source"));
-                test = new Request(item.getAsJsonObject().getAsJsonObject("_source"));
-                //System.out.println(test);
+//                Request test;
+//                System.out.println(item.getAsJsonObject().getAsJsonObject("_source"));
+//                test = new Request(item.getAsJsonObject().getAsJsonObject("_source"));
+//                System.out.println(new Gson().toJson(test));
             } catch (Exception e){
                 Log.d("Error parsing request", e.toString());
             }
