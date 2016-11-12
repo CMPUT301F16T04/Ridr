@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">Ridr</string>
+    <string name="username_hint">Username</string>
+    <string name="rider">Rider</string>
+    <string name="log_in">Log In</string>
+    <string name="driver">Driver</string>
 </resources>
