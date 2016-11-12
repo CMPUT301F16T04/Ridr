@@ -30,5 +30,6 @@ dependencies {
     //Ignore any warnings about new versions being available.
     testCompile 'junit:junit:4.12'
     compile files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
+    compile 'org.elasticsearch:parent:2.4.1'
 }
 

@@ -31,6 +31,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -178,6 +184,22 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                 return infoView;
             }
         });
+
+        System.out.println("Creating test data");
+        AsyncController controller = new AsyncController();
+
+        JsonArray results = controller.getAllFromIndex("request");
+        for(JsonElement item : results){
+            try{
+                Request test;
+                System.out.println(item.getAsJsonObject().getAsJsonObject("_source"));
+                test = new Request(item.getAsJsonObject().getAsJsonObject("_source"));
+                //System.out.println(test);
+            } catch (Exception e){
+                Log.d("Error parsing request", e.toString());
+            }
+        }
+
     }
 
 
