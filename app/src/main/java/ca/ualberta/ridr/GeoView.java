@@ -8,9 +8,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.analytics.HitBuilders;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -49,7 +51,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
-    private Request request;
+    ArrayList<Request> requests;
     private UUID userID;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
@@ -61,12 +63,12 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
+//        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+//        request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
 
         // Create a connection to the GooglePlay api client
         //this.userID = UUID.fromString(getIntent().getStringExtra("userID"));
-
+        requests = new ArrayList<>();
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -77,6 +79,13 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                     .build();
         }
 
+        Button clickMe = (Button) findViewById(R.id.test);
+        clickMe.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addMarkers();
+            }
+        });
         PlaceAutocompleteFragment autocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
@@ -143,7 +152,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         map.setMyLocationEnabled(true);
 
 
-        map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup())).setTag(request);
+
 
         // Add night view for nice viewing when it's dark out
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
@@ -188,19 +197,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
 
         Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
-
-        JsonArray results = controller.getAllFromIndex("request");
-        for(JsonElement item : results){
-            try{
-                Request test;
-                System.out.println(item.getAsJsonObject().getAsJsonObject("_source"));
-                test = new Request(item.getAsJsonObject().getAsJsonObject("_source"));
-                System.out.println(new Gson().toJson(test));
-            } catch (Exception e){
-                Log.d("Error parsing request", e.toString());
-            }
-        }
-
+        Log.i("Rider id", rider.getID().toString());
+        addAllRequest(rider.getID());
+        addMarkers();
     }
 
     @Nullable
@@ -230,8 +229,27 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     };
 
-    public void addAllRequest(ArrayList<Request> requests){
+    public void addAllRequest(UUID userID){
+        AsyncController controller = new AsyncController();
 
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
+        Log.i("Rider", queryResults.toString());
+        for(JsonElement result : queryResults){
+           try {
+               requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+           } catch (Exception e){
+               Log.i("Error parsing requests", e.toString());
+           }
+        }
+    }
+
+    public void addMarkers(){
+        map.clear();
+        if(requests.size() > 0 ) {
+            for (Request request : requests) {
+                map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup())).setTag(request);
+            }
+        }
     }
 
     public void clearRequests(){
@@ -250,7 +268,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
         return false;
     }
-    
+
 }
 
 
