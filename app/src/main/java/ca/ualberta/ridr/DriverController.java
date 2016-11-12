@@ -19,11 +19,17 @@ import io.searchbox.core.SearchResult;
  * Created by jferris on 22/10/16.
  */
 public class DriverController {
+/*
+
+DEPRECATED CODE - Will be getting rid of when merging to master
+
     private static JestDroidClient client;
 
-    /**
+    */
+/*
      * This class gets Drivers by name string
-     */
+     *//*
+
     public static class GetDriverByNameTask extends AsyncTask<String, Void, Driver> {
         @Override
         protected Driver doInBackground(String... search_parameters) {
@@ -55,9 +61,11 @@ public class DriverController {
         }
     }
 
-    /**
+    */
+/*
      * This class gets Drivers by a UUID string
-     */
+     *//*
+
     public static class GetDriverByUUIDTask extends AsyncTask<String, Void, Driver> {
         @Override
         protected Driver doInBackground(String... search_parameters) {
@@ -87,9 +95,11 @@ public class DriverController {
     }
 
 
-    /**
+    */
+/*
      * This class adds a Driver object
-     */
+     *//*
+
     public static class AddDriverTask extends AsyncTask<Driver, Void, Void> {
 
         @Override
@@ -139,9 +149,11 @@ public class DriverController {
 
 
     //TEST CLASSES - FOR TESTS ONLY
-    /**
+    */
+/*
      * This class gets Drivers by name string, is used as a test
-     */
+     *//*
+
     public static class GetDriverByUUIDTaskTest extends AsyncTask<String, Void, Driver> {
         @Override
         protected Driver doInBackground(String... search_parameters) {
@@ -170,9 +182,11 @@ public class DriverController {
         }
     }
 
-    /**
+    */
+/*
      * This class gets Drivers by UUID as string, is used as a test
-     */
+     *//*
+
     public static class GetDriverByNameTaskTest extends AsyncTask<String, Void, Driver> {
         @Override
         protected Driver doInBackground(String... search_parameters) {
@@ -201,9 +215,11 @@ public class DriverController {
         }
     }
 
-    /**
+    */
+/*
      * This class adds a Driver object, is a test
-     */
+     *//*
+
     public static class AddDriverTaskTest extends AsyncTask<Driver, Void, Void> {
         @Override
         protected Void doInBackground(Driver... drivers) {
@@ -228,10 +244,12 @@ public class DriverController {
         }
     }
 
-    /**
+    */
+/*
      * Deletes a driver in the driver tests, using ElasticID as a parameter
      * @param ID
-     */
+     *//*
+
     public void deleteDriverTests(String ID){
         verifySettings();
         try {
@@ -243,4 +261,6 @@ public class DriverController {
             Log.i("ERROR", "Couldn't delete previous driver test objects from elastic search");
         }
     }
+*/
+
 }

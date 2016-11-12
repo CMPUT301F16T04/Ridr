@@ -124,7 +124,6 @@ public class AddUserView extends Activity {
                 //check that account doesn't already exist
                 RiderController.GetRiderByNameTask getRiderByNameTask = new RiderController.GetRiderByNameTask();
                 DriverController.GetDriverByNameTask getDriverByNameTask = new DriverController.GetDriverByNameTask();
-                //checks both rider and driver servers, as there might accidentally be a certain user in one server and not the other
                 try{
                     Rider onlineRider = getRiderByNameTask.execute(rider.getName()).get();
                     //not really asynchronous anymore, could potentially fix with a loading bar
@@ -153,10 +152,14 @@ public class AddUserView extends Activity {
                 //successful account creation
                 Toast.makeText(AddUserView.this, "Making Account!", Toast.LENGTH_SHORT).show();
                 //save account in elastic search
+                /* DEPRECATED
                 RiderController.AddRiderTask addRiderTask = new RiderController.AddRiderTask();
                 DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
                 addRiderTask.execute(rider);
-                addDriverTask.execute(driver);
+                addDriverTask.execute(driver);*/
+
+
+
 
                 finish();
             }

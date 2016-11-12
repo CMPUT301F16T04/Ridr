@@ -18,11 +18,16 @@ import io.searchbox.core.SearchResult;
  * Created by jferris on 22/10/16.
  */
 public class RiderController {
+/*
+
+    DEPRECATED CODE - Will be getting rid of when merging to master
+
+
     private static JestDroidClient client;
 
-    /**
+    *//*
      *  This class gets Riders by name string
-     */
+     *//*
     public static class GetRiderByNameTask extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -54,9 +59,9 @@ public class RiderController {
         }
     }
 
-    /**
+    *//*
      * Gets rider by UUID string
-     */
+     *//*
     public static class GetRiderByUUIDTask extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -87,9 +92,9 @@ public class RiderController {
     }
 
 
-    /**
+    *//*
      * this class adds a Rider object
-     */
+     *//*
     public static class AddRiderTask extends AsyncTask<Rider, Void, Void> {
 
         @Override
@@ -137,9 +142,9 @@ public class RiderController {
 
 
     //TEST CLASSES - FOR TESTS ONLY
-    /**
+    *//*
      *  This class gets Riders by name string, is a test
-     */
+     *//*
     public static class GetRiderByNameTaskTest extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -169,9 +174,9 @@ public class RiderController {
         }
     }
 
-    /**
+    *//*
      *  This class gets Riders by UUID string, is a test
-     */
+     *//*
     public static class GetRiderByUUIDTaskTest extends AsyncTask<String, Void, Rider> {
         @Override
         protected Rider doInBackground(String... search_parameters) {
@@ -201,9 +206,9 @@ public class RiderController {
         }
     }
 
-    /**
+    *//*
      * this class adds a Rider object
-     */
+     *//*
     public static class AddRiderTaskTest extends AsyncTask<Rider, Void, Void> {
         @Override
         protected Void doInBackground(Rider... riders) {
@@ -228,10 +233,10 @@ public class RiderController {
         }
     }
 
-    /**
+    *//*
      * Deletes a rider in the rider tests, using ElasticID as a parameter
      * @param ID
-     */
+     *//*
     public void deleteRiderTests(String ID){
         verifySettings();
         try {
@@ -242,5 +247,5 @@ public class RiderController {
         } catch (Exception e){
             Log.i("ERROR", "Couldn't delete previous rider test objects from elastic search");
         }
-    }
+    }*/
 }
