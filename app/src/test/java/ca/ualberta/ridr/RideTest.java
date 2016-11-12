@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Test;
 
 import java.util.Date;
@@ -16,8 +18,9 @@ public class RideTest {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        LatLng coords = new LatLng(0,0);
 
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), coords, coords);
         assertTrue(ride.equals(ride));
     }
 }
