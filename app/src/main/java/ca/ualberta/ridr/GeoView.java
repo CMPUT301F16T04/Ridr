@@ -186,27 +186,22 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         System.out.println("Creating test data");
         AsyncController controller = new AsyncController();
 
-        JsonArray results = controller.getAllFromIndex("request");
-        JsonObject driverResults = controller.get("user", "name", "Justin Barclay");
+
         Rider rider = new Gson().fromJson(controller.get("user", "name", "Justin Barclay"), Rider.class);
 
-        Request request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.50505), new Date() );
-
-        System.out.println(controller.create("request", request.getID().toString(), request.toJson()));
-
+        JsonArray results = controller.getAllFromIndex("request");
         for(JsonElement item : results){
             try{
-//                Request test;
-//                System.out.println(item.getAsJsonObject().getAsJsonObject("_source"));
-//                test = new Request(item.getAsJsonObject().getAsJsonObject("_source"));
-//                System.out.println(new Gson().toJson(test));
+                Request test;
+                System.out.println(item.getAsJsonObject().getAsJsonObject("_source"));
+                test = new Request(item.getAsJsonObject().getAsJsonObject("_source"));
+                System.out.println(new Gson().toJson(test));
             } catch (Exception e){
                 Log.d("Error parsing request", e.toString());
             }
         }
 
     }
-
 
     @Nullable
     // Simple function to grab current location in LatLong
@@ -255,22 +250,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
         return false;
     }
-
-//    /**
-//     * ATTENTION: This was auto-generated to implement the App Indexing API.
-//     * See https://g.co/AppIndexing/AndroidStudio for more information.
-//     */
-//    public Action getIndexApiAction() {
-//        Thing object = new Thing.Builder()
-//                .setName("GeoView Page") // TODO: Define a title for the content shown.
-//                // TODO: Make sure this auto-generated URL is correct.
-//                .setUrl(Uri.parse("http://[ENTER-YOUR-URL-HERE]"))
-//                .build();
-//        return new Action.Builder(Action.TYPE_VIEW)
-//                .setObject(object)
-//                .setActionStatus(Action.STATUS_TYPE_COMPLETED)
-//                .build();
-//    }
+    
 }
 
 
