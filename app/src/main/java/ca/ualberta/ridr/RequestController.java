@@ -3,6 +3,8 @@ package ca.ualberta.ridr;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
@@ -19,8 +21,18 @@ import io.searchbox.core.SearchResult;
 public class RequestController {
     private static JestDroidClient client;
     private ArrayList<Request> requests = new ArrayList<>();
+    private JsonArray jsonArray;
 
     public RequestController(){}
+
+    public ArrayList<Request> searchRequestsKeyword(String keyword) {
+        jsonArray = new AsyncController().getAllFromIndex("request");
+        Gson gson = new Gson();
+        for (int i = 0; i < jsonArray.size(); ++i) {
+            User user = gson.fromJson(jsonArray.get(i).getAsJsonObject(), User.class);
+
+        }
+    }
 
     public static class SearchRequestsKeyword extends AsyncTask<String, Void, ArrayList<Request>> {
         @Override

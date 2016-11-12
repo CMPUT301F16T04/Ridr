@@ -1,8 +1,5 @@
 package ca.ualberta.ridr;
 
-import android.util.Log;
-
-import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -23,7 +20,7 @@ public class RidrTest{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        assertTrue(new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date()) instanceof Ride);
+        assertTrue(new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords) instanceof Ride);
     }
 
     @Test
@@ -123,7 +120,7 @@ public class RidrTest{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
         ride.complete();
 
         Double fare = ride.getFare();
@@ -146,7 +143,7 @@ public class RidrTest{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
 
         assertFalse(ride.getCompleted());
 
@@ -170,7 +167,7 @@ public class RidrTest{
         Vehicle vehicleT = new Vehicle(1996, "chevy", "truck");
         Driver driverTwo = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
         driver.acceptRide(ride);
         driverTwo.acceptRide(ride);
 
@@ -192,7 +189,7 @@ public class RidrTest{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date());
+        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
 
         assertFalse(ride.getCompleted());
         assertEquals(ride.getDriver(), driver);

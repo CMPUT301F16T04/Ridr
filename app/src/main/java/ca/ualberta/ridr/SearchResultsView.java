@@ -30,7 +30,11 @@ public class SearchResultsView extends AppCompatActivity {
             keyword = extras.getString("keyword");
         }
 
-        String text = bodyText.getText().toString();
+        requestList = requestController.searchRequestsKeyword(keyword);
+
+
+
+        /*String text = bodyText.getText().toString();
         RequestController.SearchRequestsKeyword searchRequestsKeyword = new RequestController.SearchRequestsKeyword();
         searchRequestsKeyword.execute(keyword);
         try {
@@ -39,6 +43,6 @@ public class SearchResultsView extends AppCompatActivity {
         catch (Exception e) {
             Log.i("Error", "Failed to get the requests out of the async object.");
         }
-        adapter.notifyDataSetChanged();
+        adapter.notifyDataSetChanged();*/
     }
 }

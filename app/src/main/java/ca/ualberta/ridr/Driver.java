@@ -13,14 +13,18 @@ public class Driver extends User {
 
     @JestId
     private String driverID;
-    public Vehicle vehicle;
-    public ArrayList<Ride> rideArrayList;
+    // These are all marked transient as we don't want them serialized when we pass this object to
+    // our AsyncDatabaseController
+    private transient Vehicle vehicle;
+    private transient String bankAccountNo;
+    private transient ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
                   String email, String phoneNumber, Vehicle vehicle) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.vehicle = vehicle;
         this.rideArrayList = new ArrayList<Ride>();
+        this.setDriverStatus(true);
     }
 
     public String getDriverID() {
