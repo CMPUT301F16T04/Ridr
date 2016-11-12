@@ -2,14 +2,11 @@ package ca.ualberta.ridr;
 
 import android.util.Log;
 
-import com.google.android.gms.common.data.DataBufferObserver;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
-import java.util.Observable;
-import java.util.Observer;
 import java.util.UUID;
 
 /**
@@ -28,21 +25,24 @@ public class RequestController {
         return requests.size();
     }
 
+    public void add(Request request){
+        requests.add(request);
+        cbInterface.callback();
+    }
     public ArrayList<Request> getList(){
         return requests;
     }
+
+    // Pretty hard to test
     public void getUserRequest(final UUID userID) {
         // Get all user requests from the database
         Thread getUser = new Thread(new Runnable() {
             @Override
             public void run() {
                 AsyncController controller = new AsyncController();
-                System.out.println("Adding request");
                 JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
-                Log.i("Rider", queryResults.toString());
                 for (JsonElement result : queryResults) {
                     try {
-                        System.out.println("Adding request");
                         requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
                     } catch (Exception e) {
                         Log.i("Error parsing requests", e.toString());
