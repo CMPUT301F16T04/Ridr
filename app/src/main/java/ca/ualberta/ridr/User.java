@@ -29,11 +29,6 @@ public class User {
         this.id = UUID.randomUUID();
     }
 
-
-    public UUID getUUID() {
-        return id;
-    }
-
     public String getName() {
         return name;
     }

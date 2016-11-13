@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
@@ -13,6 +14,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -116,31 +119,15 @@ public class AddUserView extends Activity {
                 }
 
                 //make the objects
-                Rider rider = new Rider(formattedNameString, DOB,
+                User user = new User(formattedNameString, DOB,
                         formattedCreditString, formattedEmailString, formattedPhoneString);
-                Driver driver = new Driver(formattedNameString, DOB,
-                        formattedCreditString, formattedEmailString, formattedPhoneString, null);
 
                 //check that account doesn't already exist
-                RiderController.GetRiderByNameTask getRiderByNameTask = new RiderController.GetRiderByNameTask();
-                DriverController.GetDriverByNameTask getDriverByNameTask = new DriverController.GetDriverByNameTask();
+                AsyncController controller = new AsyncController();
+                User onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
                 try{
-                    Rider onlineRider = getRiderByNameTask.execute(rider.getName()).get();
-                    //not really asynchronous anymore, could potentially fix with a loading bar
-                    if(onlineRider != null){
+                    if(onlineUser != null){
                         //if we found another rider with the same name
-                        Toast.makeText(AddUserView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                } catch (Exception e){
-                    Toast.makeText(AddUserView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                try{
-                    Driver onlineDriver = getDriverByNameTask.execute(driver.getName()).get();
-                    //not really asynchronous anymore, could potentially fix with a loading bar
-                    if(onlineDriver != null){
-                        //if we found another driver with the same name
                         Toast.makeText(AddUserView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();
                         return;
                     }
@@ -158,6 +145,7 @@ public class AddUserView extends Activity {
                 addRiderTask.execute(rider);
                 addDriverTask.execute(driver);*/
 
+                controller.create("user", user.getID().toString(), new Gson().toJson(user));
 
 
 

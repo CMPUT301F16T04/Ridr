@@ -12,6 +12,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+
 /**
  * Modified by nkaefer on 2016/11/08
  */
@@ -59,47 +61,44 @@ public class LoginView extends Activity {
                     Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-
+                User myUser = null;
+                try{
+                    myUser = new Gson().fromJson(new AsyncController().get("user", "name", usernameLogin.getText().toString().trim()), User.class);
+                } catch (Exception e){
+                    Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(myUser == null) {
+                    //if we found another driver with the same name
+                    Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 //code for switching between a rider login and a driver login
                 if(asDriver){
+                    //if our user is logging in as a driver
+                    myUser.setDriverStatus(true); //set that we are logged in as a driver
+                    try {
+                        new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
+                        //update elastic search to tell we are logged in as driver
+                    } catch (Exception e){
+                        Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
                     Intent driverScreenIntent = new Intent(LoginView.this, RequestsFromRidersView.class);
-                    DriverController.GetDriverByNameTask getDriverByNameTask = new DriverController.GetDriverByNameTask();
+                    driverScreenIntent.putExtra("UUID", myUser.getID().toString());
+                    startActivity(driverScreenIntent);
+                } else {
+                    myUser.setDriverStatus(false);
                     try{
-                        Driver myDriver = getDriverByNameTask.execute(usernameLogin.getText().toString().trim()).get();
-                        //not really asynchronous anymore, could potentially fix with a loading bar
-                        if(myDriver == null) {
-                            //if we found another driver with the same name
-                            Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        else{
-                            driverScreenIntent.putExtra("UUID", myDriver.getUUID().toString());
-                            startActivity(driverScreenIntent);
-                        }
+                        new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
+                        //update elastic search to tell we are logged in as driver
                     } catch (Exception e){
                         Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                         return;
                     }
-                }
-                else{
                     Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
-                    RiderController.GetRiderByNameTask getRiderByNameTask = new RiderController.GetRiderByNameTask();
-                    try{
-                        Rider myRider = getRiderByNameTask.execute(usernameLogin.getText().toString().trim()).get();
-                        //not really asynchronous anymore, could potentially fix with a loading bar
-                        if(myRider == null) {
-                            //if we found another driver with the same name
-                            Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
-                            return;
-                        }
-                        else{
-                            riderScreenIntent.putExtra("UUID", myRider.getUUID().toString());
-                            startActivity(riderScreenIntent);
-                        }
-                    } catch (Exception e){
-                        Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
+                    riderScreenIntent.putExtra("UUID", myUser.getID().toString());
+                    startActivity(riderScreenIntent);
                 }
             }
         });
