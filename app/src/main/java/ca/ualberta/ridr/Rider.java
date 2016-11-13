@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * Created by jferris on 22/10/16.
@@ -17,6 +18,9 @@ public class Rider extends User {
         this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();
     }
+    public void setRiderStatus(boolean status) {
+        super.setRiderStatus(status);
+    }
 
     public ArrayList<Ride> getRides() {
         return rideArrayList;
@@ -29,6 +33,8 @@ public class Rider extends User {
     public ArrayList<Request> getRequests() {
         return requestArrayList;
     }
+
+    public UUID getId(){return super.getID();}
 
     public void setRequests(ArrayList<Request> requestArrayList) {
         this.requestArrayList = requestArrayList;

@@ -15,8 +15,11 @@ import android.widget.Toast;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 
 import java.util.Date;
+import java.util.UUID;
+
 
 public class AcceptDriverView extends Activity {
 
@@ -35,16 +38,28 @@ public class AcceptDriverView extends Activity {
         xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
-        //TODO get the driver using the info passed from the previous activity
-        //will need to remove these, just here to test UI
-        //Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        //final Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        if (extras != null) {
+//            String riderId= extras.getString("riderId");
+//            String driverId= extras.getString("driverId");
+//        }
+//        //TODO get the driver using the info passed from the previous activity
+
 
         String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-        final Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        DriverController DC = new DriverController();
+        final Driver driver = DC.getDriverFromServer(driverId);
 
 
-        final Rider rider = new Rider("joe", new Date(), "credit", "email", "phone");
+        String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
+        RiderController rideCon = new RiderController();
+        final Rider rider = rideCon.getRiderFromServer(riderId);
+
+        AsyncController con = new AsyncController();
+        JsonObject s = con.create("user",riderId, new Gson().toJson(rider));
+        System.out.println(s);
+
         LatLng coords = new LatLng(0,0);
         final Request request = new Request(rider, "start", "end", coords, coords, new Date());
 
