@@ -5,17 +5,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
 public class SearchResultsView extends AppCompatActivity {
 
-    private ArrayList<Request> requestList = new ArrayList<Request>();
-    private ArrayAdapter<Request> adapter;
+    private ArrayList<Request> requestList = new ArrayList<>();
     final RequestController requestController = new RequestController();
-    private TextView bodyText;
     private String keyword;
+    private ListView searchResults;
+    private RequestAdapter requestAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,18 +32,14 @@ public class SearchResultsView extends AppCompatActivity {
         }
 
         requestList = requestController.searchRequestsKeyword(keyword);
+        searchResults = (ListView) findViewById(R.id.search_results);
+    }
 
-
-
-        /*String text = bodyText.getText().toString();
-        RequestController.SearchRequestsKeyword searchRequestsKeyword = new RequestController.SearchRequestsKeyword();
-        searchRequestsKeyword.execute(keyword);
-        try {
-            requestList = searchRequestsKeyword.get();
-        }
-        catch (Exception e) {
-            Log.i("Error", "Failed to get the requests out of the async object.");
-        }
-        adapter.notifyDataSetChanged();*/
+    @Override
+    protected void onStart() {
+        super.onStart();
+        requestAdapter = new RequestAdapter(this, requestList);
+        searchResults.setAdapter(requestAdapter);
     }
 }
+

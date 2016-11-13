@@ -32,12 +32,12 @@ public class Request {
     private UUID id;
     private float fare;
     private Date date;
-
-    Request(Rider rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
+    // LatLng pickupCoords, LatLng dropOffCoords,
+    Request(Rider rider, String pickup, String dropoff, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
-        this.pickupCoord = pickupCoords;
-        this.dropOffCoord = dropOffCoords;
+        //this.pickupCoord = pickupCoords;
+        //this.dropOffCoord = dropOffCoords;
         this.date = date;
         this.rider = rider;
         this.id = UUID.randomUUID();
@@ -125,6 +125,10 @@ public class Request {
     public float getFare(){
         return fare;
     }
+
+    public void setFare(float fare) {
+        this.fare = fare;
+    }
     public UUID getID() {
         return id;
     }
@@ -158,7 +162,7 @@ public class Request {
         // Because of the differences between JsonObject and JSONObject.
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
-        this.rider = request.get("rider").getAsString();
+        //this.rider = request.get("rider").getAsString();
         this.pickup = request.get("pickup").getAsString();
         this.dropoff = request.get("dropoff").getAsString();
         this.dropOffCoord = buildLatLng(request.getAsJsonObject("dropOffCoord"));

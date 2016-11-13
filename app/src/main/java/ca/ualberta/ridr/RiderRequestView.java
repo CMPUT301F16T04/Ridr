@@ -28,7 +28,7 @@ public class RiderRequestView extends AppCompatActivity {
 
                 //TODO pass a rider object to this view
                 Rider rider = null; // for now just so that we wont get compile errors
-                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString());
+                //reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString());
             }
         });
 
