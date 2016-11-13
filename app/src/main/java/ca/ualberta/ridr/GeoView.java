@@ -39,8 +39,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
-import static android.widget.Toast.makeText;
-
+/**
+ * This view shows all requests by default, and then upon user input shows the user all requests
+ * centered around the input in a 2km radius
+ */
 public class GeoView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, ACallback {
 
     private GoogleMap map;
@@ -107,6 +109,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
     @Override
     // Need this for ConnectionsCallback, doesn't need to do anything AFAIK
+    // If a map view does live tracking it might be more useful
     public void onConnectionSuspended(int i){
 
     }

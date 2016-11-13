@@ -11,6 +11,10 @@ import java.util.UUID;
 
 /**
  * Created by jferris on 22/10/16.
+ * This controller controls access to all requests used by a view
+ * This controllers uses threads to asynchronously perform network requests
+ * It then uses a callback interface to inform the view that is using the controller that data has
+ * been updated
  */
 public class RequestController {
     private ArrayList<Request> requests;
@@ -33,7 +37,10 @@ public class RequestController {
         return requests;
     }
 
-    // Pretty hard to test
+    /**
+     * This function searches for all requests made by a user
+     * @param userID
+     */
     public void getUserRequest(final UUID userID) {
         // Get all user requests from the database
         Thread getUser = new Thread(new Runnable() {
@@ -53,7 +60,11 @@ public class RequestController {
         });
     }
 
-        public void getAllRequests() {
+    /**
+     * A function that gets all current requests available
+     * As a fix we may eventually want to limit this to a certain radius around the user
+     */
+    public void getAllRequests() {
             // Get all user requests from the database
             Thread getUser = new Thread(new Runnable() {
                 @Override
@@ -74,7 +85,12 @@ public class RequestController {
         getUser.start();
     }
 
-    // Pretty hard to test
+    /**
+     * Find all requests within a certain distance.
+     *
+     * @param center   a center point to search around
+     * @param distance distance of the point to filter requests from
+     */
     public void findAllRequestsWithinDistance(final LatLng center, final String distance){
         Thread getUser = new Thread(new Runnable() {
             @Override
