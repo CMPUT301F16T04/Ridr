@@ -162,8 +162,8 @@ public class Ride {
         this.driver = ride.get("driver").getAsString();
         this.pickup = ride.get("pickup").getAsString();
         this.dropoff = ride.get("dropoff").getAsString();
-        this.dropOffCoord = buildLatLng(ride.getAsJsonObject("dropOffCoords"));
-        this.pickupCoord = buildLatLng(ride.getAsJsonObject("pickupCoords"));
+        this.dropOffCoords = buildLatLng(ride.getAsJsonObject("dropOffCoords"));
+        this.pickupCoords = buildLatLng(ride.getAsJsonObject("pickupCoords"));
         this.isCompleted = ride.get("isCompleted").getAsBoolean();
         this.rideDate = formatter.parse(ride.get("rideDate").getAsString());
         this.id = UUID.fromString(ride.get("id").getAsString());

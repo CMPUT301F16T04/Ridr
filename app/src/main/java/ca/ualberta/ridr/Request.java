@@ -169,8 +169,8 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-        this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
-
+       // this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
+        //maybe one day we will reach this dream
     }
 
     private JSONObject buildGeoPoint(LatLng coords) throws JSONException {
@@ -183,8 +183,11 @@ public class Request {
     private LatLng buildLatLng(JsonObject coords){
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
-    private ArrayList<Driver> buildPossibleDriversList(JsonArray array){
-        ArrayList<Driver> drivers = new ArrayList<Driver>();
-        return(drivers);
-    }
+    //also a faroff dream
+    //intentions : to be able to store and retrieve a list of possible drivers.
+//    private ArrayList<Driver> buildPossibleDriversList(JsonArray array){
+//        ArrayList<Driver> drivers = new ArrayList<Driver>();
+//
+//        return(drivers);
+//    }
 }
