@@ -58,7 +58,7 @@ public class RiderMainView extends Activity {
         }
         //from the UUID, get the rider object
         //TODO retrieve rider from elasticsearch using the rider controller
-
+        //TODO afterTextChanged for destination, and start location, check that they are valid adresses, if so, get distance and estimate fare
 
         setViews();
 
@@ -83,29 +83,8 @@ public class RiderMainView extends Activity {
         // create requset button
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
-                    Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picke up", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
-                    Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(dateTextView.getText().toString().matches("")){
-                    Toast.makeText(RiderMainView.this, "Please enter the date on which you would like to be picked up", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(timeTextView.getText().toString().matches("")){
-                    Toast.makeText(RiderMainView.this, "Please enter the time at which you would like to be picked up", Toast.LENGTH_SHORT).show();
-                    return;
-                }
                 Rider rider = null; // for now just so that we wont get compile errors
-                reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() ,
-                        dateTextView.getText().toString(), timeTextView.getText().toString());
-                Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
-
-                // reset text fields
-                resetText();
+                addRequestEvent(rider);
             }
         });
 
@@ -135,6 +114,31 @@ public class RiderMainView extends Activity {
         }
     }
 
+
+    private void addRequestEvent(Rider rider){
+        if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
+            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picke up", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
+            Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(dateTextView.getText().toString().matches("")){
+            Toast.makeText(RiderMainView.this, "Please enter the date on which you would like to be picked up", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(timeTextView.getText().toString().matches("")){
+            Toast.makeText(RiderMainView.this, "Please enter the time at which you would like to be picked up", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() ,
+                dateTextView.getText().toString(), timeTextView.getText().toString());
+        Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
+
+        // reset text fields
+        resetText();
+    }
 
     private void setViews(){
         //finds views by their ID's and assigns them to their respective variable
