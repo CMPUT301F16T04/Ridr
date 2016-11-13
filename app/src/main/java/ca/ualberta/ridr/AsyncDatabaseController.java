@@ -39,6 +39,9 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
      * Queries elastic search for an object with matching UUID
      *
      * @return
+     *
+     * @Nullable
+     * @Overide
      */
     @Nullable
     @Override
@@ -68,6 +71,10 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
         return null;
     }
 
+    /**
+     * A simple function to check if the controller has been set up, and if not then create it
+     * This could probably be moved to the constructor
+     */
     private static void verifySettings() {
         // if the client hasn't been initialized then we should make it!
         if (client == null) {
@@ -82,6 +89,14 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
 
 
     @Nullable
+    /**
+     * A generic function that performs a get request to the elastic search databases
+     * @param type
+     * @param searchString
+     * @throws IOException
+     * @return result
+     * @nullable
+     */
     private JestResult getRequest(String type, String  searchString) throws IOException {
         // As the name implies builds a search object and returns the result
         Search search = new Search.Builder(searchString)
@@ -98,17 +113,29 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
         }
     }
 
+    /**
+     * A generic function creates or updates a document in an elastic search database based on a type
+     * and ID
+     * @param type
+     * @param ID
+     * @param jsonValue
+     * @throws IOException
+     * @return result
+     * @nullable
+     */
     @Nullable
     private JestResult createRequest(String type, String ID, String jsonValue) throws IOException {
         // Takes strings of the type of object, [user, ride, request], the id of the object to create
         // and the json version of that object and posts it to the server
         // It returns a jsonObject representing the results of the operation or null if it failed
+        System.out.println(jsonValue);
         Index index = new Index.Builder(jsonValue).index(databaseName).type(type).id(ID).build();
         DocumentResult result = client.execute(index);
         if (result.isSucceeded()) {
             return result;
         }
         else {
+            Log.d("error", result.getJsonObject().toString());
             Log.i("Error", "The search query failed to find the Class that matched.");
             return null;
         }
