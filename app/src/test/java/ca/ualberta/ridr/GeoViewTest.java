@@ -12,6 +12,6 @@ public class GeoViewTest {
     @Test
     private void limitRequestsByLocation(){
         // Gotta figure out how to test a geoview
-        RequestController requestController = new RequestController();
+        // RequestController requestController = new RequestController();
     }
 }
