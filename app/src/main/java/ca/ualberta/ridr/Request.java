@@ -83,10 +83,13 @@ public class Request {
         return fare;
     }
 
+    public void setFare(float estimate){
+        this.fare = estimate;
+    }
+
     public float estimateFare(float distance){
         float gasCostFactor = 4; // calculate something later
-        fare = distance * gasCostFactor;
-        return fare;
+        return distance * gasCostFactor;
     }
 
     public String getDate(){

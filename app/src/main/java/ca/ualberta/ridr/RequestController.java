@@ -16,4 +16,8 @@ public class RequestController {
     public float getFareEstimate(float distance){
         return request.estimateFare(distance);
     }
+
+    public void updateFare(float fare){
+        request.setFare(fare);
+    }
 }

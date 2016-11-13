@@ -14,7 +14,7 @@ public class RequestTest {
     @Test
     public void testRequestEquals(){
         Rider rider = null;
-        Request request = new Request(rider,"Edmonton", "Timbuktu");
+        Request request = new Request(rider,"Edmonton", "Timbuktu", "some day", "later");
         assertTrue(request.equals(request));
     }
 }

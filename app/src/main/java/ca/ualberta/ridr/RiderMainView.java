@@ -35,6 +35,9 @@ public class RiderMainView extends Activity {
 
     private UUID currentUUID; // UUID of the currently logged-in rider
 
+    private String defaultStartText = "Enter Start Location";
+    private String defaultDestinationText = "Enter Destination";
+
     RequestController reqController = new RequestController();
     //RiderController riderController = new RiderController();
 
@@ -57,17 +60,9 @@ public class RiderMainView extends Activity {
         //TODO retrieve rider from elasticsearch using the rider controller
 
 
-        startLocation = (EditText) findViewById(R.id.editStartLocationText);
-        endLocation = (EditText) findViewById(R.id.editEndLocationText);
-        fareInput = (EditText) findViewById(R.id.editFare);
+        setViews();
 
-        dateTextView = (TextView) findViewById(R.id.dateText);
-        timeTextView = (TextView) findViewById(R.id.timeText);
-
-        addRequest = (Button) findViewById(R.id.createRequestButton);
-        dateButton = (Button) findViewById(R.id.dateButton);
-        timeButton = (Button) findViewById(R.id.timeButton);
-
+        //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 //makes a date fragment when clicked
@@ -76,6 +71,7 @@ public class RiderMainView extends Activity {
             }
         });
 
+        //open time picker
         timeButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 // make a date fragment when clicked
@@ -84,16 +80,31 @@ public class RiderMainView extends Activity {
             }
         });
 
+        // create requset button
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-
+                if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
+                    Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picke up", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
+                    Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(dateTextView.getText().toString().matches("")){
+                    Toast.makeText(RiderMainView.this, "Please enter the date on which you would like to be picked up", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                if(timeTextView.getText().toString().matches("")){
+                    Toast.makeText(RiderMainView.this, "Please enter the time at which you would like to be picked up", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Rider rider = null; // for now just so that we wont get compile errors
-                //TODO make test for request controller
                 reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() ,
                         dateTextView.getText().toString(), timeTextView.getText().toString());
                 Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
-                // reset fields
+                // reset text fields
                 resetText();
             }
         });
@@ -125,18 +136,26 @@ public class RiderMainView extends Activity {
     }
 
 
-    private void resetText(){
-        //reset text inputs in the view
-        startLocation.setText("Enter Start Location");
-        endLocation.setText("Enter Destination");
+    private void setViews(){
+        //finds views by their ID's and assigns them to their respective variable
+        startLocation = (EditText) findViewById(R.id.editStartLocationText);
+        endLocation = (EditText) findViewById(R.id.editEndLocationText);
+        fareInput = (EditText) findViewById(R.id.editFare);
+
+        dateTextView = (TextView) findViewById(R.id.dateText);
+        timeTextView = (TextView) findViewById(R.id.timeText);
+
+        addRequest = (Button) findViewById(R.id.createRequestButton);
+        dateButton = (Button) findViewById(R.id.dateButton);
+        timeButton = (Button) findViewById(R.id.timeButton);
     }
 
-//    private void setDateField(){
-//        datePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener(){
-//            public void onDateSet(DatePicker view, int year, int monthOfYear, int dayofMonth){
-//                cal.set(year, monthOfYear, dayofMonth);
-//                dateTextView.setText(dateFormat.format(cal.getTime()));
-//            }
-//        })
-//    }
+    private void resetText(){
+        //reset text inputs in the view
+        startLocation.setText(defaultStartText);
+        endLocation.setText(defaultStartText);
+        dateTextView.setText("");
+        timeTextView.setText("");
+    }
+
 }

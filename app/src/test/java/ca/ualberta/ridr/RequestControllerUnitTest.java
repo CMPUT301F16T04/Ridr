@@ -19,12 +19,14 @@ public class RequestControllerUnitTest {
     @Test
     public void testCreateRequestController(){
         Date date = new Date();
-        Rider rider = new Rider("Bob", date, "123", "email", "phone");
+        Rider rider = new Rider("Bob", date, "123", "email", "phone"); // fails if rider = null
         RequestController RC = new RequestController();
         String start = "start";
         String end = "end";
-        RC.createRequest(rider, start, end);
-        Request request = new Request(rider, start, end);
+        String someDate = "some day";
+        String time = "later";
+        RC.createRequest(rider, start, end, someDate, time);
+        Request request = new Request(rider, start, end, someDate, time);
         ArrayList<Request>  riderRequest = rider.getRequests();
         assertTrue(riderRequest.get(0).getPickup() == request.getPickup());
         //still cant use isEquals here because we do create two separate instances of requests in this test
