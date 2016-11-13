@@ -104,7 +104,7 @@ public class AsyncController {
      * @param kmDistance the km distance
      * @return a jsonArray
      */
-    public JsonArray geoDistanceQuery(final String dataClass,final LatLng center, final String kmDistance){
+    public JsonArray geoDistanceQuery(String dataClass,LatLng center, String kmDistance){
         controller = new AsyncDatabaseController("get");
         String query =
                 "{"+
@@ -140,7 +140,6 @@ public class AsyncController {
      */
     private JsonArray extractAllElements(JsonObject result){
         return result.getAsJsonObject("hits").getAsJsonArray("hits");
-
     }
 
     /**

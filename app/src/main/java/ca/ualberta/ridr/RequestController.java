@@ -43,21 +43,16 @@ public class RequestController {
      */
     public void getUserRequest(final UUID userID) {
         // Get all user requests from the database
-        Thread getUser = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AsyncController controller = new AsyncController();
-                JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
-                for (JsonElement result : queryResults) {
-                    try {
-                        requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-                    } catch (Exception e) {
-                        Log.i("Error parsing requests", e.toString());
-                    }
-                }
-                cbInterface.callback();
+        AsyncController controller = new AsyncController();
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
+        for (JsonElement result : queryResults) {
+            try {
+                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
             }
-        });
+        }
+        cbInterface.callback();
     }
 
     /**
@@ -66,23 +61,16 @@ public class RequestController {
      */
     public void getAllRequests() {
             // Get all user requests from the database
-            Thread getUser = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    AsyncController controller = new AsyncController();
-                    JsonArray queryResults = controller.getAllFromIndex("request");
-                    for (JsonElement result : queryResults) {
-                        try {
-                            requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-                        } catch (Exception e) {
-                            Log.i("Error parsing requests", e.toString());
-                        }
-                    }
-                    cbInterface.callback();
-                }
-        });
-
-        getUser.start();
+        AsyncController controller = new AsyncController();
+        JsonArray queryResults = controller.getAllFromIndex("request");
+        for (JsonElement result : queryResults) {
+            try {
+                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
+            }
+        }
+        cbInterface.callback();
     }
 
     /**
@@ -92,22 +80,16 @@ public class RequestController {
      * @param distance distance of the point to filter requests from
      */
     public void findAllRequestsWithinDistance(final LatLng center, final String distance){
-        Thread getUser = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                AsyncController controller = new AsyncController();
-                JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
-                requests.clear();
-                for (JsonElement result : queryResults) {
-                    try {
-                        requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-                    } catch (Exception e) {
-                        Log.i("Error parsing requests", e.toString());
-                    }
-                }
-                cbInterface.callback();
+        AsyncController controller = new AsyncController();
+        JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
+        requests.clear();
+        for (JsonElement result : queryResults) {
+            try {
+                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
             }
-        });
-        getUser.start();
+        }
+        cbInterface.callback();
     }
 }

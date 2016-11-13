@@ -79,9 +79,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         autocompleteFragment.setOnPlaceSelectedListener(searchForRequests);
 
-        Intent intent = getIntent();
-        String user = intent.getExtras().getString("user");
-        userID = UUID.fromString(user);
+//        Intent intent = getIntent();
+//        String user = intent.getExtras().getString("user");
+//        userID = UUID.fromString(user);
     }
 
     protected void onStart() {
@@ -91,15 +91,11 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     protected void onResume(){
         super.onResume();
         mGoogleApiClient.reconnect();
-        update();
     }
 
     protected void onPause(){
         mGoogleApiClient.disconnect();
         super.onPause();
-    }
-    private void update(){
-
     }
 
     protected void onStop() {
@@ -116,12 +112,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     @Override
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
-        System.out.println("Connected");
         lastKnownPlace = getCurrentLocation();
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
-            AsyncController controller = new AsyncController();
             requests.getAllRequests();
         }
 
@@ -164,18 +158,20 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
 
         // Let's listen for clicks on our markers to display information
-        map.setOnMarkerClickListener(new OnMarkerClickListener() {
-
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.showInfoWindow();
-                return false;
-            }
-        });
+        map.setOnMarkerClickListener(showInfoWindow);
 
         map.setInfoWindowAdapter(displayRequest);
 
     }
+
+
+    OnMarkerClickListener showInfoWindow = new OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            marker.showInfoWindow();
+            return false;
+        }
+    };
 
     /**
      * Allows us to display arbitrary data in the info window of a google marker
@@ -228,7 +224,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     PlaceSelectionListener searchForRequests = new PlaceSelectionListener() {
         @Override
         public void onPlaceSelected(Place place) {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 12));
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(place.getLatLng(), 9));
             requests.findAllRequestsWithinDistance(place.getLatLng(), "2");
         }
 
@@ -245,16 +241,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
      * It will call this callback on whoever instantiated that controller
      */
     public void callback(){
-        final ArrayList<Request> filteredReqeusts;
-        if(requests.size() > 0 ){
-            filteredReqeusts = requests.getList();
-            this.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    addMarkers(filteredReqeusts);
-                }
-            });
-        }
+        if(requests.size() > 0 ){;
+            addMarkers(requests.getList());
+        };
     }
 
     /**
@@ -265,12 +254,16 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
      */
     public void addMarkers(ArrayList<Request> filteredReqeusts){
         map.clear();
-        if(filteredReqeusts.size() > 0 ) {
+
+        if(filteredReqeusts.size() > 0) {
             if(markers == null){
                 markers = new ArrayList<>();
             }
             for (Request request : filteredReqeusts) {
-                map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup())).setTag(request);
+                markers.clear();
+                Marker newMarker = map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
+                newMarker.setTag(request);
+                markers.add((newMarker));
             }
         }
     }
