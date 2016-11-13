@@ -15,14 +15,19 @@ public class RideController {
 
     public void createRide(Driver driver, Request request, Rider rider) {
         Ride ride = new Ride(driver, rider,  request.getPickup(), request.getDropoff(), new Date() , request.getPickupCoords(), request.getDropOffCoords());
-        rider.confirmDriver(ride);
 
-        //TODO ok currently makes new ride with each button press, not great? so fix , but at least it stores sturr
+        //the idea here is to set the ride id to equal the request id, then if we have
+        // multiple button presses to create a ride, we actually only create the one ride not many
+        ride.setId(request.getID().toString());
+
+        //not sure if there is more that we will have to do with this later, currently it updates
+        //things locally but what about elastic? not that we currently deal with ride lists of users...
+        //rider.confirmDriver(ride);
+        //another cant do while the ride array list of rider is null
 
         String rideString = ride.toJsonString();
         AsyncController con = new AsyncController();
         JsonObject s = con.create("ride",ride.getId().toString(), rideString);
-        System.out.println(s);
 
     }
 }

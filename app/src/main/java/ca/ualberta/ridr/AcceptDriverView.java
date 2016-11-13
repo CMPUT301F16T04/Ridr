@@ -43,6 +43,7 @@ public class AcceptDriverView extends Activity {
 //        if (extras != null) {
 //            String riderId= extras.getString("riderId");
 //            String driverId= extras.getString("driverId");
+//            String requestId = extras.getString(");
 //        }
 //        //TODO get the driver using the info passed from the previous activity
 
@@ -56,12 +57,12 @@ public class AcceptDriverView extends Activity {
         RiderController rideCon = new RiderController();
         final Rider rider = rideCon.getRiderFromServer(riderId);
 
-        AsyncController con = new AsyncController();
-        JsonObject s = con.create("user",riderId, new Gson().toJson(rider));
-        System.out.println(s);
 
-        LatLng coords = new LatLng(0,0);
-        final Request request = new Request(rider, "start", "end", coords, coords, new Date());
+        String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
+        final RequestController requestCon = new RequestController();
+        final Request request = requestCon.getRequestFromServer(requestId);
+        //unhandled null return possibility, not quite sure at the moment what to do if null
+
 
 
         String driverEmailStr = driver.getEmail();
@@ -76,20 +77,16 @@ public class AcceptDriverView extends Activity {
         accept.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO also need the id of the rider currently logged in so we can create a ride and add it to their rides at this point
-                //also need to know what request we are dealing with so that we can create the ride...
-
-                //will need to remove these eventually too
 
 
-                //need to remove these eventually when we retrieve real data
-                RequestController RC = new RequestController();
                 RideController RideC = new RideController();
 
                 RideC.createRide(driver, request, rider);
 
-                //do we remove the request now from the riders list? probably?
-                RC.removeRequest(request, rider);
+                //we remove the request
+                //TODO check if we need to do elastic things here too
+                //requestCon.removeRequest(request, rider);
+                //cant do while rider's request list is null
 
             }
         });
@@ -97,7 +94,7 @@ public class AcceptDriverView extends Activity {
             @Override
             public void onClick(View v){
 
-                // pretty well found at link: http://stackoverflow.com/questions/11699819/how-do-i-get-the-dialer-to-open-with-phone-number-displayed
+                // found at link: http://stackoverflow.com/questions/11699819/how-do-i-get-the-dialer-to-open-with-phone-number-displayed
                 // accessed on Nov. 10 2016
                 // answered by AAnkit
                 Intent callIntent = new Intent(Intent.ACTION_DIAL);
@@ -108,7 +105,8 @@ public class AcceptDriverView extends Activity {
         driverEmail.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                Toast.makeText(AcceptDriverView.this, "going to send an email!", Toast.LENGTH_SHORT).show();
+                //TODO lookup a way to do this, previously found one but not sure if there are apps that can be transferred to?
+                Toast.makeText(AcceptDriverView.this, "going to send an email later!", Toast.LENGTH_SHORT).show();
 
             }
         });
