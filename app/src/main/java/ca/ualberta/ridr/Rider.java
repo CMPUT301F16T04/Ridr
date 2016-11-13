@@ -73,7 +73,7 @@ public class Rider extends User {
 
     public void confirmDriver(Ride ride){
             rideArrayList.add(ride);
-        
+
     }
 
     public void addRequest(Request request){

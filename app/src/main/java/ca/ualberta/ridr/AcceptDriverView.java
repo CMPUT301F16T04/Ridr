@@ -80,7 +80,6 @@ public class AcceptDriverView extends Activity {
 
 
                 RideController RideC = new RideController();
-
                 RideC.createRide(driver, request, rider);
 
                 //we remove the request
