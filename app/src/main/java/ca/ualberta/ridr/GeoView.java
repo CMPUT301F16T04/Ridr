@@ -176,6 +176,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         map.setInfoWindowAdapter(displayRequest);
 
     }
+
     /**
      * Allows us to display arbitrary data in the info window of a google marker
      */
@@ -199,7 +200,8 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
             return infoView;
         }
-    }
+    };
+
     @Nullable
     /**
      * When called this function checks uses LocationServices to grab the lastLocation and returns
@@ -237,12 +239,11 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     };
 
-
     /**
      * Callback for an outside Class to get the view to check for new data
+     * This interface is used when a controller updates it's data
+     * It will call this callback on whoever instantiated that controller
      */
-    // This interface is used when a controller updates it's data
-    // It will call this callback on whoever instantiated that controller
     public void callback(){
         final ArrayList<Request> filteredReqeusts;
         if(requests.size() > 0 ){
@@ -262,7 +263,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
      * place on the map
      * @param filteredReqeusts the filtered reqeusts
      */
-
     public void addMarkers(ArrayList<Request> filteredReqeusts){
         map.clear();
         if(filteredReqeusts.size() > 0 ) {
@@ -275,14 +275,12 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     }
 
-
     /**
      * A function to check if it's night time or not
+     * Plus this is easier on the eyes in night
      * @param time the time
      * @return boolean
      */
-// Let's be fancy and add night time viewing
-    // Plus this is easier on the eyes in night
     private boolean nightTime(String time){
         try {
             Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
@@ -293,6 +291,14 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * This function is used so that we can set the request controller for the View
+     * @param requestController
+     */
+    public void setRequests(RequestController requestController){
+        this.requests = requestController;
     }
 }
 
