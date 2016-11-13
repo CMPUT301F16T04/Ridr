@@ -77,6 +77,7 @@ public class LoginView extends Activity {
                 if(asDriver){
                     //if our user is logging in as a driver
                     myUser.setDriverStatus(true); //set that we are logged in as a driver
+                    myUser.setRiderStatus(false);
                     try {
                         new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
                         //update elastic search to tell we are logged in as driver
@@ -89,6 +90,7 @@ public class LoginView extends Activity {
                     startActivity(driverScreenIntent);
                 } else {
                     myUser.setDriverStatus(false);
+                    myUser.setRiderStatus(true);
                     try{
                         new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
                         //update elastic search to tell we are logged in as driver
