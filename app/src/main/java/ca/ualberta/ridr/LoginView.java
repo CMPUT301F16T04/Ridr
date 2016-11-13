@@ -89,11 +89,11 @@ public class LoginView extends Activity {
                     driverScreenIntent.putExtra("UUID", myUser.getID().toString());
                     startActivity(driverScreenIntent);
                 } else {
+                    myUser.setRiderStatus(true); //set that we are logged in as a rider
                     myUser.setDriverStatus(false);
-                    myUser.setRiderStatus(true);
                     try{
                         new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
-                        //update elastic search to tell we are logged in as driver
+                        //update elastic search to tell we are logged in as rider
                     } catch (Exception e){
                         Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                         return;
@@ -129,10 +129,10 @@ public class LoginView extends Activity {
             if (asDriver) {
                 driverLogin.setBackgroundResource(R.drawable.selected_login_button);
                 driverLogin.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.tertiary_colour));
-                riderLogin.setBackgroundResource(R.drawable.login_button_border);
+                riderLogin.setBackgroundResource(R.drawable.unselected_login_button);
                 riderLogin.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.light_tertiary_colour));
             } else {
-                driverLogin.setBackgroundResource(R.drawable.login_button_border);
+                driverLogin.setBackgroundResource(R.drawable.unselected_login_button);
                 driverLogin.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.light_tertiary_colour));
                 riderLogin.setBackgroundResource(R.drawable.selected_login_button);
                 riderLogin.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.tertiary_colour));
