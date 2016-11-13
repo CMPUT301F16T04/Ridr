@@ -41,7 +41,7 @@ public class RiderRequestView extends AppCompatActivity {
             }
         }
 
-        ListAdapter customAdapter = new RiderRequestListAdapter(this, R.layout.rider_request_list_tem, requests);
-        oldRequestsList.setAdapter(customAdapter);
+        //ListAdapter customAdapter = new RiderRequestListAdapter(this, R.layout.rider_request_list_tem, requests);
+        //oldRequestsList.setAdapter(customAdapter);
     }
 }
