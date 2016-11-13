@@ -26,7 +26,6 @@ public class TimeSelector extends DialogFragment implements TimePickerDialog.OnT
         int hour = cal.get(Calendar.HOUR_OF_DAY);
         int minute = cal.get(Calendar.MINUTE);
 
-        //return new DatePickerDialog(getActivity(), this, year, month, day);
         return new TimePickerDialog(getActivity(), this, hour, minute, false);
     }
 

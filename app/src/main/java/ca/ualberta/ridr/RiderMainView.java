@@ -15,11 +15,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
-public class RiderMainView extends Activity {
+public class RiderMainView extends Activity implements ACallback {
 
     private EditText startLocation;
     private EditText endLocation;
@@ -38,7 +42,7 @@ public class RiderMainView extends Activity {
     private String defaultStartText = "Enter Start Location";
     private String defaultDestinationText = "Enter Destination";
 
-    RequestController reqController = new RequestController();
+    RequestController reqController;
     //RiderController riderController = new RiderController();
 
     @Override
@@ -46,6 +50,7 @@ public class RiderMainView extends Activity {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.rider_main);
+        reqController = new RequestController(this);
 
         //toolbar = (Toolbar) findViewById(R.id.makeRequestToolbar);
         //setSupportActionBar(toolbar);
@@ -58,7 +63,7 @@ public class RiderMainView extends Activity {
         }
         //from the UUID, get the rider object
         //TODO retrieve rider from elasticsearch using the rider controller
-        //TODO afterTextChanged for destination, and start location, check that they are valid adresses, if so, get distance and estimate fare
+        //TODO afterTextChanged for destination, and start location, check that they are valid addresses, if so, get distance and estimate fare
 
         setViews();
 
@@ -80,7 +85,7 @@ public class RiderMainView extends Activity {
             }
         });
 
-        // create requset button
+        // create request button
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Rider rider = null; // for now just so that we wont get compile errors
@@ -114,8 +119,12 @@ public class RiderMainView extends Activity {
         }
     }
 
+    public void callback(){}
 
-    private void addRequestEvent(Rider rider){
+
+    private void addRequestEvent(Rider rider,){
+        LatLng pickupCoord;
+        LatLng dropoffCoord;
         if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
             Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picke up", Toast.LENGTH_SHORT).show();
             return;
@@ -132,8 +141,8 @@ public class RiderMainView extends Activity {
             Toast.makeText(RiderMainView.this, "Please enter the time at which you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
         }
-        reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString() ,
-                dateTextView.getText().toString(), timeTextView.getText().toString());
+        reqController.createRequest(rider, startLocation.getText().toString(), endLocation.getText().toString(), pickupCoord, dropoffCoord
+                stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString()));
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
@@ -160,6 +169,16 @@ public class RiderMainView extends Activity {
         endLocation.setText(defaultStartText);
         dateTextView.setText("");
         timeTextView.setText("");
+    }
+
+
+    private Date stringToDate(String dateString, String timeString){
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
+        try{
+            return dateFormat.parse(dateString + timeString);
+        } catch(ParseException e){
+            e.printStackTrace();
+        }
     }
 
 }
