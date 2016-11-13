@@ -25,13 +25,35 @@ import java.util.concurrent.Exchanger;
 
 /**
  * Modified by nkaefer on 2016/11/08
+ *
+ * This activity displays the add user screen, and handles the text input logic, and parsing of data.
+ * Also checks to see if the user we are attempting to make is already in the database, and adds the
+ * user if the user is valid.
  */
 public class AddUserView extends Activity {
+    /**
+     * The Username edit text.
+     */
     EditText usernameEditText;
+    /**
+     * The Dob edit text.
+     */
     EditText dobEditText;
+    /**
+     * The Email edit text.
+     */
     EditText emailEditText;
+    /**
+     * The Phone edit text.
+     */
     EditText phoneEditText;
+    /**
+     * The Credit edit text.
+     */
     EditText creditEditText;
+    /**
+     * The Create account button.
+     */
     Button createAccountButton;
 
     @Override
@@ -140,12 +162,6 @@ public class AddUserView extends Activity {
                 //successful account creation
                 Toast.makeText(AddUserView.this, "Making Account!", Toast.LENGTH_SHORT).show();
                 //save account in elastic search
-                /* DEPRECATED
-                RiderController.AddRiderTask addRiderTask = new RiderController.AddRiderTask();
-                DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
-                addRiderTask.execute(rider);
-                addDriverTask.execute(driver);*/
-
                 controller.create("user", user.getID().toString(), new Gson().toJson(user));
 
 

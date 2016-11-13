@@ -22,7 +22,7 @@ import io.searchbox.core.SearchResult;
 
 /**
  * Created by mackenzie on 09/11/16.
- * TO impliment database tasks for a given rider
+ * To implement database tasks, given by AsyncController
  */
 public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject> {
     private static JestDroidClient client;
@@ -31,7 +31,12 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             = "https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/";
     private static String databaseName = "ridr";
 
-    // Constructor for controller
+    /**
+     * Instantiates a new Async database controller.
+     *
+     * @param action the action we are going to do, with this database controller
+     */
+// Constructor for controller
     public AsyncDatabaseController(String action) {
         this.action = action;
     }

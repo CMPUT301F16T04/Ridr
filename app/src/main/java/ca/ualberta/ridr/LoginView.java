@@ -16,14 +16,34 @@ import com.google.gson.Gson;
 
 /**
  * Modified by nkaefer on 2016/11/08
+ *
+ * This activity displays the login screen, and handles the logic of logging in as a rider or a driver.
+ *
  */
-
 public class LoginView extends Activity {
+    /**
+     * The Rider login.
+     */
     TextView riderLogin;
+    /**
+     * The Driver login.
+     */
     TextView driverLogin;
+    /**
+     * The Login button.
+     */
     Button loginButton;
+    /**
+     * The Create account button.
+     */
     Button createAccountButton;
+    /**
+     * The Username login.
+     */
     EditText usernameLogin;
+    /**
+     * The As driver.
+     */
     boolean asDriver;
 
     @Override
@@ -121,7 +141,10 @@ public class LoginView extends Activity {
 
     }
 
-    //switches between user login type
+    /**
+     * The Change user type.
+     */
+//switches between user login type
     View.OnClickListener changeUserType = new View.OnClickListener() {
         @Override
         public void onClick(View v) {

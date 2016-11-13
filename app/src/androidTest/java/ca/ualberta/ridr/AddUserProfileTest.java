@@ -33,6 +33,7 @@ public class AddUserProfileTest {
     @Test
     /**
      * Test for Rider Profile US 03.01.01
+     * Mostly tests the elastic search implementation
      */
     public void testUserProfile(){
 
