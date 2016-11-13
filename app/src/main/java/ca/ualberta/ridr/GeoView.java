@@ -2,13 +2,13 @@ package ca.ualberta.ridr;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -30,7 +30,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
 
 import java.text.ParseException;
@@ -46,7 +45,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
-    //private ArrayList<Request> filteredReqeusts;
+    private ArrayList<Marker> markers;
     private UUID userID;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
@@ -77,6 +76,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                 getFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(searchForRequests);
+
+        Intent intent = getIntent();
+        String user = intent.getExtras().getString("user");
+        userID = UUID.fromString(user);
     }
 
     protected void onStart() {
@@ -148,7 +151,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         // What time is it?
         Calendar current = Calendar.getInstance();
+
         // Add night view for nice viewing when it's dark out
+        // Dark styling is easier on the eyes
         SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
         if (nightTime(time.format(current.getTime()))) {
             MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_night_style);
@@ -165,32 +170,40 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
             }
         });
 
-        // Let's display some arbitrary date when our markrs are clicked
-        map.setInfoWindowAdapter(new GoogleMap.InfoWindowAdapter() {
-            @Override
-            public View getInfoWindow(Marker marker) {
-                return null;
-            }
-
-            @Override
-            public View getInfoContents(Marker marker) {
-                Request currentRequest = (Request) marker.getTag();
-                View infoView = getLayoutInflater().inflate(R.layout.info_window_fragment, null);
-                TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
-                TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
-                TextView fareView = (TextView) infoView.findViewById(R.id.amount);
-
-                pickUpView.setText("Pickup: " + currentRequest.getPickup());
-                dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
-                fareView.setText("Amount: $" + currentRequest.getFare());
-
-                return infoView;
-            }
-        });
+        map.setInfoWindowAdapter(displayRequest);
 
     }
+    /**
+     * Allows us to display arbitrary data in the info window of a google marker
+     */
+    GoogleMap.InfoWindowAdapter displayRequest = new GoogleMap.InfoWindowAdapter() {
+        @Override
+        public View getInfoWindow(Marker marker) {
+            return null;
+        }
 
+        @Override
+        public View getInfoContents(Marker marker) {
+            Request currentRequest = (Request) marker.getTag();
+            View infoView = getLayoutInflater().inflate(R.layout.info_window_fragment, null);
+            TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
+            TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
+            TextView fareView = (TextView) infoView.findViewById(R.id.amount);
+
+            pickUpView.setText("Pickup: " + currentRequest.getPickup());
+            dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
+            fareView.setText("Amount: $" + currentRequest.getFare());
+
+            return infoView;
+        }
+    }
     @Nullable
+    /**
+     * When called this function checks uses LocationServices to grab the lastLocation and returns
+     * that LatLng to the caller
+     * @nullable
+     * @return currentLocation
+     */
     // Simple function to grab current location in LatLong
     private LatLng getCurrentLocation(){
         Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
@@ -200,6 +213,13 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         return null;
     }
 
+    /**
+     * This function is called when the user uses the Google place widget and selects a place
+     * it then centers the camera on the location and gets the request controller to call out to
+     * the server and checks for any requests within a 2km range.
+     *
+     * We are arbitrarily setting a zone, or region to anything thats within 2km of the center point
+     */
     PlaceSelectionListener searchForRequests = new PlaceSelectionListener() {
         @Override
         public void onPlaceSelected(Place place) {
@@ -215,6 +235,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     };
 
 
+    /**
+     * Callback for an outside Class to get the view to check for new data
+     */
     // This interface is used when a controller updates it's data
     // It will call this callback on whoever instantiated that controller
     public void callback(){
@@ -230,23 +253,39 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
     }
 
-    // Simple function
+    /**
+     * Add markers to the map.
+     * Takes in a list of requests and adds them as maps to the marker and keeps track of the markers
+     * place on the map
+     * @param filteredReqeusts the filtered reqeusts
+     */
+
     public void addMarkers(ArrayList<Request> filteredReqeusts){
         map.clear();
         if(filteredReqeusts.size() > 0 ) {
+            if(markers == null){
+                markers = new ArrayList<>();
+            }
             for (Request request : filteredReqeusts) {
                 map.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup())).setTag(request);
             }
         }
     }
 
-    // Let's be fancy and add night time viewing
+
+    /**
+     * A function to check if it's night time or not
+     * @param time the time
+     * @return boolean
+     */
+// Let's be fancy and add night time viewing
     // Plus this is easier on the eyes in night
-    public boolean  nightTime(String time){
+    private boolean nightTime(String time){
         try {
             Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
             Date nightTime = new SimpleDateFormat("HH:mm:ss").parse("18:00:00");
-            return currentTime.getTime() > nightTime.getTime();
+            Date earlyMorning = new SimpleDateFormat("HH:mm:ss").parse("6:00:00");
+            return currentTime.getTime() > nightTime.getTime() || currentTime.getTime() < earlyMorning.getTime();
         }catch(ParseException e){
             e.printStackTrace();
         }
