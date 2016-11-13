@@ -124,8 +124,9 @@ public class AddUserView extends Activity {
 
                 //check that account doesn't already exist
                 AsyncController controller = new AsyncController();
-                User onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
+                User onlineUser = null;
                 try{
+                    onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
                     if(onlineUser != null){
                         //if we found another rider with the same name
                         Toast.makeText(AddUserView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();

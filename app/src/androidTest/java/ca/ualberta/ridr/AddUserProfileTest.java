@@ -4,6 +4,9 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -33,103 +36,64 @@ public class AddUserProfileTest {
      */
     public void testUserProfile(){
 
+        //user named testy must not be in database before tests!!**
         Date date1 = new Date();
-        Rider user1 = new Rider("Steve", date1, "321", "goodemail", "9999999");
-        Date date2 = new Date();
-        Driver user2 = new Driver("Storm", date2, "123", "goodemail@supergood.com", "6666666", null); //null for no vehicle assigned yet
+        User user = new User("testy", date1, "321", "goodemail", "9999999");
 
-        DriverController.AddDriverTaskTest addDriverTask = new DriverController.AddDriverTaskTest();
-        RiderController.AddRiderTaskTest addRiderTask = new RiderController.AddRiderTaskTest();
-
-        //add in the rider and driver
-        addDriverTask.execute(user2);
-        addRiderTask.execute(user1);
+        //add user
+        AsyncController controller = new AsyncController();
         try{
-            Thread.sleep(8000);//wait 8 seconds, for all async tasks to complete
+            controller.create("user", user.getID().toString(), new Gson().toJson(user));
         } catch (Exception e){
-            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+            Log.i("Communication Error", "Could not communicate with the elastic search server");
+            assertTrue(false);
         }
 
-        //get objects by name
-        DriverController.GetDriverByNameTaskTest GetDriverByNameTask = new DriverController.GetDriverByNameTaskTest();
-        RiderController.GetRiderByNameTaskTest GetRiderByNameTask = new RiderController.GetRiderByNameTaskTest();
-
-        //Code for Async tests, has to be tested in android emulator
-        Driver newDriver = null;
+        //get user by name
+        User onlineUser = null;
         try{
-            newDriver = GetDriverByNameTask.execute("Storm").get();//this will make the main thread wait until
-            //done, which is what we want for tests. Not for main program!
+            onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
+            if(onlineUser == null){
+                //if we didn't find our user
+                Log.i("Communication Error", "Could not communicate with the elastic search server");
+                assertTrue(false);
+            }
         } catch (Exception e){
-            Log.i("Error", "Failed to get the driver out of the async object.");
-        }
-        Rider newRider = null;
-        try{
-            newRider = GetRiderByNameTask.execute("Steve").get(); //this will make the main thread wait until
-            //done, which is what we want for tests. Not for main program!
-        } catch (Exception e){
-            Log.i("Error", "Failed to get the rider out of the async object.");
+            Log.i("Communication Error", "Could not communicate with the elastic search server");
+            assertTrue(false);
         }
 
+        assertTrue(user.equals(onlineUser));
+        assertEquals(user.getDateOfBirth(), onlineUser.getDateOfBirth());
+        assertEquals(user.getID().toString(), onlineUser.getID().toString());
+        assertEquals(user.getEmail(), onlineUser.getEmail());
+        assertEquals(user.getPhoneNumber(), onlineUser.getPhoneNumber());
+        assertEquals(user.getCreditCard(), onlineUser.getCreditCard());
+
+        //get user by UUID
+        onlineUser = null;
         try{
-            Thread.sleep(10000);//wait 10 seconds, for all async tasks to complete
+            onlineUser = new Gson().fromJson(controller.get("user", "id", user.getID().toString()), User.class);
+            if(onlineUser == null){
+                //if we didn't find our user
+                Log.i("Communication Error", "Could not communicate with the elastic search server");
+                assertTrue(false);
+            }
         } catch (Exception e){
-            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+            Log.i("Communication Error", "Could not communicate with the elastic search server");
+            assertTrue(false);
         }
 
-        //check first User, who is logged in as a rider
-        assertEquals("Steve", newRider.getName());
-        assertEquals("321", newRider.getCreditCard());
-        assertEquals(user1.getElasticID(), newRider.getElasticID());
-
-        //check second User, who is logged in as a driver
-        assertEquals("Storm", newDriver.getName());
-        assertEquals("123", newDriver.getCreditCard());
-        assertEquals(null, newDriver.getVehicle());
-        assertEquals(user2.getElasticID(), newDriver.getElasticID());
-
-        //get objects by UUID
-        DriverController.GetDriverByUUIDTaskTest GetDriverByUUIDTask = new DriverController.GetDriverByUUIDTaskTest();
-        RiderController.GetRiderByUUIDTaskTest GetRiderByUUIDTask = new RiderController.GetRiderByUUIDTaskTest();
-
-        //Code for Async tests, has to be tested in android emulator
-        newDriver = null;
-        try{
-            newDriver = GetDriverByUUIDTask.execute(user2.getUUID().toString()).get();//this will make the main thread wait until
-            //done, which is what we want for tests. Not for main program!
-        } catch (Exception e){
-            Log.i("Error", "Failed to get the driver out of the async object.");
-        }
-        newRider = null;
-        try{
-            newRider = GetRiderByUUIDTask.execute(user1.getUUID().toString()).get(); //this will make the main thread wait until
-            //done, which is what we want for tests. Not for main program!
-        } catch (Exception e){
-            Log.i("Error", "Failed to get the rider out of the async object.");
-        }
-
-        try{
-            Thread.sleep(10000);//wait 10 seconds, for all async tasks to complete
-        } catch (Exception e){
-            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
-        }
-
-        //check first User, who is logged in as a rider
-        assertEquals("Steve", newRider.getName());
-        assertEquals("321", newRider.getCreditCard());
-        assertEquals(user1.getElasticID(), newRider.getElasticID());
-
-        //check second User, who is logged in as a driver
-        assertEquals("Storm", newDriver.getName());
-        assertEquals("123", newDriver.getCreditCard());
-        assertEquals(null, newDriver.getVehicle());
-        assertEquals(user2.getElasticID(), newDriver.getElasticID());
+        assertTrue(user.equals(onlineUser));
+        assertEquals(user.getDateOfBirth(), onlineUser.getDateOfBirth());
+        assertEquals(user.getID().toString(), onlineUser.getID().toString());
+        assertEquals(user.getEmail(), onlineUser.getEmail());
+        assertEquals(user.getPhoneNumber(), onlineUser.getPhoneNumber());
+        assertEquals(user.getCreditCard(), onlineUser.getCreditCard());
 
 
-        //delete our objects in test type, so next tests pass
-        DriverController DriverControllerClass = new DriverController();
-        DriverControllerClass.deleteDriverTests(newDriver.getElasticID());
-        RiderController RiderControllerClass = new RiderController();
-        RiderControllerClass.deleteRiderTests(newRider.getElasticID());
-
+        //delete our user off of the database
+        AsyncDatabaseController databaseController = new AsyncDatabaseController("deleteUserTests");
+        databaseController.execute(user.getID().toString());
     }
 }
