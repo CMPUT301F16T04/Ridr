@@ -30,14 +30,14 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         }
         TextView requestPickup = (TextView) convertView.findViewById(R.id.request_pickup);
         TextView requestDropoff = (TextView) convertView.findViewById(R.id.request_dropoff);
-        TextView requestUser = (TextView) convertView.findViewById(R.id.request_user);
+        //TextView requestUser = (TextView) convertView.findViewById(R.id.request_user);
         TextView requestFare = (TextView) convertView.findViewById(R.id.request_fare);
 
         Request request = getItem(position);
 
         requestPickup.setText("Pickup: " + request.getPickup());
         requestDropoff.setText("Dropoff: " + request.getDropoff());
-        requestUser.setText(request.getRider());
+        //requestUser.setText(request.getRider());
         requestFare.setText("$" + Float.toString(request.getFare()));
 
 
