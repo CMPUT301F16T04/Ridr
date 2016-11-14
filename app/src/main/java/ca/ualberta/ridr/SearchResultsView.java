@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -41,6 +42,15 @@ public class SearchResultsView extends Activity {
         }
         searchResultsByKeyword(keyword);
         searchResults = (ListView) findViewById(R.id.search_results);
+        searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            //implement when putting together for on click items
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                /*Intent intent = new Intent(SearchResultsView.this, .class);
+                intent.putExtra("Habit", position);
+                startActivity(intent);*/
+            }
+        });
 
         bodyText = (EditText) findViewById(R.id.searchRequestsText);
         Button searchButton = (Button) findViewById(R.id.searchRequestsButton);
@@ -62,6 +72,11 @@ public class SearchResultsView extends Activity {
         searchResults.setAdapter(requestAdapter);
     }
 
+    /**
+     * Calls on the request controller method searchRequestsKeyword
+     * Updates the requestList without making it a new object (Clear and re add)
+     * @param keyword
+     */
     protected void searchResultsByKeyword(String keyword) {
         if(keyword != null) {
             ArrayList<Request> tempRequestList = requestController.searchRequestsKeyword(keyword);
