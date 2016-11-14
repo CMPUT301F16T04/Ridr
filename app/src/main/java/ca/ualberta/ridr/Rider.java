@@ -4,6 +4,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -21,6 +22,9 @@ public class Rider extends User {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();
+    }
+    public void setRiderStatus(boolean status) {
+        super.setRiderStatus(status);
     }
 
     public String getElasticID() {
@@ -43,30 +47,12 @@ public class Rider extends User {
         return requestArrayList;
     }
 
+    public UUID getId(){return super.getID();}
+
     public void setRequests(ArrayList<Request> requestArrayList) {
         this.requestArrayList = requestArrayList;
     }
 
-    public Ride createRide() {
-        //Dont know how to fix without actually writing code
-
-        /* This doesn't work because it fails encapsulation, any method on an object should only effect that object.
-         * This might need to be put in Ride
-         * - Justin
-         */
-        /*
-         * Temporally fixed it by creating a dummy constructor for Ride
-         * -Marco
-         */
-        /*
-        *All this stuff is just to make it pass the unit tests for now, delete when implementing
-         */
-        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
-        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), new LatLng(53.5232, -113.5263), new LatLng(53.5225, -113.6242));
-        return ride;
-    }
 
     public void acceptRideOffer(Driver driver) {
     }
@@ -75,14 +61,17 @@ public class Rider extends User {
     }
 
     public void removeRequest(Request currentRequest) {
+        requestArrayList.remove(currentRequest);
     }
 
-    public void confirmDriver(Driver driver){
+    public void confirmDriver(Ride ride){
+            rideArrayList.add(ride);
 
     }
 
     public void addRequest(Request request){
         requestArrayList.add(request);
     }
+
 
 }

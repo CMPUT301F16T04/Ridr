@@ -17,6 +17,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
     private Context context;
     private ArrayList<Request> requests = new ArrayList<>();
 
+
     public RequestAdapter(Context context, ArrayList<Request> requests) {
         super(context, 0, requests);
         this.context = context;
@@ -30,17 +31,23 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         }
         TextView requestPickup = (TextView) convertView.findViewById(R.id.request_pickup);
         TextView requestDropoff = (TextView) convertView.findViewById(R.id.request_dropoff);
+
         //TextView requestUser = (TextView) convertView.findViewById(R.id.request_user);
         TextView requestFare = (TextView) convertView.findViewById(R.id.request_fare);
 
         Request request = getItem(position);
 
         requestPickup.setText("Pickup: " + request.getPickup());
-        requestDropoff.setText("Dropoff: " + request.getDropoff());
-        //requestUser.setText(request.getRider());
-        requestFare.setText("$" + Float.toString(request.getFare()));
+        requestDropoff.setText("Drop off: " + request.getDropoff());
+        //requestUser.setText("Date: " + request.getDate().toString()); // Will need to convert to something else?
+        requestFare.setText("Fare: " + Float.toString(request.getFare()));
+
 
 
         return convertView;
     }
+
 }
+
+
+
