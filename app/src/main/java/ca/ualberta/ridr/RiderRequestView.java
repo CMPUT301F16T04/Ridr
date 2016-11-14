@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ListAdapter;
@@ -10,17 +11,25 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+/** The RiderRequestView displays a list of active requests for a logged in rider
+ * @author mackenzie
+ * */
 
 public class RiderRequestView extends Activity {
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
+    public Rider loggedInRider;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_results);
         oldRequestsList = (ListView) (findViewById(R.id.search_results));
+
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
 
     }
 
@@ -29,7 +38,7 @@ public class RiderRequestView extends Activity {
         // TODO Auto-generated method stub
         super.onStart();
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "8e16686b-f72d-42e1-90ea-e7a8cf270732");
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", loggedInRider.getID().toString());
         System.out.println(queryResults);
         for (JsonElement result : queryResults) {
             try {
