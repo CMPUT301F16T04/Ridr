@@ -117,7 +117,7 @@ public class LoginView extends Activity {
         if(myUser == null){
             return;
         }
-        Intent driverScreenIntent = new Intent(LoginView.this, GeoView.class);
+        Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
         driverScreenIntent.putExtra("UUID", myUser.getID().toString());
         startActivity(driverScreenIntent);
     }

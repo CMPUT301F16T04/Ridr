@@ -58,5 +58,17 @@
         android:layout_width="250dp"
         android:id="@+id/searchRequestsButton" />
 
+    <Button
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="50dp"
+        android:background="@color/tertiary_colour"
+        android:text="Search By Geo Location"
+        android:textColor="@color/primary_colour"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="250dp"
+        android:id="@+id/searchByGeoButton" />
+
 
 </LinearLayout>
