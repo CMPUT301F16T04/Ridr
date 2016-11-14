@@ -10,7 +10,7 @@
         android:label="@string/app_name"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".LoginView">
+        <activity android:name=".SearchRequestsView">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -18,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".DriverMainView" />
-        <activity android:name=".SearchRequestsView" />
+        <activity android:name=".LoginView" />
         <activity android:name=".SearchResultsView" />
         <activity android:name=".RequestsFromRidersView" />
         <activity android:name=".MainActivity"/>

@@ -5,6 +5,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.searchly.jestdroid.DroidClientConfig;
 import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
@@ -26,25 +27,32 @@ public class RequestController {
 
     public RequestController(){}
 
-    //Hard to test
-    //Should return arraylist of requests that match the keyword in their queryable fields
-    //Queryable fields include rider name, email, phone and request start and end location
+    /**
+     * Uses a keyword to search through the queryable fields for requests
+     * Returns the requests containing the keyword in one or more of the fields
+     * Does not return duplicates of the same request if multiple instances of keyword
+     * @param keyword
+     * @return ArrayList<Request>
+     */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
         jsonArray = new AsyncController().getAllFromIndex("request");
-        Gson gson = new Gson();
         ArrayList<String> stringArray;
+        Gson gson = new Gson();
         ArrayList<Request> requestsKeyword = new ArrayList<>();
+        Pattern p = Pattern.compile(keyword);
         Request request;
 
-        Pattern p = Pattern.compile(keyword);
-
-        for (int i = 0; i < jsonArray.size(); ++i) {
-            request = gson.fromJson(jsonArray.get(i).getAsJsonObject(), Request.class);
-            stringArray = request.queryableRequestVariables();
-            for (String s: stringArray) {
-                if (p.matcher(s).matches() && !requestsKeyword.contains(request)) {
-                    requestsKeyword.add(request);
+        for (JsonElement element: jsonArray) {
+            try {
+                request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
+                stringArray = request.queryableRequestVariables();
+                for (String s : stringArray) {
+                    if (p.matcher(s).find() && !requestsKeyword.contains(request)) {
+                        requestsKeyword.add(request);
+                    }
                 }
+            } catch(Exception e) {
+                Log.i("Error searching keyword", e.toString());
             }
 
         }

@@ -37,7 +37,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
 
         requestPickup.setText("Pickup: " + request.getPickup());
         requestDropoff.setText("Dropoff: " + request.getDropoff());
-        requestUser.setText(request.getRider().getName());
+        requestUser.setText(request.getRider());
         requestFare.setText("$" + Float.toString(request.getFare()));
 
 

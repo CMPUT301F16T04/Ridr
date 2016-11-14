@@ -22,7 +22,7 @@ import java.util.UUID;
  * Worked on by Marc-O and Kristy on 03/11/2016
  */
 public class Request {
-    private Rider rider;
+    private String rider;
     private String pickup;
     private String dropoff;
     private LatLng pickupCoord;
@@ -32,12 +32,12 @@ public class Request {
     private UUID id;
     private float fare;
     private Date date;
-    // LatLng pickupCoords, LatLng dropOffCoords,
-    Request(Rider rider, String pickup, String dropoff, Date date){
+
+    Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
-        //this.pickupCoord = pickupCoords;
-        //this.dropOffCoord = dropOffCoords;
+        this.pickupCoord = pickupCoords;
+        this.dropOffCoord = dropOffCoords;
         this.date = date;
         this.rider = rider;
         this.id = UUID.randomUUID();
@@ -90,11 +90,11 @@ public class Request {
     public void addAccepted(Driver driver) {
     }
 
-    public Rider getRider() {
+    public String getRider() {
         return rider;
     }
 
-    public void setRider(Rider rider) {
+    public void setRider(String rider) {
         this.rider = rider;
     }
 
@@ -162,7 +162,7 @@ public class Request {
         // Because of the differences between JsonObject and JSONObject.
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
-        //this.rider = request.get("rider").getAsString();
+        this.rider = request.get("rider").getAsString();
         this.pickup = request.get("pickup").getAsString();
         this.dropoff = request.get("dropoff").getAsString();
         this.dropOffCoord = buildLatLng(request.getAsJsonObject("dropOffCoord"));
@@ -173,13 +173,24 @@ public class Request {
         this.fare = request.get("fare").getAsFloat();
     }
 
+    /**
+     * This returns the String fields that are queryable for keyword search in a request
+     * @return ArrayList<String>
+     */
     public ArrayList<String> queryableRequestVariables() {
         ArrayList<String> stringArray = new ArrayList<>();
-        stringArray.add(this.dropoff);
-        stringArray.add(this.pickup);
-        stringArray.add(this.rider.getName());
-        stringArray.add(this.rider.getEmail());
-        stringArray.add(this.rider.getPhoneNumber());
+
+        if(this.dropoff != null) {
+            stringArray.add(this.dropoff);
+        }
+
+        if(this.pickup != null) {
+            stringArray.add(this.pickup);
+        }
+
+        if(this.rider != null) {
+            stringArray.add(this.rider);
+        }
 
         return stringArray;
     }
