@@ -22,7 +22,7 @@ import java.util.UUID;
  *
  */
 public class Request {
-    private String rider;
+    private String rider; //string of the id
     private String pickup;
     private String dropoff;
     private LatLng pickupCoord;
@@ -34,12 +34,13 @@ public class Request {
     private Date date;
 
 
-    Request(Rider rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
+    Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupCoord = pickupCoords;
         this.dropOffCoord = dropOffCoords;
-        this.rider = rider.getID().toString();
+        this.date = date;
+        this.rider = rider;
         this.id = UUID.randomUUID();
         this.date = date;
         this.fare = 20;
@@ -91,8 +92,8 @@ public class Request {
         return rider;
     }
 
-    public void setRider(Rider rider) {
-        this.rider = rider.getID().toString();
+    public void setRider(String rider) {
+        this.rider = rider;
     }
 
     public void setPickup(String pickup) {
@@ -134,8 +135,6 @@ public class Request {
         return tempVal;
     }
 
-
-
     public UUID getID() {
         return id;
     }
@@ -159,7 +158,6 @@ public class Request {
         } catch(Exception e){
             Log.d("Error", e.toString());
             return null;
-
         }
     }
 
@@ -179,7 +177,30 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
+    }
 
+    /**
+     * This returns the String fields that are queryable for keyword search in a request
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> queryableRequestVariables() {
+        ArrayList<String> stringArray = new ArrayList<>();
+
+        if(this.dropoff != null) {
+            stringArray.add(this.dropoff);
+        }
+
+        if(this.pickup != null) {
+            stringArray.add(this.pickup);
+        }
+
+        if(this.rider != null) {
+            stringArray.add(this.rider);
+        }
+
+        stringArray.add(Float.toString(this.fare));
+
+        return stringArray;
     }
 
     private JSONObject buildGeoPoint(LatLng coords) throws JSONException {
@@ -187,9 +208,10 @@ public class Request {
         newLatLng.put("lat", coords.latitude);
         newLatLng.put("lon", coords.longitude);
         return newLatLng;
-
     }
+
     private LatLng buildLatLng(JsonObject coords){
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
+
 }

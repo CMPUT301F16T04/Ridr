@@ -115,10 +115,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         } catch(Exception e){
             Log.i("Error parsing Rider", e.toString());
         }
-        //TODO afterTextChanged for destination, and start location, get distance and estimate fare
+
 
         setViews();
-
+        //TODO afterTextChanged for destination, and start location, get distance and estimate fare
+//  work in progress
 //        startLocation.addTextChangedListener(new TextWatcher() {
 //            @Override
 //            public void onTextChanged(CharSequence s, int start, int before, int count) {

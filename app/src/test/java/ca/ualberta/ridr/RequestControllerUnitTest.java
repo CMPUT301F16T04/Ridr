@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -21,13 +23,13 @@ public class RequestControllerUnitTest {
     public void testCreateRequestController(){
         Date date = new Date();
         Rider rider = new Rider("Bob", date, "123", "email", "phone"); // fails if rider = null
-        RequestController RC = new RequestController(); // not sure how to create a controller outside of a view
+        RequestController RC = new RequestController();
         String start = "start";
         String end = "end";
-        String someDate = "some day";
-        String time = "later";
-        RC.createRequest(rider, start, end, someDate, time);
-        Request request = new Request(rider, start, end, someDate, time);
+        LatLng a = new LatLng(1,2);
+        LatLng b = new LatLng(2,3);
+        RC.createRequest(rider, start, end, a, b, date);
+        Request request = new Request(rider.getID().toString(), start, end, a, b, date);
         ArrayList<Request>  riderRequest = rider.getRequests();
         assertTrue(riderRequest.get(0).getPickup() == request.getPickup());
         //still cant use isEquals here because we do create two separate instances of requests in this test
