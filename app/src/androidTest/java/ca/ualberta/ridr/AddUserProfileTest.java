@@ -4,11 +4,15 @@ import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -28,50 +32,80 @@ public class AddUserProfileTest {
     }
 
     @Test
-    // Test for Rider Profile US 03.01.01
+    /**
+     * Test for Rider Profile US 03.01.01
+     * Mostly tests the elastic search implementation
+     */
     public void testUserProfile(){
 
+        //user named testy must not be in database before tests!!**
         Date date1 = new Date();
-        Rider user1 = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
-        Date date2 = new Date();
-        Driver user2 = new Driver("Storm", new Date(), "123", "goodemail@supergood.com", "6666666", null); //null for no vehicle assigned yet
+        User user = new User("testy", date1, "321", "goodemail", "9999999");
 
-        DriverController.AddDriverTask addDriverTask = new DriverController.AddDriverTask();
-        RiderController.AddRiderTask addRiderTask = new RiderController.AddRiderTask();
-
-        addDriverTask.execute(user2);
-        addRiderTask.execute(user1);
-
-        DriverController.GetDriverTask getDriverTask = new DriverController.GetDriverTask();
-        RiderController.GetRiderTask getRiderTask = new RiderController.GetRiderTask();
-
-        //Code for Async tests, has to be tested in android emulator
-        getDriverTask.execute("Storm");
-        Driver newDriver = null;
+        //add user
+        AsyncController controller = new AsyncController();
         try{
-            newDriver = getDriverTask.get();
+            controller.create("user", user.getID().toString(), new Gson().toJson(user));
         } catch (Exception e){
-            Log.i("Error", "Failed to get the driver out of the async object.");
+            Log.i("Communication Error", "Could not communicate with the elastic search server");
+            assertTrue(false);
         }
 
-        getRiderTask.execute("Steve");
-        Rider newRider = null;
+        //get user by name
+        User onlineUser = null;
         try{
-            newRider = getRiderTask.get();
+            onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
         } catch (Exception e){
-            Log.i("Error", "Failed to get the rider out of the async object.");
+            Log.i("Communication Error", "Could not communicate with the elastic search server");
+            assertTrue(false);
         }
+        try{
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e){
+            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+        }
+        /*if(onlineUser == null){
+            //if we didn't find our user
+            Log.i("Error", "We did not find our user");
+            assertTrue(false);
+        }*/
 
-        //check first User, who is logged in as a rider
-        assertEquals("Steve", newRider.getName());
-        assertEquals(date1, newRider.getDateOfBirth());
-        assertEquals("321", newRider.getCreditCard());
+        assertTrue(user.equals(onlineUser));
+        assertEquals(user.getDateOfBirth().toString(), onlineUser.getDateOfBirth().toString());
+        assertEquals(user.getID().toString(), onlineUser.getID().toString());
+        assertEquals(user.getEmail(), onlineUser.getEmail());
+        assertEquals(user.getPhoneNumber(), onlineUser.getPhoneNumber());
+        assertEquals(user.getCreditCard(), onlineUser.getCreditCard());
 
-        //check second User, who is logged in as a driver
-        assertEquals("Storm", newDriver.getName());
-        assertEquals(date2, newDriver.getDateOfBirth());
-        assertEquals("123", newDriver.getCreditCard());
-        assertEquals(null, newDriver.getVehicle());
+        //get user by UUID
+        onlineUser = null;
+        try{
+            onlineUser = new Gson().fromJson(controller.get("user", "id", user.getID().toString()), User.class);
+        } catch (Exception e){
+            Log.i("Communication Error", "Could not communicate with the elastic search server");
+            assertTrue(false);
+        }
+        try{
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e){
+            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+        }
+        /*if(onlineUser == null){
+            //if we didn't find our user
+            Log.i("Error", "We did not find our user");
+            assertTrue(false);
+        }*/
 
+        assertTrue(user.equals(onlineUser));
+        assertEquals(user.getDateOfBirth().toString(), onlineUser.getDateOfBirth().toString());
+        assertEquals(user.getID().toString(), onlineUser.getID().toString());
+        assertEquals(user.getEmail(), onlineUser.getEmail());
+        assertEquals(user.getPhoneNumber(), onlineUser.getPhoneNumber());
+        assertEquals(user.getCreditCard(), onlineUser.getCreditCard());
+
+
+        //delete our user off of the database
+        AsyncDatabaseController databaseController = new AsyncDatabaseController("deleteUserTests");
+        databaseController.execute(user.getID().toString());
     }
 }

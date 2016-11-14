@@ -8,12 +8,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
-* Created by Justin on 2016-11-10.
-*/
-
+ * Created by Justin on 2016-11-10.
+ *
+ * This class can get and put objects into elastic search, in all different elastic search types.
+ * Controls all elastic search interactions.
+ */
 public class AsyncController {
+    /**
+     * The Controller.
+     */
     AsyncDatabaseController controller;
 
+    /**
+     * Instantiates a new Async controller.
+     */
     public AsyncController(){
         super();
     }
@@ -103,7 +111,7 @@ public class AsyncController {
      * @param kmDistance the km distance
      * @return a jsonArray
      */
-    public JsonArray geoDistanceQuery(final String dataClass,final LatLng center, final String kmDistance){
+    public JsonArray geoDistanceQuery(String dataClass,LatLng center, String kmDistance){
         controller = new AsyncDatabaseController("get");
         String query =
                 "{"+
@@ -139,7 +147,6 @@ public class AsyncController {
      */
     private JsonArray extractAllElements(JsonObject result){
         return result.getAsJsonObject("hits").getAsJsonArray("hits");
-
     }
 
     /**

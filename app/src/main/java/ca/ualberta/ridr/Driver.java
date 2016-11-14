@@ -2,7 +2,6 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
 
 import io.searchbox.annotations.JestId;
 
@@ -10,9 +9,9 @@ import io.searchbox.annotations.JestId;
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
-
     @JestId
-    private String driverID;
+    private String elasticID;
+
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     private transient Vehicle vehicle;
@@ -27,28 +26,12 @@ public class Driver extends User {
         this.setDriverStatus(true);
     }
 
-    public String getDriverID() {
-        return driverID;
+    public String getElasticID() {
+        return elasticID;
     }
 
-    public void setDriverID(String driverID) {
-        this.driverID = driverID;
-    }
-
-    public String getName() {
-        return this.getName();
-    }
-
-    public void setName(String name) {
-        this.setName(name);
-    }
-
-    public Date getDateOfBirth() {
-        return this.getDateOfBirth();
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.setDateOfBirth(dateOfBirth);
+    public void setElasticID(String elasticID) {
+        this.elasticID = elasticID;
     }
 
     public ArrayList<Ride> getRides() {
@@ -91,14 +74,6 @@ public class Driver extends User {
 
     public boolean riderAcceptedRide(Ride ride) {
         return false;
-    }
-
-    public String getPhoneNumber() {
-        return this.getPhoneNumber();
-    }
-
-    public String getEmail() {
-        return this.getEmail();
     }
 
     public boolean isOffline() {

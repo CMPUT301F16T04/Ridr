@@ -1,7 +1,5 @@
 package ca.ualberta.ridr;
 
-import java.sql.RowIdLifetime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,7 +26,6 @@ public class User {
         this.phoneNumber = phoneNumber;
         this.id = UUID.randomUUID();
     }
-
 
     public String getName() {
         return name;
@@ -92,13 +89,6 @@ public class User {
     }
     public boolean isDriver(){
         return isDriver;
-    }
-    public String getStartLocation() {
-        return "";
-    }
-
-    public String getDestination() {
-        return "";
     }
 
     public boolean equals(User user) {
