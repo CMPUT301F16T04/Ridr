@@ -33,7 +33,7 @@ public class RiderRequestView extends Activity {
         System.out.println(queryResults);
         for (JsonElement result : queryResults) {
             try {
-                requests.add(new Request(result.getAsJsonObject()));
+                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
             } catch (Exception e) {
                 Log.i("Error parsing requests", e.toString());
             }

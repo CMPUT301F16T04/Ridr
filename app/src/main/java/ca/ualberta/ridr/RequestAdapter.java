@@ -36,10 +36,10 @@ public class RequestAdapter extends ArrayAdapter<Request> {
 
         Request request = getItem(position);
 
-        requestPickup.setText(request.getPickup());
-        requestDropoff.setText(request.getDropoff());
-        requestUser.setText(request.getRider());
-        requestFare.setText(Float.toString(request.getFare()));
+        requestPickup.setText("Pickup: " + request.getPickup());
+        requestDropoff.setText("Drop off: " + request.getDropoff());
+        requestUser.setText("Date: " + request.getDate().toString()); // Will need to convert to something else?
+        requestFare.setText("Fare: " + Float.toString(request.getFare()));
 
 
         return convertView;
