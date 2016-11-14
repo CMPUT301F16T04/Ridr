@@ -17,10 +17,11 @@ import java.util.Date;
 public class RequestControllerUnitTest {
 
     @Test
+    // needs to be updated since changes were made to the controller
     public void testCreateRequestController(){
         Date date = new Date();
         Rider rider = new Rider("Bob", date, "123", "email", "phone"); // fails if rider = null
-        RequestController RC = new RequestController();
+        RequestController RC = new RequestController(); // not sure how to create a controller outside of a view
         String start = "start";
         String end = "end";
         String someDate = "some day";

@@ -7,6 +7,8 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -62,7 +64,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private UUID currentUUID; // UUID of the currently logged-in rider
     private String currentIDStr; // string of the curretn UUID
     private Rider currentRider;
-    private User currentUser;
 
     private String defaultStartText = "Enter Start Location";
     private String defaultDestinationText = "Enter Destination";
@@ -113,9 +114,51 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             Log.i("Error parsing Rider", e.toString());
         }
         //TODO afterTextChanged for destination, and start location, get distance and estimate fare
-        //TODO make a menu
 
         setViews();
+
+//        startLocation.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                return;
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                return;
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultStartText)){
+//                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
+//                    //end location has also changed, so get a fare estimate
+//                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
+//                } else{
+//                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
+        endLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                return;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                return;
+            }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
+                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
+                    //end location has also changed, so get a fare estimate
+                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
+                }else{
+                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
 
         //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {

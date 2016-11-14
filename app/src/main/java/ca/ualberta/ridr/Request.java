@@ -129,7 +129,9 @@ public class Request {
 
     public float estimateFare(float distance){
         float gasCostFactor = 4; // calculate something later
-        return distance * gasCostFactor;
+        //return distance * gasCostFactor;
+        float tempVal = 20;
+        return tempVal;
     }
 
 
