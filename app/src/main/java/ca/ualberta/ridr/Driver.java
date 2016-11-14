@@ -11,6 +11,7 @@ import io.searchbox.annotations.JestId;
 public class Driver extends User {
     @JestId
     private String elasticID;
+
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     private transient Vehicle vehicle;

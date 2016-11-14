@@ -9,6 +9,7 @@ import io.searchbox.annotations.JestId;
 
 /**
  * Created by jferris on 22/10/16.
+ * Worked on by Marc-O and Kristy on 03/11/2016
  */
 public class Rider extends User {
     @JestId
@@ -78,6 +79,10 @@ public class Rider extends User {
 
     public void confirmDriver(Driver driver){
 
+    }
+
+    public void addRequest(Request request){
+        requestArrayList.add(request);
     }
 
 }
