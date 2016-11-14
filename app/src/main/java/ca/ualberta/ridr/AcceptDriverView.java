@@ -78,11 +78,11 @@ public class AcceptDriverView extends Activity {
         String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
 
-        String profileString = "'s Profile";
+        String profileString = checkProfileString(driver.getName());
 
         driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(driver.getName() + profileString);
+        xProfile.setText(profileString);
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -133,10 +133,25 @@ public class AcceptDriverView extends Activity {
     }
 
     /**
+     * this function just checks on which way we want to format the title depending on the driver's name
+     *
+     * @param name is the driver's name
+     * @return String for view title
+     */
+    private String checkProfileString(String name) {
+        if(name.endsWith("s")) {
+            return(name+"' Profile");
+        }
+        else{
+            return(name+"'s Profile");
+        }
+    }
+
+    /**
      * gets the driver for the data we display on this view
      *
-     * @param driverId
-     * @return Driver
+     * @param driverId used to fetch the driver
+     * @return Driver object
      */
     public Driver getDriver(String driverId){
         DriverController DC = new DriverController();
@@ -148,8 +163,8 @@ public class AcceptDriverView extends Activity {
     /**
      * gets the request that we will need to create the ride
      *
-     * @param requestId
-     * @return Request
+     * @param requestId used to fetch the request
+     * @return Request object
      */
     public Request getRequest(String requestId){
         RequestController requestCon = new RequestController();
