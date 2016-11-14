@@ -3,7 +3,6 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -13,11 +12,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.LinearLayout;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
-import android.widget.Toast;
-import android.widget.EditText;
 
 
 import com.google.gson.JsonArray;
@@ -38,8 +34,8 @@ public class RiderRequestView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_results);
-        oldRequestsList = (ListView) (findViewById(R.id.search_results));
+        setContentView(R.layout.rider_request_view);
+        oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
 
     }
 
