@@ -7,9 +7,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
-import android.location.Location;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +29,8 @@ import android.support.v4.app.FragmentActivity;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
+import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -39,8 +40,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
-public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, GoogleApiClient.OnConnectionFailedListener{
+import static android.R.attr.fragment;
+
+public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
     private EditText startLocation;
     private EditText endLocation;
@@ -55,6 +59,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     //private Toolbar toolbar;
 
     private UUID currentUUID; // UUID of the currently logged-in rider
+    private String currentIDStr; // string of the curretn UUID
+    private Rider currentRider;
+    private User currentUser;
 
     private String defaultStartText = "Enter Start Location";
     private String defaultDestinationText = "Enter Destination";
@@ -81,16 +88,30 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         firstLoad = false;
         geocoder = new Geocoder(this);
 
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .build();
+        }
 
         //retrieve the current rider's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentUUID = UUID.fromString(extras.getString("id"));
+            currentIDStr = extras.getString("UUID");
+            currentUUID = UUID.fromString(currentIDStr);
         }
         //from the UUID, get the rider object
-        //TODO retrieve rider from elasticsearch using the rider controller
-        //TODO afterTextChanged for destination, and start location, check that they are valid addresses, if so, get distance and estimate fare
+        try {
+            currentRider = new Gson().fromJson(new AsyncController().get("user", "id", currentIDStr), Rider.class);
+        } catch(Exception e){
+            Log.i("Error parsing Rider", e.toString());
+        }
+        //TODO afterTextChanged for destination, and start location, get distance and estimate fare
         //TODO make a menu
 
         setViews();
@@ -116,13 +137,36 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         // create request button
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
-                Rider rider = null; // for now just so that we wont get compile errors
-                addRequestEvent(rider);
+                //Rider rider = null; // for now just so that we wont get compile errors
+                addRequestEvent(currentRider);
             }
         });
 
+    }
 
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+    protected void onResume(){
+        super.onResume();
+        mGoogleApiClient.reconnect();
+    }
 
+    protected void onPause(){
+        mGoogleApiClient.disconnect();
+        super.onPause();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    // Need this for ConnectionsCallback, doesn't need to do anything AFAIK
+    // If a map view does live tracking it might be more useful
+    public void onConnectionSuspended(int i){
 
     }
 //    @Override
@@ -147,7 +191,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 //        }
 //    }
 
-    //@Override
+    @Override
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
         //lastKnownPlace = getCurrentLocation();
@@ -181,11 +225,14 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
     public void callback(){}
 
-
+    /**
+     * handles the event called when Create Request is clicked. Verifies that the fields have been filled and creates a Request
+     * @param rider
+     */
     private void addRequestEvent(Rider rider){
 
         if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
-            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picke up", Toast.LENGTH_SHORT).show();
+            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
         }
         if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){

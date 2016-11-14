@@ -37,6 +37,11 @@ public class RequestController {
         this.add(currenRequest);
 
         //TODO send request to server
+        try{
+            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+        } catch (Exception e){
+            Log.i("Error creating request", e.toString());
+        }
     }
 
     /**

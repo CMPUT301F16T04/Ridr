@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="220dp"
         android:id="@+id/newRequestMap"
-        tools:context=".MapsActivity"
+        tools:context="ca.ualberta.ridr.RiderMainView"
         android:name="com.google.android.gms.maps.SupportMapFragment" />
 
     <Button
@@ -31,13 +31,13 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
         android:text="Enter a Fare"
         android:ems="10"
         android:id="@+id/editFare"
         android:layout_above="@+id/textPickUpDate"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:inputType="number" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -51,7 +51,7 @@
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/editStarLocationText"
+        android:id="@+id/editStartLocationText"
         android:text="Enter Start Location"
         android:layout_above="@+id/editEndLocationText"
         android:layout_alignParentStart="true"
