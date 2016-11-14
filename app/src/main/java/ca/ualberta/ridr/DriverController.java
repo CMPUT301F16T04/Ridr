@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+
+import com.google.gson.Gson;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -15,9 +17,17 @@ import io.searchbox.core.Index;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 
+
 /**
  * Created by jferris on 22/10/16.
  */
 public class DriverController {
+
+    DriverController(){
+    }
+    public Driver getDriverFromServer(String driverId){
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        return(driver);
+    }
 
 }

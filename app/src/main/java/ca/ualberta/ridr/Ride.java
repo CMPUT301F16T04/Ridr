@@ -48,17 +48,18 @@ public class Ride {
 
 
 
-    public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
+    public Ride(String driverId, String riderId, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
         this.rideDate = date;
-        this.driver = driver.getID().toString();
-        this.rider = rider.getID().toString();
+        this.driver = driverId;
+        this.rider = riderId;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupCoords = pickupCoords;
         this.dropOffCoords = dropOffCoords;
         this.isCompleted = false;
         this.id = UUID.randomUUID();
-        this.fare = 20;
+        this.fare  = 20;
+
     }
 
 
@@ -66,6 +67,9 @@ public class Ride {
         Double fare = 0.0;
         return fare;
     }
+
+
+    public UUID getId(){return id;}
 
     public String getPickupAddress() {
         return pickup;

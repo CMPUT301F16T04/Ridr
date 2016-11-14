@@ -14,20 +14,43 @@ public class Driver extends User {
 
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
-    private transient Vehicle vehicle;
+    //private transient Vehicle vehicle;
     private transient String bankAccountNo;
     private transient ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
-                  String email, String phoneNumber, Vehicle vehicle) {
+
+                  String email, String phoneNumber, String bankAccountNo) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.vehicle = vehicle;
+        this.bankAccountNo = bankAccountNo;
+
         this.rideArrayList = new ArrayList<Ride>();
         this.setDriverStatus(true);
     }
 
+    public String getName() {
+        return super.getName();
+    }
+
+    public void setName(String name) {
+        super.setName(name);
+    }
+
+    public Date getDateOfBirth() {
+        return super.getDateOfBirth();
+    }
+
+    public void setDateOfBirth(Date dateOfBirth) {
+        super.setDateOfBirth(dateOfBirth);
+    }
+
+
+    public String getBankAccountNo() {
+        return bankAccountNo;
+    }
     public String getElasticID() {
         return elasticID;
+
     }
 
     public void setElasticID(String elasticID) {
@@ -76,17 +99,18 @@ public class Driver extends User {
         return false;
     }
 
+    public String getPhoneNumber() {
+        return super.getPhoneNumber();
+    }
+
+    public String getEmail() {
+        return super.getEmail();
+    }
+
     public boolean isOffline() {
         return false;
     }
 
-    public Vehicle getVehicle() {
-        return vehicle;
-    }
-
-    public void setVehicle(Vehicle vehicle) {
-        this.vehicle = vehicle;
-    }
 }
 
 
