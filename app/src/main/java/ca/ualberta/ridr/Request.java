@@ -192,6 +192,8 @@ public class Request {
             stringArray.add(this.rider);
         }
 
+        stringArray.add(Float.toString(this.fare));
+
         return stringArray;
     }
 

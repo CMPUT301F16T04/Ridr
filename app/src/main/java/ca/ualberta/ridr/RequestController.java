@@ -52,14 +52,22 @@ public class RequestController {
         return requestsKeyword;
     }
 
+    /**
+     * Checks if the JsonElement for request contains the string keyword
+     * @param keyword
+     * @param jsonElement
+     * @return Boolean
+     */
     public Boolean doesJsonContainKeyword(String keyword, JsonElement jsonElement) {
         ArrayList<String> stringArray;
+        keyword = keyword.toLowerCase();
         Pattern p = Pattern.compile(keyword);
         Request request;
         try {
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
+                s = s.toLowerCase();
                 if (p.matcher(s).find()) {
                     return true;
                 }

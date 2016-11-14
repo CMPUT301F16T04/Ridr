@@ -15,6 +15,7 @@ import java.util.ArrayList;
 
 /**
  * Currently not super useful just allows driver to enter keyword and get to @SearchResultsView
+ * May be scrapped in the near future
  */
 public class SearchRequestsView extends Activity {
 
