@@ -3,9 +3,6 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
@@ -22,8 +19,8 @@ public class RiderRequestView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.search_requests);
-        oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
+        setContentView(R.layout.search_results);
+        oldRequestsList = (ListView) (findViewById(R.id.search_results));
 
     }
 
@@ -33,6 +30,7 @@ public class RiderRequestView extends Activity {
         super.onStart();
         AsyncController controller = new AsyncController();
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "8e16686b-f72d-42e1-90ea-e7a8cf270732");
+        System.out.println(queryResults);
         for (JsonElement result : queryResults) {
             try {
                 requests.add(new Request(result.getAsJsonObject()));
@@ -42,7 +40,7 @@ public class RiderRequestView extends Activity {
         }
 
 
-        ListAdapter customAdapter = new RiderRequestListAdapter(this, R.layout.rider_request_list_tem, requests);
+        RequestAdapter customAdapter = new RequestAdapter(this, requests);
         oldRequestsList.setAdapter(customAdapter);
     }
 }
