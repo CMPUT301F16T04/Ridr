@@ -33,7 +33,7 @@ public class DateSelector extends DialogFragment implements DatePickerDialog.OnD
 
     public void populateSetDate(int year, int month, int day){
         TextView dateView = (TextView) getActivity().findViewById(R.id.dateText);
-        dateView.setText(day + " - " + month + " - " + year);
+        dateView.setText(day + "/" + month + "/" + year);
     }
 
 }

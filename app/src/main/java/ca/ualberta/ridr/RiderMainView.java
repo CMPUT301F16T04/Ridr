@@ -185,6 +185,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         addRequest.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 //Rider rider = null; // for now just so that we wont get compile errors
+                System.out.println(new Gson().toJson(currentRider));
                 addRequestEvent(currentRider);
             }
         });
@@ -309,8 +310,10 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
         String pickupStr = startLocation.getText().toString();
         String dropoffStr = endLocation.getText().toString();
-        LatLng pickupCoord = getLocationFromAddress(pickupStr);
-        LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
+        //LatLng pickupCoord = getLocationFromAddress(pickupStr);
+        //LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
+        LatLng pickupCoord = new LatLng(53.525288, -113.525454);
+        LatLng dropoffCoord =  new LatLng(53.484775, -113.505067);
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate);
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
@@ -364,7 +367,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Date stringToDate(String dateString, String timeString){
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm a");
         try{
-            return dateFormat.parse(dateString + timeString);
+            return dateFormat.parse(dateString +" "+ timeString);
         } catch(ParseException e){
             e.printStackTrace();
             return null;
