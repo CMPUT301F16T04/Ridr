@@ -7,13 +7,15 @@
 
     <ListView
         android:id="@+id/drivers_list"
+        android:background="@color/secondary_colour"
         android:layout_width="match_parent"
-        android:layout_height="400dp" />
+        android:layout_height="120dp" />
 
     <Button
-    android:text="Exit"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/exit_popup" />
+        android:background="@color/tertiary_colour"
+        android:text="Exit"
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:id="@+id/exit_popup" />
 
 </LinearLayout>
