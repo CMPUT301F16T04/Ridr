@@ -57,20 +57,6 @@ public class LoginView extends Activity {
         usernameLogin = (EditText) findViewById(R.id.username_login_edit_text);
         createAccountButton = (Button) findViewById(R.id.add_account_login_button);
 
-        //login button on touch logic
-        loginButton.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-
-                if(event.getAction() == MotionEvent.ACTION_DOWN){
-                    loginButton.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.dark_tertiary_colour));
-                } else if(event.getAction() == MotionEvent.ACTION_UP) {
-                    loginButton.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.tertiary_colour));
-                }
-                return false;
-            }
-        });
-
         //login button intent launcher
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override

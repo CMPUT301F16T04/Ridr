@@ -78,11 +78,11 @@
         android:id="@+id/loginButton"
         android:layout_marginTop="5dp"
         android:layout_columnSpan="2"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
+        android:paddingLeft="100dp"
+        android:paddingRight="100dp"
         android:layout_width="300dp"
-        android:background="@color/tertiary_colour"
         android:text="@string/log_in"
-        android:textColor="@color/primary_colour"
         android:layout_gravity="center_horizontal" />
     <Button
         android:text="@string/add_account_login"
