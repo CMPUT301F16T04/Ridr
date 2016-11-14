@@ -30,6 +30,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolygonOptions;
 
 
 import java.text.ParseException;
@@ -53,6 +54,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private LatLng restrictToPlace;
     private RequestController requests;
     private boolean firstLoad;
+    private boolean test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,9 +64,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         firstLoad = false;
-
+        test = true;
         requests = new RequestController(this);
-        if (mGoogleApiClient == null) {
+        if (mGoogleApiClient == null && !test) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -85,21 +87,31 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     }
 
     protected void onStart() {
-        mGoogleApiClient.connect();
+        if(!test){
+            mGoogleApiClient.connect();
+        }
+
         super.onStart();
     }
     protected void onResume(){
+
         super.onResume();
-        mGoogleApiClient.reconnect();
+        if(!test) {
+            mGoogleApiClient.reconnect();
+        }
     }
 
     protected void onPause(){
-        mGoogleApiClient.disconnect();
+        if(!test) {
+            mGoogleApiClient.disconnect();
+        }
         super.onPause();
     }
 
     protected void onStop() {
-        mGoogleApiClient.disconnect();
+        if(!test) {
+            mGoogleApiClient.disconnect();
+        }
         super.onStop();
     }
 
@@ -292,6 +304,19 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
      */
     public void setRequests(RequestController requestController){
         this.requests = requestController;
+    }
+    public void setTest(boolean test){
+        this.test = test;
+    }
+    public int countMarkers(){
+        if(markers != null){
+            return markers.size();
+        }
+        return 0;
+    }
+
+    public RequestController getRequestController() {
+        return requests;
     }
 }
 
