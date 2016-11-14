@@ -64,7 +64,6 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         firstLoad = false;
-        test = true;
         requests = new RequestController(this);
         if (mGoogleApiClient == null && !test) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
