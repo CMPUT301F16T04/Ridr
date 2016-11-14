@@ -14,6 +14,7 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.io.IOException;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -21,7 +22,7 @@ import io.searchbox.core.SearchResult;
 
 /**
  * Created by mackenzie on 09/11/16.
- * TO impliment database tasks for a given rider
+ * To implement database tasks, given by AsyncController
  */
 public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject> {
     private static JestDroidClient client;
@@ -30,7 +31,12 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             = "https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/";
     private static String databaseName = "ridr";
 
-    // Constructor for controller
+    /**
+     * Instantiates a new Async database controller.
+     *
+     * @param action the action we are going to do, with this database controller
+     */
+// Constructor for controller
     public AsyncDatabaseController(String action) {
         this.action = action;
     }
@@ -39,6 +45,9 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
      * Queries elastic search for an object with matching UUID
      *
      * @return
+     *
+     * @Nullable
+     * @Overide
      */
     @Nullable
     @Override
@@ -58,16 +67,22 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
                 return getRequest(parameters[0],parameters[1]).getJsonObject();
             } else if(action == "getAllFromIndexFiltered") {
                 return getRequest(parameters[0], parameters[1]).getJsonObject();
+            } else if(action == "deleteUserTests"){
+                deleteUserTests(parameters[0]);
             }
         } catch (Exception e) {
             Log.i(e.toString(),
-                    "Something went wrong when we tried to communicate with the elasticsearch  server!");
+                    "Something went wrong when we tried to communicate with the elasticsearch server!");
             return null;
         }
 
         return null;
     }
 
+    /**
+     * A simple function to check if the controller has been set up, and if not then create it
+     * This could probably be moved to the constructor
+     */
     private static void verifySettings() {
         // if the client hasn't been initialized then we should make it!
         if (client == null) {
@@ -82,6 +97,14 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
 
 
     @Nullable
+    /**
+     * A generic function that performs a get request to the elastic search databases
+     * @param type
+     * @param searchString
+     * @throws IOException
+     * @return result
+     * @nullable
+     */
     private JestResult getRequest(String type, String  searchString) throws IOException {
         // As the name implies builds a search object and returns the result
         Search search = new Search.Builder(searchString)
@@ -89,6 +112,8 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
                 .addType(type)
                 .build();
         JestResult result = client.execute(search);
+        System.out.println(result);
+        System.out.println(result.getJsonObject());
         if (result.isSucceeded()) {
             return result;
         }
@@ -98,21 +123,45 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
         }
     }
 
+    /**
+     * A generic function creates or updates a document in an elastic search database based on a type
+     * and ID
+     * @param type
+     * @param ID
+     * @param jsonValue
+     * @throws IOException
+     * @return result
+     * @nullable
+     */
     @Nullable
     private JestResult createRequest(String type, String ID, String jsonValue) throws IOException {
         // Takes strings of the type of object, [user, ride, request], the id of the object to create
         // and the json version of that object and posts it to the server
         // It returns a jsonObject representing the results of the operation or null if it failed
+        System.out.println(jsonValue);
         Index index = new Index.Builder(jsonValue).index(databaseName).type(type).id(ID).build();
         DocumentResult result = client.execute(index);
         if (result.isSucceeded()) {
             return result;
         }
         else {
+            Log.d("error", result.getJsonObject().toString());
             Log.i("Error", "The search query failed to find the Class that matched.");
             return null;
         }
     }
 
+    //for tests, not sure where else to put
+    private void deleteUserTests(String ID){
+        verifySettings();
+        try {
+            client.execute(new Delete.Builder(ID)
+                    .index(databaseName)
+                    .type("user")
+                    .build());
+        } catch (Exception e){
+            Log.i("ERROR", "Couldn't delete previous driver test objects from elastic search");
+        }
+    }
 }
 

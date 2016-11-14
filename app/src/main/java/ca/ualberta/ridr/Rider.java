@@ -6,10 +6,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by jferris on 22/10/16.
  */
 public class Rider extends User {
+    @JestId
+    private String elasticID;
     private transient ArrayList<Ride> rideArrayList;
     private transient ArrayList<Request> requestArrayList;
 
@@ -20,6 +24,14 @@ public class Rider extends User {
     }
     public void setRiderStatus(boolean status) {
         super.setRiderStatus(status);
+    }
+
+    public String getElasticID() {
+        return elasticID;
+    }
+
+    public void setElasticID(String elasticID) {
+        this.elasticID = elasticID;
     }
 
     public ArrayList<Ride> getRides() {
@@ -39,7 +51,6 @@ public class Rider extends User {
     public void setRequests(ArrayList<Request> requestArrayList) {
         this.requestArrayList = requestArrayList;
     }
-
 
 
     public void acceptRideOffer(Driver driver) {

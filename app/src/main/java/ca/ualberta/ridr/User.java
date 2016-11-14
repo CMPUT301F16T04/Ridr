@@ -1,9 +1,9 @@
 package ca.ualberta.ridr;
 
-import java.sql.RowIdLifetime;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by mackenzie on 12/10/16.
@@ -89,13 +89,6 @@ public class User {
     }
     public boolean isDriver(){
         return isDriver;
-    }
-    public String getStartLocation() {
-        return "";
-    }
-
-    public String getDestination() {
-        return "";
     }
 
     public boolean equals(User user) {
