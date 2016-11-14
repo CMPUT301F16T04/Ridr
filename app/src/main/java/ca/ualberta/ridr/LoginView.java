@@ -81,32 +81,9 @@ public class LoginView extends Activity {
                 }
                 //code for switching between a rider login and a driver login
                 if(asDriver){
-                    //if our user is logging in as a driver
-                    myUser.setDriverStatus(true); //set that we are logged in as a driver
-                    myUser.setRiderStatus(false);
-                    try {
-                        new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
-                        //update elastic search to tell we are logged in as driver
-                    } catch (Exception e){
-                        Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Intent driverScreenIntent = new Intent(LoginView.this, RequestsFromRidersView.class);
-                    driverScreenIntent.putExtra("UUID", myUser.getID().toString());
-                    startActivity(driverScreenIntent);
+                    loginDriver(myUser);
                 } else {
-                    myUser.setRiderStatus(true); //set that we are logged in as a rider
-                    myUser.setDriverStatus(false);
-                    try{
-                        new AsyncController().create("user", myUser.getID().toString(), new Gson().toJson(myUser));
-                        //update elastic search to tell we are logged in as rider
-                    } catch (Exception e){
-                        Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
-                    riderScreenIntent.putExtra("UUID", myUser.getID().toString());
-                    startActivity(riderScreenIntent);
+                    loginRider(myUser);
                 }
             }
         });
@@ -125,6 +102,24 @@ public class LoginView extends Activity {
             }
         });
 
+    }
+
+    private void loginRider(User myUser){
+        if(myUser == null){
+            return;
+        }
+        Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
+        riderScreenIntent.putExtra("UUID", myUser.getID().toString());
+        startActivity(riderScreenIntent);
+    }
+    private void loginDriver(User myUser){
+        //if our user is logging in as a driver
+        if(myUser == null){
+            return;
+        }
+        Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
+        driverScreenIntent.putExtra("UUID", myUser.getID().toString());
+        startActivity(driverScreenIntent);
     }
 
     /**
