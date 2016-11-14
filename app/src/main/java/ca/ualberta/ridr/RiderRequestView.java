@@ -3,7 +3,6 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +17,8 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
+import android.widget.EditText;
+
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -25,7 +26,6 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.Date;
 
-//TODO 1 -
 
 public class RiderRequestView extends Activity {
 
@@ -33,6 +33,7 @@ public class RiderRequestView extends Activity {
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -139,5 +140,7 @@ public class RiderRequestView extends Activity {
                 //go to driver profile
             }
         });
+
+
     }
 }

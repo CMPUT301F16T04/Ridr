@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public class RequestAdapter extends ArrayAdapter<Request> {
     private Context context;
     private ArrayList<Request> requests = new ArrayList<>();
-    String pickup = "Pickup: ";
+
 
     public RequestAdapter(Context context, ArrayList<Request> requests) {
         super(context, 0, requests);
@@ -31,6 +31,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         }
         TextView requestPickup = (TextView) convertView.findViewById(R.id.request_pickup);
         TextView requestDropoff = (TextView) convertView.findViewById(R.id.request_dropoff);
+
         TextView requestUser = (TextView) convertView.findViewById(R.id.request_user);
         TextView requestFare = (TextView) convertView.findViewById(R.id.request_fare);
 
@@ -42,6 +43,11 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         requestFare.setText("Fare: " + Float.toString(request.getFare()));
 
 
+
         return convertView;
     }
+
 }
+
+
+

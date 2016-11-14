@@ -71,8 +71,8 @@
         android:layout_marginRight="10dp"
         android:layout_marginBottom="10dp"
         android:paddingStart="8dp"
-        android:id="@+id/username_login_edit_text"
-        android:textColor="?android:attr/colorPrimary" />
+        android:textColor="@color/black"
+        android:id="@+id/username_login_edit_text" />
 
     <Button
         android:id="@+id/loginButton"

@@ -2,36 +2,38 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Search Requests"
-        android:id="@+id/rider_request_title"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/oldRequestLists" />
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:background="@color/secondary_colour"
+    android:weightSum="1">
 
     <EditText
-        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/editText"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/rider_request_title"
-        android:layout_alignStart="@+id/rider_request_title"
-        android:text="Search:eg Requests from Jim" />
-
-    <ListView
-        android:layout_width="450dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/oldRequestLists"
-        android:layout_marginRight="10dp"
+        android:hint="email"
+        android:textSize="22sp"
+        android:textColor="#000"
+        android:maxLines="1"
+        android:paddingTop="10sp"
+        android:paddingBottom="5sp"
+        android:background="@color/primary_colour"
         android:layout_marginLeft="10dp"
-        android:layout_below="@+id/rider_request_title"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="44dp" />
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/searchRequestsText" />
 
+    <Button
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_height="50dp"
+        android:background="@color/tertiary_colour"
+        android:text="Search Requests"
+        android:textColor="@color/primary_colour"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="250dp"
+        android:id="@+id/searchRequestsButton" />
 
 </LinearLayout>

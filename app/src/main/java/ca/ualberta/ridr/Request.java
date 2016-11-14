@@ -20,6 +20,7 @@ import java.util.UUID;
 
 /**
  * Created by Justin on 2016-10-12.
+ * Worked on by Marc-O and Kristy on 03/11/2016
  */
 public class Request {
     private String rider;
@@ -33,13 +34,13 @@ public class Request {
     private float fare;
     private Date date;
 
-    Request(Rider rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
+    Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupCoord = pickupCoords;
         this.dropOffCoord = dropOffCoords;
         this.date = date;
-        this.rider = rider.getID().toString();
+        this.rider = rider;
         this.id = UUID.randomUUID();
         this.fare = 20;
         this.accepted = false;
@@ -126,6 +127,10 @@ public class Request {
     public float getFare(){
         return fare;
     }
+
+    public void setFare(float fare) {
+        this.fare = fare;
+    }
     public UUID getID() {
         return id;
     }
@@ -149,7 +154,6 @@ public class Request {
         } catch(Exception e){
             Log.d("Error", e.toString());
             return null;
-
         }
     }
 
@@ -170,7 +174,32 @@ public class Request {
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
        // this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
-        //maybe one day we will reach this dream
+        // maybe one day we will reach this dream
+
+    }
+
+    /**
+     * This returns the String fields that are queryable for keyword search in a request
+     * @return ArrayList<String>
+     */
+    public ArrayList<String> queryableRequestVariables() {
+        ArrayList<String> stringArray = new ArrayList<>();
+
+        if(this.dropoff != null) {
+            stringArray.add(this.dropoff);
+        }
+
+        if(this.pickup != null) {
+            stringArray.add(this.pickup);
+        }
+
+        if(this.rider != null) {
+            stringArray.add(this.rider);
+        }
+
+        stringArray.add(Float.toString(this.fare));
+
+        return stringArray;
     }
 
     private JSONObject buildGeoPoint(LatLng coords) throws JSONException {
@@ -178,11 +207,12 @@ public class Request {
         newLatLng.put("lat", coords.latitude);
         newLatLng.put("lon", coords.longitude);
         return newLatLng;
-
     }
+
     private LatLng buildLatLng(JsonObject coords){
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
+
     //also a faroff dream
     //intentions : to be able to store and retrieve a list of possible drivers.
 //    private ArrayList<Driver> buildPossibleDriversList(JsonArray array){
@@ -190,4 +220,5 @@ public class Request {
 //
 //        return(drivers);
 //    }
+
 }
