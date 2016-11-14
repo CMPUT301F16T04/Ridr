@@ -1,6 +1,5 @@
 package ca.ualberta.ridr;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
@@ -9,12 +8,12 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,8 +41,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
-import static android.R.attr.fragment;
 
+/**
+ * This view allows for a rider to create a new request
+ */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
     private EditText startLocation;
@@ -56,7 +57,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Button addRequest;
     private Button dateButton;
     private Button timeButton;
-    //private Toolbar toolbar;
+    private Button menuButton;
 
     private UUID currentUUID; // UUID of the currently logged-in rider
     private String currentIDStr; // string of the curretn UUID
@@ -142,6 +143,13 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         });
 
+        //menu button
+        menuButton.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                showMenu(v);
+            }
+        });
+
     }
 
     protected void onStart() {
@@ -169,27 +177,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     public void onConnectionSuspended(int i){
 
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        super.onCreateOptionsMenu(menu);
-//        MenuInflater inflater = getMenuInflater();
-//        inflater.inflate(R.menu.rider_main_menu, menu);
-//        return true;
-//    }
-
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item){
-//        switch(item.getItemId()){
-//            case R.id.mainRiderMenuEditUserInfo:
-//                Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
-//                return true;
-//            case R.id.mainRiderMenuViewRequests:
-//                Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
-//                return true;
-//            default:
-//                return super.onContextItemSelected(item);
-//        }
-//    }
 
     @Override
     //On connected listener, required to be able to zoom to users location at login
@@ -226,6 +213,33 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     public void callback(){}
 
     /**
+     * finds views by their ID's and assigns them to their respective variable
+     */
+    private void setViews(){
+        startLocation = (EditText) findViewById(R.id.editStartLocationText);
+        endLocation = (EditText) findViewById(R.id.editEndLocationText);
+        fareInput = (EditText) findViewById(R.id.editFare);
+
+        dateTextView = (TextView) findViewById(R.id.dateText);
+        timeTextView = (TextView) findViewById(R.id.timeText);
+
+        addRequest = (Button) findViewById(R.id.createRequestButton);
+        dateButton = (Button) findViewById(R.id.dateButton);
+        timeButton = (Button) findViewById(R.id.timeButton);
+        menuButton = (Button) findViewById(R.id.riderMainMenuButton);
+    }
+
+    /**
+     * reset text inputs in the view
+     */
+    private void resetText(){
+        startLocation.setText(defaultStartText);
+        endLocation.setText(defaultStartText);
+        dateTextView.setText("");
+        timeTextView.setText("");
+    }
+
+    /**
      * handles the event called when Create Request is clicked. Verifies that the fields have been filled and creates a Request
      * @param rider
      */
@@ -259,27 +273,41 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         resetText();
     }
 
-    private void setViews(){
-        //finds views by their ID's and assigns them to their respective variable
-        startLocation = (EditText) findViewById(R.id.editStartLocationText);
-        endLocation = (EditText) findViewById(R.id.editEndLocationText);
-        fareInput = (EditText) findViewById(R.id.editFare);
+    /**
+     * popup menu that allows the user to edit their profile and view all of their requests
+     * @param v
+     */
+    public void showMenu(View v){
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.rider_main_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem item){
+                switch(item.getItemId()){
+                    case R.id.mainRiderMenuEditUserInfo:
+                        Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
+                        resetText();
+                        Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
+                        editInfoIntent.putExtra("UUID", currentIDStr);
+                        startActivity(editInfoIntent);
+                        return true;
+                    case R.id.mainRiderMenuViewRequests:
+                        Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
+                        resetText();
+                        Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
+                        viewRequestsIntent.putExtra("UUID", currentIDStr);
+                        startActivity(viewRequestsIntent);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
 
-        dateTextView = (TextView) findViewById(R.id.dateText);
-        timeTextView = (TextView) findViewById(R.id.timeText);
-
-        addRequest = (Button) findViewById(R.id.createRequestButton);
-        dateButton = (Button) findViewById(R.id.dateButton);
-        timeButton = (Button) findViewById(R.id.timeButton);
+        popup.show();
     }
 
-    private void resetText(){
-        //reset text inputs in the view
-        startLocation.setText(defaultStartText);
-        endLocation.setText(defaultStartText);
-        dateTextView.setText("");
-        timeTextView.setText("");
-    }
+
 
     /**
      * converts data and time strings into a Date object
@@ -335,6 +363,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
     }
 
+    /**
+     * converts a street address into a geo location using geocoder
+     * @param addressString a street address
+     * @return a LatLng geo location
+     */
     private LatLng getLocationFromAddress(String addressString){
         List<Address> addressList;
         LatLng point = null;

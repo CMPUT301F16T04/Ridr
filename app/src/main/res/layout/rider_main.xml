@@ -10,14 +10,6 @@
     android:background="@color/light_secondary_colour"
     tools:context="ca.ualberta.ridr.RiderMainView">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="220dp"
-        android:id="@+id/newRequestMap"
-        tools:context="ca.ualberta.ridr.RiderMainView"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
-
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -26,7 +18,8 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
-        android:background="@color/light_tertiary_colour"/>
+        android:background="@color/tertiary_colour"
+        android:textColor="@color/primary_colour"/>
 
     <EditText
         android:layout_width="wrap_content"
@@ -37,7 +30,7 @@
         android:layout_above="@+id/textPickUpDate"
         android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:inputType="number" />
+        android:inputType="numberDecimal" />
 
     <EditText
         android:layout_width="wrap_content"
@@ -64,7 +57,8 @@
         android:layout_alignTop="@+id/dateText"
         android:layout_alignParentEnd="true"
         android:id="@+id/dateButton"
-        android:background="@color/light_tertiary_colour"/>
+        android:background="@color/tertiary_colour"
+        android:textColor="@color/primary_colour"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -102,9 +96,29 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/timeButton"
-        android:background="@color/light_tertiary_colour"
+        android:background="@color/tertiary_colour"
         android:layout_alignTop="@+id/timeText"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/primary_colour"/>
+
+    <Button
+        android:text="menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/riderMainMenuButton"
+        android:elevation="0dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/tertiary_colour"
+        android:textColor="@color/primary_colour"/>
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:id="@+id/newRequestMap"
+        tools:context="ca.ualberta.ridr.RiderMainView"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@+id/editStartLocationText"
+        android:layout_alignParentStart="true" />
 
 
     <!--
