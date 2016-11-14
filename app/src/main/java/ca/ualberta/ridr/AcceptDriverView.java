@@ -54,22 +54,22 @@ public class AcceptDriverView extends Activity {
         accept = (Button) findViewById(R.id.accept_button);
 
         //this is to fetch the data we need from the previous activity
-        Intent intent = getIntent();
-        ArrayList<String> ids = intent.getStringArrayListExtra("ids");
-        if (ids != null) {
-            riderId= ids.get(0);
-            driverId= ids.get(1);
-            requestId = ids.get(2);
-        }
-        else{
-            //this is if there was some error retrieving data passed, just go back to prev activity
-            finish();
-        }
+//        Intent intent = getIntent();
+//        ArrayList<String> ids = intent.getStringArrayListExtra("ids");
+//        if (ids != null) {
+//            riderId= ids.get(0);
+//            driverId= ids.get(1);
+//            requestId = ids.get(2);
+//        }
+//        else{
+//            //this is if there was some error retrieving data passed, just go back to prev activity
+//            finish();
+//        }
 
 //just here for testing, might leave for now.
-//        String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-//        String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-//        String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
+        final String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
+        final String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
+        final String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
 
 
         final Driver driver = getDriver(driverId);
@@ -156,7 +156,7 @@ public class AcceptDriverView extends Activity {
         Request request = requestCon.getRequestFromServer(requestId);
 
         //if we could not fetch the request and return null then... go back to previous activity?
-        if(request.equals(null)) {
+        if(request==null) {
             finish();
         }
 
