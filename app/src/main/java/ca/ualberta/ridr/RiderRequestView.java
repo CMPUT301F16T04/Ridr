@@ -1,6 +1,6 @@
 package ca.ualberta.ridr;
 
-import android.support.v7.app.AppCompatActivity;
+import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.AdapterView;
@@ -14,17 +14,17 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-public class RiderRequestView extends AppCompatActivity {
-    private ListView oldRequestsList;
+public class RiderRequestView extends Activity {
     public ArrayList<Request> requests = new ArrayList<>();
+    //Declaring reference buttons in the GUI
+    ListView oldRequestsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.search_requests);
-
-        //Declaring reference buttons in the GUI
         oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
+
     }
 
     @Override
@@ -32,16 +32,17 @@ public class RiderRequestView extends AppCompatActivity {
         // TODO Auto-generated method stub
         super.onStart();
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "AAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "8e16686b-f72d-42e1-90ea-e7a8cf270732");
         for (JsonElement result : queryResults) {
             try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                requests.add(new Request(result.getAsJsonObject()));
             } catch (Exception e) {
                 Log.i("Error parsing requests", e.toString());
             }
         }
 
-        //ListAdapter customAdapter = new RiderRequestListAdapter(this, R.layout.rider_request_list_tem, requests);
-        //oldRequestsList.setAdapter(customAdapter);
+
+        ListAdapter customAdapter = new RiderRequestListAdapter(this, R.layout.rider_request_list_tem, requests);
+        oldRequestsList.setAdapter(customAdapter);
     }
 }
