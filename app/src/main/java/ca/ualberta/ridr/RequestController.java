@@ -36,27 +36,39 @@ public class RequestController {
      */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
         jsonArray = new AsyncController().getAllFromIndex("request");
-        ArrayList<String> stringArray;
-        Gson gson = new Gson();
         ArrayList<Request> requestsKeyword = new ArrayList<>();
-        Pattern p = Pattern.compile(keyword);
         Request request;
 
         for (JsonElement element: jsonArray) {
-            try {
-                request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
-                stringArray = request.queryableRequestVariables();
-                for (String s : stringArray) {
-                    if (p.matcher(s).find() && !requestsKeyword.contains(request)) {
-                        requestsKeyword.add(request);
-                    }
+            if(doesJsonContainKeyword(keyword, element)) {
+                try {
+                    request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
+                    requestsKeyword.add(request);
+                } catch(Exception e) {
+                    Log.i("Error returning keyword", e.toString());
                 }
-            } catch(Exception e) {
-                Log.i("Error searching keyword", e.toString());
             }
-
         }
         return requestsKeyword;
+    }
+
+    public Boolean doesJsonContainKeyword(String keyword, JsonElement jsonElement) {
+        ArrayList<String> stringArray;
+        Pattern p = Pattern.compile(keyword);
+        Request request;
+        try {
+            request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
+            stringArray = request.queryableRequestVariables();
+            for (String s : stringArray) {
+                if (p.matcher(s).find()) {
+                    return true;
+                }
+            }
+        } catch(Exception e) {
+            Log.i("Error searching keyword", e.toString());
+        }
+
+        return false;
     }
 
 }

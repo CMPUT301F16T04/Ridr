@@ -1,5 +1,11 @@
 package ca.ualberta.ridr;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
 import org.junit.Test;
 import org.junit.Assert;
 
@@ -14,17 +20,15 @@ import static junit.framework.Assert.assertTrue;
 public class SearchTest {
     @Test
     public void searchTest() throws Exception {
-        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
-        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Gson gson = new Gson();
+        RequestController requestController = new RequestController();
+        Request request = new Request("Justin Barclay", "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
+        String jsonString = gson.toJson(request);
+        JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);
+        assertTrue(requestController.doesJsonContainKeyword("Justin",jsonElement));
+        assertTrue(requestController.doesJsonContainKeyword("Alberta",jsonElement));
+        assertTrue(requestController.doesJsonContainKeyword("Edmonton",jsonElement));
 
-        RequestController rController = new RequestController();
 
-        Request request = rider.requestRide("University of Alberta", "NAIT");
-        Request request2 = rider.requestRide("Some place", "A different place");
-
-        assertTrue(request.equals(rController.SearchRequestsKeyword("University of Alberta").get(0)));
-        assertFalse(request2.equals(rController.SearchRequestsKeyword("University of Alberta").get(0)));
-        assertFalse(rController.SearchRequestsKeyword("Steve").get(0).getRider().getName() == "Joe");
     }
 }
