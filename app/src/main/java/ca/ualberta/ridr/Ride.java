@@ -59,6 +59,7 @@ public class Ride {
         this.isCompleted = false;
         this.id = UUID.randomUUID();
         this.fare  = 20;
+
     }
 
 

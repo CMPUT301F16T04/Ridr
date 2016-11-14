@@ -25,12 +25,14 @@
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView" />
         <activity android:name=".RiderMainView" />
-        <activity android:name=".RiderRequestView" />
+        <activity android:name=".RiderRequestView"
+            android:exported="true"/>
         <activity android:name=".RideConfirmationView" />
         <activity android:name=".RiderRequestsMadeView"
             android:exported="true"/>
         <activity android:name=".AcceptDriverView"
             android:exported="true"></activity>
+
     </application>
 
 </manifest>

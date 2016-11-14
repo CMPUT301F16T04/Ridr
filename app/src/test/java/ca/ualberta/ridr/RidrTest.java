@@ -1,3 +1,4 @@
+
 package ca.ualberta.ridr;
 
 import org.junit.Test;
@@ -426,3 +427,4 @@ public class RidrTest{
 
 
 }
+
