@@ -73,8 +73,5 @@ public class Rider extends User {
         requestArrayList.add(request);
     }
 
-    public void addRequest(Request request){
-        requestArrayList.add(request);
-    }
 
 }
