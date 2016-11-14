@@ -37,10 +37,6 @@ public class RiderRequestView extends Activity {
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
 
-
-    public class RiderRequestView extends Activity {
-
-
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -150,4 +146,4 @@ public class RiderRequestView extends Activity {
 
         }
     }
-}
+
