@@ -48,10 +48,10 @@ public class Ride {
 
 
 
-    public Ride(Driver driver, Rider rider, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
+    public Ride(String driverId, String riderId, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
         this.rideDate = date;
-        this.driver = driver.getID().toString();
-        this.rider = rider.getID().toString();
+        this.driver = driverId;
+        this.rider = riderId;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupCoords = pickupCoords;

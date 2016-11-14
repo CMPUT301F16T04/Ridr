@@ -18,13 +18,15 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 
 import static ca.ualberta.ridr.R.layout.profile;
 
-public class RiderRequestsMadeView extends AppCompatActivity {
+public class RiderRequestsMadeView extends Activity {
 
     private ListView requestsList;
     private Activity activity = this;
@@ -36,15 +38,21 @@ public class RiderRequestsMadeView extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.requests_rider_has_made);
 
+        Rider rider = new Rider("name",new Date(), "credit", "email", "phone");
+        requests = new ArrayList<>();
+        LatLng coords = new LatLng(0,0);
+        Request r1 = new Request(rider, "pickup", "dropoff", coords, coords, new Date());
+        requests.add(r1);
+
         requestsList = (ListView) findViewById(R.id.rider_requests_listview);
         //just using a non frag element for the listview for now
-        adapter = new ArrayAdapter<Request>(activity, R.layout.request_item_nonfrag, requests);
+        adapter = new ArrayAdapter<>(activity, R.layout.request_item_nonfrag, requests);
         requestsList.setAdapter(adapter);
 
-        RequestController RC = new RequestController();
-        Rider rider = new Rider("name",new Date(), "credit", "email", "phone");
+        //RequestController RC = new RequestController();
         //need to get actual Rider at this point
-        requests = RC.getRequests(rider);
+        //requests = RC.getRequests(rider);
+
 
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position ,long id){
@@ -98,12 +106,15 @@ public class RiderRequestsMadeView extends AppCompatActivity {
             }
         });
 
-        RequestController RC = new RequestController();
-        ArrayList<Driver> possibleDrivers =  RC.getPossibleDrivers(request);
+        //RequestController RC = new RequestController();
+        ArrayList<Driver> possibleDrivers =  new ArrayList<>();
+        Driver driver =  new Driver("name", new Date(), "","","","");
+        possibleDrivers.add(driver);
+        //RC.getPossibleDrivers(request);
 
 
         ListView popup_list = (ListView) layout.findViewById(R.id.drivers_list);
-        ArrayAdapter<Driver> adapter_popup = new ArrayAdapter<Driver>(activity, R.layout.drivers_who_accepted, possibleDrivers);
+        ArrayAdapter<Driver> adapter_popup = new ArrayAdapter<Driver>(activity, R.layout.driver_who_accepted, possibleDrivers);
         popup_list.setAdapter(adapter_popup);
 
 
@@ -112,8 +123,16 @@ public class RiderRequestsMadeView extends AppCompatActivity {
                 Toast toast = Toast.makeText(activity,"Clicked on a driver!", Toast.LENGTH_SHORT); //for now , will want popup screen
                 toast.setMargin(50,50);
                 toast.show();
+                String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
+                String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
+                String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
                 //TODO pass the driver at clicked position to the next activity
                 Intent intent = new Intent(activity, AcceptDriverView.class);
+                ArrayList<String> ids = new ArrayList<>();
+                ids.add(riderId);
+                ids.add(driverId);
+                ids.add(requestId);
+                intent.putStringArrayListExtra("ids", ids );
                 startActivity(intent);
                 //go to driver profile
 

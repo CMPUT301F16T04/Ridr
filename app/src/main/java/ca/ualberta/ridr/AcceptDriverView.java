@@ -17,8 +17,19 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
+
+
+/**
+ *  This view displays a profile of a possible driver for a request,
+ *  the user can click the contact info of the driver and will be taken to
+ *  appropriate apps to deal with contacting the driver,
+ *  the user can also accept the driver and create a ride.
+ *
+ */
+
 
 
 public class AcceptDriverView extends Activity {
@@ -38,27 +49,23 @@ public class AcceptDriverView extends Activity {
         xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
-//        if (extras != null) {
-//            String riderId= extras.getString("riderId");
-//            String driverId= extras.getString("driverId");
-//            String requestId = extras.getString(");
-//        }
+
+        Intent intent = getIntent();
+        ArrayList<String> ids = intent.getStringArrayListExtra("ids");
+        //if (ids != null) {
+            final String riderId= ids.get(0);
+            final String driverId= ids.get(1);
+            final String requestId = ids.get(2);
+        //}
 //        //TODO get the driver using the info passed from the previous activity
 
 
-        String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
         DriverController DC = new DriverController();
         final Driver driver = DC.getDriverFromServer(driverId);
 
+        //RiderController rideCon = new RiderController();
+        //final Rider rider = rideCon.getRiderFromServer(riderId);
 
-        String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-        RiderController rideCon = new RiderController();
-        final Rider rider = rideCon.getRiderFromServer(riderId);
-
-
-        String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
         final RequestController requestCon = new RequestController();
         final Request request = requestCon.getRequestFromServer(requestId);
         //unhandled null return possibility, not quite sure at the moment what to do if null
@@ -80,12 +87,17 @@ public class AcceptDriverView extends Activity {
 
 
                 RideController RideC = new RideController();
-                RideC.createRide(driver, request, rider);
+                RideC.createRide(driverId, request, riderId);
 
                 //we remove the request
                 //TODO check if we need to do elastic things here too
+
+                //need to set request attr isAccepted to true
+
                 //requestCon.removeRequest(request, rider);
                 //cant do while rider's request list is null
+
+                finish();
 
             }
         });
