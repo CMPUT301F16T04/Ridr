@@ -25,6 +25,8 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.Date;
 
+//TODO 1 -
+
 public class RiderRequestView extends Activity {
 
     private Activity activity = this;
@@ -106,13 +108,14 @@ public class RiderRequestView extends Activity {
             }
         });
 
-        ArrayList<Driver> possibleDrivers =  new ArrayList<>();
-        Driver driver =  new Driver("name", new Date(), "","","","");
-        possibleDrivers.add(driver);
+        //reason this is fudge is because we dont have that list of possible drivers stored
+        ArrayList<String> possibleDrivers =  new ArrayList<>();
+        Driver driver =  new Driver("Sample hardcoded driver", new Date(), "","","","");
+        possibleDrivers.add(driver.getName());
 
 
         ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
-        ArrayAdapter<Driver> adapter_popup = new ArrayAdapter<Driver>(activity, R.layout.driver_who_accepted, possibleDrivers);
+        ArrayAdapter<String> adapter_popup = new ArrayAdapter<String>(activity, R.layout.driver_who_accepted, possibleDrivers);
         popupList.setAdapter(adapter_popup);
 
         //this is to recognize listview item presses within the popup
