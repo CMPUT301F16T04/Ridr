@@ -67,8 +67,6 @@ public class Ride {
         return fare;
     }
 
-    //now this might be hackish but we;re gunna use this to make sure dup rides are same id at least
-    public void setId(String id){this.id = UUID.fromString(id);}
 
     public UUID getId(){return id;}
 

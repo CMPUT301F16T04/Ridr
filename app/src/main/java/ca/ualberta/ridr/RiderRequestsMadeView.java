@@ -49,9 +49,9 @@ public class RiderRequestsMadeView extends Activity {
         adapter = new ArrayAdapter<>(activity, R.layout.request_item_nonfrag, requests);
         requestsList.setAdapter(adapter);
 
-        //RequestController RC = new RequestController();
+        //RiderController rideCon = new RiderController();
         //need to get actual Rider at this point
-        //requests = RC.getRequests(rider);
+        //requests = rideCon.getRequests(rider);
 
 
         requestsList.setOnItemClickListener(new AdapterView.OnItemClickListener(){

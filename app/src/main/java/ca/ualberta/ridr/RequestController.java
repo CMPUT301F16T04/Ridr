@@ -14,11 +14,6 @@ import java.util.Date;
 public class RequestController {
     RequestController(){}
 
-    //actually should I have this in teh request controller or should it be in the Rider controller?
-    public ArrayList<Request> getRequests(Rider rider){
-        return(rider.getRequests());
-    }
-
     public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
 
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
@@ -33,5 +28,9 @@ public class RequestController {
             Log.i("Error parsing requests", e.toString());
         }
         return(null);
+    }
+
+    public void setRequestAccepted(Request request) {
+        request.setAccepted(Boolean.TRUE);
     }
 }
