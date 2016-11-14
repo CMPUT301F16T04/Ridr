@@ -19,4 +19,6 @@ public class RequestTest {
         Request request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
         assertTrue(request.equals(request));
     }
+
+
 }
