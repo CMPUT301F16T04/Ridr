@@ -138,27 +138,27 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 //                }
 //            }
 //        });
-        endLocation.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                return;
-            }
-
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                return;
-            }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
-                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
-                    //end location has also changed, so get a fare estimate
-                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
-                }else{
-                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
+//        endLocation.addTextChangedListener(new TextWatcher() {
+//            @Override
+//            public void onTextChanged(CharSequence s, int start, int before, int count) {
+//                return;
+//            }
+//
+//            @Override
+//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+//                return;
+//            }
+//            @Override
+//            public void afterTextChanged(Editable s) {
+//                if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
+//                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
+//                    //end location has also changed, so get a fare estimate
+//                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
+//                }else{
+//                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
+//                }
+//            }
+//        });
 
         //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {
