@@ -1,6 +1,9 @@
 
 package ca.ualberta.ridr;
 
+import org.junit.Test;
+
+
 import com.google.android.gms.maps.model.LatLng;
 
 import org.junit.Test;
@@ -8,6 +11,10 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+
+import ca.ualberta.ridr.Driver;
+import ca.ualberta.ridr.Ride;
+import ca.ualberta.ridr.Rider;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;

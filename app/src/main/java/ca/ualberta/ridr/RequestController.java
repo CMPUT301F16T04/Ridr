@@ -29,10 +29,13 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
+
+/*
+=======
 /**
- * Created by jferris on 22/10/16.
  * This controller controls access to all requests used by a view
  * This controllers uses threads to asynchronously perform network requests
  * It then uses a callback interface to inform the view that is using the controller that data has
@@ -40,11 +43,52 @@ import java.util.UUID;
  */
 public class RequestController {
 
+    private Request currenRequest;
     private JsonArray jsonArray;
     private ArrayList<Request> requests;
     private ACallback cbInterface;
 
     public RequestController(){}
+
+    public RequestController(ACallback cbInterface){
+        this.cbInterface = cbInterface;
+        this.requests = new ArrayList<>();
+    }
+
+    /**
+     * Creates a new request
+     * @param rider Rider object. currently logged in rider who is creating the request
+     * @param pickup String of the pickup address
+     * @param dropoff String of the dropoff address
+     * @param pickupCoords Coordinates of pickup location
+     * @param dropOffCoords Coordinates of dropoff location
+     * @param date Date at which the rider wishes to be picked up
+     */
+    public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date){
+        AsyncController controller = new AsyncController();
+        currenRequest = new Request(rider.getID().toString(), pickup, dropoff, pickupCoords, dropOffCoords, date);
+        rider.addRequest(currenRequest);
+        this.add(currenRequest);
+
+        try{
+            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+        } catch (Exception e){
+            Log.i("Error creating request", e.toString());
+        }
+    }
+
+    /**
+     * Estimates a fare based on distance
+     * @param distance distance from pickup to dropoff
+     * @return a recommended fare
+     */
+    public float getFareEstimate(float distance){
+        return currenRequest.estimateFare(distance);
+    }
+
+    public void updateFare(float newFare) {
+        currenRequest.setFare(newFare);
+    }
 
     /**
      * Uses a keyword to search through the queryable fields for requests
@@ -98,10 +142,7 @@ public class RequestController {
         return false;
     }
 
-    public RequestController(ACallback cbInterface){
-        this.cbInterface = cbInterface;
-        this.requests = new ArrayList<>();
-    }
+
 
     public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
 

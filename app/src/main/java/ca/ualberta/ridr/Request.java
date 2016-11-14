@@ -19,11 +19,11 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created by Justin on 2016-10-12.
- * Worked on by Marc-O and Kristy on 03/11/2016
+ *
+ *
  */
 public class Request {
-    private String rider;
+    private String rider; //string of the id
     private String pickup;
     private String dropoff;
     private LatLng pickupCoord;
@@ -34,6 +34,7 @@ public class Request {
     private float fare;
     private Date date;
 
+
     Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
         this.dropoff = dropoff;
@@ -42,20 +43,17 @@ public class Request {
         this.date = date;
         this.rider = rider;
         this.id = UUID.randomUUID();
+        this.date = date;
         this.fare = 20;
         this.accepted = false;
     }
 
-
-    public Date getDate() {
+    public Date getDate(){
         return date;
     }
-
-    public void setDate(Date date) {
+    public void setDate(Date date){
         this.date = date;
     }
-
-
 
     public LatLng getPickupCoords() {
         return pickupCoord;
@@ -128,9 +126,17 @@ public class Request {
         return fare;
     }
 
-    public void setFare(float fare) {
-        this.fare = fare;
+    public void setFare(float estimate){
+        this.fare = estimate;
     }
+
+    public float estimateFare(float distance){
+        float gasCostFactor = 4; // calculate something later
+        //return distance * gasCostFactor;
+        float tempVal = 20;
+        return tempVal;
+    }
+
     public UUID getID() {
         return id;
     }

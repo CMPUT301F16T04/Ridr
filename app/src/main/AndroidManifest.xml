@@ -10,7 +10,9 @@
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
     <uses-permission android:name="android.permission.INTERNET" />
+
 
     <application
         android:allowBackup="true"
@@ -35,8 +37,9 @@
         <activity android:name=".ProfileView" />
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView" />
-        <activity android:name=".RiderMainView" />
         <activity android:name=".RiderRequestView"
+            android:exported="true"/>
+        <activity android:name=".RiderMainView"
             android:exported="true"/>
         <activity android:name=".RideConfirmationView" />
         <activity android:name=".AcceptDriverView"
