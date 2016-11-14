@@ -2,12 +2,15 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
+    @JestId
+    private String elasticID;
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     private transient Vehicle vehicle;
@@ -15,37 +18,19 @@ public class Driver extends User {
     private transient ArrayList<Ride> rideArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
-                  String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
+                  String email, String phoneNumber, Vehicle vehicle) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.vehicle = vehicle;
-        this.bankAccountNo = bankAccountNo;
         this.rideArrayList = new ArrayList<Ride>();
         this.setDriverStatus(true);
     }
 
-    public String getName() {
-        return this.getName();
+    public String getElasticID() {
+        return elasticID;
     }
 
-    public void setName(String name) {
-        this.setName(name);
-    }
-
-    public Date getDateOfBirth() {
-        return this.getDateOfBirth();
-    }
-
-    public void setDateOfBirth(Date dateOfBirth) {
-        this.setDateOfBirth(dateOfBirth);
-    }
-
-
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
-
-    public void setBankAccountNo(String bankAccountNo) {
-        this.bankAccountNo = bankAccountNo;
+    public void setElasticID(String elasticID) {
+        this.elasticID = elasticID;
     }
 
     public ArrayList<Ride> getRides() {
@@ -90,16 +75,17 @@ public class Driver extends User {
         return false;
     }
 
-    public String getPhoneNumber() {
-        return this.getPhoneNumber();
-    }
-
-    public String getEmail() {
-        return this.getEmail();
-    }
-
     public boolean isOffline() {
         return false;
     }
 
+    public Vehicle getVehicle() {
+        return vehicle;
+    }
+
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
+    }
 }
+
+

@@ -9,15 +9,27 @@
         </shape>
     </item>
 
+
     <!-- upper rectangle (background color) -->
     <item
-        android:top="6dp"
-        android:right="6dp"
-        android:left="6dp" >
-        <shape xmlns:android="http://schemas.android.com/apk/res/android">
-            <corners android:topLeftRadius="6dp" android:topRightRadius="6dp"
-                android:bottomLeftRadius="0.1dp" android:bottomRightRadius="0.1dp"/>
-            <solid android:color="@color/secondary_colour"/>
-        </shape>
+        android:top="4dp"
+        android:right="4dp"
+        android:left="4dp" >
+    <shape xmlns:android="http://schemas.android.com/apk/res/android">
+        <corners android:topLeftRadius="6dp" android:topRightRadius="6dp"
+            android:bottomLeftRadius="0.1dp" android:bottomRightRadius="0.1dp"/>
+        <solid android:color="#FFF"/>
+    </shape>
     </item>
 </layer-list>
+
+<!--<item-->
+<!--android:top="6dp"-->
+<!--android:right="6dp"-->
+<!--android:left="6dp" >-->
+<!--<shape xmlns:android="http://schemas.android.com/apk/res/android">-->
+    <!--<corners android:topLeftRadius="6dp" android:topRightRadius="6dp"-->
+        <!--android:bottomLeftRadius="0.1dp" android:bottomRightRadius="0.1dp"/>-->
+    <!--<solid android:color="#FFF"/>-->
+<!--</shape>-->
+<!--</item>-->

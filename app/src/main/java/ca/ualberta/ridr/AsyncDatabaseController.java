@@ -14,6 +14,7 @@ import com.searchly.jestdroid.JestDroidClient;
 import java.io.IOException;
 
 import io.searchbox.client.JestResult;
+import io.searchbox.core.Delete;
 import io.searchbox.core.DocumentResult;
 import io.searchbox.core.Index;
 import io.searchbox.core.Search;
@@ -21,7 +22,7 @@ import io.searchbox.core.SearchResult;
 
 /**
  * Created by mackenzie on 09/11/16.
- * TO impliment database tasks for a given rider
+ * To implement database tasks, given by AsyncController
  */
 public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject> {
     private static JestDroidClient client;
@@ -30,7 +31,12 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
             = "https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/";
     private static String databaseName = "ridr";
 
-    // Constructor for controller
+    /**
+     * Instantiates a new Async database controller.
+     *
+     * @param action the action we are going to do, with this database controller
+     */
+// Constructor for controller
     public AsyncDatabaseController(String action) {
         this.action = action;
     }
@@ -61,10 +67,12 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
                 return getRequest(parameters[0],parameters[1]).getJsonObject();
             } else if(action == "getAllFromIndexFiltered") {
                 return getRequest(parameters[0], parameters[1]).getJsonObject();
+            } else if(action == "deleteUserTests"){
+                deleteUserTests(parameters[0]);
             }
         } catch (Exception e) {
             Log.i(e.toString(),
-                    "Something went wrong when we tried to communicate with the elasticsearch  server!");
+                    "Something went wrong when we tried to communicate with the elasticsearch server!");
             return null;
         }
 
@@ -143,5 +151,17 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
         }
     }
 
+    //for tests, not sure where else to put
+    private void deleteUserTests(String ID){
+        verifySettings();
+        try {
+            client.execute(new Delete.Builder(ID)
+                    .index(databaseName)
+                    .type("user")
+                    .build());
+        } catch (Exception e){
+            Log.i("ERROR", "Couldn't delete previous driver test objects from elastic search");
+        }
+    }
 }
 
