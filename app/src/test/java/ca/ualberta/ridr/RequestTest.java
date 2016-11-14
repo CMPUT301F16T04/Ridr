@@ -15,8 +15,9 @@ import static org.junit.Assert.assertTrue;
 public class RequestTest {
     @Test
     public void testRequestEquals(){
-        Rider rider = new Rider("Justin Barclay", new Date(), "5555 5555 5555 5555", "jbarclay@ualberta.ca", "780-995-3417");
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         Request request = new Request(rider, "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
+        Request request = new Request(rider, "Edmonton", "Timbuktu", coords, coords, new Date());
         assertTrue(request.equals(request));
     }
 
