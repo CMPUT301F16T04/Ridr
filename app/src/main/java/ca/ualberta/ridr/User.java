@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
 
+import io.searchbox.annotations.JestId;
+
 /**
  * Created by mackenzie on 12/10/16.
  */

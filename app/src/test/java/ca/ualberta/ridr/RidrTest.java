@@ -18,7 +18,7 @@ public class RidrTest{
     @Test
     public void createRideTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         assertTrue(new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords) instanceof Ride);
     }
@@ -26,7 +26,7 @@ public class RidrTest{
     @Test
     public void createDriverTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        assertTrue(new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123") instanceof Driver);
+        assertTrue(new Driver("Jeff", new Date(), "111", "email", "123", vehicle) instanceof Driver);
     }
 
     @Test
@@ -69,7 +69,7 @@ public class RidrTest{
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         rider.requestRide("University of Alberta", "West Edmonton Mall");
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         rider.getRequests().get(0).addAccepted(driver);
 
@@ -99,7 +99,7 @@ public class RidrTest{
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         // Sanity check
         assertTrue(driver instanceof Driver);
@@ -118,7 +118,7 @@ public class RidrTest{
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
         ride.complete();
@@ -141,7 +141,7 @@ public class RidrTest{
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
 
@@ -160,12 +160,12 @@ public class RidrTest{
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         String emailT = "driver2@email.com";
         String phoneNumberT = "555-555-5565";
         Vehicle vehicleT = new Vehicle(1996, "chevy", "truck");
-        Driver driverTwo = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driverTwo = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
         driver.acceptRide(ride);
@@ -187,7 +187,7 @@ public class RidrTest{
         String email = "driver@email.com";
         String phoneNumber = "555-555-5555";
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
 
         Ride ride = new Ride(driver, rider, "University of Alberta", "West Edmonton Mall", new Date(), pickupCoords, dropOffCoords);
 
@@ -196,16 +196,60 @@ public class RidrTest{
         assertEquals(ride.getRider(), rider);
     }
 
-    // Test for Rider Profile US 03.01.01
-    @Test
-    public void testRiderProfile(){
-        Date date = new Date();
-        Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+    /* Test for Rider Profile US 03.01.01
 
-        assertEquals("Steve", Rider.getName());
-        assertEquals(date, Rider.getDateOfBirth());
-        assertEquals("321", Rider.getCreditCard());
-    }
+    NOTE: This isn't the correct test. Test is in androidTest, and is called AddUserProfileTest.
+    Needs to be an instrumentation test, as we are working with Async
+
+    @Test
+    public void testUserProfile(){
+        //this is bad, rewrite
+        //instead, create a User, upload the rider and driver to elasticsearch using their controllers
+        //then get it from elasticsearch, also using the controllers.
+
+        Date date1 = new Date();
+        Rider user1 = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Date date2 = new Date();
+        Driver user2 = new Driver("Storm", new Date(), "123", "goodemail@supergood.com", "6666666", null); //null for no vehicle assigned yet
+
+        DriverController driverController = new DriverController();
+        RiderController riderController = new RiderController();
+
+        driverController.AddDriverTaskTest(user2);
+        riderController.AddRiderTaskTest(user1);
+
+        Driver newDriver = driverController.GetDriverByNameTaskTest("Storm");
+        Rider newRider  = riderController.GetRiderByNameTaskTest("Storm");
+
+        /* Code for Async tests, has to be tested in android emulator
+        Driver newDriver = null;
+        try{
+            newDriver = getDriverTask.get();
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the driver out of the async object.");
+        }*/
+
+        /* Code for Async tests, has to be tested in android emulator
+        getRiderTask.execute("Steve");
+        Rider newRider = null;
+        try{
+            newRider = getRiderTask.get();
+        } catch (Exception e){
+            Log.i("Error", "Failed to get the rider out of the async object.");
+        }
+
+        //check first User, who is logged in as a rider
+        assertEquals("Steve", newRider.getName());
+        assertEquals(date1, newRider.getDateOfBirth());
+        assertEquals("321", newRider.getCreditCard());
+
+        //check second User, who is logged in as a driver
+        assertEquals("Storm", newDriver.getName());
+        assertEquals(date2, newDriver.getDateOfBirth());
+        assertEquals("123", newDriver.getCreditCard());
+        assertEquals(null, newDriver.getVehicle());
+
+    }*/
 
     // Test for Edit Profile US 03.02.01
     @Test
@@ -240,7 +284,7 @@ public class RidrTest{
     @Test
     public void geoLocationTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         //Add open ride to driver
         driver.addRide();
 
@@ -253,7 +297,7 @@ public class RidrTest{
     /** Test for keyword search US 04.02.01 */
     public void keywordRideSearchTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         //Add open ride to driver
         driver.addRide();
 
@@ -266,7 +310,7 @@ public class RidrTest{
     //** Test for driver request accept US 05.01.01*/
     public void driverAccceptRequestTest() throws Exception {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         Ride ride = rider.createRide();
@@ -280,7 +324,7 @@ public class RidrTest{
     //** Test for view list of rides that have abeen accepted and are pending US 05.02.01*//
     public void driverRideStateTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         Ride ride = rider.createRide();
@@ -298,7 +342,7 @@ public class RidrTest{
     //** Check ride state for driver US 05.03.01 */
     public void driverRiderAcceptRideStateTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         Ride ride = rider.createRide();
@@ -311,7 +355,7 @@ public class RidrTest{
     /** test push notification to Driver 05.04.01 */
     public void RiderAcceptPushTest() throws Exception{
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         Ride ride = Rider.createRide();
@@ -324,7 +368,7 @@ public class RidrTest{
     /* See requests while offline as Driver for US 08.01.01 */
     public void offlineDriverRequestListTest() throws Exception {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
 
         rider.requestRide("University of Alberta", "West Edmonton Mall");
@@ -372,7 +416,7 @@ public class RidrTest{
     /*Driver accept requests offline, accepted once online for US 08.04.01 */
     public void offlineAcceptRequestTest() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         Ride ride = rider.createRide();
 
@@ -408,7 +452,7 @@ public class RidrTest{
     /* Driver view start and end geo locations on map for US 10.02.01*/
     public void driverLocationMapTest() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", vehicle);
         driver.addRide();
 
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");

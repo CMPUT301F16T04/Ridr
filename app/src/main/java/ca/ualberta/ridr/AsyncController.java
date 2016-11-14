@@ -8,12 +8,20 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
 /**
-* Created by Justin on 2016-11-10.
-*/
-
+ * Created by Justin on 2016-11-10.
+ *
+ * This class can get and put objects into elastic search, in all different elastic search types.
+ * Controls all elastic search interactions.
+ */
 public class AsyncController {
+    /**
+     * The Controller.
+     */
     AsyncDatabaseController controller;
 
+    /**
+     * Instantiates a new Async controller.
+     */
     public AsyncController(){
         super();
     }

@@ -14,7 +14,7 @@ public class DriverTest {
     @Test
     public void testDriverEquality() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
-        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle);
         assertTrue(driver.equals(driver));
     }
 }
