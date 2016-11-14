@@ -7,10 +7,20 @@
     android:paddingRight="16dp"
     android:orientation="vertical">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Search Results"
+        android:id="@+id/search_results_title"
+        android:layout_gravity="center_horizontal"
+        android:layout_weight="0.05"
+        android:background="@color/secondary_colour"/>
+
     <ListView
         android:id="@+id/search_results"
         android:layout_width="fill_parent"
-        android:layout_height="263dp"
+        android:layout_height="wrap_content"
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:textColor="#000"
