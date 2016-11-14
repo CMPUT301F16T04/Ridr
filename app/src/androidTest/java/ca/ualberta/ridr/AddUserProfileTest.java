@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.*;
 
@@ -54,18 +55,23 @@ public class AddUserProfileTest {
         User onlineUser = null;
         try{
             onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
-            if(onlineUser == null){
-                //if we didn't find our user
-                Log.i("Communication Error", "Could not communicate with the elastic search server");
-                assertTrue(false);
-            }
         } catch (Exception e){
             Log.i("Communication Error", "Could not communicate with the elastic search server");
             assertTrue(false);
         }
+        try{
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e){
+            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+        }
+        /*if(onlineUser == null){
+            //if we didn't find our user
+            Log.i("Error", "We did not find our user");
+            assertTrue(false);
+        }*/
 
         assertTrue(user.equals(onlineUser));
-        assertEquals(user.getDateOfBirth(), onlineUser.getDateOfBirth());
+        assertEquals(user.getDateOfBirth().toString(), onlineUser.getDateOfBirth().toString());
         assertEquals(user.getID().toString(), onlineUser.getID().toString());
         assertEquals(user.getEmail(), onlineUser.getEmail());
         assertEquals(user.getPhoneNumber(), onlineUser.getPhoneNumber());
@@ -75,18 +81,23 @@ public class AddUserProfileTest {
         onlineUser = null;
         try{
             onlineUser = new Gson().fromJson(controller.get("user", "id", user.getID().toString()), User.class);
-            if(onlineUser == null){
-                //if we didn't find our user
-                Log.i("Communication Error", "Could not communicate with the elastic search server");
-                assertTrue(false);
-            }
         } catch (Exception e){
             Log.i("Communication Error", "Could not communicate with the elastic search server");
             assertTrue(false);
         }
+        try{
+            TimeUnit.SECONDS.sleep(10);
+        } catch (Exception e){
+            Log.i("Wait Exception", "Your wait got interrupted! Before asserting.");
+        }
+        /*if(onlineUser == null){
+            //if we didn't find our user
+            Log.i("Error", "We did not find our user");
+            assertTrue(false);
+        }*/
 
         assertTrue(user.equals(onlineUser));
-        assertEquals(user.getDateOfBirth(), onlineUser.getDateOfBirth());
+        assertEquals(user.getDateOfBirth().toString(), onlineUser.getDateOfBirth().toString());
         assertEquals(user.getID().toString(), onlineUser.getID().toString());
         assertEquals(user.getEmail(), onlineUser.getEmail());
         assertEquals(user.getPhoneNumber(), onlineUser.getPhoneNumber());

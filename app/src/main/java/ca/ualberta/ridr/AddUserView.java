@@ -9,6 +9,7 @@ import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -162,8 +163,12 @@ public class AddUserView extends Activity {
                 //successful account creation
                 Toast.makeText(AddUserView.this, "Making Account!", Toast.LENGTH_SHORT).show();
                 //save account in elastic search
-                controller.create("user", user.getID().toString(), new Gson().toJson(user));
-
+                try {
+                    controller.create("user", user.getID().toString(), new Gson().toJson(user));
+                } catch (Exception e){
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                    return;
+                }
 
 
                 finish();
