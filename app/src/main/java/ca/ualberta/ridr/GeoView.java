@@ -80,9 +80,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         autocompleteFragment.setOnPlaceSelectedListener(searchForRequests);
 
-//        Intent intent = getIntent();
-//        String user = intent.getExtras().getString("user");
-//        userID = UUID.fromString(user);
+        Intent intent = getIntent();
+        String user = intent.getExtras().getString("user");
+        userID = UUID.fromString(user);
     }
 
     protected void onStart() {

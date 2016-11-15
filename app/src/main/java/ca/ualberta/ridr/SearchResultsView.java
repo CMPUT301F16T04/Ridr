@@ -33,7 +33,6 @@ public class SearchResultsView extends Activity {
 
         Intent intent= getIntent();
         Bundle extras = intent.getExtras();
-
         if(extras!=null)
         {
             userID = UUID.fromString(extras.getString("UUID"));
