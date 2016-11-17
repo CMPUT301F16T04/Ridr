@@ -251,7 +251,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
      * This interface is used when a controller updates it's data
      * It will call this callback on whoever instantiated that controller
      */
-    public void callback(){
+    public void update(){
         if(requests.size() > 0 ){;
             addMarkers(requests.getList());
         };

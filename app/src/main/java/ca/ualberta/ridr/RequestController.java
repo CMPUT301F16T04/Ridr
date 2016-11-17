@@ -172,7 +172,7 @@ public class RequestController {
 
     public void add(Request request){
         requests.add(request);
-        cbInterface.callback();
+        cbInterface.update();
     }
     public ArrayList<Request> getList(){
         return requests;
@@ -193,7 +193,7 @@ public class RequestController {
                 Log.i("Error parsing requests", e.toString());
             }
         }
-        cbInterface.callback();
+        cbInterface.update();
     }
 
     /**
@@ -211,7 +211,7 @@ public class RequestController {
                 Log.i("Error parsing requests", e.toString());
             }
         }
-        cbInterface.callback();
+        cbInterface.update();
     }
 
     /**
@@ -231,7 +231,7 @@ public class RequestController {
                 Log.i("Error parsing requests", e.toString());
             }
         }
-        cbInterface.callback();
+        cbInterface.update();
 
     }
 }

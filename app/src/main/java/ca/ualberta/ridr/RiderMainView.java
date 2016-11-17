@@ -257,7 +257,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         gMap = googleMap;
     }
 
-    public void callback(){}
+    public void update(){}
 
     /**
      * finds views by their ID's and assigns them to their respective variable

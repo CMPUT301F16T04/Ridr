@@ -7,5 +7,5 @@ package ca.ualberta.ridr;
 public interface ACallback {
     // This interface is used when a controller updates it's data
     // It will call this callback on whoever instantiated that controller
-    void callback();
+    void update();
 }
