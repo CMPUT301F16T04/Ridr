@@ -110,6 +110,7 @@ public class LoginView extends Activity {
         }
         Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
         riderScreenIntent.putExtra("UUID", myUser.getID().toString());
+        System.out.println(myUser.getID().toString());
         startActivity(riderScreenIntent);
     }
     private void loginDriver(User myUser){

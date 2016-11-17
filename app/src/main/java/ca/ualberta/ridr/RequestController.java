@@ -67,6 +67,7 @@ public class RequestController {
     public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date){
         AsyncController controller = new AsyncController();
         currenRequest = new Request(rider.getID().toString(), pickup, dropoff, pickupCoords, dropOffCoords, date);
+        rider.setRequests(new ArrayList<Request>());
         rider.addRequest(currenRequest);
         this.add(currenRequest);
 

@@ -68,7 +68,7 @@ public class Driver extends User {
     public void addRide() {
     }
 
-    public boolean kewordSearch(String input) {
+    public boolean keywordSearch(String input) {
         return false;
     }
 

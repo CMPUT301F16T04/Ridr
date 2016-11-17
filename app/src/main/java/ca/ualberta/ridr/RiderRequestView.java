@@ -47,13 +47,14 @@ public class RiderRequestView extends Activity {
             setContentView(R.layout.rider_request_view);
             oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
 
+            //grab riders uuid
+
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 currentIDStr = extras.getString("UUID");
                 currentUUID = UUID.fromString(currentIDStr);
             }
-
         }
 
         @Override
@@ -61,6 +62,7 @@ public class RiderRequestView extends Activity {
             super.onStart();
             AsyncController controller = new AsyncController();
             JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
+
             System.out.println(queryResults);
             for (JsonElement result : queryResults) {
                 try {
@@ -137,6 +139,7 @@ public class RiderRequestView extends Activity {
             //this is to recognize listview item presses within the popup
             popupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
 //                    String riderId = "8e16686b-f72d-42e1-90ea-e7a8cf270732"; //"6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
 //                    String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
 //                    String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
