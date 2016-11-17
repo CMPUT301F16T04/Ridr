@@ -1,0 +1,55 @@
+* Justin B
+- Setup elasticsearch server on aws
+- elasticsearch db stuff
+- Worked on an elasticsearch api
+- Did google maps api to make maps generically
+- Will rework elasticsearch database to make fit new requirements
+** Blockers:
+- 350 progress report
+* Justin F
+- Search requests from driver side, with keywords
+- Adapter to display stuff, some views
+- Doesn't know what to work on, probably some more driver related stuff
+* Kirsty
+- Driver accepting a ride, and creating rides
+- Learned about fetching objects from elasticsearch, creating rides from
+  json
+- Will work on polishing accepting rides as drivers
+    + Must standardize when we update state on the server
+- Will complete another view (last view we have to create)
+** Blockers:
+- Assignments
+* Storm
+- Worked on login and add user page done, did user stories for that
+- Helped out with elasticsearch
+- Will work on something (probably in thursday meeting)
+** Blockers:
+- 350 progress report
+- Lots of projects due soon
+* Marco
+- Worked view to make reqests, & controller for it
+- Will finish working on fare estimation
+- Work on embeded profiles
+- View requirements
+- Got map working
+** Blockers:
+- 350 progress report
+* Mack
+- Elastic search api, and requests view
+- Tried some testing, did nothing effective
+** Blockers:
+* Other:
+- How will be displaying rides
+- We need to get issues sorted
+* Stephen:
+- New features will be discussed thursday
+- Async testing
+    + There's some stuff on stack that may be helpful
+    + Test by parts, as opposed to testing the task itself
+- Robotium should run on Java 17
+    - There may be 2 libraries importing gson/json
+- For maps you could do a screenshot, and compair them somehow
+    + You may not be able to test GoogleMapsApi
+    + Test it coarsely
+    + You could make an arraylist of markers, and replace that with the call
+    to api to map
