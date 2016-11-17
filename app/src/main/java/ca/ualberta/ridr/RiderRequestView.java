@@ -32,10 +32,12 @@ import java.util.Date;
 
 public class RiderRequestView extends Activity {
 
+    private UUID currentUUID; // UUID of the currently logged-in rider
+    private String currentIDStr; // string of the curretn UUID
+    private String clickedDriverIDStr; //string of driver who is clicked in popup
+    private String clickedRequestIDStr; //string of request that is clicked in listview
     private Activity activity = this;
     public ArrayList<Request> requests = new ArrayList<>();
-    private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the current UUID
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
 
@@ -46,6 +48,7 @@ public class RiderRequestView extends Activity {
             oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
 
             //grab riders uuid
+
             Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
@@ -56,11 +59,10 @@ public class RiderRequestView extends Activity {
 
         @Override
         protected void onStart() {
-            // TODO Auto-generated method stub
             super.onStart();
             AsyncController controller = new AsyncController();
-            JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr);
-            //bad things may happen if can't get currentIDString
+            JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
+
             System.out.println(queryResults);
             for (JsonElement result : queryResults) {
                 try {
@@ -78,6 +80,7 @@ public class RiderRequestView extends Activity {
             oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Request request = requests.get(position);
+                    clickedRequestIDStr = request.getID().toString();
                     displayDrivers(request);
                 }
             });
@@ -122,9 +125,11 @@ public class RiderRequestView extends Activity {
             });
 
             //reason this is fudge is because we dont have that list of possible drivers stored
-            ArrayList<String> possibleDrivers = new ArrayList<>();
-            Driver driver = new Driver("Sample hardcoded driver", new Date(), "", "", "", "");
+            final ArrayList<String> possibleDrivers = new ArrayList<>();
+            final ArrayList<String> possibleDriversIds = new ArrayList<>();
+            Driver driver = new Driver("Sample hardcoded driver", new Date(), "creditcard", "email@emailme.email", "123-123-1234", "banckaccono");
             possibleDrivers.add(driver.getName());
+            possibleDriversIds.add("475a3caa-88b5-46b2-9a44-cd02ef8a2d28");
 
 
             ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
@@ -134,9 +139,12 @@ public class RiderRequestView extends Activity {
             //this is to recognize listview item presses within the popup
             popupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    String riderId = currentIDStr; //"6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-                    String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-                    String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
+
+//                    String riderId = "8e16686b-f72d-42e1-90ea-e7a8cf270732"; //"6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
+//                    String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
+//                    String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
+
+                    clickedDriverIDStr = possibleDriversIds.get(position);
 
                     //must close popup before going to next activity
                     driverPopUp.dismiss();
@@ -144,9 +152,9 @@ public class RiderRequestView extends Activity {
                     //TODO pass the driver at clicked position to the next activity
                     Intent intent = new Intent(activity, AcceptDriverView.class);
                     ArrayList<String> ids = new ArrayList<>();
-                    ids.add(riderId);
-                    ids.add(driverId);
-                    ids.add(requestId);
+                    ids.add(currentIDStr); //pass the current user
+                    ids.add(clickedDriverIDStr);
+                    ids.add(clickedRequestIDStr);
                     intent.putStringArrayListExtra("ids", ids);
                     startActivity(intent);
                     //go to driver profile
