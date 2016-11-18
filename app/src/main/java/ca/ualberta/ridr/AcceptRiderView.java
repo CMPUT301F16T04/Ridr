@@ -2,7 +2,6 @@ package ca.ualberta.ridr;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -26,7 +25,7 @@ public class AcceptRiderView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_rider);
 
-        requestInfo = (TextView) findViewById(R.id.possible_request_info);
+        requestInfo = (TextView) findViewById(R.id.start_location_accept_rider);
         requestFrom = (TextView) findViewById(R.id.request_from);
         acceptRider = (Button) findViewById(R.id.accept_rider);
 

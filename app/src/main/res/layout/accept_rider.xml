@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,33 +9,114 @@
     android:weightSum="1">
 
     <TextView
-        android:textSize="30dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="363dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/request_from"
-        android:clickable="true"
-        android:gravity="center_vertical|center_horizontal" />
-
-    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="30dp"
-        android:layout_marginTop="5dp"
+        android:textSize="24sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:id="@+id/possible_request_info"
-        android:layout_weight="0.95" />
+        android:id="@+id/payment_accept_rider"
+        android:layout_weight="0.95"
+        android:layout_below="@+id/request_from"
+        android:layout_centerHorizontal="true"
+        android:text="@string/payment_accept_rider"
+        android:textColor="@color/tertiary_colour" />
 
     <Button
         android:text="Accept"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:background="@color/tertiary_colour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/accept_rider" />
-</LinearLayout>
+        android:id="@+id/accept_rider"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp" />
+
+    <fragment
+        android:layout_width="match_parent"
+        android:layout_height="240dp"
+        android:id="@+id/newRequestMap"
+        tools:context="ca.ualberta.ridr.RiderMainView"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_above="@+id/accept_rider"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/start_location_accept_rider"
+        android:layout_weight="0.95"
+        android:layout_below="@+id/pickup_time_accept_rider"
+        android:layout_centerHorizontal="true"
+        android:text="@string/start_location_accept_rider"
+        android:textColor="@color/tertiary_colour" />
+
+    <TextView
+        android:textSize="30dp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="363dp"
+        android:layout_height="wrap_content"
+        android:id="@+id/request_from"
+        android:clickable="true"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_alignParentTop="true"
+        android:layout_alignEnd="@+id/pickup_time_accept_rider"
+        android:textStyle="normal|bold" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/pickup_time_accept_rider"
+        android:layout_weight="0.95"
+        android:layout_below="@+id/contact_info_accept_rider"
+        android:layout_centerHorizontal="true"
+        android:text="@string/pickup_time_accept_rider"
+        android:textColor="@color/tertiary_colour" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/end_location_accept_rider"
+        android:layout_weight="0.95"
+        android:layout_below="@+id/start_location_accept_rider"
+        android:layout_centerHorizontal="true"
+        android:text="@string/end_location_accept_rider"
+        android:textColor="@color/tertiary_colour" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/contact_info_accept_rider"
+        android:layout_weight="0.95"
+        android:layout_below="@+id/payment_accept_rider"
+        android:layout_centerHorizontal="true"
+        android:text="@string/contact_info_accept_rider"
+        android:textColor="@color/tertiary_colour" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/status_accept_rider"
+        android:layout_weight="0.95"
+        android:layout_below="@+id/end_location_accept_rider"
+        android:layout_centerHorizontal="true"
+        android:text="@string/status_accept_rider"
+        android:textColor="@color/tertiary_colour" />
+</RelativeLayout>
