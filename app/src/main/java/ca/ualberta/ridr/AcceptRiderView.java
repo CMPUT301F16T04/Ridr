@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import java.util.UUID;
 
-public class AcceptRiderView extends AppCompatActivity {
+public class AcceptRiderView extends Activity {
 
     private TextView requestInfo;
     private TextView requestFrom;
@@ -20,9 +20,6 @@ public class AcceptRiderView extends AppCompatActivity {
     private UUID requestID;
     private Rider requestRider;
     private Request request;
-
-
-    private Activity activity;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +34,7 @@ public class AcceptRiderView extends AppCompatActivity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            driverID = UUID.fromString(extras.getString("UUID"));
+            driverID = UUID.fromString(extras.getString("userUUID"));
             requestID = UUID.fromString(extras.getString("RequestUUID"));
         } else {
             Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
@@ -50,7 +47,7 @@ public class AcceptRiderView extends AppCompatActivity {
         RiderController riderController = new RiderController();
         requestRider = riderController.getRiderFromServer(request.getRider());
 
-        CharSequence isFrom = "Request From " + requestRider.getName();
+        CharSequence isFrom = "Request From " + requestRider.getName() + ":";
 
         requestFrom.setText(isFrom);
 
@@ -60,7 +57,7 @@ public class AcceptRiderView extends AppCompatActivity {
             @Override
             public void onClick(View view){
                 //TODO also pass the rider to the next activity so that we can display their info
-                Intent intent = new Intent(activity, ProfileView.class);
+                Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
                 intent.putExtra("RiderUUID", requestRider.getID().toString());
                 startActivity(intent);
             }

@@ -12,10 +12,11 @@
         android:textSize="30dp"
         android:layout_marginTop="5dp"
         android:layout_marginLeft="10dp"
-        android:layout_width="match_parent"
+        android:layout_width="363dp"
         android:layout_height="wrap_content"
         android:id="@+id/request_from"
-        android:clickable="true" />
+        android:clickable="true"
+        android:gravity="center_vertical|center_horizontal" />
 
     <TextView
         android:layout_width="match_parent"
