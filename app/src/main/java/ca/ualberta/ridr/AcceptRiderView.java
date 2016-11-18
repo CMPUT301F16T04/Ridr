@@ -176,7 +176,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
 
                 agreedToFulfill = true;
-                String statusText = status.getText() + "Agreed to fulfill if chosen";
+                String statusText = getResources().getString(R.string.status_accept_rider) + "Agreed to fulfill if chosen";
                 status.setText(statusText);
             }
 

@@ -11,7 +11,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/payment_accept_rider"
@@ -19,7 +19,7 @@
         android:layout_below="@+id/request_from"
         android:layout_centerHorizontal="true"
         android:text="@string/payment_accept_rider"
-        android:textColor="@color/tertiary_colour" />
+        android:textColor="?android:attr/textColorTertiary" />
 
     <Button
         android:layout_marginLeft="10dp"
@@ -46,7 +46,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/start_location_accept_rider"
@@ -54,7 +54,7 @@
         android:layout_below="@+id/pickup_time_accept_rider"
         android:layout_centerHorizontal="true"
         android:text="@string/start_location_accept_rider"
-        android:textColor="@color/tertiary_colour" />
+        android:textColor="?android:attr/textColorTertiary" />
 
     <TextView
         android:textSize="30dp"
@@ -66,12 +66,13 @@
         android:gravity="center_vertical|center_horizontal"
         android:layout_alignParentTop="true"
         android:layout_alignEnd="@+id/pickup_time_accept_rider"
-        android:textStyle="normal|bold" />
+        android:textStyle="normal|bold"
+        android:textColor="@color/primary_colour" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/pickup_time_accept_rider"
@@ -79,12 +80,12 @@
         android:layout_below="@+id/contact_info_accept_rider"
         android:layout_centerHorizontal="true"
         android:text="@string/pickup_time_accept_rider"
-        android:textColor="@color/tertiary_colour" />
+        android:textColor="?android:attr/textColorTertiary" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/end_location_accept_rider"
@@ -92,12 +93,12 @@
         android:layout_below="@+id/start_location_accept_rider"
         android:layout_centerHorizontal="true"
         android:text="@string/end_location_accept_rider"
-        android:textColor="@color/tertiary_colour" />
+        android:textColor="?android:attr/textColorTertiary" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/contact_info_accept_rider"
@@ -105,12 +106,12 @@
         android:layout_below="@+id/payment_accept_rider"
         android:layout_centerHorizontal="true"
         android:text="@string/contact_info_accept_rider"
-        android:textColor="@color/tertiary_colour" />
+        android:textColor="?android:attr/textColorTertiary" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:id="@+id/status_accept_rider"
@@ -118,5 +119,5 @@
         android:layout_below="@+id/end_location_accept_rider"
         android:layout_centerHorizontal="true"
         android:text="@string/status_accept_rider"
-        android:textColor="@color/tertiary_colour" />
+        android:textColor="?android:attr/textColorTertiary" />
 </RelativeLayout>
