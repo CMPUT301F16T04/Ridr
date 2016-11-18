@@ -1,17 +1,33 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.Geocoder;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+
+import java.util.ArrayList;
 import java.util.UUID;
 
-public class AcceptRiderView extends Activity {
+public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private TextView requestFrom;
     private TextView payment;
@@ -21,17 +37,43 @@ public class AcceptRiderView extends Activity {
     private TextView endLocation;
     private TextView status;
     private Button acceptRider;
+
     private UUID driverID;
     private UUID requestID;
     private Rider requestRider;
     private Driver driver;
     private Request request;
+
     private boolean agreedToFulfill;
+
+    //gmap variables
+    private GoogleMap gMap;
+    private GoogleApiClient mGoogleApiClient;
+    private LatLng lastKnownPlace;
+    private boolean firstLoad;
+    private ArrayList<Marker> markers;
+    private Geocoder geocoder;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_rider);
+
+        //set google map stuff
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.newRequestMap);
+        mapFragment.getMapAsync(this);
+        firstLoad = false;
+        geocoder = new Geocoder(this);
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(this)
+                    .addConnectionCallbacks(this)
+                    .addOnConnectionFailedListener(this)
+                    .addApi(LocationServices.API)
+                    .addApi(Places.GEO_DATA_API)
+                    .addApi(Places.PLACE_DETECTION_API)
+                    .build();
+        }
 
         //set all the xml elements
         requestFrom = (TextView) findViewById(R.id.request_from);
@@ -84,12 +126,12 @@ public class AcceptRiderView extends Activity {
         //iterate through the requests possibleDriver arraylist, and see if we are in it. If we are,
         //status = Agreed to fulfill. If not, status = Haven't agreed to fulfill
         agreedToFulfill = false;
-        for(int i = 0; i < request.getPossibleDrivers().size(); ++i){
+        /*for(int i = 0; i < request.getPossibleDrivers().size(); ++i){
             if(request.getPossibleDrivers().get(i).getID().equals(driverID)){
                 agreedToFulfill = true;
                 break;
             }
-        }
+        }*/
         if(agreedToFulfill){
             String statusText = status.getText() + "Agreed to fulfill if chosen";
             status.setText(statusText);
@@ -139,5 +181,64 @@ public class AcceptRiderView extends Activity {
             }
 
         });
+    }
+
+    //gmap stuff
+    protected void onStart() {
+        mGoogleApiClient.connect();
+        super.onStart();
+    }
+    protected void onResume(){
+        super.onResume();
+        mGoogleApiClient.reconnect();
+    }
+
+    protected void onPause(){
+        mGoogleApiClient.disconnect();
+        super.onPause();
+    }
+
+    protected void onStop() {
+        mGoogleApiClient.disconnect();
+        super.onStop();
+    }
+
+    @Override
+    // Need this for ConnectionsCallback, doesn't need to do anything AFAIK
+    // If a map view does live tracking it might be more useful
+    public void onConnectionSuspended(int i){
+
+    }
+
+    @Override
+    //On connected listener, required to be able to zoom to users location at login
+    public void onConnected(Bundle connectionHint){
+        //lastKnownPlace = getCurrentLocation();
+        if(lastKnownPlace != null && !firstLoad) {
+            firstLoad = true;
+            //gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
+            gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
+        }
+
+    }
+
+    // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
+    // Currently this shows an alert notifying the user that the connection failed
+    public void onConnectionFailed(ConnectionResult result) {
+        new AlertDialog.Builder(this)
+                .setTitle("Connection Failure")
+                .setMessage(result.getErrorMessage())
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with delete
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap){
+        gMap = googleMap;
     }
 }
