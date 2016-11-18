@@ -7,27 +7,41 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.UUID;
 
 public class AcceptRiderView extends Activity {
 
-    private TextView requestInfo;
     private TextView requestFrom;
+    private TextView payment;
+    private TextView contactInfo;
+    private TextView pickupTime;
+    private TextView startLocation;
+    private TextView endLocation;
+    private TextView status;
     private Button acceptRider;
     private UUID driverID;
     private UUID requestID;
     private Rider requestRider;
+    private Driver driver;
     private Request request;
+    private boolean agreedToFulfill;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_rider);
 
-        requestInfo = (TextView) findViewById(R.id.start_location_accept_rider);
+        //set all the xml elements
         requestFrom = (TextView) findViewById(R.id.request_from);
-        acceptRider = (Button) findViewById(R.id.accept_rider);
+        payment = (TextView) findViewById(R.id.payment_accept_rider);
+        contactInfo = (TextView) findViewById(R.id.contact_info_accept_rider);
+        pickupTime = (TextView) findViewById(R.id.pickup_time_accept_rider);
+        startLocation = (TextView) findViewById(R.id.start_location_accept_rider);
+        endLocation = (TextView) findViewById(R.id.end_location_accept_rider);
+        status = (TextView) findViewById(R.id.status_accept_rider);
+        acceptRider = (Button) findViewById(R.id.accept_rider_button);
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -46,16 +60,50 @@ public class AcceptRiderView extends Activity {
         RiderController riderController = new RiderController();
         requestRider = riderController.getRiderFromServer(request.getRider());
 
-        CharSequence isFrom = "Request From " + requestRider.getName() + ":";
+        String isFrom = "Request From " + requestRider.getName() + ":";
 
+
+        //set all the text that needs to be set
         requestFrom.setText(isFrom);
+        //set payment field text
+        String paymentText = payment.getText() + Float.toString(request.getFare());
+        payment.setText(paymentText);
+        //set contact info text
+        String contactInfoText = contactInfo.getText() + requestRider.getPhoneNumber();
+        contactInfo.setText(contactInfoText);
+        //set pickup time text
+        String pickupTimeText = pickupTime.getText() + request.getDate().toString();
+        pickupTime.setText(pickupTimeText);
+        //set start location text
+        String startLocationText = startLocation.getText() + request.getPickup();
+        startLocation.setText(startLocationText);
+        //set end location text
+        String endLocationText = endLocation.getText() + request.getDropoff();
+        endLocation.setText(endLocationText);
+        //set status text
+        //iterate through the requests possibleDriver arraylist, and see if we are in it. If we are,
+        //status = Agreed to fulfill. If not, status = Haven't agreed to fulfill
+        agreedToFulfill = false;
+        for(int i = 0; i < request.getPossibleDrivers().size(); ++i){
+            if(request.getPossibleDrivers().get(i).getID().equals(driverID)){
+                agreedToFulfill = true;
+                break;
+            }
+        }
+        if(agreedToFulfill){
+            String statusText = status.getText() + "Agreed to fulfill if chosen";
+            status.setText(statusText);
+        } else {
+            String statusText = status.getText() + "Haven't yet agreed to fulfill";
+            status.setText(statusText);
+        }
 
         //make the requestFrom text view clickable
         requestFrom.setOnClickListener(new View.OnClickListener(){
 
             @Override
             public void onClick(View view){
-                //TODO also pass the rider to the next activity so that we can display their info
+                //TODO make ProfileView Activity
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
                 intent.putExtra("RiderUUID", requestRider.getID().toString());
                 startActivity(intent);
@@ -67,6 +115,10 @@ public class AcceptRiderView extends Activity {
         acceptRider.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
+                if(agreedToFulfill){
+                    Toast.makeText(AcceptRiderView.this, "Already agreed to fulfill", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 DriverController DC = new DriverController();
                 RequestController RC = new RequestController();
                 //yet another fudge for now
@@ -78,6 +130,12 @@ public class AcceptRiderView extends Activity {
                 //DC.acceptRequest(driver, request);
                 //RC.accept(request);
                 //RC.addDriver(request, driver);
+
+
+
+                agreedToFulfill = true;
+                String statusText = status.getText() + "Agreed to fulfill if chosen";
+                status.setText(statusText);
             }
 
         });

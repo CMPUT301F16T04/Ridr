@@ -29,5 +29,7 @@
     <string name="start_location_accept_rider">Start Location: </string>
     <string name="end_location_accept_rider">End Location: </string>
     <string name="status_accept_rider">Status: </string>
+    <string name="accept_rider_button">Agree to fulfill if chosen</string>
+
 
 </resources>
