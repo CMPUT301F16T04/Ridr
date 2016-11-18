@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:orientation="vertical"
+    android:background="@color/secondary_colour"
+    android:weightSum="1">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Search Results"
+        android:id="@+id/search_results_title"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/secondary_colour"/>
+
+    <ListView
+        android:id="@+id/search_results"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:textColor="#000"
+        android:background="@color/secondary_colour"
+        android:choiceMode="multipleChoice">
+
+    </ListView>
+
+    <EditText
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="email"
+        android:textSize="22sp"
+        android:textColor="#000"
+        android:maxLines="1"
+        android:paddingTop="10sp"
+        android:paddingBottom="5sp"
+        android:background="@color/primary_colour"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginBottom="10dp"
+        android:paddingLeft="5dp"
+        android:id="@+id/searchRequestsText" />
+
+    <Button
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="50dp"
+        android:background="@color/tertiary_colour"
+        android:text="Search Requests"
+        android:textColor="@color/primary_colour"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="250dp"
+        android:id="@+id/searchRequestsButton" />
+
+    <Button
+        android:layout_marginLeft="100dp"
+        android:layout_marginRight="100dp"
+        android:layout_marginBottom="10dp"
+        android:layout_height="50dp"
+        android:background="@color/tertiary_colour"
+        android:text="Search By Geo Location"
+        android:textColor="@color/primary_colour"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="250dp"
+        android:id="@+id/searchByGeoButton" />
+
+
+</LinearLayout>

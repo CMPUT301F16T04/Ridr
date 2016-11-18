@@ -2,9 +2,10 @@
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="android:Theme.Material.NoActionBar">
-        <item name="colorPrimary">@color/primary_colour</item>
-        <item name="colorPrimaryDark">@color/secondary_colour</item>
-        <item name="colorAccent">@color/tertiary_colour</item>
+        <item name="android:colorPrimary">@color/primary</item>
+        <item name="android:colorPrimaryDark">@color/primaryDark</item>
+        <item name="android:colorAccent">@color/tertiary_colour</item>
+        <item name="android:colorButtonNormal">@color/tertiary_colour</item>
+        <item name="android:navigationBarColor">@color/tertiary_colour</item>
     </style>
-
 </resources>
