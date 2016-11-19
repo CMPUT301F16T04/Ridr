@@ -42,7 +42,6 @@ import java.util.UUID;
  */
 public class RequestController {
 
-
     private Request currenRequest;
     private JsonArray jsonArray;
     private ArrayList<Request> requests;

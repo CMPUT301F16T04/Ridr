@@ -22,6 +22,7 @@ import io.searchbox.core.SearchResult;
  * Created by jferris on 22/10/16.
  */
 public class DriverController {
+
     DriverController(){}
 
     //is this supposed to be a driver controller item or a request controller item... look at UML in the morning
@@ -33,6 +34,5 @@ public class DriverController {
         Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
         return(driver);
     }
-
 
 }

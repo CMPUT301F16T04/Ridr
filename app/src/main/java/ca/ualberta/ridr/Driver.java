@@ -10,7 +10,6 @@ import io.searchbox.annotations.JestId;
  */
 public class Driver extends User {
 
-
     @JestId
     private String elasticID;
 
@@ -20,7 +19,6 @@ public class Driver extends User {
     private transient String bankAccountNo;
     private transient ArrayList<Ride> rideArrayList;
     private transient ArrayList<Request> requestArrayList;
-
 
     public Driver(String name, Date dateOfBirth, String creditCard,
 
@@ -66,10 +64,6 @@ public class Driver extends User {
         return rideArrayList;
     }
 
-    public ArrayList<Request> getRequests() {
-        return requestArrayList;
-    }
-
     public void setRides(ArrayList<Ride> rideArrayList) {
         this.rideArrayList = rideArrayList;
     }
@@ -88,7 +82,6 @@ public class Driver extends User {
     public void acceptRide(Ride ride) {
     }
     public void acceptRequest(Request request) {
-        requestArrayList.add(request);
     }
 
     public boolean completeRide(Ride ride) {

@@ -43,9 +43,11 @@ public class SearchResultsView extends Activity {
             @Override
             //implement when putting together for on click items
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                /*Intent intent = new Intent(SearchResultsView.this, .class);
-                intent.putExtra("Habit", position);
-                startActivity(intent);*/
+                Intent intent = new Intent(SearchResultsView.this, AcceptRiderView.class);
+                Request clickedRequest = (Request)searchResults.getItemAtPosition(position);
+                intent.putExtra("RequestUUID", clickedRequest.getID().toString());
+                intent.putExtra("userUUID", userID.toString());
+                startActivity(intent);
             }
         });
 
