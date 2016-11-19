@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import com.google.android.gms.maps.model.LatLng;
+
 import junit.framework.Assert;
 
 import org.junit.Test;
@@ -9,12 +11,7 @@ import java.util.Date;
 
 import static junit.framework.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import org.junit.Test;
 
-import java.util.Date;
-
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertTrue;
 
 /**
  * Created by kristynewbury on 2016-11-07.
@@ -24,7 +21,9 @@ public class RequestControllerTest{
 
     @Test
     public void testRequestControllerAccept(){
-        Request request = new Request("campus", "home");
+        LatLng coords = new LatLng(1,2);
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Request request = new Request(rider.getID().toString(), "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
         RequestController RC = new RequestController();
 
         RC.accept(request);
@@ -35,9 +34,11 @@ public class RequestControllerTest{
 
     @Test
     public void testRequestControllerAddDriver() {
-        Request request = new Request("campus", "home");
-        Vehicle vehicle = new Vehicle(1800, "Carriage", "firstEver");
-        Driver driver = new Driver("joe", new Date(), "credit", "email", "phone", vehicle, "bankno");
+        LatLng coords = new LatLng(1,2);
+
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Request request = new Request(rider.getID().toString(), "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
+        Driver driver = new Driver("joe", new Date(), "credit", "email", "phone", "bankno");
 
         RequestController RC = new RequestController();
 
@@ -49,10 +50,12 @@ public class RequestControllerTest{
 
     @Test
     public void testRequestControllerGetPossibleDrivers(){
-        Request request = new Request("Edmonton", "Timbuktu");
+        LatLng coords = new LatLng(1,2);
+
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Request request = new Request(rider.getID().toString(), "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
         ArrayList<Driver> drivers = new ArrayList<Driver>();
-        Vehicle vehicle = new Vehicle(1990, "pontiac", "grandam");
-        Driver john = new Driver("john", new Date(), "credit", "email", "phone", vehicle, "bankaccountno");
+        Driver john = new Driver("john", new Date(), "credit", "email", "phone", "bankaccountno");
         drivers.add(john);
         request.setPossibleDrivers(drivers);
 
@@ -65,8 +68,10 @@ public class RequestControllerTest{
     @Test
     public void testRequestControllerRemoveRequest(){
         RequestController RC = new RequestController();
-        Request request = new Request("Edmonton", "Timbuktu");
-        Rider rider = new Rider("Guy", new Date(), "credit", "email", "phone");
+        LatLng coords = new LatLng(1,2);
+
+        Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
+        Request request = new Request(rider.getID().toString(), "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
 
         rider.addRequest(request);
 
