@@ -3,4 +3,11 @@
     <color name="primary_colour">#ffffff</color>
     <color name="tertiary_colour">#e35e69</color>
     <color name="secondary_colour">#8e4497</color>
+    <color name="primary">#8e4497</color>
+    <color name="primaryDark">#62156d</color>
+    <color name="light_secondary_colour">#B08e4497</color>
+    <color name="dark_tertiary_colour">#CA535D</color>
+    <color name="light_gray">#dddddd</color>
+    <color name="black">#000</color>
+    <color name="light_tertiary_colour">#ca535d</color>
 </resources>

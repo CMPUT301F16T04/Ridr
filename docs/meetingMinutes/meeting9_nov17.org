@@ -1,0 +1,14 @@
+* New requirements
+- Justin needs to fix geo stuff
+- Need to post new wiki requirements
+- Must check release planning & update
+- We must write tests
+* How we are gonna get them done
+- If you're working on a UC, strike it out and pick it
+- Offline could be one person's job
+    + Write everything to Gson redundantly, and push it when you go online
+    + Ride, request, rider profile, driver profile, user files
+    + Vehicles will be stored as a string in the User
+* Which cluster:
+- Cluster 2
+    + Addresses are easy with google places
