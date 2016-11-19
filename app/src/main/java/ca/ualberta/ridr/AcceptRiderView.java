@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -181,6 +182,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             }
 
         });
+
     }
 
     //gmap stuff
@@ -213,10 +215,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     @Override
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
-        //lastKnownPlace = getCurrentLocation();
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
-            //gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
             gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
         }
 
@@ -240,5 +240,22 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap){
         gMap = googleMap;
+        setupMap(request);
     }
+
+    public void setupMap(Request request){
+        //gMap.clear();
+        //adds markers and then move camera to where they are
+        Marker startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
+        startMarker.setTag(request);
+        Marker endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title(request.getDropoff()));
+        endMarker.setTag(request);
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(request.getDropOffCoords(), 10));
+        //probably shouldnt hardcode zoom factor, it should be relative to the markers...
+        //TODO fix that
+
+
+    }
+
+
 }
