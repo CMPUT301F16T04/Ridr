@@ -140,6 +140,35 @@ public class AsyncController {
         }
     }
 
+    /*public JsonArray getFromIndexObjectInArray(String dataClass, String variable, String variableValue){
+        controller = new AsyncDatabaseController("get");
+        String query =
+                "{"+
+                    "\"query\": {" +
+                        "\"bool\" : {"+
+                            "\"must\" : {"+
+                                "\"match_all\" : {}" +
+                            "}," +
+                            "\"filter\" : {"+
+                                "\"geo_distance\" : {" +
+                                    "\"distance\" : \""+ kmDistance+ "km\"," +
+                                    "\"pickupCoord\" : {" +
+                                        "\"lat\" :" + center.latitude + "," +
+                                        "\"lon\" :" + center.longitude +
+                                    "}" +
+                                "}" +
+                            "}" +
+                        "}" +
+                    "}"+
+                "}";
+        try{
+            return extractAllElements(controller.execute(dataClass, query).get());
+        } catch(Exception e){
+            Log.d("Elastic search filter", "getFromIndexObjectInArray: " + e.toString());
+            return null;
+        }
+    }*/
+
     /**
      * A simple function to extract the jsonArray from the results
      * @param result  the result of a query
