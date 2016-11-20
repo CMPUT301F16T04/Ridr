@@ -4,8 +4,22 @@ import android.os.AsyncTask;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
 
 /**
  * Created by Justin on 2016-11-10.
@@ -156,6 +170,52 @@ public class AsyncController {
      */
     private JsonObject extractFirstElement(JsonObject result){
         return result.getAsJsonObject("hits").getAsJsonArray("hits").get(0).getAsJsonObject().getAsJsonObject("_source");
+    }
+
+    private JsonArray loadFromFile(String file) {
+        JsonArray jsonArray;
+        try {
+            FileInputStream fis = new FileInputStream(file);
+            BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+
+            Gson gson = new Gson();
+
+            // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
+            //Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+
+            jsonArray = gson.fromJson(in,JsonArray);
+            fis.close();
+
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            jsonArray = new JsonArray();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        }
+        return jsonArray;
+    }
+
+    private void saveInFile(JsonArray jsonArray, String file) {
+        try {
+            FileOutputStream fos = new FileOutputStream(file,
+                    false);
+
+            BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
+
+            Gson gson = new Gson();
+            gson.toJson(jsonArray, out);
+            out.flush();
+
+            fos.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            throw new RuntimeException();
+        }
+    }
     }
 
 }
