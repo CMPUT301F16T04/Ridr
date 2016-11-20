@@ -37,7 +37,7 @@ public class RequestsFromRidersView extends Activity {
         }
     }
 
-    /*@Override
+    @Override
     protected void onStart() {
         super.onStart();
         if(requests != null){
@@ -46,7 +46,7 @@ public class RequestsFromRidersView extends Activity {
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getAllFromIndexFiltered("user", "id", userID.toString());
+        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", userID.toString());
 
         for (JsonElement result : queryResults) {
             try {
@@ -64,11 +64,15 @@ public class RequestsFromRidersView extends Activity {
         requestList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
-                clickedRequestIDStr = request.getID().toString();
-                displayDrivers(request);
+                String clickedRequestIDStr = request.getID().toString();
+                /* Not ready yet, need to wait to merge with the rest of the app,
+                so we can figure out how this works
+                Intent intent = new Intent(RequestsFromRidersView.this, AcceptDriverView.class);
+                intent.putExtra("RequestID", clickedRequestIDStr);
+                startActivity(intent);*/
             }
         });
 
 
-    }*/
+    }
 }
