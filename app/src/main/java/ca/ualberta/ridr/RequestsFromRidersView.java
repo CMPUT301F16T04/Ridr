@@ -11,5 +11,10 @@ public class RequestsFromRidersView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.requests_from_riders);
+
+
+
+
+
     }
 }

@@ -36,8 +36,7 @@
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:textColor="#000"
-        android:background="@color/secondary_colour"
-        android:choiceMode="multipleChoice">
+        android:background="@color/secondary_colour">
 
     </ListView>
 

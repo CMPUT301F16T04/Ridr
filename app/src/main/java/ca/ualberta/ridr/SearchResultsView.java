@@ -99,7 +99,8 @@ public class SearchResultsView extends Activity {
     /**
      * Calls on the request controller method searchRequestsKeyword
      * Updates the requestList without making it a new object (Clear and re add)
-     * @param keyword
+     *
+     * @param keyword the keyword
      */
     protected void searchResultsByKeyword(String keyword) {
         if(keyword != null) {
@@ -109,6 +110,11 @@ public class SearchResultsView extends Activity {
         }
     }
 
+    /**
+     * Show menu.
+     *
+     * @param v the view
+     */
     public void showMenu(View v){
         PopupMenu popup = new PopupMenu(this, v);
         MenuInflater inflater = popup.getMenuInflater();
@@ -124,7 +130,7 @@ public class SearchResultsView extends Activity {
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(SearchResultsView.this, "View Requests", Toast.LENGTH_SHORT).show();
-                        Intent viewRequestsIntent = new Intent(SearchResultsView.this, RiderRequestView.class);
+                        Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
                         viewRequestsIntent.putExtra("UUID", userID.toString());
                         startActivity(viewRequestsIntent);
                         return true;

@@ -9,4 +9,27 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="ca.ualberta.ridr.RequestsFromRidersView">
 
+    <TextView
+        android:text="Requests You've Accepted:"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/requests_from_riders_title"
+        android:textSize="24sp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:textStyle="normal|bold"
+        android:textAllCaps="false"
+        android:textAlignment="center"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp" />
+
+    <ListView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/requests_from_riders_title"
+        android:layout_centerHorizontal="true"
+        android:layout_weight="1"
+        android:scrollbars="vertical"
+        android:textColor="#000"
+        android:background="@color/secondary_colour"/>
 </RelativeLayout>
