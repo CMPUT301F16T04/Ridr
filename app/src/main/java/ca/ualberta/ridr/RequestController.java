@@ -146,7 +146,7 @@ public class RequestController {
 
 
 
-    public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
+    public ArrayList<String> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
 
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 

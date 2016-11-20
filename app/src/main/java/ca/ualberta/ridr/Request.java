@@ -46,6 +46,7 @@ public class Request {
         this.date = date;
         this.fare = 20;
         this.accepted = false;
+        this.possibleDrivers = new ArrayList<String>();
     }
 
     public Date getDate(){
