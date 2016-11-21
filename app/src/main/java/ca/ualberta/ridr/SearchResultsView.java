@@ -3,14 +3,20 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.UUID;
+
+import io.searchbox.core.SearchResult;
 
 /**
  * The view that shows keyword search results for a driver
@@ -24,6 +30,7 @@ public class SearchResultsView extends Activity {
     private ListView searchResults;
     private RequestAdapter requestAdapter;
     private EditText bodyText;
+    private Button mainMenu;
     private UUID userID;
 
     @Override
@@ -37,6 +44,14 @@ public class SearchResultsView extends Activity {
         {
             userID = UUID.fromString(extras.getString("UUID"));
         }
+
+        //main menu button
+        mainMenu = (Button)findViewById(R.id.driverMainMenuButton);
+        mainMenu.setOnClickListener(new View.OnClickListener(){
+            public void onClick(View v){
+                showMenu(v);
+            }
+        });
 
         searchResults = (ListView) findViewById(R.id.search_results);
         searchResults.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -86,7 +101,8 @@ public class SearchResultsView extends Activity {
     /**
      * Calls on the request controller method searchRequestsKeyword
      * Updates the requestList without making it a new object (Clear and re add)
-     * @param keyword
+     *
+     * @param keyword the keyword
      */
     protected void searchResultsByKeyword(String keyword) {
         if(keyword != null) {
@@ -94,6 +110,39 @@ public class SearchResultsView extends Activity {
             requestList.clear();
             requestList.addAll(tempRequestList);
         }
+    }
+
+    /**
+     * Show menu.
+     *
+     * @param v the view
+     */
+    public void showMenu(View v){
+        PopupMenu popup = new PopupMenu(this, v);
+        MenuInflater inflater = popup.getMenuInflater();
+        inflater.inflate(R.menu.rider_main_menu, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+            public boolean onMenuItemClick(MenuItem item){
+                switch(item.getItemId()){
+                    case R.id.mainRiderMenuEditUserInfo:
+                        Toast.makeText(SearchResultsView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
+                        Intent editInfoIntent = new Intent(SearchResultsView.this, EditProfileView.class);
+                        editInfoIntent.putExtra("UUID", userID.toString());
+                        startActivity(editInfoIntent);
+                        return true;
+                    case R.id.mainRiderMenuViewRequests:
+                        Toast.makeText(SearchResultsView.this, "View Requests", Toast.LENGTH_SHORT).show();
+                        Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
+                        viewRequestsIntent.putExtra("UUID", userID.toString());
+                        startActivity(viewRequestsIntent);
+                        return true;
+                    default:
+                        return false;
+                }
+            }
+        });
+
+        popup.show();
     }
 }
 
