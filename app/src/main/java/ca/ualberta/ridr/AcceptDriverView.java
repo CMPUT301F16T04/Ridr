@@ -95,7 +95,7 @@ public class AcceptDriverView extends Activity {
                 RideC.createRide(driverId, request, riderId);
 
                 RequestController reqCon = new RequestController();
-                reqCon.setRequestAccepted(request);
+                reqCon.accept(request);
 
                 //TODO once we have a user request list we can uncomment this
                 //requestCon.removeRequest(request, rider);
