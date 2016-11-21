@@ -44,7 +44,6 @@ import java.util.UUID;
 public class RequestController {
 
     private Request currenRequest;
-    private JsonArray jsonArray;
     private ArrayList<Request> requests;
     private ACallback cbInterface;
 
@@ -100,7 +99,7 @@ public class RequestController {
      * @return ArrayList<Request>
      */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
-        jsonArray = new AsyncController().getAllFromIndex("request");
+        JsonArray jsonArray = new AsyncController().getAllFromIndex("request");
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
 
@@ -146,9 +145,13 @@ public class RequestController {
 
 
 
-    public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
+    public ArrayList<Driver> getPossibleDrivers(Request request){
+        return(request.getPossibleDrivers());
+    }
 
-    public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
+    public void removeRequest(Request request, Rider rider){
+        rider.removeRequest(request);
+    }
 
     public Request getRequestFromServer(String requestId) {
         AsyncController con = new AsyncController();

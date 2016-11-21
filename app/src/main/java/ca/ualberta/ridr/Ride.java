@@ -160,13 +160,14 @@ public class Ride {
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
         this.rider = ride.get("rider").getAsString();
-        this.driver = ride.get("driver").getAsString();
+//        this.driver = ride.get("driver").getAsString();
+        this.driver = "Bob";
         this.pickup = ride.get("pickup").getAsString();
         this.dropoff = ride.get("dropoff").getAsString();
         this.dropOffCoords = buildLatLng(ride.getAsJsonObject("dropOffCoords"));
         this.pickupCoords = buildLatLng(ride.getAsJsonObject("pickupCoords"));
         this.isCompleted = ride.get("isCompleted").getAsBoolean();
-        this.rideDate = formatter.parse(ride.get("rideDate").getAsString());
+        this.rideDate = formatter.parse(ride.get("date").getAsString());
         this.id = UUID.fromString(ride.get("id").getAsString());
         this.fare = ride.get("fare").getAsFloat();
 

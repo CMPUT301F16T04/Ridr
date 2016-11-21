@@ -33,6 +33,7 @@ public class DriverRideView extends Activity implements ACallback {
             String driverID = extras.getString("UUID");
             driver = UUID.fromString(driverID);
         }
+        driver = UUID.fromString("726a1db2-1424-4b82-b85d-6968396dcd4a");
         rideList = (ListView) findViewById(R.id.driverRidesList);
         rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
     }
@@ -40,7 +41,7 @@ public class DriverRideView extends Activity implements ACallback {
     @Override
     protected void onStart(){
         super.onStart();
-        rides.getDriverRides(driver);
+        rides.getRiderRides(driver);
 
         rideList.setAdapter(rideAdapter);
     }

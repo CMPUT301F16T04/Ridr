@@ -62,4 +62,22 @@ public class RideController {
             Log.i("Null request", e.toString());
         }
     }
+
+    public void getRiderRides(final UUID userID) {
+        // Get all user requests from the database
+        AsyncController controller = new AsyncController();
+        try {
+            JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "rider", userID.toString());
+            for (JsonElement result : queryResults) {
+                try {
+                    rides.add(new Ride(result.getAsJsonObject().getAsJsonObject("_source")));
+                } catch (Exception e) {
+                    Log.i("Error parsing requests", e.toString());
+                }
+            }
+            cbInterface.update();
+        } catch (Exception e) {
+            Log.i("Null request", e.toString());
+        }
+    }
 }

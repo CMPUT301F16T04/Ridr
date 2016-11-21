@@ -142,7 +142,7 @@ public class Request {
     }
 
     public String toJsonString(){
-        // Attempt to conver request into a JsonObject
+        // Attempt to convert request into a JsonObject
         // If fail return a null pointer
         // Need to use the java standard JSON object here because we are nesting JSON items
         JSONObject toReturn = new JSONObject();
