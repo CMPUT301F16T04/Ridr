@@ -80,16 +80,16 @@ public class RiderRequestView extends Activity {
                     clickedRequestIDStr = request.getID().toString();
                     displayDrivers(request);
                 }
-
-                public void onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+            });
+            oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                @Override
+                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                     Request request = requests.get(position);
                     clickedRequestIDStr = request.getID().toString();
                     cancelRequest(request);
+                    return true;
                 }
             });
-
-
-
         }
 
         //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
@@ -181,8 +181,8 @@ public class RiderRequestView extends Activity {
         cancelPopUp.setFocusable(true);
 
         // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
-        int CANCEL_OFFSET_X = 60;
-        int CANCEL_OFFSET_Y = 600;
+        int CANCEL_OFFSET_X = 1000;
+        int CANCEL_OFFSET_Y = 200;
 
         // Displaying the popup at the specified location, + offsets.
         cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
