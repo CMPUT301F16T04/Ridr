@@ -8,6 +8,18 @@
     android:background="@color/secondary_colour"
     android:weightSum="1">
 
+    <Button
+        android:text="menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/driverMainMenuButton"
+        android:elevation="0dp"
+        android:layout_alignParentEnd="true"
+        android:background="@color/tertiary_colour"
+        android:textColor="@color/primary_colour"
+        android:textAlignment="center"
+        android:layout_gravity="right" />
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="30dp"
@@ -24,8 +36,7 @@
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:textColor="#000"
-        android:background="@color/secondary_colour"
-        android:choiceMode="multipleChoice">
+        android:background="@color/secondary_colour">
 
     </ListView>
 

@@ -144,14 +144,14 @@ public class AsyncController {
         controller = new AsyncDatabaseController("get");
         String query =
                 "{"+
-                        "\"query\": {" +
+                    "\"query\": {" +
                         "\"bool\" : {"+
-                        "\"should\": [" +
-                        "{ \"match\": { \"" + variable + "\": \"" + variableValue + "\" } }" +
-                                    "]" +
-                                "}" +
-                            "}"+
-                        "}";
+                            "\"should\": [" +
+                                "{ \"match\": { \"" + variable + "\": \"" + variableValue + "\" } }" +
+                            "]" +
+                        "}" +
+                    "}"+
+                "}";
         try{
             return extractAllElements(controller.execute(dataClass, query).get());
         } catch(Exception e){

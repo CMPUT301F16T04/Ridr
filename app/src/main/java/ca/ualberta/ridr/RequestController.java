@@ -35,7 +35,6 @@ import java.util.UUID;
 
 
 /*
-=======
 /**
  * This controller controls access to all requests used by a view
  * This controllers uses threads to asynchronously perform network requests
@@ -144,6 +143,7 @@ public class RequestController {
 
         return false;
     }
+
 
 
 
