@@ -27,7 +27,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.request_fragment, parent, false);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.ride_fragment, parent, false);
         }
         TextView ridePickup = (TextView) convertView.findViewById(R.id.ridePickup);
         TextView rideDropoff = (TextView) convertView.findViewById(R.id.rideDropoff);

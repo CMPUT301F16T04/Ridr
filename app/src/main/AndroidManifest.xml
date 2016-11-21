@@ -68,6 +68,7 @@
 
         <activity
             android:name=".DriverRideView"
+            android:exported="true"
             android:label="@string/title_activity_driver_ride_view"></activity>
     </application>
 

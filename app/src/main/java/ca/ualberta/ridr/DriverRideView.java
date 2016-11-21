@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class DriverRideView extends Activity implements ACallback {
@@ -22,7 +24,7 @@ public class DriverRideView extends Activity implements ACallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_ride_view);
-        
+
         rides = new RideController(this);
         //retrieve the current driver's UUID
         Intent intent = getIntent();
@@ -31,9 +33,15 @@ public class DriverRideView extends Activity implements ACallback {
             String driverID = extras.getString("UUID");
             driver = UUID.fromString(driverID);
         }
+        rideList = (ListView) findViewById(R.id.driverRidesList);
+        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
+    }
 
-        rideAdapter = new RideAdapter(this, rides.getAll());
+    @Override
+    protected void onStart(){
+        super.onStart();
         rides.getDriverRides(driver);
+
         rideList.setAdapter(rideAdapter);
     }
 
