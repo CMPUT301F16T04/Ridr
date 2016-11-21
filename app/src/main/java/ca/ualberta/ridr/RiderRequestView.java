@@ -55,13 +55,10 @@ public class RiderRequestView extends Activity {
                 currentIDStr = extras.getString("UUID");
                 currentUUID = UUID.fromString(currentIDStr);
             }
-        }
 
-        @Override
-        protected void onStart() {
-            super.onStart();
             AsyncController controller = new AsyncController();
             JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
+            requests.clear();
 
             System.out.println(queryResults);
             for (JsonElement result : queryResults) {
