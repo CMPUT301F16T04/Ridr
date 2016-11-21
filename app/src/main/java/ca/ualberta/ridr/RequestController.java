@@ -12,6 +12,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -146,7 +147,17 @@ public class RequestController {
 
 
 
-    public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
+    public ArrayList<String> getPossibleDrivers(String requestId) {
+        AsyncController con = new AsyncController();
+        try {
+            JsonObject driversList = con.getFromIndexObjectInArray("request", "id" , requestId).getAsJsonObject();
+            ArrayList<String> drivers = new ArrayList<>(Arrays.asList(driversList.toString().split(" ")));
+            return (drivers);
+        } catch (Exception e) {
+            Log.i("Error parsing requests", e.toString());
+        }
+        return (null);
+    }
 
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 

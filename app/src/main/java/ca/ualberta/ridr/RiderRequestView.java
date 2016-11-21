@@ -125,7 +125,9 @@ public class RiderRequestView extends Activity {
             });
 
             //reason this is fudge is because we dont have that list of possible drivers stored
-            final ArrayList<String> possibleDrivers = new ArrayList<>();
+            //final ArrayList<String> possibleDrivers = new ArrayList<>();
+            RequestController reqCon = new RequestController();
+            final ArrayList<String> possibleDrivers = reqCon.getPossibleDrivers(clickedRequestIDStr);
             final ArrayList<String> possibleDriversIds = new ArrayList<>();
             Driver driver = new Driver("Sample hardcoded driver", new Date(), "creditcard", "email@emailme.email", "123-123-1234", "banckaccono");
             possibleDrivers.add(driver.getName());
