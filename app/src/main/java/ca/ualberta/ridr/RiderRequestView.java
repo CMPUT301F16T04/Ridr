@@ -30,16 +30,9 @@ public class RiderRequestView extends Activity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-
-    }
-
-    @Override
-    protected void onStart() {
-        // TODO Auto-generated method stub
-        super.onStart();
         AsyncController controller = new AsyncController();
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", loggedInRider.getID().toString());
-        System.out.println(queryResults);
+        requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
                 requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
@@ -47,9 +40,15 @@ public class RiderRequestView extends Activity {
                 Log.i("Error parsing requests", e.toString());
             }
         }
-
-
         RequestAdapter customAdapter = new RequestAdapter(this, requests);
         oldRequestsList.setAdapter(customAdapter);
+
+    }
+
+    @Override
+    protected void onStart() {
+        // TODO Auto-generated method stub
+        super.onStart();
+
     }
 }
