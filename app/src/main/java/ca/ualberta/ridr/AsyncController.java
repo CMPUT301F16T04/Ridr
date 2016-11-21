@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONObject;
 
@@ -69,12 +70,16 @@ public class AsyncController {
      */
     public JsonArray getAllFromIndex(String dataClass) {
         controller = new AsyncDatabaseController("getAllFromIndex");
+        String file = "requests.sav";
         try{
             String searchString = "{\"query\": { \"match_all\": { }}}";
 
-            return extractAllElements(controller.execute(dataClass, searchString).get());
+            JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
+            saveInFile(jArray, file);
+            return jArray;
+
         } catch(Exception e){
-            return null;
+            return loadFromFile(file);
         }
     }
 
@@ -181,9 +186,9 @@ public class AsyncController {
             Gson gson = new Gson();
 
             // Code from http://stackoverflow.com/questions/12384064/gson-convert-from-json-to-a-typed-arraylistt
-            //Type listType = new TypeToken<ArrayList<Habit>>(){}.getType();
+            Type type = new TypeToken<JsonArray>(){}.getType();
 
-            jsonArray = gson.fromJson(in,JsonArray);
+            jsonArray = gson.fromJson(in, type);
             fis.close();
 
         } catch (FileNotFoundException e) {
@@ -216,6 +221,6 @@ public class AsyncController {
             throw new RuntimeException();
         }
     }
-    }
+
 
 }
