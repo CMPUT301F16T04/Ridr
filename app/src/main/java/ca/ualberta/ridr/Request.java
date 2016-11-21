@@ -222,7 +222,6 @@ public class Request {
     }
 
 
-    //intentions : to be able to store and retrieve a list of possible drivers.
     private ArrayList<String> buildPossibleDriversList(JsonArray array){
         ArrayList<String> drivers = new ArrayList<String>();
         if(array == null){

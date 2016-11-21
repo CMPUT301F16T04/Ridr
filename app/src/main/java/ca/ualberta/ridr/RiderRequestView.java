@@ -124,12 +124,16 @@ public class RiderRequestView extends Activity {
                 }
             });
 
-            //reason this is fudge is because we dont have that list of possible drivers stored
+
+            RequestController reqCon = new RequestController();
+            DriverController driverCon = new DriverController();
             final ArrayList<String> possibleDrivers = new ArrayList<>();
-            final ArrayList<String> possibleDriversIds = new ArrayList<>();
-            Driver driver = new Driver("Sample hardcoded driver", new Date(), "creditcard", "email@emailme.email", "123-123-1234", "banckaccono");
-            possibleDrivers.add(driver.getName());
-            possibleDriversIds.add("475a3caa-88b5-46b2-9a44-cd02ef8a2d28");
+            final ArrayList<String> possibleDriversIds = reqCon.getPossibleDrivers(clickedRequestIDStr);
+            // one last for now fix to fix the fact that we store id's and i want names
+            //lots of hitting server tho so later should fix this....
+            for(int i =0; i < possibleDriversIds.size(); i++) {
+                possibleDrivers.add(driverCon.getDriverFromServer(possibleDriversIds.get(i)).getName());
+            }
 
 
             ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
@@ -140,9 +144,6 @@ public class RiderRequestView extends Activity {
             popupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-//                    String riderId = "8e16686b-f72d-42e1-90ea-e7a8cf270732"; //"6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-//                    String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-//                    String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
 
                     clickedDriverIDStr = possibleDriversIds.get(position);
 

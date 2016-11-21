@@ -12,6 +12,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -105,6 +106,21 @@ public class RequestController {
     }
 
     /**
+     * Updates a request in the elasticsearch database after it has been accepted by the rider and turned into ride
+     *
+     * @param request
+     */
+    public void accept(Request request){
+        request.setAccepted(Boolean.TRUE);
+        AsyncController controller = new AsyncController();
+        String requestId = request.getID().toString();
+        try{
+            controller.create("request", requestId, request.toJsonString());
+        } catch (Exception e){
+            Log.i("Error updating request", e.toString());
+        }
+    }
+    /**
      * Estimates a fare based on distance
      * @param distance distance from pickup to dropoff
      * @return a recommended fare
@@ -171,7 +187,19 @@ public class RequestController {
 
 
 
-    public ArrayList<String> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
+
+    public ArrayList<String> getPossibleDrivers(String requestId) {
+        AsyncController con = new AsyncController();
+        try {
+            JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
+            Request request = new Request(requestJson);
+            ArrayList<String> drivers = request.getPossibleDrivers();
+            return(drivers);
+        } catch (Exception e) {
+            Log.i("Error parsing requests", e.toString());
+        }
+        return (null);
+    }
 
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
@@ -185,10 +213,6 @@ public class RequestController {
             Log.i("Error parsing requests", e.toString());
         }
         return(null);
-    }
-
-    public void setRequestAccepted(Request request) {
-        request.setAccepted(Boolean.TRUE);
     }
 
 
