@@ -66,12 +66,6 @@ public class AcceptDriverView extends Activity {
             finish();
         }
 
-//just here for testing, might leave for now.
-//        final String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-//        final String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-//        final String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
-
-
         final Driver driver = getDriver(driverId);
         final Request request  = getRequest(requestId);
 

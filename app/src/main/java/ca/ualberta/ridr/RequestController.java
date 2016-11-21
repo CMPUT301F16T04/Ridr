@@ -71,8 +71,8 @@ public class RequestController {
         }
     }
 
-    public void addDriver(Request request, Driver driver){
-        request.addAccepted(driver.getID().toString());
+    public void addDriver(Request request, String driverId){
+        request.addAccepted(driverId);
         AsyncController controller = new AsyncController();
         String requestId = request.getID().toString();
         try{
@@ -105,21 +105,7 @@ public class RequestController {
         }
     }
 
-    /**
-     * Updates a request in the elasticsearch database after it has been accepted by the rider and turned into ride
-     *
-     * @param request
-     */
-    public void accept(Request request){
-        request.setAccepted(Boolean.TRUE);
-        AsyncController controller = new AsyncController();
-        String requestId = request.getID().toString();
-        try{
-            controller.create("request", requestId, request.toJsonString());
-        } catch (Exception e){
-            Log.i("Error updating request", e.toString());
-        }
-    }
+
     /**
      * Estimates a fare based on distance
      * @param distance distance from pickup to dropoff
