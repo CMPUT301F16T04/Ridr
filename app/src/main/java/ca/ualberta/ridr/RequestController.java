@@ -150,9 +150,10 @@ public class RequestController {
     public ArrayList<String> getPossibleDrivers(String requestId) {
         AsyncController con = new AsyncController();
         try {
-            JsonObject driversList = con.getFromIndexObjectInArray("request", "id" , requestId).getAsJsonObject();
-            ArrayList<String> drivers = new ArrayList<>(Arrays.asList(driversList.toString().split(" ")));
-            return (drivers);
+            JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
+            Request request = new Request(requestJson);
+            ArrayList<String> drivers = request.getPossibleDrivers();
+            return(drivers);
         } catch (Exception e) {
             Log.i("Error parsing requests", e.toString());
         }
