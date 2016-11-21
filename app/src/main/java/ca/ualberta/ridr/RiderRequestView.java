@@ -57,7 +57,7 @@ public class RiderRequestView extends Activity {
             currentIDStr = extras.getString("UUID");
             currentUUID = UUID.fromString(currentIDStr);
         }
-    
+
         AsyncController controller = new AsyncController();
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr);
         requests.clear(); // Fix for duplicates in list
@@ -126,11 +126,14 @@ public class RiderRequestView extends Activity {
         DriverController driverCon = new DriverController();
         final ArrayList<String> possibleDrivers = new ArrayList<>();
         final ArrayList<String> possibleDriversIds = reqCon.getPossibleDrivers(clickedRequestIDStr);
+        System.out.println(possibleDriversIds);
+        System.out.println(possibleDriversIds.size());
         // one last for now fix to fix the fact that we store id's and i want names
         //lots of hitting server tho so later should fix this....
         for (int i = 0; i < possibleDriversIds.size(); i++) {
             possibleDrivers.add(driverCon.getDriverFromServer(possibleDriversIds.get(i)).getName());
         }
+        System.out.println(possibleDrivers);
 
 
         ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
@@ -143,6 +146,8 @@ public class RiderRequestView extends Activity {
 
 
                 clickedDriverIDStr = possibleDriversIds.get(position);
+                System.out.println(possibleDriversIds);
+                System.out.println(clickedDriverIDStr);
 
                 //must close popup before going to next activity
                 driverPopUp.dismiss();
@@ -153,6 +158,7 @@ public class RiderRequestView extends Activity {
                 ids.add(currentIDStr); //pass the current user
                 ids.add(clickedDriverIDStr);
                 ids.add(clickedRequestIDStr);
+                //System.out.println(ids);
                 intent.putStringArrayListExtra("ids", ids);
                 startActivity(intent);
                 //go to driver profile

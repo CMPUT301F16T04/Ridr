@@ -183,8 +183,9 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-        this.possibleDrivers =  buildPossibleDriversList(request.get("possibleDrivers").getAsString());
-
+        //this.possibleDrivers =  buildPossibleDriversList(request.get("possibleDrivers").getAsString());
+        System.out.println(this.possibleDrivers);
+        //this.possibleDrivers = new ArrayList<String>();
     }
 
     /**
@@ -224,11 +225,13 @@ public class Request {
 
 
     private ArrayList<String> buildPossibleDriversList(String driverString){
+        System.out.println(driverString);
         ArrayList<String> drivers;
         if(driverString == null){
             return null;
         }
-        drivers = new ArrayList<String>(Arrays.asList(driverString));
+        drivers = new ArrayList<String>(Arrays.asList(driverString.split(",")));
+
 
         return(drivers);
     }

@@ -17,6 +17,7 @@ public class RideController {
         //will need to replace the date I guess with actual date that ride is supposed to occur
         Ride ride = new Ride(driverId, riderId,  request.getPickup(), request.getDropoff(), new Date() , request.getPickupCoords(), request.getDropOffCoords());
 
+        System.out.println(ride);
         //rider.confirmDriver(ride);
         //another cant do while the ride array list of rider is null
 

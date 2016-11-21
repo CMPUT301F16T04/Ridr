@@ -131,8 +131,6 @@ public class RequestController {
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
 
-        System.out.println(jsonArray);
-
         for (JsonElement element: jsonArray) {
             if(doesJsonContainKeyword(keyword, element)) {
                 try {
@@ -158,9 +156,7 @@ public class RequestController {
         keyword = keyword.toLowerCase();
         Pattern p = Pattern.compile(keyword);
         Request request;
-        System.out.println(jsonElement);
         try {
-            System.out.println("");
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
 
             stringArray = request.queryableRequestVariables();
@@ -186,6 +182,7 @@ public class RequestController {
             JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
             Request request = new Request(requestJson);
             ArrayList<String> drivers = request.getPossibleDrivers();
+            System.out.println(drivers);
             return(drivers);
         } catch (Exception e) {
             Log.i("Error parsing requests", e.toString());

@@ -60,6 +60,8 @@ public class AcceptDriverView extends Activity {
             riderId= ids.get(0);
             driverId= ids.get(1);
             requestId = ids.get(2);
+            //System.out.println(ids);
+            //System.out.println(driverId);
         }
         else{
             //this is if there was some error retrieving data passed, just go back to prev activity
