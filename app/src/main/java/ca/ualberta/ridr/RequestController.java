@@ -67,7 +67,7 @@ public class RequestController {
         try{
             controller.create("request", requestId, request.toJsonString());
         } catch (Exception e){
-            Log.i("Error updating request", e.toString());
+            Log.i("Error accepting req", e.toString());
         }
     }
 
@@ -78,7 +78,7 @@ public class RequestController {
         try{
             controller.create("request", requestId, request.toJsonString());
         } catch (Exception e){
-            Log.i("Error updating request", e.toString());
+            Log.i("Error updating driver", e.toString());
         }
     }
     /**
@@ -131,10 +131,13 @@ public class RequestController {
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
 
+        System.out.println(jsonArray);
+
         for (JsonElement element: jsonArray) {
             if(doesJsonContainKeyword(keyword, element)) {
                 try {
                     request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
+                    //System.out.println(request);
                     requestsKeyword.add(request);
                 } catch(Exception e) {
                     Log.i("Error returning keyword", e.toString());
@@ -155,8 +158,11 @@ public class RequestController {
         keyword = keyword.toLowerCase();
         Pattern p = Pattern.compile(keyword);
         Request request;
+        System.out.println(jsonElement);
         try {
+            System.out.println("");
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
+
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();

@@ -15,6 +15,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -182,7 +183,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-        this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
+        this.possibleDrivers =  buildPossibleDriversList(request.get("possibleDrivers").getAsString());
 
     }
 
@@ -222,14 +223,12 @@ public class Request {
     }
 
 
-    private ArrayList<String> buildPossibleDriversList(JsonArray array){
-        ArrayList<String> drivers = new ArrayList<String>();
-        if(array == null){
+    private ArrayList<String> buildPossibleDriversList(String driverString){
+        ArrayList<String> drivers;
+        if(driverString == null){
             return null;
         }
-        for(int i = 0; i < array.size(); ++i){
-            drivers.add(0, array.get(i).getAsString());
-        }
+        drivers = new ArrayList<String>(Arrays.asList(driverString));
 
         return(drivers);
     }
