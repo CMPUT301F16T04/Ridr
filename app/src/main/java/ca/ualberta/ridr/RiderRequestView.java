@@ -42,7 +42,7 @@ public class RiderRequestView extends Activity {
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
-    public Rider loggedInRider;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +53,13 @@ public class RiderRequestView extends Activity {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+        if (extras != null) {
+            currentIDStr = extras.getString("UUID");
+            currentUUID = UUID.fromString(currentIDStr);
+        }
+    
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", loggedInRider.getID().toString());
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr);
         requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
