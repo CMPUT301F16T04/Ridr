@@ -43,7 +43,6 @@ public class Request {
         this.date = date;
         this.rider = rider;
         this.id = UUID.randomUUID();
-        this.possibleDrivers = new ArrayList<Driver>();
         this.date = date;
         this.fare = 20;
         this.accepted = false;
@@ -88,8 +87,8 @@ public class Request {
         return dropoff;
     }
 
-    public void addAccepted(Driver driver) {
-        possibleDrivers.add(driver);
+    public void addAccepted(String driverId) {
+        possibleDrivers.add(driverId);
     }
 
     public String getRider() {
@@ -222,7 +221,7 @@ public class Request {
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
 
-    //also a faroff dream
+
     //intentions : to be able to store and retrieve a list of possible drivers.
     private ArrayList<String> buildPossibleDriversList(JsonArray array){
         ArrayList<String> drivers = new ArrayList<String>();

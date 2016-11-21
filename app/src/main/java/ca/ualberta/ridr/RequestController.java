@@ -53,12 +53,32 @@ public class RequestController {
         this.cbInterface = cbInterface;
         this.requests = new ArrayList<>();
     }
+
+    /**
+     * Updates a request in the elasticsearch database after it has been accepted by the rider and turned into ride
+     *
+     * @param request
+     */
     public void accept(Request request){
         request.setAccepted(Boolean.TRUE);
+        AsyncController controller = new AsyncController();
+        String requestId = request.getID().toString();
+        try{
+            controller.create("request", requestId, request.toJsonString());
+        } catch (Exception e){
+            Log.i("Error updating request", e.toString());
+        }
     }
 
     public void addDriver(Request request, Driver driver){
-        request.addAccepted(driver);
+        request.addAccepted(driver.getID().toString());
+        AsyncController controller = new AsyncController();
+        String requestId = request.getID().toString();
+        try{
+            controller.create("request", requestId, request.toJsonString());
+        } catch (Exception e){
+            Log.i("Error updating request", e.toString());
+        }
     }
     /**
      * Creates a new request

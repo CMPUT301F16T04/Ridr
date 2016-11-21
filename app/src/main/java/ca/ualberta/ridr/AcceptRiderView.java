@@ -24,6 +24,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -96,7 +97,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
             finish();
         }
-        RequestController requestController = new RequestController();
+        final RequestController requestController = new RequestController();
         request = requestController.getRequestFromServer(requestID.toString());
 
         //got request, now need to get the rider of the request, since we aren't storing names in the request
@@ -162,17 +163,13 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     Toast.makeText(AcceptRiderView.this, "Already agreed to fulfill", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                DriverController DC = new DriverController();
-                RequestController RC = new RequestController();
-                //yet another fudge for now
 
-                //three things need to happen if driver accepts the request
-                //the drivers list of accepted requests is update
-                // the requests bool is updated
+
+                // things that need to happen if driver accepts the request
+                //the drivers list of accepted requests is updated? only if we decide we care to tho
                 // the requests list of possible drivers is updatee
                 //DC.acceptRequest(driver, request);
-                //RC.accept(request);
-                //RC.addDriver(request, driver);
+                requestController.addDriver(request, driver);
 
 
 
@@ -253,6 +250,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(request.getDropOffCoords(), 10));
         //probably shouldnt hardcode zoom factor, it should be relative to the markers...
         //TODO fix that
+        gMap.addPolyline(new PolylineOptions().geodesic(true).add(request.getPickupCoords()).add(request.getDropOffCoords()));
 
 
     }
