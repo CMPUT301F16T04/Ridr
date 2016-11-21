@@ -63,8 +63,7 @@ public class Ride {
     }
 
 
-    public Double getFare() {
-        Double fare = 0.0;
+    public float getFare() {
         return fare;
     }
 
