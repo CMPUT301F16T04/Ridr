@@ -57,7 +57,7 @@ public class RiderRequestView extends Activity {
             }
 
             AsyncController controller = new AsyncController();
-            JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
+            JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
             requests.clear();
 
             System.out.println(queryResults);
@@ -80,7 +80,14 @@ public class RiderRequestView extends Activity {
                     clickedRequestIDStr = request.getID().toString();
                     displayDrivers(request);
                 }
+
+                public void onItemLongClick(AdapterView<?> parent, View view, int position, long id){
+                    Request request = requests.get(position);
+                    clickedRequestIDStr = request.getID().toString();
+                    cancelRequest(request);
+                }
             });
+
 
 
         }
@@ -157,8 +164,48 @@ public class RiderRequestView extends Activity {
                     //go to driver profile
                 }
             });
-
-
         }
+
+    public void cancelRequest(Request request) {
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewCancelGroup = (LinearLayout) findViewById(R.id.cancel_request);
+        LayoutInflater layoutCancelInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View cancelLayout = layoutCancelInflater.inflate(R.layout.cancel_request, viewCancelGroup);
+
+        // Creating the PopupWindow
+        final PopupWindow cancelPopUp = new PopupWindow(activity);
+        cancelPopUp.setContentView(cancelLayout);
+        cancelPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        cancelPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        cancelPopUp.setFocusable(true);
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int CANCEL_OFFSET_X = 60;
+        int CANCEL_OFFSET_Y = 600;
+
+        // Displaying the popup at the specified location, + offsets.
+        cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
+
+
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button cancelClose = (Button) cancelLayout.findViewById(R.id.Exit_Cancel_Request);
+        Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
+
+        cancelClose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                cancelPopUp.dismiss();
+            }
+        });
+
+        cancelRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // do stuff
+            }
+        });
+
     }
+}
 
