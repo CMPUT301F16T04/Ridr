@@ -43,7 +43,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private UUID driverID;
     private UUID requestID;
     private Rider requestRider;
-    private Driver driver;
     private Request request;
 
     private boolean agreedToFulfill;
