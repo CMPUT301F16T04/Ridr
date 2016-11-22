@@ -133,7 +133,7 @@ public class RiderRequestView extends Activity {
             for (int i = 0; i < possibleDriversIds.size(); i++) {
                 possibleDrivers.add(driverCon.getDriverFromServer(possibleDriversIds.get(i)).getName());
 
-
+            }
             ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
             ArrayAdapter<String> adapter_popup = new ArrayAdapter<String>(activity, R.layout.driver_who_accepted, possibleDrivers);
             popupList.setAdapter(adapter_popup);
