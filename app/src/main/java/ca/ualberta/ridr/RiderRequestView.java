@@ -20,11 +20,15 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+
+import java.text.ParseException;
 import java.util.UUID;
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -49,50 +53,63 @@ public class RiderRequestView extends Activity {
 
             //grab riders uuid
 
-            Intent intent = getIntent();
+            final Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 currentIDStr = extras.getString("UUID");
                 currentUUID = UUID.fromString(currentIDStr);
             }
 
-            AsyncController controller = new AsyncController();
-            JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
-            requests.clear();
-
-            System.out.println(queryResults);
-            for (JsonElement result : queryResults) {
-                try {
-                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-                } catch (Exception e) {
-                    Log.i("Error parsing requests", e.toString());
-                }
-            }
 
 
-            RequestAdapter customAdapter = new RequestAdapter(activity, requests);
-            oldRequestsList.setAdapter(customAdapter);
 
-            //this is to recognize listview item presses within the view
-            oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Request request = requests.get(position);
-                    clickedRequestIDStr = request.getID().toString();
-                    displayDrivers(request);
-                }
-            });
-            oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-                @Override
-                public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                    Request request = requests.get(position);
-                    clickedRequestIDStr = request.getID().toString();
-                    cancelRequest(request);
-                    return true;
-                }
-            });
         }
 
-        //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AsyncController controller = new AsyncController();
+        //TODO fix hardcoded value
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
+        requests.clear();
+
+        System.out.println(queryResults);
+        for (JsonElement result : queryResults) {
+            try {
+                Request req = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
+                if(!req.isAccepted()){ //MUST REPLACE WITH CANCELLED BOOLEAN
+                    requests.add(req);
+                }
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
+            }
+        }
+
+
+        final RequestAdapter customAdapter = new RequestAdapter(activity, requests);
+        oldRequestsList.setAdapter(customAdapter);
+
+        //this is to recognize listview item presses within the view
+        oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Request request = requests.get(position);
+                clickedRequestIDStr = request.getID().toString();
+                displayDrivers(request);
+            }
+        });
+        oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Request request = requests.get(position);
+                clickedRequestIDStr = request.getID().toString();
+                cancelRequest(request.getID().toString());
+                customAdapter.notifyDataSetChanged();
+                return true;
+            }
+        });
+    }
+
+    //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
         //date link accessed : Nov 5 2016
         //author: Emil Adz ,edited Vladimir Kulyk
         public void displayDrivers(Request request) {
@@ -166,7 +183,7 @@ public class RiderRequestView extends Activity {
             });
         }
 
-    public void cancelRequest(Request request) {
+    public void cancelRequest(final String requestID) {
 
         // Inflate the popup_layout.xml
         LinearLayout viewCancelGroup = (LinearLayout) findViewById(R.id.cancel_request);
@@ -202,10 +219,22 @@ public class RiderRequestView extends Activity {
         cancelRequest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // do stuff
+                // Cancel request
+
+                AsyncController controller = new AsyncController();
+                JsonObject requestJson = controller.get("request", "id", requestID); //TODO must switch out for cancelled boolean and test
+                Request request = null;
+                try {
+                    request = new Request(requestJson);
+                    request.setAccepted(true); //TODO fix to correct boolean
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                System.out.println( controller.create("request", request.getID().toString(), request.toJsonString()));
             }
         });
 
     }
+
 }
 
