@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -77,7 +79,15 @@ public class AcceptDriverView extends Activity {
 
         String profileString = checkProfileString(driver.getName());
 
-        driverEmail.setText(driverEmailStr);
+        //found how to underline text in textview at: http://stackoverflow.com/questions/10019001/how-do-you-underline-a-text-in-android-xml
+        //accessed on Nov 22 / 16
+        //author : George Artemiou and R4chi7
+        SpannableString emailUnderlined = new SpannableString(driverEmailStr);
+        emailUnderlined.setSpan(new UnderlineSpan(), 0, emailUnderlined.length(), 0);
+
+        //TODO see which of these looks best 
+
+        driverEmail.setText(emailUnderlined);
         driverPhone.setText(driverPhoneStr);
         xProfile.setText(profileString);
 
