@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -157,7 +158,7 @@ public class Request {
             toReturn.put("accepted", this.accepted);
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
-            toReturn.put("possibleDrivers", possibleDrivers);
+            toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
