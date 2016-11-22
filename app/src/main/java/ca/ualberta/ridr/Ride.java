@@ -26,6 +26,7 @@ public class Ride {
     private Boolean isCompleted; //pending is denoted by isCompleted = False
     private LatLng pickupCoords;
     private LatLng dropOffCoords;
+    private Boolean paid;
     private UUID id;
     private float fare;
 
@@ -57,6 +58,7 @@ public class Ride {
         this.pickupCoords = pickupCoords;
         this.dropOffCoords = dropOffCoords;
         this.isCompleted = false;
+        this.paid = false;
         this.id = UUID.randomUUID();
         this.fare  = 20;
 
@@ -98,7 +100,7 @@ public class Ride {
         this.rider = rider.getID().toString();
     }
 
-    public Boolean getCompleted() {
+    public Boolean isCompleted() {
         return isCompleted;
     }
 
@@ -143,6 +145,7 @@ public class Ride {
             toReturn.put("id", this.id.toString());
             toReturn.put("isCompleted", this.isCompleted);
             toReturn.put("date", rideDate.toString());
+            toReturn.put("isPaid", paid);
             toReturn.put("fare", fare);
             return toReturn.toString();
         } catch(Exception e){
@@ -150,6 +153,9 @@ public class Ride {
             return null;
 
         }
+    }
+    public boolean isPaid(){
+        return paid;
     }
 
     // Take a jsonObject as input and creates request out of it's keys
@@ -169,6 +175,7 @@ public class Ride {
         this.isCompleted = ride.get("isCompleted").getAsBoolean();
         this.rideDate = formatter.parse(ride.get("date").getAsString());
         this.id = UUID.fromString(ride.get("id").getAsString());
+        this.paid = ride.get("isPaid").getAsBoolean();
         this.fare = ride.get("fare").getAsFloat();
 
     }

@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,10 +43,18 @@ public class RideAdapter extends ArrayAdapter<Ride> {
         riderName.setText("Rider: " + ride.getRider());
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
-        ridePickupTime.setText("Pickup Time: " + rideDate.format(ride.getRideDate()));
-        rideFare.setText("Fare: " + Float.toString(ride.getFare()));
+//        ridePickupTime.setText("Pickup Time: " + rideDate.format(ride.getRideDate()));
+        ridePickupTime.setText("Paid: " + ride.isPaid());
+//        rideFare.setText("Fare: " + Float.toString(ride.getFare()));
+        rideFare.setText("Completed " + ride.isCompleted());
 
-
+        if(ride.isCompleted() && ride.isPaid()) {
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.paid));
+        } else if(ride.isCompleted() && !ride.isPaid()){
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.completed));
+        } else{
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.uncompleted));
+        }
 
         return convertView;
     }

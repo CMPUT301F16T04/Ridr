@@ -75,9 +75,71 @@ public class RideController {
                     Log.i("Error parsing requests", e.toString());
                 }
             }
+            rides = sortRides(rides);
             cbInterface.update();
         } catch (Exception e) {
             Log.i("Null request", e.toString());
         }
     }
+    public ArrayList<Ride> sortRides(ArrayList<Ride> toSort){
+        if(toSort.size() <= 1){
+            return toSort;
+        }
+
+        for(int i=0; i < toSort.size(); ++i){
+            Log.i("Item", toSort.get(i).toJsonString());
+        }
+        Log.i("Sort size", String.valueOf(toSort.size()));
+        ArrayList<Ride> left = new ArrayList<>();
+        ArrayList<Ride> right = new ArrayList<>();
+
+        for(int i=0; i < toSort.size(); ++i){
+            if(i< toSort.size()/2){
+                left.add(toSort.get(i));
+            } else {
+                right.add(toSort.get(i));
+            }
+        }
+
+        left = sortRides(left);
+        right = sortRides(right);
+        return mergeRides(left, right);
+    }
+    private ArrayList<Ride> mergeRides(ArrayList<Ride> left, ArrayList<Ride> right){
+        ArrayList<Ride> result = new ArrayList<>();
+
+        while(!left.isEmpty() && !right.isEmpty()){
+            if(!left.get(0).isCompleted()){
+                result.add(left.get(0));
+                left.remove(0);
+            } else if(!right.get(0).isCompleted()){
+                result.add(right.get(0));
+                right.remove(0);
+            } else if(left.get(0).isCompleted() && !left.get(0).isPaid()){
+                result.add(left.get(0));
+                left.remove(0);
+            } else if(right.get(0).isCompleted() && !right.get(0).isPaid()){
+                result.add(right.get(0));
+                right.remove(0);
+            } else if(left.get(0).isPaid()){
+                result.add(left.get(0));
+                left.remove(0);
+            } else if(right.get(0).isPaid()){
+                result.add(right.get(0));
+                right.remove(0);
+            }
+        }
+
+        while(!left.isEmpty()){
+            result.add(left.get(0));
+            left.remove(0);
+        }
+        while(!right.isEmpty()){
+            result.add(right.get(0));
+            right.remove(0);
+        }
+
+        return result;
+    }
+
 }
