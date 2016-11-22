@@ -168,9 +168,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                 //the drivers list of accepted requests is updated? only if we decide we care to tho
                 // the requests list of possible drivers is updatee
                 //DC.acceptRequest(driver, request);
-                requestController.addDriver(request, driverID.toString());
 
-
+                requestController.addDriverToList(request, driverID.toString());
 
                 agreedToFulfill = true;
                 String statusText = getResources().getString(R.string.status_accept_rider) + "Agreed to fulfill if chosen";

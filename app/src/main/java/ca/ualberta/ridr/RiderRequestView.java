@@ -152,6 +152,7 @@ public class RiderRequestView extends Activity {
                 //must close popup before going to next activity
                 driverPopUp.dismiss();
 
+
                 //TODO pass the driver at clicked position to the next activity
                 Intent intent = new Intent(activity, AcceptDriverView.class);
                 ArrayList<String> ids = new ArrayList<>();

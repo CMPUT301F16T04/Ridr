@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -159,7 +160,7 @@ public class Request {
             toReturn.put("accepted", this.accepted);
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
-            toReturn.put("possibleDrivers", possibleDrivers);
+            toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -183,9 +184,8 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-        //this.possibleDrivers =  buildPossibleDriversList(request.get("possibleDrivers").getAsString());
-        System.out.println(this.possibleDrivers);
-        //this.possibleDrivers = new ArrayList<String>();
+        this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
+
     }
 
     /**
@@ -224,14 +224,18 @@ public class Request {
     }
 
 
-    private ArrayList<String> buildPossibleDriversList(String driverString){
-        System.out.println(driverString);
-        ArrayList<String> drivers;
-        if(driverString == null){
-            return null;
-        }
-        drivers = new ArrayList<String>(Arrays.asList(driverString.split(",")));
 
+    //intentions : to be able to store and retrieve a list of possible drivers.
+    private ArrayList<String> buildPossibleDriversList(JsonArray array){
+        ArrayList<String> drivers = new ArrayList<String>();
+        if(array.size() == 0){
+            return drivers;
+
+        }
+
+        for(int i = 0; i < array.size(); ++i){
+            drivers.add(0, array.get(i).getAsString());
+        }
 
         return(drivers);
     }

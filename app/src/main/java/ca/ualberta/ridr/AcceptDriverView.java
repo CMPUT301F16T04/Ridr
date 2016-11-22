@@ -68,6 +68,7 @@ public class AcceptDriverView extends Activity {
             finish();
         }
 
+
         final Driver driver = getDriver(driverId);
         final Request request  = getRequest(requestId);
 

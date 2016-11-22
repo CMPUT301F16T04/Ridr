@@ -71,8 +71,9 @@ public class RequestController {
         }
     }
 
-    public void addDriver(Request request, String driverId){
-        request.addAccepted(driverId);
+
+    public void addDriverToList(Request request, String driverID){
+        request.addAccepted(driverID);
         AsyncController controller = new AsyncController();
         String requestId = request.getID().toString();
         try{
@@ -157,6 +158,7 @@ public class RequestController {
         Pattern p = Pattern.compile(keyword);
         Request request;
         try {
+            Log.i("doesContain", jsonElement.toString());
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
 
             stringArray = request.queryableRequestVariables();
@@ -174,15 +176,12 @@ public class RequestController {
     }
 
 
-
-
     public ArrayList<String> getPossibleDrivers(String requestId) {
         AsyncController con = new AsyncController();
         try {
             JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
             Request request = new Request(requestJson);
             ArrayList<String> drivers = request.getPossibleDrivers();
-            System.out.println(drivers);
             return(drivers);
         } catch (Exception e) {
             Log.i("Error parsing requests", e.toString());
