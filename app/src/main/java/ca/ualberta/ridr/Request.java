@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -158,7 +159,7 @@ public class Request {
             toReturn.put("accepted", this.accepted);
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
-            toReturn.put("possibleDrivers", possibleDrivers);
+            toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -183,7 +184,7 @@ public class Request {
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
         this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
-
+        Log.i("Test", "won't reach here");
     }
 
     /**
@@ -224,9 +225,10 @@ public class Request {
 
     //intentions : to be able to store and retrieve a list of possible drivers.
     private ArrayList<String> buildPossibleDriversList(JsonArray array){
+        Log.i("Array", array.toString());
         ArrayList<String> drivers = new ArrayList<String>();
-        if(array == null){
-            return null;
+        if(array.size() == 0){
+            return drivers;
         }
         for(int i = 0; i < array.size(); ++i){
             drivers.add(0, array.get(i).getAsString());

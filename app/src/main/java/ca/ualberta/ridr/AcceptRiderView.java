@@ -169,7 +169,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                 //the drivers list of accepted requests is updated? only if we decide we care to tho
                 // the requests list of possible drivers is updatee
                 //DC.acceptRequest(driver, request);
-                requestController.addDriver(request, driver);
+                requestController.addDriverToList(request, driverID.toString());
 
 
 

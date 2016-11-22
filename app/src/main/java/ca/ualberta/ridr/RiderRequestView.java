@@ -124,12 +124,14 @@ public class RiderRequestView extends Activity {
                 }
             });
 
-            //reason this is fudge is because we dont have that list of possible drivers stored
+            RequestController reqCon = new RequestController();
+            DriverController driverCon = new DriverController();
             final ArrayList<String> possibleDrivers = new ArrayList<>();
-            final ArrayList<String> possibleDriversIds = new ArrayList<>();
-            Driver driver = new Driver("Sample hardcoded driver", new Date(), "creditcard", "email@emailme.email", "123-123-1234", "banckaccono");
-            possibleDrivers.add(driver.getName());
-            possibleDriversIds.add("475a3caa-88b5-46b2-9a44-cd02ef8a2d28");
+            final ArrayList<String> possibleDriversIds = reqCon.getPossibleDrivers(clickedRequestIDStr);
+            // one last for now fix to fix the fact that we store id's and i want names
+            //lots of hitting server tho so later should fix this....
+            for (int i = 0; i < possibleDriversIds.size(); i++) {
+                possibleDrivers.add(driverCon.getDriverFromServer(possibleDriversIds.get(i)).getName());
 
 
             ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
