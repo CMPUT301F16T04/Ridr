@@ -15,12 +15,13 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 import java.util.UUID;
 
-public class RequestsFromRidersView extends Activity {
+public abstract class RequestsFromRidersView extends Activity implements ACallback{
     //must extend activity, not appcompatactivity
 
     private UUID userID;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
+    private RequestController controller;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,16 +46,9 @@ public class RequestsFromRidersView extends Activity {
         }
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
-        AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", userID.toString());
-
-        for (JsonElement result : queryResults) {
-            try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-            } catch (Exception e) {
-                Log.i("Error parsing requests", e.toString());
-            }
-        }
+        controller = new RequestController(this);
+        controller.findAllRequestsWithDataMember("requests", "possibleDrivers", userID);
+        //update gets called from Acallback
 
 
         RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests);
@@ -74,5 +68,12 @@ public class RequestsFromRidersView extends Activity {
         });
 
 
+    }
+
+    @Override
+    //for Acallback
+    public void update() {
+        requests.clear();
+        requests.addAll(controller.getList());
     }
 }

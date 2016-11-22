@@ -31,6 +31,6 @@
         android:layout_weight="1"
         android:scrollbars="vertical"
         android:textColor="#000"
-        android:background="@color/secondary_colour"
+        android:background="@color/primary"
         android:id="@+id/requests_from_riders_list" />
 </RelativeLayout>
