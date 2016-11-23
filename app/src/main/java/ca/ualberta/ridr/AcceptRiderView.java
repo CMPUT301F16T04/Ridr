@@ -22,6 +22,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -55,6 +56,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private ArrayList<Marker> markers;
     private Geocoder geocoder;
 
+    private RequestController requestController = new RequestController();
+    private RiderController riderController = new RiderController();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,6 +80,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     .build();
         }
 
+        String space = " ";
+
         //set all the xml elements
         requestFrom = (TextView) findViewById(R.id.request_from);
         payment = (TextView) findViewById(R.id.payment_accept_rider);
@@ -96,11 +102,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
             finish();
         }
-        final RequestController requestController = new RequestController();
+
         request = requestController.getRequestFromServer(requestID.toString());
 
         //got request, now need to get the rider of the request, since we aren't storing names in the request
-        RiderController riderController = new RiderController();
         requestRider = riderController.getRiderFromServer(request.getRider());
 
         String isFrom = "Request From " + requestRider.getName() + ":";
@@ -109,35 +114,30 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         //set all the text that needs to be set
         requestFrom.setText(isFrom);
         //set payment field text
-        String paymentText = payment.getText() + Float.toString(request.getFare());
+        String paymentText = payment.getText() + space+ Float.toString(request.getFare());
         payment.setText(paymentText);
         //set contact info text
-        String contactInfoText = contactInfo.getText() + requestRider.getPhoneNumber();
+        String contactInfoText = contactInfo.getText() + space + requestRider.getPhoneNumber();
         contactInfo.setText(contactInfoText);
         //set pickup time text
-        String pickupTimeText = pickupTime.getText() + request.getDate().toString();
+        String pickupTimeText = pickupTime.getText() + space + request.getDate().toString();
         pickupTime.setText(pickupTimeText);
         //set start location text
-        String startLocationText = startLocation.getText() + request.getPickup();
+        String startLocationText = startLocation.getText() + space + request.getPickup();
         startLocation.setText(startLocationText);
         //set end location text
-        String endLocationText = endLocation.getText() + request.getDropoff();
+        String endLocationText = endLocation.getText() + space + request.getDropoff();
         endLocation.setText(endLocationText);
         //set status text
         //iterate through the requests possibleDriver arraylist, and see if we are in it. If we are,
         //status = Agreed to fulfill. If not, status = Haven't agreed to fulfill
-        agreedToFulfill = false;
-        /*for(int i = 0; i < request.getPossibleDrivers().size(); ++i){
-            if(request.getPossibleDrivers().get(i).getID().equals(driverID)){
-                agreedToFulfill = true;
-                break;
-            }
-        }*/
+        agreedToFulfill = checkIfUserAccepted();
+
         if(agreedToFulfill){
-            String statusText = status.getText() + "Agreed to fulfill if chosen";
+            String statusText = status.getText() + " You have accepted the request";
             status.setText(statusText);
         } else {
-            String statusText = status.getText() + "Haven't yet agreed to fulfill";
+            String statusText = status.getText() + " Have not yet accepted";
             status.setText(statusText);
         }
 
@@ -163,17 +163,14 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     return;
                 }
 
-
                 // things that need to happen if driver accepts the request
                 //the drivers list of accepted requests is updated? only if we decide we care to tho
                 // the requests list of possible drivers is updatee
                 //DC.acceptRequest(driver, request);
                 requestController.addDriverToList(request, driverID.toString());
 
-
-
                 agreedToFulfill = true;
-                String statusText = getResources().getString(R.string.status_accept_rider) + "Agreed to fulfill if chosen";
+                String statusText = getResources().getString(R.string.status_accept_rider) + " You have accepted the request";
                 status.setText(statusText);
             }
 
@@ -239,20 +236,39 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         setupMap(request);
     }
 
-    public void setupMap(Request request){
-        //gMap.clear();
+    //TODO put the route between start and end on the map
+    private void setupMap(Request request){
+
         //adds markers and then move camera to where they are
         Marker startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
         startMarker.setTag(request);
         Marker endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title(request.getDropoff()));
         endMarker.setTag(request);
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(request.getDropOffCoords(), 10));
-        //probably shouldnt hardcode zoom factor, it should be relative to the markers...
-        //TODO fix that
-        gMap.addPolyline(new PolylineOptions().geodesic(true).add(request.getPickupCoords()).add(request.getDropOffCoords()));
 
+        zoomToMid(request);
 
+    }
+
+    private void zoomToMid(Request request){
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        builder.include(request.getDropOffCoords());
+        builder.include(request.getPickupCoords());
+        LatLngBounds bounds = builder.build();
+
+        //sets the camera to zoom 120 pixels larger than the bounds of the two request points
+        gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds , 120));
+    }
+
+    private boolean checkIfUserAccepted(Request request) {
+        for (int i = 0; i < request.getPossibleDrivers().size(); ++i) {
+            if (request.getPossibleDrivers().get(i).getID().equals(driverID)) {
+                agreedToFulfill = true;
+                break;
+            }
+        }
     }
 
 
 }
+
+

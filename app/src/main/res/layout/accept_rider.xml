@@ -21,19 +21,6 @@
         android:text="@string/payment_accept_rider"
         android:textColor="?android:attr/textColorTertiary" />
 
-    <Button
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:background="@color/tertiary_colour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/accept_rider_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:text="@string/accept_rider_button" />
-
     <fragment
         android:layout_width="match_parent"
         android:layout_height="240dp"
@@ -120,4 +107,18 @@
         android:layout_centerHorizontal="true"
         android:text="@string/status_accept_rider"
         android:textColor="?android:attr/textColorTertiary" />
+
+    <Button
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:background="@color/tertiary_colour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/accept_rider_button"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:text="@string/accept_rider_button" />
+
 </RelativeLayout>
