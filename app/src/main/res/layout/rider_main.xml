@@ -39,7 +39,8 @@
         android:text="Enter Destination"
         android:layout_above="@+id/editFare"
         android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentEnd="true"
+        />
 
     <EditText
         android:layout_width="wrap_content"
@@ -119,6 +120,7 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_above="@+id/editStartLocationText"
         android:layout_alignParentStart="true" />
+
 
 
 

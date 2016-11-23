@@ -8,6 +8,7 @@ import android.location.Address;
 import android.location.Geocoder;
 
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -44,7 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-
+import android.location.Location;
 
 /**
  * This view allows for a rider to create a new request
@@ -76,6 +77,10 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private boolean firstLoad;
     private ArrayList<Marker> markers;
     private Geocoder geocoder;
+
+    private LatLng pickupCoord;
+    private LatLng dropoffCoord;
+
 
     RequestController reqController;
     //RiderController riderController = new RiderController();
@@ -197,6 +202,24 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         });
 
+        startLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    startLocationChangedEvent();
+                }
+            }
+        });
+        endLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus){
+                    endLocationChangeEvent();
+
+                }
+            }
+        });
+
     }
 
     protected void onStart() {
@@ -228,11 +251,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     @Override
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
-        //lastKnownPlace = getCurrentLocation();
+        lastKnownPlace = getCurrentLocation();
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
-            //gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
-            gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
+            //gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
         }
 
     }
@@ -255,6 +278,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     @Override
     public void onMapReady(GoogleMap googleMap){
         gMap = googleMap;
+        // Allow the user to go home at any time
+        gMap.setMyLocationEnabled(true);
     }
 
     public void update(){}
@@ -281,7 +306,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      */
     private void resetText(){
         startLocation.setText(defaultStartText);
-        endLocation.setText(defaultStartText);
+        endLocation.setText(defaultDestinationText);
         dateTextView.setText("");
         timeTextView.setText("");
     }
@@ -312,14 +337,33 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         String dropoffStr = endLocation.getText().toString();
         //LatLng pickupCoord = getLocationFromAddress(pickupStr);
         //LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
-        LatLng pickupCoord = new LatLng(53.525288, -113.525454);
-        LatLng dropoffCoord =  new LatLng(53.484775, -113.505067);
+        pickupCoord = new LatLng(53.525288, -113.525454);
+        dropoffCoord =  new LatLng(53.484775, -113.505067);
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate);
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
         resetText();
+    }
+
+
+    private void startLocationChangedEvent(){
+        Toast.makeText(RiderMainView.this, "changed start location", Toast.LENGTH_SHORT).show();
+
+        //pickupCoord = getLocationFromAddress(startLocation.getText().toString());
+        pickupCoord = new LatLng(53.525288, -113.525454);
+        addMarkers(pickupCoord, "Pickup");
+        if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultDestinationText)){
+            Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void endLocationChangeEvent(){
+        Toast.makeText(RiderMainView.this, "changed end location", Toast.LENGTH_SHORT).show();
+        if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
+            Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -374,42 +418,37 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
     }
 
-//    @Nullable
-//    /**
-//     * When called this function checks uses LocationServices to grab the lastLocation and returns
-//     * that LatLng to the caller
-//     * @nullable
-//     * @return currentLocation
-//     */
-//    // Simple function to grab current location in LatLong
-//    private LatLng getCurrentLocation(){
-//        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//        if(currentLocation != null) {
-//            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-//        }
-//        return null;
-//    }
+    @Nullable
+    /**
+     * When called this function checks uses LocationServices to grab the lastLocation and returns
+     * that LatLng to the caller
+     * @nullable
+     * @return currentLocation
+     */
+    // Simple function to grab current location in LatLong
+    private LatLng getCurrentLocation(){
+        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(currentLocation != null) {
+            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        }
+        return null;
+    }
 
     /**
      * Add markers to the map.
      * Takes in a list of requests and adds them as maps to the marker and keeps track of the markers
      * place on the map
-     * @param filteredReqeusts the filtered reqeusts
+     * @param coords coordinates of the marker
      */
-    public void addMarkers(ArrayList<Request> filteredReqeusts){
+    public void addMarkers(LatLng coords, String title){
         gMap.clear();
 
-        if(filteredReqeusts.size() > 0) {
-            if(markers == null){
-                markers = new ArrayList<>();
-            }
-            for (Request request : filteredReqeusts) {
-                markers.clear();
-                Marker newMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
-                newMarker.setTag(request);
-                markers.add((newMarker));
-            }
+        if (markers == null) {
+            markers = new ArrayList<>();
         }
+        Marker newMarker = gMap.addMarker(new MarkerOptions().position(coords).title(title));
+        //newMarker.setTag();
+        markers.add((newMarker));
     }
 
     /**
