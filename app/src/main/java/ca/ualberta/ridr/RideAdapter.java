@@ -30,6 +30,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ride_fragment, parent, false);
         }
+        TextView rideCompleted = (TextView) convertView.findViewById(R.id.rideCompleted);
         TextView ridePickup = (TextView) convertView.findViewById(R.id.ridePickup);
         TextView rideDropoff = (TextView) convertView.findViewById(R.id.rideDropoff);
         TextView riderName = (TextView) convertView.findViewById(R.id.riderName);
@@ -38,15 +39,16 @@ public class RideAdapter extends ArrayAdapter<Ride> {
 
         Ride ride = getItem(position);
 
-        SimpleDateFormat rideDate = new SimpleDateFormat("dd/MM/yyyy 'at' HH:mm:ss z");
+        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
 
-        riderName.setText("Rider: " + ride.getRider());
+        String fareText = ride.isPaid()? "Fare(Paid): ": "Fair: ";
+        String completed = ride.isCompleted().toString();
+        rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
+        riderName.setText("Rider: " + "John Doe");
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
-//        ridePickupTime.setText("Pickup Time: " + rideDate.format(ride.getRideDate()));
-        ridePickupTime.setText("Paid: " + ride.isPaid());
-//        rideFare.setText("Fare: " + Float.toString(ride.getFare()));
-        rideFare.setText("Completed " + ride.isCompleted());
+        ridePickupTime.setText("Pick up: " + rideDate.format(ride.getRideDate()));
+        rideFare.setText(fareText + Float.toString(ride.getFare()));
 
         if(ride.isCompleted() && ride.isPaid()) {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.paid));

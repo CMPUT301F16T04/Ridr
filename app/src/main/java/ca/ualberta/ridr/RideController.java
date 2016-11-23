@@ -85,11 +85,6 @@ public class RideController {
         if(toSort.size() <= 1){
             return toSort;
         }
-
-        for(int i=0; i < toSort.size(); ++i){
-            Log.i("Item", toSort.get(i).toJsonString());
-        }
-        Log.i("Sort size", String.valueOf(toSort.size()));
         ArrayList<Ride> left = new ArrayList<>();
         ArrayList<Ride> right = new ArrayList<>();
 

@@ -49,6 +49,7 @@ public class DriverRideView extends Activity implements ACallback {
     @Override
     public void update() {
         rideAdapter.clear();
+        rideAdapter.notifyDataSetChanged();
         rideAdapter.addAll(rides.getAll());
     }
 
