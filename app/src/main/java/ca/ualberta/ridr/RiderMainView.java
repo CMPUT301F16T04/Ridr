@@ -35,8 +35,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -52,8 +56,8 @@ import android.location.Location;
  */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
-    private EditText startLocation;
-    private EditText endLocation;
+    //private EditText startLocation;
+    //private EditText endLocation;
     private EditText fareInput;
 
     private TextView dateTextView;
@@ -107,6 +111,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     .build();
         }
 
+
+
         //retrieve the current rider's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -123,50 +129,39 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
 
         setViews();
-        //TODO afterTextChanged for destination, and start location, get distance and estimate fare
-//  work in progress
-//        startLocation.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                return;
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                return;
-//            }
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultStartText)){
-//                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
-//                    //end location has also changed, so get a fare estimate
-//                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
-//                } else{
-//                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        endLocation.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                return;
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                return;
-//            }
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
-//                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
-//                    //end location has also changed, so get a fare estimate
-//                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
-//                }else{
-//                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        // autocomplete for dates
+        PlaceAutocompleteFragment pickupAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.pickup_autocomplete_fragment);
+
+        PlaceAutocompleteFragment dropoffAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.dropoff_autocomplete_fragment);
+
+        pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                //startLocation.setText(place.getAddress().toString());
+                Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("Places", "An error occurred: " + status);
+            }
+        });
+
+        dropoffAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                //endLocation.setText(place.getAddress().toString());
+                Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("Places", "An error occurred: " + status);
+            }
+        });
+
 
         //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -202,23 +197,23 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         });
 
-        startLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    startLocationChangedEvent();
-                }
-            }
-        });
-        endLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if(!hasFocus){
-                    endLocationChangeEvent();
-
-                }
-            }
-        });
+//        startLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(!hasFocus){
+//                    startLocationChangedEvent();
+//                }
+//            }
+//        });
+//        endLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+//            @Override
+//            public void onFocusChange(View v, boolean hasFocus) {
+//                if(!hasFocus){
+//                    endLocationChangeEvent();
+//
+//                }
+//            }
+//        });
 
     }
 
@@ -291,8 +286,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      * finds views by their ID's and assigns them to their respective variable
      */
     private void setViews(){
-        startLocation = (EditText) findViewById(R.id.editStartLocationText);
-        endLocation = (EditText) findViewById(R.id.editEndLocationText);
+        //startLocation = (EditText) findViewById(R.id.editStartLocationText);
+        //endLocation = (EditText) findViewById(R.id.editEndLocationText);
         fareInput = (EditText) findViewById(R.id.editFare);
 
         dateTextView = (TextView) findViewById(R.id.dateText);
@@ -308,8 +303,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      * reset text inputs in the view
      */
     private void resetText(){
-        startLocation.setText(defaultStartText);
-        endLocation.setText(defaultDestinationText);
+        //startLocation.setText(defaultStartText);
+        //endLocation.setText(defaultDestinationText);
         dateTextView.setText("");
         timeTextView.setText("");
     }
@@ -320,14 +315,14 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      */
     private void addRequestEvent(Rider rider){
 
-        if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
-            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
-            Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
+//            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//        if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
+//            Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         if(dateTextView.getText().toString().matches("")){
             Toast.makeText(RiderMainView.this, "Please enter the date on which you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
@@ -336,8 +331,10 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             Toast.makeText(RiderMainView.this, "Please enter the time at which you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
         }
-        String pickupStr = startLocation.getText().toString();
-        String dropoffStr = endLocation.getText().toString();
+        //String pickupStr = startLocation.getText().toString();
+        //String dropoffStr = endLocation.getText().toString();
+        String pickupStr = "here";
+        String dropoffStr ="there";
         //LatLng pickupCoord = getLocationFromAddress(pickupStr);
         //LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
         pickupCoord = new LatLng(53.525288, -113.525454);
@@ -363,9 +360,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         pickupCoord = new LatLng(53.525288, -113.525454);
         addMarkers(pickupCoord, "Pickup");
         gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
-        if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultDestinationText)){
-            Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
-        }
+        //if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultDestinationText)){
+        //    Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
+        //}
     }
 
     private void endLocationChangeEvent(){
@@ -373,9 +370,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         Toast.makeText(RiderMainView.this, "changed end location", Toast.LENGTH_SHORT).show();
         dropoffCoord =  new LatLng(53.084775, -112.105067);
         addMarkers(dropoffCoord, "Dropoff");
-        if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
-            Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
-        }
+        //if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
+        //    Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
+        //}
     }
 
     /**
