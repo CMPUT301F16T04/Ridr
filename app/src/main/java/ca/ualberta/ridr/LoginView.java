@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -97,7 +96,7 @@ public class LoginView extends Activity {
             @Override
             public void onClick(View view){
                 //launches to account creator activity
-                Intent addAccountIntent = new Intent(LoginView.this, AddUserView.class);
+                Intent addAccountIntent = new Intent(LoginView.this, AddRiderView.class);
                 startActivity(addAccountIntent);
             }
         });

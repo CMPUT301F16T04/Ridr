@@ -1,16 +1,11 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
-import android.content.Context;
-import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
-import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.util.Log;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,7 +17,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
-import java.util.concurrent.Exchanger;
 
 /**
  * Modified by nkaefer on 2016/11/08
@@ -31,7 +25,7 @@ import java.util.concurrent.Exchanger;
  * Also checks to see if the user we are attempting to make is already in the database, and adds the
  * user if the user is valid.
  */
-public class AddUserView extends Activity {
+public class AddRiderView extends Activity {
     /**
      * The Username edit text.
      */
@@ -60,7 +54,7 @@ public class AddUserView extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.add_user);
+        setContentView(R.layout.add_rider);
 
         //defining view objects
         usernameEditText = (EditText) findViewById(R.id.username_add_account_edit_text);
@@ -152,16 +146,16 @@ public class AddUserView extends Activity {
                     onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
                     if(onlineUser != null){
                         //if we found another rider with the same name
-                        Toast.makeText(AddUserView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddRiderView.this, "Sorry, that name cannot be used, as it is already in use.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 } catch (Exception e){
-                    Toast.makeText(AddUserView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddRiderView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
                 //successful account creation
-                Toast.makeText(AddUserView.this, "Making Account!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(AddRiderView.this, "Making Account!", Toast.LENGTH_SHORT).show();
                 //save account in elastic search
                 try {
                     controller.create("user", user.getID().toString(), new Gson().toJson(user));
