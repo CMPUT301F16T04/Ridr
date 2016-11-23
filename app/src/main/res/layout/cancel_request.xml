@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/cancel_request">
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/cancel_request_text"
+        android:id="@+id/Confirm_Cancel"
+        android:layout_gravity="center_horizontal" />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="55dp"
+        android:text="@string/exit_canceling_request"
+        android:id="@+id/Exit_Cancel_Request"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/secondary_colour"/>
+</LinearLayout>
