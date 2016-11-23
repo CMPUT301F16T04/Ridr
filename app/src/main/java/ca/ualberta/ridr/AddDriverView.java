@@ -61,12 +61,17 @@ public class AddDriverView extends Activity {
      */
     Button createAccountButton;
 
+    AsyncController controller;
+
+
     Calendar birthday;
     Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_driver);
+
+        controller = new AsyncController();
 
         birthday = Calendar.getInstance();
         context = this;
