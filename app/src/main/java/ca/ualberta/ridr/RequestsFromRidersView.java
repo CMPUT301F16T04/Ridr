@@ -45,7 +45,7 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         DriverController driverController = new DriverController();
         Driver myself = driverController.getDriverFromServer(userID.toString());
         requestController = new RequestController(this);
-        requestController.findAllRequestsWithDataMember("requests", "possibleDrivers", myself.getName());
+        requestController.findAllRequestsWithDataMember("request", "possibleDrivers", myself.getName());
         //search for our name in any possibleDriver list
         //update gets called from Acallback
 

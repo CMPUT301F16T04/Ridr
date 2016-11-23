@@ -145,13 +145,29 @@ public class AsyncController {
         String query =
                 "{"+
                     "\"query\": {" +
+                        "\"filtered\" : {"+
+                            "\"query\": {" +
+                                "\"match_all\": {}" +
+                            "}," +
+                            "\"filter\": {" +
+                                "\"terms\": {" +
+                                    "\"" + variable + "\": [\"" + variableValue + "\"]" +
+                                "}" +
+                            "}" +
+                        "}" +
+                    "}"+
+                "}";
+
+        /*String query =
+                "{"+
+                    "\"query\": {" +
                         "\"bool\" : {"+
                             "\"should\": [" +
                                 "{ \"match\": { \"" + variable + "\": \"" + variableValue + "\" } }" +
                             "]" +
                         "}" +
                     "}"+
-                "}";
+                "}";*/
         try{
             return extractAllElements(controller.execute(dataClass, query).get());
         } catch(Exception e){
