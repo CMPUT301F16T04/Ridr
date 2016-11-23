@@ -34,6 +34,8 @@ import static android.app.DatePickerDialog.*;
  * user if the user is valid.
  */
 public class AddDriverView extends Activity {
+
+    EditText vehicleEditText;
     /**
      * The Username edit text.
      */
@@ -74,7 +76,9 @@ public class AddDriverView extends Activity {
         emailEditText = (EditText) findViewById(R.id.email_add_account_edit_text);
         phoneEditText = (EditText) findViewById(R.id.phone_add_account_edit_text);
         creditEditText = (EditText) findViewById(R.id.credit_add_account_edit_text);
+        vehicleEditText = (EditText)  findViewById(R.id.driver_add_vehicle);
         createAccountButton = (Button) findViewById(R.id.create_account_button);
+
 
 
         //text formatting listener for phone edit text
@@ -96,18 +100,19 @@ public class AddDriverView extends Activity {
                 String creditCard = creditEditText.getText().toString().trim();
                 String username = usernameEditText.getText().toString().trim();
                 String email = emailEditText.getText().toString().trim();
-                String birthday = dobEditText.getText().toString().trim();
+                String birthdayText = dobEditText.getText().toString().trim();
                 String phoneNumber = PhoneNumberUtils.formatNumber(phoneEditText.getText().toString().trim(), "Canada");
-                if(checkForIncorrectEntries(username, birthday, email, phoneNumber, creditCard)) {
+                String vehicleDescription = vehicleEditText.getText().toString().trim();
+                if(checkForIncorrectEntries(username, birthdayText, email, phoneNumber, creditCard)) {
                     return;
                 }
 
                 //make the objects
-                Driver user = new Driver(username, birthday,
-                        creditCard, email, phoneNumber);
+                Driver user = new Driver(username, birthday.getTime(), creditCard, email, phoneNumber
+                , vehicleDescription);
 
                 //check that account doesn't already exist
-                AsyncController controller = new AsyncController();
+
                 User onlineUser = null;
                 try{
                     onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);
@@ -191,9 +196,7 @@ public class AddDriverView extends Activity {
             creditEditText.setError("The Credit Card Field must be 16 characters in length, and pattern must be exactly XXXXBBBBYYYYAAAA.");
             return true;
         }
-
-
-
+        
         return false;
     }
 
