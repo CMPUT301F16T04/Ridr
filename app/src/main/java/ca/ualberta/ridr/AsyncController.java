@@ -142,6 +142,7 @@ public class AsyncController {
 
     public JsonArray getFromIndexObjectInArray(String dataClass, String variable, String variableValue){
         controller = new AsyncDatabaseController("get");
+        //got help with query from http://www.tugberkugurlu.com/archive/elasticsearch-array-contains-search-with-terms-filter -Tugberk Ugurlu
         String query =
                 "{"+
                     "\"query\": {" +
@@ -157,17 +158,6 @@ public class AsyncController {
                         "}" +
                     "}"+
                 "}";
-
-        /*String query =
-                "{"+
-                    "\"query\": {" +
-                        "\"bool\" : {"+
-                            "\"should\": [" +
-                                "{ \"match\": { \"" + variable + "\": \"" + variableValue + "\" } }" +
-                            "]" +
-                        "}" +
-                    "}"+
-                "}";*/
         try{
             return extractAllElements(controller.execute(dataClass, query).get());
         } catch(Exception e){
