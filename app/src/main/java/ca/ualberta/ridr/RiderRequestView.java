@@ -33,6 +33,11 @@ import com.google.gson.JsonObject;
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Displays information pertaining to a rider's active requests. Allows them to accept requests, as
+ * wel as cancel requests
+ *
+ */
 
 public class RiderRequestView extends Activity {
 
@@ -65,6 +70,7 @@ public class RiderRequestView extends Activity {
 
         }
 
+
     @Override
     protected void onStart() {
         super.onStart();
@@ -72,7 +78,7 @@ public class RiderRequestView extends Activity {
         //TODO fix hardcoded value
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
         requests.clear();
-            
+
         System.out.println(queryResults);
         for (JsonElement result : queryResults) {
             try {
@@ -102,8 +108,8 @@ public class RiderRequestView extends Activity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
                 clickedRequestIDStr = request.getID().toString();
-                cancelRequest(request);
-                customAdapter.notifyDataSetChanged();
+                cancelRequest(request, customAdapter);
+
                 return true;
             }
         });
@@ -183,7 +189,7 @@ public class RiderRequestView extends Activity {
             });
         }
 
-    public void cancelRequest(final Request request) {
+    public void cancelRequest(final Request request, final RequestAdapter customAdapter) {
 
         // Inflate the popup_layout.xml
         LinearLayout viewCancelGroup = (LinearLayout) findViewById(R.id.cancel_request);
@@ -225,6 +231,8 @@ public class RiderRequestView extends Activity {
                 }
                 System.out.println( controller.create("request", request1.getID().toString(), request1.toJsonString()));
                 requests.remove(request);
+                customAdapter.notifyDataSetChanged();
+                cancelPopUp.dismiss();
 
             }
         });
