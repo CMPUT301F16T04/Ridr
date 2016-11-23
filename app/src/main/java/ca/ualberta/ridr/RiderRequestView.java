@@ -102,13 +102,9 @@ public class RiderRequestView extends Activity {
         driverPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         driverPopUp.setFocusable(true);
 
-        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
-        int OFFSET_X = 60;
-        int OFFSET_Y = 600;
-
 
         // Displaying the popup at the specified location, + offsets.
-        driverPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, OFFSET_X, OFFSET_Y);
+        driverPopUp.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
 
         // Getting a reference to Close button, and close the popup when clicked.

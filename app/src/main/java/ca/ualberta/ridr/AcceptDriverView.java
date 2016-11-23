@@ -89,7 +89,8 @@ public class AcceptDriverView extends Activity {
 
         driverEmail.setText(emailUnderlined);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(profileString);
+        //xProfile.setText(profileString);
+        xProfile.setText(driver.getName());
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -103,10 +104,6 @@ public class AcceptDriverView extends Activity {
 
                 RequestController reqCon = new RequestController();
                 reqCon.accept(request);
-
-                //TODO once we have a user request list we can uncomment this
-                //requestCon.removeRequest(request, rider);
-                //cant do while rider's request list is null
 
                 finish();
 
