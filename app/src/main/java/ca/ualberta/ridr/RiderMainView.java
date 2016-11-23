@@ -68,6 +68,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Button timeButton;
     private Button menuButton;
 
+    private PlaceAutocompleteFragment pickupAutocompleteFragment;
+    private PlaceAutocompleteFragment dropoffAutocompleteFragment;
+
     private UUID currentUUID; // UUID of the currently logged-in rider
     private String currentIDStr; // string of the curretn UUID
     private Rider currentRider;
@@ -84,6 +87,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
     private LatLng pickupCoord;
     private LatLng dropoffCoord;
+    private String pickupStr;
+    private String dropoffStr;
 
 
     RequestController reqController;
@@ -129,18 +134,18 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
 
         setViews();
+
         // autocomplete for dates
-        PlaceAutocompleteFragment pickupAutocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.pickup_autocomplete_fragment);
-
-        PlaceAutocompleteFragment dropoffAutocompleteFragment = (PlaceAutocompleteFragment)
-                getFragmentManager().findFragmentById(R.id.dropoff_autocomplete_fragment);
-
         pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
                 //startLocation.setText(place.getAddress().toString());
                 Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
+                pickupStr = place.getAddress().toString();
+                pickupCoord = place.getLatLng();
+                addMarkers(pickupCoord, "Pickup");
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
+                //TODO check that there are two locations. if there is, estimate fare
             }
 
             @Override
@@ -154,6 +159,16 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             public void onPlaceSelected(Place place) {
                 //endLocation.setText(place.getAddress().toString());
                 Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
+                dropoffStr = place.getAddress().toString();
+                dropoffCoord = place.getLatLng();
+                addMarkers(dropoffCoord, "Dropoff");
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dropoffCoord, 11));
+                //TODO check that there are two locations
+                float[] results = new float[1];
+                Location.distanceBetween(pickupCoord.latitude, pickupCoord.longitude,
+                        dropoffCoord.latitude, dropoffCoord.longitude, results);
+                Toast.makeText(RiderMainView.this, "distance is" + Float.toString(results[0]), Toast.LENGTH_SHORT).show();
+                fareInput.setText(Float.toString(reqController.getFareEstimate(results[0])));
             }
 
             @Override
@@ -196,24 +211,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 showMenu(v);
             }
         });
-
-//        startLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if(!hasFocus){
-//                    startLocationChangedEvent();
-//                }
-//            }
-//        });
-//        endLocation.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-//            @Override
-//            public void onFocusChange(View v, boolean hasFocus) {
-//                if(!hasFocus){
-//                    endLocationChangeEvent();
-//
-//                }
-//            }
-//        });
 
     }
 
@@ -297,14 +294,22 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         dateButton = (Button) findViewById(R.id.dateButton);
         timeButton = (Button) findViewById(R.id.timeButton);
         menuButton = (Button) findViewById(R.id.riderMainMenuButton);
+
+        pickupAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.pickup_autocomplete_fragment);
+        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultStartText);
+
+        dropoffAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.dropoff_autocomplete_fragment);
+        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultDestinationText);
     }
 
     /**
      * reset text inputs in the view
      */
     private void resetText(){
-        //startLocation.setText(defaultStartText);
-        //endLocation.setText(defaultDestinationText);
+        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultStartText);
+        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultDestinationText);
         dateTextView.setText("");
         timeTextView.setText("");
     }
@@ -315,6 +320,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      */
     private void addRequestEvent(Rider rider){
 
+        //TODO check that there locations have been selected (maybe by checking the number of markers)
 //        if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
 //            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
 //            return;
@@ -333,12 +339,10 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
         //String pickupStr = startLocation.getText().toString();
         //String dropoffStr = endLocation.getText().toString();
-        String pickupStr = "here";
-        String dropoffStr ="there";
         //LatLng pickupCoord = getLocationFromAddress(pickupStr);
         //LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
-        pickupCoord = new LatLng(53.525288, -113.525454);
-        dropoffCoord =  new LatLng(53.484775, -113.505067);
+        //pickupCoord = new LatLng(53.525288, -113.525454);
+        //dropoffCoord =  new LatLng(53.484775, -113.505067);
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate);
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
@@ -350,29 +354,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         if(markers != null){
             markers.clear();
         }
-    }
-
-
-    private void startLocationChangedEvent(){
-        Toast.makeText(RiderMainView.this, "changed start location", Toast.LENGTH_SHORT).show();
-
-        //pickupCoord = getLocationFromAddress(startLocation.getText().toString());
-        pickupCoord = new LatLng(53.525288, -113.525454);
-        addMarkers(pickupCoord, "Pickup");
-        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
-        //if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultDestinationText)){
-        //    Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
-        //}
-    }
-
-    private void endLocationChangeEvent(){
-        //pickupCoord = getLocationFromAddress(endLocation.getText().toString());
-        Toast.makeText(RiderMainView.this, "changed end location", Toast.LENGTH_SHORT).show();
-        dropoffCoord =  new LatLng(53.084775, -112.105067);
-        addMarkers(dropoffCoord, "Dropoff");
-        //if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
-        //    Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
-        //}
     }
 
     /**

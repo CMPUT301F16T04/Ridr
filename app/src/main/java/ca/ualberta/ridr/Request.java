@@ -131,10 +131,12 @@ public class Request {
     }
 
     public float estimateFare(float distance){
+        // distance is in meters
         float gasCostFactor = 4; // calculate something later
         //return distance * gasCostFactor;
-        float tempVal = 20;
-        return tempVal;
+        //float tempVal = 20;
+        setFare(distance/1000 *gasCostFactor);
+        return this.fare;
     }
 
     public UUID getID() {

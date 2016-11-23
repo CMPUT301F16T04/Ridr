@@ -85,7 +85,9 @@ public class RequestController {
      * @return a recommended fare
      */
     public float getFareEstimate(float distance){
-        return currenRequest.estimateFare(distance);
+        //return currenRequest.estimateFare(distance);
+        float gasCostFactor = 4; // calculate something later
+        return distance/1000 *gasCostFactor;
     }
 
     public void updateFare(float newFare) {
