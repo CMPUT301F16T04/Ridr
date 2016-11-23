@@ -10,6 +10,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -33,7 +36,11 @@ public class DriverRideView extends Activity implements ACallback {
             String driverID = extras.getString("UUID");
             driver = UUID.fromString(driverID);
         }
-        driver = UUID.fromString("726a1db2-1424-4b82-b85d-6968396dcd4a");
+        if(extras == null) {
+            Intent loginPage = new Intent(DriverRideView.this, LoginView.class);
+            startActivity(loginPage);
+            finish();
+        }
         rideList = (ListView) findViewById(R.id.driverRidesList);
         rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
     }

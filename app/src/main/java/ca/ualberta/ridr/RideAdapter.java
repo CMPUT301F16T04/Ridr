@@ -13,6 +13,8 @@ import java.util.ArrayList;
 
 /**
  * Created by Justin Barclay on 20/11/16.
+ *
+ * This is a simple view adapter that display a single ride request
  */
 public class RideAdapter extends ArrayAdapter<Ride> {
     private Context context;
@@ -26,6 +28,8 @@ public class RideAdapter extends ArrayAdapter<Ride> {
     }
 
     @Override
+    // We should make this adapter smarter so that depending on if it's viewed from the drivers or
+    // riders perspective, it displays the right thing
     public View getView(final int position, View convertView, ViewGroup parent) {
         if(convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.ride_fragment, parent, false);
@@ -44,7 +48,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
         String fareText = ride.isPaid()? "Fare(Paid): ": "Fair: ";
         String completed = ride.isCompleted().toString();
         rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
-        riderName.setText("Rider: " + "John Doe");
+        riderName.setText("Rider: " + ride.getRider());
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
         ridePickupTime.setText("Pick up: " + rideDate.format(ride.getRideDate()));
