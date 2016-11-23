@@ -72,7 +72,7 @@ public class RiderRequestView extends Activity {
         //TODO fix hardcoded value
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
         requests.clear();
-
+            
         System.out.println(queryResults);
         for (JsonElement result : queryResults) {
             try {
@@ -102,7 +102,7 @@ public class RiderRequestView extends Activity {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
                 clickedRequestIDStr = request.getID().toString();
-                cancelRequest(request.getID().toString());
+                cancelRequest(request);
                 customAdapter.notifyDataSetChanged();
                 return true;
             }
@@ -183,7 +183,7 @@ public class RiderRequestView extends Activity {
             });
         }
 
-    public void cancelRequest(final String requestID) {
+    public void cancelRequest(final Request request) {
 
         // Inflate the popup_layout.xml
         LinearLayout viewCancelGroup = (LinearLayout) findViewById(R.id.cancel_request);
@@ -199,22 +199,15 @@ public class RiderRequestView extends Activity {
 
         // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
         int CANCEL_OFFSET_X = 1000;
-        int CANCEL_OFFSET_Y = 200;
+        int CANCEL_OFFSET_Y = 300;
 
         // Displaying the popup at the specified location, + offsets.
         cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
 
 
         // Getting a reference to Close button, and close the popup when clicked.
-        Button cancelClose = (Button) cancelLayout.findViewById(R.id.Exit_Cancel_Request);
         Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
 
-        cancelClose.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                cancelPopUp.dismiss();
-            }
-        });
 
         cancelRequest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -222,15 +215,17 @@ public class RiderRequestView extends Activity {
                 // Cancel request
 
                 AsyncController controller = new AsyncController();
-                JsonObject requestJson = controller.get("request", "id", requestID); //TODO must switch out for cancelled boolean and test
-                Request request = null;
+                JsonObject requestJson = controller.get("request", "id", request.getID().toString()); //TODO must switch out for cancelled boolean and test
+                Request request1 = null;
                 try {
-                    request = new Request(requestJson);
-                    request.setAccepted(true); //TODO fix to correct boolean
+                    request1 = new Request(requestJson);
+                    request1.setAccepted(true); //TODO fix to correct boolean
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                System.out.println( controller.create("request", request.getID().toString(), request.toJsonString()));
+                System.out.println( controller.create("request", request1.getID().toString(), request1.toJsonString()));
+                requests.remove(request);
+
             }
         });
 
