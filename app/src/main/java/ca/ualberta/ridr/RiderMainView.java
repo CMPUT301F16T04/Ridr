@@ -252,6 +252,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
         lastKnownPlace = getCurrentLocation();
+        //Toast.makeText(RiderMainView.this, "connected!", Toast.LENGTH_SHORT).show();
+
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
@@ -263,6 +265,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
     // Currently this shows an alert notifying the user that the connection failed
     public void onConnectionFailed(ConnectionResult result) {
+        //Toast.makeText(RiderMainView.this, "connection failed", Toast.LENGTH_SHORT).show();
         new AlertDialog.Builder(this)
                 .setTitle("Connection Failure")
                 .setMessage(result.getErrorMessage())
@@ -345,6 +348,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
         // reset text fields
         resetText();
+        //clear map of markers
+        gMap.clear();
+        if(markers != null){
+            markers.clear();
+        }
     }
 
 
@@ -354,13 +362,17 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         //pickupCoord = getLocationFromAddress(startLocation.getText().toString());
         pickupCoord = new LatLng(53.525288, -113.525454);
         addMarkers(pickupCoord, "Pickup");
+        gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
         if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultDestinationText)){
             Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
         }
     }
 
     private void endLocationChangeEvent(){
+        //pickupCoord = getLocationFromAddress(endLocation.getText().toString());
         Toast.makeText(RiderMainView.this, "changed end location", Toast.LENGTH_SHORT).show();
+        dropoffCoord =  new LatLng(53.084775, -112.105067);
+        addMarkers(dropoffCoord, "Dropoff");
         if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
             Toast.makeText(RiderMainView.this, "both have changed", Toast.LENGTH_SHORT).show();
         }
@@ -431,6 +443,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         if(currentLocation != null) {
             return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
         }
+        //Toast.makeText(RiderMainView.this, "failed to get current location", Toast.LENGTH_SHORT).show();
         return null;
     }
 
@@ -441,7 +454,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      * @param coords coordinates of the marker
      */
     public void addMarkers(LatLng coords, String title){
-        gMap.clear();
+        //gMap.clear();
 
         if (markers == null) {
             markers = new ArrayList<>();
