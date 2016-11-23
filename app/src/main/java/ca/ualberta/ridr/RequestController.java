@@ -236,9 +236,9 @@ public class RequestController {
 
     }
 
-    public void findAllRequestsWithDataMember(String dataType, String variable, UUID userID){
+    public void findAllRequestsWithDataMember(String dataType, String variable, String variableValue){
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getFromIndexObjectInArray(dataType, variable, userID.toString());
+        JsonArray queryResults = controller.getFromIndexObjectInArray(dataType, variable, variableValue);
 
         for (JsonElement result : queryResults) {
             try {

@@ -2,26 +2,21 @@ package ca.ualberta.ridr;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-
 import java.util.ArrayList;
 import java.util.UUID;
 
-public abstract class RequestsFromRidersView extends Activity implements ACallback{
+public class RequestsFromRidersView extends Activity implements ACallback{
     //must extend activity, not appcompatactivity
 
     private UUID userID;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
-    private RequestController controller;
+    private RequestController requestController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,8 +41,11 @@ public abstract class RequestsFromRidersView extends Activity implements ACallba
         }
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
-        controller = new RequestController(this);
-        controller.findAllRequestsWithDataMember("requests", "possibleDrivers", userID);
+        DriverController driverController = new DriverController();
+        Driver myself = driverController.getDriverFromServer(userID.toString());
+        requestController = new RequestController(this);
+        requestController.findAllRequestsWithDataMember("requests", "possibleDrivers", myself.getName());
+        //search for our name in any possibleDriver list
         //update gets called from Acallback
 
 
@@ -74,6 +72,6 @@ public abstract class RequestsFromRidersView extends Activity implements ACallba
     //for Acallback
     public void update() {
         requests.clear();
-        requests.addAll(controller.getList());
+        requests.addAll(requestController.getList());
     }
 }
