@@ -45,23 +45,22 @@ public class RideAdapter extends ArrayAdapter<Ride> {
 
         SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
 
-        String fareText = ride.isPaid()? "Fare(Paid): ": "Fair: ";
+        String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
         String completed = ride.isCompleted().toString();
         rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
         riderName.setText("Rider: " + ride.getRider());
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
+        ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
-        ridePickupTime.setText("Pick up: " + rideDate.format(ride.getRideDate()));
         rideFare.setText(fareText + Float.toString(ride.getFare()));
 
         if(ride.isCompleted() && ride.isPaid()) {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.paid));
         } else if(ride.isCompleted() && !ride.isPaid()){
-            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.completed));
+            convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
         } else{
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.uncompleted));
         }
-
         return convertView;
     }
 

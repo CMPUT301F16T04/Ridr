@@ -13,19 +13,22 @@ import static org.junit.Assert.assertTrue;
 
 public class RideControllerTest {
     @Test
-    public void testRideControllerConfirmDriver(){
-        Vehicle vehicle = new Vehicle(1990, "pontiac", "grandam");
-        Driver driver = new Driver("john", new Date(), "credit", "email", "phone", vehicle, "bankaccountno");
-        Request request = new Request("Edmonton", "Timbuktu");
-        Rider rider = new Rider("Guy", new Date(), "credit", "email", "phone");
+//    public void testRideControllerConfirmDriver(){
+//        Vehicle vehicle = new Vehicle(1990, "pontiac", "grandam");
+//        Driver driver = new Driver("john", new Date(), "credit", "email", "phone", vehicle, "bankaccountno");
+//        Request request = new Request("Edmonton", "Timbuktu");
+//        Rider rider = new Rider("Guy", new Date(), "credit", "email", "phone");
+//
+//        RideController RC = new RideController();
+//
+//        RC.createRide(driver, request, rider);
+//
+//        assertTrue(rider.getRides().get(0).getDriver().equals(driver));
+//
+//    }
 
-        RideController RC = new RideController();
-
-        RC.createRide(driver, request, rider);
-
-        assertTrue(rider.getRides().get(0).getDriver().equals(driver));
+    public void testRideSorting(){
 
     }
-
 
 }

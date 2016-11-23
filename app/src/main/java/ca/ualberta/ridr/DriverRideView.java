@@ -32,11 +32,12 @@ public class DriverRideView extends Activity implements ACallback {
         //retrieve the current driver's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+        driver = UUID.fromString("5469bc7d-c9ab-46ba-9405-62901cd1a20a");
         if (extras != null) {
             String driverID = extras.getString("UUID");
             driver = UUID.fromString(driverID);
         }
-        if(extras == null) {
+        if(driver == null) {
             Intent loginPage = new Intent(DriverRideView.this, LoginView.class);
             startActivity(loginPage);
             finish();
@@ -48,12 +49,14 @@ public class DriverRideView extends Activity implements ACallback {
     @Override
     protected void onStart(){
         super.onStart();
-        rides.getRiderRides(driver);
+        rides.getDriverRides(driver);
 
         rideList.setAdapter(rideAdapter);
     }
 
     @Override
+    /* Used when the ride controller is finishes fetching rides from the server or file storage
+     */
     public void update() {
         rideAdapter.clear();
         rideAdapter.notifyDataSetChanged();

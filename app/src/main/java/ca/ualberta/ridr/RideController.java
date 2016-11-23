@@ -46,7 +46,7 @@ public class RideController {
     }
 
     public void getDriverRides(final UUID userID) {
-        // Get all user requests from the database
+        // Get all user rides from the database
         AsyncController controller = new AsyncController();
         try {
             JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "driver", userID.toString());
@@ -57,6 +57,7 @@ public class RideController {
                     Log.i("Error parsing requests", e.toString());
                 }
             }
+            rides = sortRides(rides);
             cbInterface.update();
         } catch (Exception e) {
             Log.i("Null request", e.toString());
@@ -64,7 +65,7 @@ public class RideController {
     }
 
     public void getRiderRides(final UUID userID) {
-        // Get all user requests from the database
+        // Get all user rides from the database
         AsyncController controller = new AsyncController();
         try {
             JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "rider", userID.toString());
@@ -100,6 +101,7 @@ public class RideController {
         right = sortRides(right);
         return mergeRides(left, right);
     }
+
     private ArrayList<Ride> mergeRides(ArrayList<Ride> left, ArrayList<Ride> right){
         ArrayList<Ride> result = new ArrayList<>();
 

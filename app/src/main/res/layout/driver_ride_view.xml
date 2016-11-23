@@ -9,16 +9,6 @@
     android:orientation="vertical"
     android:background="@color/secondary_colour"
     tools:context="ca.ualberta.ridr.DriverRideView">
-l
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="33sp"
-        android:textAlignment="center"
-        android:layout_gravity="center_horizontal"
-        android:textColor="@color/primary_colour"
-        android:layout_marginBottom="15dp"
-        android:text="Rides"/>
     <ListView
         android:id="@+id/driverRidesList"
         android:layout_width="match_parent"
