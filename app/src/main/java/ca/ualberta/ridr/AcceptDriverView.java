@@ -45,13 +45,19 @@ public class AcceptDriverView extends Activity {
     private String driverId;
     private String requestId;
 
+    private DriverController driverCon = new DriverController();
+    private RideController rideCon = new RideController();
+    private RequestController reqCon = new RequestController();
+    private RiderController riderCon = new RiderController();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_driver);
 
-        driverEmail = (TextView) findViewById(R.id.driver_email);
-        driverPhone = (TextView) findViewById(R.id.driver_phone);
+        driverEmail = (Button) findViewById(R.id.driver_email);
+        driverPhone = (Button) findViewById(R.id.driver_phone);
         xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
@@ -62,8 +68,6 @@ public class AcceptDriverView extends Activity {
             riderId= ids.get(0);
             driverId= ids.get(1);
             requestId = ids.get(2);
-            //System.out.println(ids);
-            //System.out.println(driverId);
         }
         else{
             //this is if there was some error retrieving data passed, just go back to prev activity
@@ -77,19 +81,8 @@ public class AcceptDriverView extends Activity {
         String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
 
-        String profileString = checkProfileString(driver.getName());
-
-        //found how to underline text in textview at: http://stackoverflow.com/questions/10019001/how-do-you-underline-a-text-in-android-xml
-        //accessed on Nov 22 / 16
-        //author : George Artemiou and R4chi7
-        SpannableString emailUnderlined = new SpannableString(driverEmailStr);
-        emailUnderlined.setSpan(new UnderlineSpan(), 0, emailUnderlined.length(), 0);
-
-        //TODO see which of these looks best 
-
-        driverEmail.setText(emailUnderlined);
+        driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        //xProfile.setText(profileString);
         xProfile.setText(driver.getName());
 
         //if the user clicks the accept button state of the request is modified, a ride is created
@@ -99,10 +92,7 @@ public class AcceptDriverView extends Activity {
             public void onClick(View v) {
 
 
-                RideController RideC = new RideController();
-                RideC.createRide(driverId, request, riderId);
-
-                RequestController reqCon = new RequestController();
+                rideCon.createRide(driver.getName(), request, getRiderName(riderId));
                 reqCon.accept(request);
 
                 finish();
@@ -124,7 +114,7 @@ public class AcceptDriverView extends Activity {
             }
         });
 
-        //if the user clicks the drivers displaye email we will want to take them to an email app
+        //if the user clicks the drivers displayed email we will want to take them to an email app
         driverEmail.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
@@ -137,29 +127,13 @@ public class AcceptDriverView extends Activity {
     }
 
     /**
-     * this function just checks on which way we want to format the title depending on the driver's name
-     *
-     * @param name is the driver's name
-     * @return String for view title
-     */
-    private String checkProfileString(String name) {
-        if(name.endsWith("s")) {
-            return(name+"' Profile");
-        }
-        else{
-            return(name+"'s Profile");
-        }
-    }
-
-    /**
      * gets the driver for the data we display on this view
      *
      * @param driverId used to fetch the driver
      * @return Driver object
      */
     public Driver getDriver(String driverId){
-        DriverController DC = new DriverController();
-        Driver driver = DC.getDriverFromServer(driverId);
+        Driver driver = driverCon.getDriverFromServer(driverId);
         return(driver);
     }
 
@@ -171,8 +145,7 @@ public class AcceptDriverView extends Activity {
      * @return Request object
      */
     public Request getRequest(String requestId){
-        RequestController requestCon = new RequestController();
-        Request request = requestCon.getRequestFromServer(requestId);
+        Request request = reqCon.getRequestFromServer(requestId);
 
         //if we could not fetch the request and return null then... go back to previous activity?
         if(request==null) {
@@ -181,5 +154,11 @@ public class AcceptDriverView extends Activity {
 
         return(request);
     }
+
+    public String getRiderName(String riderId){
+        Rider rider = riderCon.getRiderFromServer(riderId);
+        return(rider.getName());
+    }
+
 
 }

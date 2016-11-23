@@ -13,9 +13,9 @@ public class RideController {
     RideController(){}
 
 
-    public void createRide(String driverId, Request request, String riderId) {
+    public void createRide(String driverName, Request request, String riderName) {
         //will need to replace the date I guess with actual date that ride is supposed to occur
-        Ride ride = new Ride(driverId, riderId,  request.getPickup(), request.getDropoff(), new Date() , request.getPickupCoords(), request.getDropOffCoords());
+        Ride ride = new Ride(driverName, riderName,  request.getPickup(), request.getDropoff(), request.getDate() , request.getPickupCoords(), request.getDropOffCoords());
 
         System.out.println(ride);
         //rider.confirmDriver(ride);
