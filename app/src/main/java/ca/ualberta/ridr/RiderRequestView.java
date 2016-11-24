@@ -216,10 +216,12 @@ public class RiderRequestView extends Activity {
         // Getting a reference to Close button, and close the popup when clicked.
         Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
         TextView textView = (TextView) cancelLayout.findViewById(R.id.request_state);
-        if (request.isAccepted()){
-            textView.setText("Request is accepted");
+        // Display state of request
+        if (request.getPossibleDrivers().size() > 0){
+            String size = Integer.toString(request.getPossibleDrivers().size());
+            textView.setText("Request is accepted by " + size + "drivers");
         } else{
-            textView.setText("Request is hasn't been accepted");
+            textView.setText("Request is hasn't been accepted by any drivers");
         }
 
 
