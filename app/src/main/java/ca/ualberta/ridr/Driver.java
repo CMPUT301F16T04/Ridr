@@ -24,6 +24,9 @@ public class Driver extends User {
         this.vehicleDescription = vechileDescription;
     }
 
+    public Driver(User user){
+        super(user);
+    }
     public String getName() {
         return super.getName();
     }

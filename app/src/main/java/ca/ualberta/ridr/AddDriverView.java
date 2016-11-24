@@ -94,15 +94,12 @@ public class AddDriverView extends Activity implements ACallback {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if (extras != null) {
+        username = "Justin";
+        if (username != null) {
             // We're getting passed in here from another view, let's see if we update a user
-            username = extras.getString("username");
+            username = "Justin";
             updateUser = true;
-            try{
-                accountController.loginUser(username);
-            } catch (Exception e){
-                Log.i("Login failure", "Unable to login as driver");
-            }
+            accountController.loginUser(username);
         }
         //text formatting listener for phone edit text
         phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
@@ -260,6 +257,7 @@ public class AddDriverView extends Activity implements ACallback {
     }
 
     private void addUserInfoToField(User user){
+        System.out.println(new Gson().toJson(user));
         SimpleDateFormat date = new SimpleDateFormat("MMM dd, yyyy");
         usernameEditText.setText(user.getName());
         dobEditText.setText(date.format(user.getDateOfBirth()));
@@ -270,10 +268,8 @@ public class AddDriverView extends Activity implements ACallback {
     public void update(){
 
         User currentUser = accountController.getUser();
-        System.out.println("Not update");
         // this is very hacky. But let's check what state we're in.
         if(!updateUser){
-            System.out.println("Not update");
             try{
                 if(currentUser != null){
                     //if we found another rider with the same name
@@ -295,9 +291,11 @@ public class AddDriverView extends Activity implements ACallback {
                 newDriver.setDriverStatus(true);
                 createAccount();
             } else{
+                Log.i("Get user", "logging in user " + currentUser.getName());
                 // Dangerous, but should copy current user into a driver object and then all we
                 // need to do is update vehicle info and driver status
-                newDriver = (Driver) currentUser;
+                newDriver = new Driver(currentUser);
+                addUserInfoToField(currentUser);
             }
 
         }

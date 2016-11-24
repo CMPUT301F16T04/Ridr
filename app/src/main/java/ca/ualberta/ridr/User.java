@@ -25,6 +25,19 @@ public class User {
         this.email = email;
         this.phoneNumber = phoneNumber;
         this.id = UUID.randomUUID();
+        this.isRider = false;
+        this.isDriver = false;
+    }
+
+    public User(User user){
+        this.name = user.name;
+        this.dateOfBirth = user.dateOfBirth;
+        this.creditCard = user.creditCard;
+        this.email = user.email;
+        this.phoneNumber = user.phoneNumber;
+        this.id = user.id;
+        this.isRider = false;
+        this.isDriver = false;
     }
 
     public String getName() {

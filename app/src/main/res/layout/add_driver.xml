@@ -15,35 +15,24 @@
 
 
     <TextView
-        android:text="@string/create_account_title"
+        android:text="@string/create_driver_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/create_account_title_text"
-        android:textSize="40sp"
+        android:textSize="38sp"
         android:textStyle="normal"
         android:fontFamily="sans-serif"
         android:layout_marginLeft="10dp"
         android:typeface="normal"
         android:textColor="@color/primary_colour" />
-
-    <TextView
-        android:text="@string/create_account_subtitle"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_account_subtitle_text"
-        android:layout_marginBottom="30dp"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textAlignment="center"
-        android:gravity="center" />
-
+    
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="450dp">
+        android:layout_height="match_parent">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:text="@string/username_add_account"
@@ -101,7 +90,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="@string/dob_add_account_edit_text"
+                android:hint="@string/driver_dob_hint"
                 android:textColorHint="@android:color/darker_gray"/>
 
             <TextView
@@ -217,12 +206,12 @@
                 android:paddingBottom="5sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
-                android:layout_marginBottom="10dp"
+                android:layout_marginBottom="5dp"
                 android:hint="@string/vehicle_description"
                 android:textColorHint="@android:color/darker_gray"/>
             <Button
                 android:text="@string/create_driver_button"
-                android:layout_height="wrap_content"
+                android:layout_height="65dp"
                 android:id="@+id/create_driver_button"
                 android:layout_width="300dp"
                 android:layout_gravity="center"
