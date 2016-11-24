@@ -20,7 +20,7 @@ import java.util.UUID;
 public class SearchResultsView extends Activity {
 
     private ArrayList<Request> requestList = new ArrayList<>();
-    private Context context;
+    private Context context = this;
     final RequestController requestController = new RequestController(context);
     private String keyword;
     private ListView searchResults;

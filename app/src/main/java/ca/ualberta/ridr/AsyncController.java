@@ -44,6 +44,8 @@ public class AsyncController {
         this.context = context;
     }
 
+    public AsyncController() {};
+
     /**
      * Gets a single object from the database and returns it as a JsonObject.
      *
@@ -83,6 +85,8 @@ public class AsyncController {
 
         } catch(Exception e){
             return loadFromFile(file);
+            //Log.i("error", e.toString());
+            //return null;
         }
     }
 
