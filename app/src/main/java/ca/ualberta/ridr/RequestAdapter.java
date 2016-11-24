@@ -5,7 +5,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -39,22 +38,26 @@ public class RequestAdapter extends ArrayAdapter<Request> {
 
         Request request = getItem(position);
 
-        requestUser.setText("Rider: " + request.getRider());
-        requestPickup.setText("Pickup: " + request.getPickup());
-        requestDropoff.setText("Drop off: " + request.getDropoff());
-        requestDate.setText("Date: " + request.getDate().toString());
-        requestFare.setText("Fare: " + Float.toString(request.getFare()));
-
-        requestStatus.setText("Status: " + getRequestStatus(request));
-
-
+        String placeholder;
+        placeholder = "Rider: " + request.getRider();
+        requestUser.setText(placeholder);
+        placeholder = "Pickup: " + request.getPickup();
+        requestPickup.setText(placeholder);
+        placeholder = "Drop off: " + request.getDropoff();
+        requestDropoff.setText(placeholder);
+        placeholder = "Date: " + request.getDate().toString();
+        requestDate.setText(placeholder);
+        placeholder = "Fare: " + Float.toString(request.getFare());
+        requestFare.setText(placeholder);
+        placeholder = "Status: " + getRequestStatusString(request);
+        requestStatus.setText(placeholder);
 
         return convertView;
     }
 
 
 
-    private String getRequestStatus(Request request){
+    private String getRequestStatusString(Request request){
         if(request.isAccepted()){
             return "Has Driver"; //Really should never actually be displaying this, as this means
             //that the object is now a ride, so why are we displaying with the request adapter...?
