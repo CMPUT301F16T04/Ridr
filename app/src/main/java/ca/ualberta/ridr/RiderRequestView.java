@@ -64,10 +64,6 @@ public class RiderRequestView extends Activity {
                 currentIDStr = extras.getString("UUID");
                 currentUUID = UUID.fromString(currentIDStr);
             }
-
-
-
-
         }
 
 
@@ -83,7 +79,7 @@ public class RiderRequestView extends Activity {
         for (JsonElement result : queryResults) {
             try {
                 Request req = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
-                if(!req.isAccepted()){ //MUST REPLACE WITH CANCELLED BOOLEAN
+                if(req.isValid()){
                     requests.add(req);
                 }
             } catch (Exception e) {
@@ -189,6 +185,11 @@ public class RiderRequestView extends Activity {
             });
         }
 
+    /**
+     * Cancels a request when selected in the listView using the asynchronous controller
+     * @param request
+     * @param customAdapter
+     */
     public void cancelRequest(final Request request, final RequestAdapter customAdapter) {
 
         // Inflate the popup_layout.xml
@@ -219,21 +220,14 @@ public class RiderRequestView extends Activity {
             @Override
             public void onClick(View v) {
                 // Cancel request
-
                 AsyncController controller = new AsyncController();
-                JsonObject requestJson = controller.get("request", "id", request.getID().toString()); //TODO must switch out for cancelled boolean and test
-                Request request1 = null;
-                try {
-                    request1 = new Request(requestJson);
-                    request1.setAccepted(true); //TODO fix to correct boolean
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                System.out.println( controller.create("request", request1.getID().toString(), request1.toJsonString()));
+
+                request.setIsValid(false);
+
+                System.out.println( controller.create("request", request.getID().toString(), request.toJsonString()));
                 requests.remove(request);
                 customAdapter.notifyDataSetChanged();
                 cancelPopUp.dismiss();
-
             }
         });
 

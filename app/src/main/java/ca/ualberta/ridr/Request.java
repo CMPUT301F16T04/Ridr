@@ -34,6 +34,12 @@ public class Request {
     private float fare;
     private Date date;
 
+    public void setIsValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    private Boolean isValid;
+
 
     Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
@@ -46,6 +52,7 @@ public class Request {
         this.date = date;
         this.fare = 20;
         this.accepted = false;
+        this.isValid = true;
     }
 
     public Date getDate(){
@@ -58,6 +65,11 @@ public class Request {
     public LatLng getPickupCoords() {
         return pickupCoord;
     }
+
+    public Boolean isValid(){
+        return isValid;
+    }
+
 
     public void setPickupCoords(LatLng pickupCoords) {
         this.pickupCoord = pickupCoords;
@@ -156,6 +168,7 @@ public class Request {
             toReturn.put("accepted", this.accepted);
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
+            toReturn.put("isValid", isValid);
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -179,6 +192,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
+        this.isValid = request.get("isValid").getAsBoolean();
        // this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
         // maybe one day we will reach this dream
 
