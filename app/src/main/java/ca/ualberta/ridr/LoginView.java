@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -45,6 +46,7 @@ public class LoginView extends Activity {
      * The As driver.
      */
     boolean asDriver;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +71,7 @@ public class LoginView extends Activity {
                 }
                 User myUser = null;
                 try{
-                    myUser = new Gson().fromJson(new AsyncController().get("user", "name", usernameLogin.getText().toString().trim()), User.class);
+                    myUser = new Gson().fromJson(new AsyncController(context).get("user", "name", usernameLogin.getText().toString().trim()), User.class);
                 } catch (Exception e){
                     Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                     return;

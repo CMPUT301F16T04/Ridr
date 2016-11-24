@@ -21,6 +21,7 @@ import static org.junit.Assert.*;
  *
  * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
  */
+
 @RunWith(AndroidJUnit4.class)
 public class AddUserProfileTest {
     @Test
@@ -43,7 +44,7 @@ public class AddUserProfileTest {
         User user = new User("testy", date1, "321", "goodemail", "9999999");
 
         //add user
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         try{
             controller.create("user", user.getID().toString(), new Gson().toJson(user));
         } catch (Exception e){

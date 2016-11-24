@@ -37,6 +37,7 @@ public class RiderRequestView extends Activity {
     private String clickedDriverIDStr; //string of driver who is clicked in popup
     private String clickedRequestIDStr; //string of request that is clicked in listview
     private Activity activity = this;
+    private Context context = this;
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
@@ -60,7 +61,7 @@ public class RiderRequestView extends Activity {
         @Override
         protected void onStart() {
             super.onStart();
-            AsyncController controller = new AsyncController();
+            AsyncController controller = new AsyncController(context);
             JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
 
             System.out.println(queryResults);

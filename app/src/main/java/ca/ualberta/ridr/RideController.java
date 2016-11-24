@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
+
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
@@ -10,7 +12,11 @@ import java.util.Date;
  * Created by jferris on 22/10/16.
  */
 public class RideController {
-    RideController(){}
+    Context context;
+
+    RideController(Context context) {
+        this.context = context;
+    }
 
 
     public void createRide(String driverId, Request request, String riderId) {
@@ -21,7 +27,7 @@ public class RideController {
         //another cant do while the ride array list of rider is null
 
         String rideString = ride.toJsonString();
-        AsyncController con = new AsyncController();
+        AsyncController con = new AsyncController(context);
         JsonObject s = con.create("ride",ride.getId().toString(), rideString);
 
     }

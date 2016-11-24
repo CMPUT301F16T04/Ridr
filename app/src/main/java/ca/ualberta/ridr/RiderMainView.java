@@ -2,6 +2,7 @@ package ca.ualberta.ridr;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Address;
@@ -77,6 +78,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private ArrayList<Marker> markers;
     private Geocoder geocoder;
 
+    private Context context = this;
+
     RequestController reqController;
     //RiderController riderController = new RiderController();
 
@@ -85,7 +88,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.rider_main);
-        reqController = new RequestController(this);
+        reqController = new RequestController(context);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.newRequestMap);
         mapFragment.getMapAsync(this);
@@ -111,7 +114,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
         //from the UUID, get the rider object
         try {
-            currentRider = new Gson().fromJson(new AsyncController().get("user", "id", currentIDStr), Rider.class);
+            currentRider = new Gson().fromJson(new AsyncController(context).get("user", "id", currentIDStr), Rider.class);
         } catch(Exception e){
             Log.i("Error parsing Rider", e.toString());
         }

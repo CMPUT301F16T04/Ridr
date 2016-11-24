@@ -57,6 +57,8 @@ public class AddUserView extends Activity {
      */
     Button createAccountButton;
 
+    Context context = this;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -146,7 +148,7 @@ public class AddUserView extends Activity {
                         formattedCreditString, formattedEmailString, formattedPhoneString);
 
                 //check that account doesn't already exist
-                AsyncController controller = new AsyncController();
+                AsyncController controller = new AsyncController(context);
                 User onlineUser = null;
                 try{
                     onlineUser = new Gson().fromJson(controller.get("user", "name", user.getName()), User.class);

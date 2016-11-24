@@ -4,6 +4,8 @@ package ca.ualberta.ridr;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
+
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -24,10 +26,13 @@ import io.searchbox.core.SearchResult;
  */
 public class RiderController {
 
-    RiderController(){
+    private Context context;
+
+    RiderController(Context context){
+        this.context = context;
     }
     public Rider getRiderFromServer(String riderId){
-        Rider rider = new Gson().fromJson(new AsyncController().get("user", "id", riderId), Rider.class);
+        Rider rider = new Gson().fromJson(new AsyncController(context).get("user", "id", riderId), Rider.class);
         return(rider);
     }
     public ArrayList<Request> getRequests(Rider rider){

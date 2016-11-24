@@ -2,6 +2,7 @@ package ca.ualberta.ridr;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -42,6 +43,8 @@ public class AcceptDriverView extends Activity {
     private String riderId;
     private String driverId;
     private String requestId;
+
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,10 +94,10 @@ public class AcceptDriverView extends Activity {
             public void onClick(View v) {
 
 
-                RideController RideC = new RideController();
+                RideController RideC = new RideController(context);
                 RideC.createRide(driverId, request, riderId);
 
-                RequestController reqCon = new RequestController();
+                RequestController reqCon = new RequestController(context);
                 reqCon.setRequestAccepted(request);
 
                 //TODO once we have a user request list we can uncomment this
@@ -154,7 +157,7 @@ public class AcceptDriverView extends Activity {
      * @return Driver object
      */
     public Driver getDriver(String driverId){
-        DriverController DC = new DriverController();
+        DriverController DC = new DriverController(context);
         Driver driver = DC.getDriverFromServer(driverId);
         return(driver);
     }
@@ -167,7 +170,7 @@ public class AcceptDriverView extends Activity {
      * @return Request object
      */
     public Request getRequest(String requestId){
-        RequestController requestCon = new RequestController();
+        RequestController requestCon = new RequestController(context);
         Request request = requestCon.getRequestFromServer(requestId);
 
         //if we could not fetch the request and return null then... go back to previous activity?

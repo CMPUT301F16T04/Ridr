@@ -20,13 +20,13 @@ import java.util.UUID;
 public class SearchResultsView extends Activity {
 
     private ArrayList<Request> requestList = new ArrayList<>();
-    final RequestController requestController = new RequestController();
+    private Context context;
+    final RequestController requestController = new RequestController(context);
     private String keyword;
     private ListView searchResults;
     private RequestAdapter requestAdapter;
     private EditText bodyText;
     private UUID userID;
-    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -89,7 +89,7 @@ public class SearchResultsView extends Activity {
      */
     protected void searchResultsByKeyword(Context context, String keyword) {
         if(keyword != null) {
-            ArrayList<Request> tempRequestList = requestController.searchRequestsKeyword(keyword, context);
+            ArrayList<Request> tempRequestList = requestController.searchRequestsKeyword(keyword);
             requestList.clear();
             requestList.addAll(tempRequestList);
         }

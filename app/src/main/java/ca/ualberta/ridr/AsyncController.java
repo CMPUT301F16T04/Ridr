@@ -208,7 +208,7 @@ public class AsyncController {
         try {
             FileOutputStream fos = context.openFileOutput(file,
                     0);
-            
+
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
 
             Gson gson = new Gson();

@@ -54,9 +54,10 @@ public class RequestController {
         this.context = context;
     }
 
-    public RequestController(ACallback cbInterface){
+    public RequestController(ACallback cbInterface, Context context){
         this.cbInterface = cbInterface;
         this.requests = new ArrayList<>();
+        this.context = context;
     }
 
     /**

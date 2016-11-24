@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,8 @@ public class SearchRequestsView extends Activity {
 
     private ArrayList<Request> requestList = new ArrayList<Request>();
     private ArrayAdapter<Request> adapter;
-    final RequestController requestController = new RequestController();
+    private Context context = this;
+    final RequestController requestController = new RequestController(context);
     private TextView bodyText;
 
     @Override
