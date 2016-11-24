@@ -20,15 +20,25 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import java.text.ParseException;
 import java.util.UUID;
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 import java.util.Date;
 
+/**
+ * Displays information pertaining to a rider's active requests. Allows them to accept requests, as
+ * wel as cancel requests
+ *
+ */
 
 public class RiderRequestView extends Activity {
 
@@ -49,7 +59,7 @@ public class RiderRequestView extends Activity {
 
             //grab riders uuid
 
-            Intent intent = getIntent();
+            final Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
                 currentIDStr = extras.getString("UUID");
@@ -57,38 +67,52 @@ public class RiderRequestView extends Activity {
             }
         }
 
-        @Override
-        protected void onStart() {
-            super.onStart();
-            AsyncController controller = new AsyncController();
-            JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
 
-            System.out.println(queryResults);
-            for (JsonElement result : queryResults) {
-                try {
-                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-                } catch (Exception e) {
-                    Log.i("Error parsing requests", e.toString());
+    @Override
+    protected void onStart() {
+        super.onStart();
+        AsyncController controller = new AsyncController();
+        //TODO fix hardcoded value
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
+        requests.clear();
+
+        System.out.println(queryResults);
+        for (JsonElement result : queryResults) {
+            try {
+                Request req = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
+                if(req.isValid()){
+                    requests.add(req);
                 }
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
             }
-
-
-            RequestAdapter customAdapter = new RequestAdapter(activity, requests);
-            oldRequestsList.setAdapter(customAdapter);
-
-            //this is to recognize listview item presses within the view
-            oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Request request = requests.get(position);
-                    clickedRequestIDStr = request.getID().toString();
-                    displayDrivers(request);
-                }
-            });
-
-
         }
 
-        //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
+
+        final RequestAdapter customAdapter = new RequestAdapter(activity, requests);
+        oldRequestsList.setAdapter(customAdapter);
+
+        //this is to recognize listview item presses within the view
+        oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Request request = requests.get(position);
+                clickedRequestIDStr = request.getID().toString();
+                displayDrivers(request);
+            }
+        });
+        oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+                Request request = requests.get(position);
+                clickedRequestIDStr = request.getID().toString();
+                cancelRequest(request, customAdapter);
+
+                return true;
+            }
+        });
+    }
+
+    //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
         //date link accessed : Nov 5 2016
         //author: Emil Adz ,edited Vladimir Kulyk
         public void displayDrivers(Request request) {
@@ -160,8 +184,63 @@ public class RiderRequestView extends Activity {
                     //go to driver profile
                 }
             });
-
-
         }
+
+    /**
+     * Cancels a request when selected in the listView using the asynchronous controller
+     * @param request
+     * @param customAdapter
+     */
+    public void cancelRequest(final Request request, final RequestAdapter customAdapter) {
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewCancelGroup = (LinearLayout) findViewById(R.id.cancel_request);
+        LayoutInflater layoutCancelInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View cancelLayout = layoutCancelInflater.inflate(R.layout.cancel_request, viewCancelGroup);
+
+        // Creating the PopupWindow
+        final PopupWindow cancelPopUp = new PopupWindow(activity);
+        cancelPopUp.setContentView(cancelLayout);
+        cancelPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        cancelPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        cancelPopUp.setFocusable(true);
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int CANCEL_OFFSET_X = 1000;
+        int CANCEL_OFFSET_Y = 300;
+
+        // Displaying the popup at the specified location, + offsets.
+        cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
+
+
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
+        TextView textView = (TextView) cancelLayout.findViewById(R.id.request_state);
+        // Display state of request
+        if (request.getPossibleDrivers().size() > 0){
+            String size = Integer.toString(request.getPossibleDrivers().size());
+            textView.setText("Request is accepted by " + size + "drivers");
+        } else{
+            textView.setText("Request is hasn't been accepted by any drivers");
+        }
+
+
+        cancelRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cancel request
+                AsyncController controller = new AsyncController();
+
+                request.setIsValid(false);
+
+                System.out.println( controller.create("request", request.getID().toString(), request.toJsonString()));
+                requests.remove(request);
+                customAdapter.notifyDataSetChanged();
+                cancelPopUp.dismiss();
+            }
+        });
+
     }
+
+}
 

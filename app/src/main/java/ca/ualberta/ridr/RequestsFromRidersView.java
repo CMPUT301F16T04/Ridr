@@ -76,6 +76,12 @@ public class RequestsFromRidersView extends Activity implements ACallback{
     //for Acallback
     public void update() {
         requests.clear();
-        requests.addAll(requestController.getList());
+        ArrayList<Request> requestControllerList = requestController.getList();
+        for (int i = 0; i < requestControllerList.size(); ++i){
+            if(requestControllerList.get(i).isValid()){
+                //add to our request list, if the request is a valid request (not cancelled)
+                requests.add(requestControllerList.get(i));
+            }
+        }
     }
 }
