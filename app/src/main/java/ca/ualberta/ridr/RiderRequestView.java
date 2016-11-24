@@ -20,6 +20,7 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import java.text.ParseException;
 import java.util.UUID;
@@ -214,6 +215,12 @@ public class RiderRequestView extends Activity {
 
         // Getting a reference to Close button, and close the popup when clicked.
         Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
+        TextView textView = (TextView) cancelLayout.findViewById(R.id.request_state);
+        if (request.isAccepted()){
+            textView.setText("Request is accepted");
+        } else{
+            textView.setText("Request is hasn't been accepted");
+        }
 
 
         cancelRequest.setOnClickListener(new View.OnClickListener() {
