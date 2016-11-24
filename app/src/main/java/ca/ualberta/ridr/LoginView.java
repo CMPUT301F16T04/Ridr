@@ -107,7 +107,9 @@ public class LoginView extends Activity {
                 } else {
                     addAccountIntent = new Intent(LoginView.this, AddRiderView.class);
                 }
-                addAccountIntent.putExtra("username", username);
+                if(!TextUtils.isEmpty(username)) {
+                    addAccountIntent.putExtra("username", username);
+                }
                 startActivity(addAccountIntent);
             }
         });
