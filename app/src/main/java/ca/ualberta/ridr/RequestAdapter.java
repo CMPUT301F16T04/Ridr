@@ -34,20 +34,38 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         TextView requestDate = (TextView) convertView.findViewById(R.id.request_date);
         TextView requestUser = (TextView) convertView.findViewById(R.id.request_user);
         TextView requestFare = (TextView) convertView.findViewById(R.id.request_fare);
+        TextView requestStatus = (TextView) convertView.findViewById(R.id.request_status);
+
 
         Request request = getItem(position);
 
         requestUser.setText("Rider: " + request.getRider());
         requestPickup.setText("Pickup: " + request.getPickup());
         requestDropoff.setText("Drop off: " + request.getDropoff());
-        requestDate.setText("Date: " + request.getDate().toString()); // Will need to convert to something else?
+        requestDate.setText("Date: " + request.getDate().toString());
         requestFare.setText("Fare: " + Float.toString(request.getFare()));
+
+        requestStatus.setText("Status: " + getRequestStatus(request));
 
 
 
         return convertView;
     }
 
+
+
+    private String getRequestStatus(Request request){
+        if(request.isAccepted()){
+            return "Has Driver"; //Really should never actually be displaying this, as this means
+            //that the object is now a ride, so why are we displaying with the request adapter...?
+        } else if (request.getPossibleDrivers() == null || request.getPossibleDrivers().size() == 0){
+            return "No Drivers willing to fulfill yet";
+        } else if(request.getPossibleDrivers().size() > 0) {
+            return "A few Drivers willing to fulfill";
+        } else {
+            return "";
+        }
+    }
 }
 
 
