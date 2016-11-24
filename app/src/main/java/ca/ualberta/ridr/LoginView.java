@@ -19,8 +19,8 @@ import com.google.gson.Gson;
  * This activity displays the login screen, and handles the logic of logging in as a rider or a driver.
  *
  */
-public class LoginView extends Activity {
-    AsyncController asyncController;
+public class LoginView extends Activity implements ACallback {
+    AccountController accountController;
     /**
      * The Rider login.
      */
@@ -50,7 +50,8 @@ public class LoginView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
-        asyncController = new AsyncController();
+
+        accountController = new AccountController(this);
 
         asDriver = true;
         driverLogin = (TextView) findViewById(R.id.DriverLogin);
@@ -65,28 +66,12 @@ public class LoginView extends Activity {
             public void onClick(View view) {
                 //launches to next activity activity
                 //check for empty textbox
-                if(TextUtils.isEmpty(usernameLogin.getText().toString())){
+                String username = usernameLogin.getText().toString();
+                if(TextUtils.isEmpty(username)){
                     Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                User myUser = null;
-                try{
-                    myUser = new Gson().fromJson(asyncController.get("user", "name", usernameLogin.getText().toString().trim()), User.class);
-                } catch (Exception e){
-                    Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(myUser == null) {
-                    //if we found another driver with the same name
-                    Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //code for switching between a rider login and a driver login
-                if(asDriver){
-                    loginDriver(myUser);
-                } else {
-                    loginRider(myUser);
-                }
+                accountController.loginUser(username);
             }
         });
 
@@ -143,6 +128,21 @@ public class LoginView extends Activity {
         }
     }
 
+    public void update(){
+        User myUser = accountController.getUser();
+        if(myUser == null) {
+            //if we found another driver with the same name
+            Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //code for switching between a rider login and a driver login
+        if(asDriver){
+            loginDriver(myUser);
+        } else {
+            loginRider(myUser);
+        }
+
+    }
     /**
      * The Change user type.
      */
