@@ -23,13 +23,13 @@
     <string name="credit_add_account_edit_text">Example: XXXXBBBBYYYYAAAA</string>
 
     <!-- accept_rider view strings -->
-    <string name="payment_accept_rider">Payment: </string>
-    <string name="contact_info_accept_rider">Contact Info: </string>
-    <string name="pickup_time_accept_rider">Time of Pickup: </string>
-    <string name="start_location_accept_rider">Start Location: </string>
-    <string name="end_location_accept_rider">End Location: </string>
-    <string name="status_accept_rider">Status: </string>
-    <string name="accept_rider_button">Agree to fulfill if chosen</string>
+    <string name="payment_accept_rider">Payment:  </string>
+    <string name="contact_info_accept_rider">Contact Info:  </string>
+    <string name="pickup_time_accept_rider">Time of Pickup:  </string>
+    <string name="start_location_accept_rider">Start Location:  </string>
+    <string name="end_location_accept_rider">End Location:  </string>
+    <string name="status_accept_rider">Status:  </string>
+    <string name="accept_rider_button">Accept This Request</string>
 
 
 </resources>

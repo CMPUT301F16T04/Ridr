@@ -23,7 +23,7 @@ public class RideController {
 
         String rideString = ride.toJsonString();
         AsyncController con = new AsyncController();
-        JsonObject s = con.create("ride",ride.getId().toString(), rideString);
+        //JsonObject s = con.create("ride",ride.getId().toString(), rideString);
 
     }
 }
