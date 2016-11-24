@@ -50,7 +50,7 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         //update gets called from Acallback
 
 
-        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests);
+        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests, myself.getName());
         requestList.setAdapter(customAdapter);
 
         //this is to recognize listview item presses within the view

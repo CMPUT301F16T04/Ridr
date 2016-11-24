@@ -15,12 +15,20 @@ import java.util.ArrayList;
 public class RequestAdapter extends ArrayAdapter<Request> {
     private Context context;
     private ArrayList<Request> requests = new ArrayList<>();
+    private String userName;
 
 
     public RequestAdapter(Context context, ArrayList<Request> requests) {
         super(context, 0, requests);
         this.context = context;
         this.requests = requests;
+    }
+
+    public RequestAdapter(Context context, ArrayList<Request> requests, String userName) {
+        super(context, 0, requests);
+        this.context = context;
+        this.requests = requests;
+        this.userName = userName;
     }
 
     @Override
@@ -64,6 +72,9 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         } else if (request.getPossibleDrivers() == null || request.getPossibleDrivers().size() == 0){
             return "No Drivers willing to fulfill yet";
         } else if(request.getPossibleDrivers().size() > 0) {
+            if(userName != null && request.getPossibleDrivers().contains(userName)){
+                return "You are willing to fulfill"; //only happens if calling as a driver, from RequestsFromRidersView
+            }
             return "A few Drivers willing to fulfill";
         } else {
             return "";
