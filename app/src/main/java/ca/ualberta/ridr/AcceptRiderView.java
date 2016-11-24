@@ -21,12 +21,14 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.UUID;
 
@@ -42,11 +44,13 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private Button acceptRider;
 
     private UUID driverID;
+    private String driverName;
     private UUID requestID;
     private Rider requestRider;
     private Request request;
+    private Driver driver;
 
-    private boolean agreedToFulfill;
+    private boolean agreedToFulfill = false;
 
     //gmap variables
     private GoogleMap gMap;
@@ -58,6 +62,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
     private RequestController requestController = new RequestController();
     private RiderController riderController = new RiderController();
+    private DriverController driverController = new DriverController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +112,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         request = requestController.getRequestFromServer(requestID.toString());
         requestRider = riderController.getRiderFromServer(request.getRider());
 
-        String isFrom = "Request From " + requestRider.getName() + ":";
+        String isFrom = "Request from " + capitalizeName(requestRider.getName()) + ":";
+
+        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
 
 
         //set all the text that needs to be set
@@ -116,21 +123,23 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         payment.setText(paymentText);
         String contactInfoText = contactInfo.getText() + space + requestRider.getPhoneNumber();
         contactInfo.setText(contactInfoText);
-        String pickupTimeText = pickupTime.getText() + space + request.getDate().toString();
+        String pickupTimeText = pickupTime.getText() + space + rideDate.format(request.getDate());
         pickupTime.setText(pickupTimeText);
         String startLocationText = startLocation.getText() + space + request.getPickup();
         startLocation.setText(startLocationText);
         String endLocationText = endLocation.getText() + space + request.getDropoff();
         endLocation.setText(endLocationText);
 
+        driverName = driverController.getDriverFromServer(driverID.toString()).getName();
+        //have to check if the user previously accepted
         checkIfUserAccepted(requestID.toString());
 
         //display two diff strings based on status of acceptance
         if(agreedToFulfill){
-            String statusText = status.getText() + " You have accepted the request";
+            String statusText = status.getText() + " Accepted";
             status.setText(statusText);
         } else {
-            String statusText = status.getText() + " Have not yet accepted";
+            String statusText = status.getText() + " Not accepted";
             status.setText(statusText);
         }
 
@@ -139,7 +148,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
             @Override
             public void onClick(View view){
-                //TODO make ProfileView Activity
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
                 intent.putExtra("RiderUUID", requestRider.getID().toString());
                 startActivity(intent);
@@ -147,20 +155,23 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         });
 
         //when clicking on the accept rider button, we check if we already accepted. If not,
-        //add ourselves to list of prospectiveDrivers in the request (? maybe, still haven't got clearance from group)
+        //add ourselves to list of possibleDrivers in the request
         acceptRider.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
                 if(agreedToFulfill){
-                    Toast.makeText(AcceptRiderView.this, "You have already accepted this request!", Toast.LENGTH_SHORT).show();
+                    //chose this particular toast over "accepted already" so
+                    //they dont think that someone accepting prevents their own acceptance
+                    Toast.makeText(AcceptRiderView.this, "You've already accepted", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                else {
+                    requestController.addDriverToList(request, driverName);
 
-                requestController.addDriverToList(request, driverID.toString());
-
-                agreedToFulfill = true;
-                String statusText = getResources().getString(R.string.status_accept_rider) + " You have accepted the request";
-                status.setText(statusText);
+                    agreedToFulfill = true;
+                    String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
+                    status.setText(statusText);
+                }
             }
 
         });
@@ -199,7 +210,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     public void onConnected(Bundle connectionHint){
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
-            gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
         }
 
     }
@@ -223,10 +233,12 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     public void onMapReady(GoogleMap googleMap){
         gMap = googleMap;
         setupMap(request);
+
     }
 
     /**
      *  sets up the map by adding the two markers and then zooms
+     *  zoom is delegated to zoomToMid function
      *
      * @param request used to set marker points
      */
@@ -253,9 +265,15 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         builder.include(request.getDropOffCoords());
         builder.include(request.getPickupCoords());
-        LatLngBounds bounds = builder.build();
+        final LatLngBounds bounds = builder.build();
 
-        gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds , 120));
+        //for some reason the map wasnt loading before this point sometimes, so lets check first
+        gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+            @Override
+            public void onMapLoaded() {
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+            }
+        });
     }
 
     /**
@@ -267,11 +285,21 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private void checkIfUserAccepted(String requestId) {
         ArrayList<String> drivers = requestController.getPossibleDrivers(requestId);
         for (int i = 0; i < drivers.size(); ++i) {
-            if (drivers.get(i).equals(driverID.toString())) {
+            if (drivers.get(i).equals(driverName)) {
                 agreedToFulfill = true;
                 break;
             }
         }
+    }
+
+    /** just some formatting, might not be necessary if the names are enforced
+     *  to be capitalized but wont hurt to have this til then
+     *
+     * @param name the possibly lowercased name
+     * @return the name with the first letter capitalized
+     */
+    private String capitalizeName(String name){
+        return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
     }
 
 
