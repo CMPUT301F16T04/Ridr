@@ -16,7 +16,7 @@ import static org.junit.Assert.assertTrue;
 
 public class RequestControllerTest {
 
-    @Test
+    /*@Test
     public void testRequestControllerGetPossibleDrivers(){
         Request request = new Request("Edmonton", "Timbuktu");
         ArrayList<Driver> drivers = new ArrayList<Driver>();
@@ -47,6 +47,6 @@ public class RequestControllerTest {
         //then the real check is to make sure the controller can remove it
         assertEquals(rider.getRequests().size(), 0);
 
-    }
+    }*/
 
 }
