@@ -22,9 +22,16 @@ import io.searchbox.core.SearchResult;
  * Created by jferris on 22/10/16.
  */
 public class DriverController {
-
+    ACallback cbInterface;
+    Driver currentDriver;
+    AsyncController controller;
     DriverController(){
     }
+
+    DriverController(ACallback cbInterface){
+        this.cbInterface = cbInterface;
+    }
+
     public Driver getDriverFromServer(String driverId){
         Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
         return(driver);

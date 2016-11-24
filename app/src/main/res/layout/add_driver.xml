@@ -13,35 +13,37 @@
     android:scrollbars="vertical"
     android:background="@color/secondary_colour">
 
-    <ScrollView
+
+    <TextView
+        android:text="@string/create_account_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_title_text"
+        android:textSize="40sp"
+        android:textStyle="normal"
+        android:fontFamily="sans-serif"
+        android:layout_marginLeft="10dp"
+        android:typeface="normal"
+        android:textColor="@color/primary_colour" />
+
+    <TextView
+        android:text="@string/create_account_subtitle"
+        android:layout_height="wrap_content"
+        android:id="@+id/create_account_subtitle_text"
+        android:layout_marginBottom="30dp"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textAlignment="center"
+        android:gravity="center" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="450dp">
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <TextView
-                android:text="@string/create_account_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/create_account_title_text"
-                android:textSize="40sp"
-                android:textStyle="normal"
-                android:fontFamily="sans-serif"
-                android:layout_marginLeft="10dp"
-                android:typeface="normal"
-                android:textColor="@color/primary_colour" />
-
-            <TextView
-                android:text="@string/create_account_subtitle"
-                android:layout_height="wrap_content"
-                android:id="@+id/create_account_subtitle_text"
-                android:layout_marginBottom="30dp"
-                android:layout_width="wrap_content"
-                android:layout_marginLeft="10dp"
-                android:textAppearance="@style/TextAppearance.AppCompat"
-                android:textAlignment="center"
-                android:gravity="center" />
+            android:layout_height="match_parent">
 
             <TextView
                 android:text="@string/username_add_account"
@@ -59,17 +61,17 @@
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
                 android:ems="10"
-                android:id="@+id/username_add_account_edit_text"
+                android:textColor="@color/black"
+                android:id="@+id/driver_username"
                 android:background="@color/primary_colour"
-                android:textColor="?android:attr/colorPrimary"
                 android:textSize="22sp"
                 android:paddingTop="10sp"
                 android:paddingBottom="5sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:gravity="center_vertical|center_horizontal"
-                android:hint="@string/username_add_account_edit_text"
+                android:paddingStart="8dp"
+                android:hint="@string/enter_username"
                 android:textColorHint="@android:color/darker_gray" />
 
             <TextView
@@ -90,8 +92,9 @@
                 android:ems="10"
                 android:id="@+id/dob_add_account_edit_text"
                 android:background="@color/primary_colour"
-                android:textColor="?android:attr/colorPrimary"
-                android:gravity="center_vertical|center_horizontal"
+                android:textColor="@color/black"
+                android:focusable="false"
+                android:paddingStart="8dp"
                 android:textSize="22sp"
                 android:paddingTop="10sp"
                 android:paddingBottom="5dp"
@@ -117,10 +120,11 @@
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
                 android:ems="10"
-                android:id="@+id/email_add_account_edit_text"
+                android:id="@+id/driver_email"
                 android:background="@color/primary_colour"
-                android:textColor="?android:attr/colorPrimary"
+                android:textColor="@color/black"
                 android:textSize="22sp"
+                android:paddingStart="8dp"
                 android:paddingTop="10sp"
                 android:paddingBottom="5sp"
                 android:layout_marginLeft="10dp"
@@ -145,12 +149,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:id="@+id/phone_add_account_edit_text"
+                android:id="@+id/driver_phone_number"
                 android:background="@color/primary_colour"
                 android:inputType="phone"
-                android:textColor="?android:attr/colorPrimary"
+                android:textColor="@color/black"
                 android:textSize="22sp"
                 android:paddingTop="10sp"
+                android:paddingStart="8dp"
                 android:paddingBottom="5sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -174,12 +179,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:id="@+id/credit_add_account_edit_text"
+                android:id="@+id/driver_credit_card"
                 android:background="@color/primary_colour"
                 android:inputType="number"
-                android:textColor="?android:attr/colorPrimary"
+                android:textColor="@color/black"
                 android:textSize="22sp"
                 android:paddingTop="10sp"
+                android:paddingStart="8dp"
                 android:paddingBottom="5sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
@@ -187,30 +193,43 @@
                 android:hint="@string/credit_add_account_edit_text"
                 android:textColorHint="@android:color/darker_gray"/>
 
+            <TextView
+                android:text="@string/vehicle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/vehicle_text_view"
+                android:textStyle="normal"
+                android:textSize="20sp"
+                android:textColor="@color/primary_colour"
+                android:layout_marginLeft="10dp"
+                android:paddingBottom="5dp" />
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
                 android:id="@+id/driver_add_vehicle"
                 android:background="@color/primary_colour"
-                android:inputType="number"
-                android:textColor="?android:attr/colorPrimary"
+                android:inputType="textNoSuggestions"
+                android:textColor="@color/black"
                 android:textSize="22sp"
                 android:paddingTop="10sp"
+                android:paddingStart="8dp"
                 android:paddingBottom="5sp"
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="@string/credit_add_account_edit_text"
+                android:hint="@string/vehicle_description"
                 android:textColorHint="@android:color/darker_gray"/>
+            <Button
+                android:text="@string/create_driver_button"
+                android:layout_height="wrap_content"
+                android:id="@+id/create_driver_button"
+                android:layout_width="300dp"
+                android:layout_gravity="center"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:layout_marginTop="10dp" />
         </LinearLayout>
     </ScrollView>
-    <Button
-        android:text="@string/create_account_button"
-        android:layout_height="wrap_content"
-        android:id="@+id/create_account_button"
-        android:layout_width="300dp"
-        android:layout_gravity="center"
-        android:textSize="14sp"
-        android:layout_marginTop="40dp" />
+
 </LinearLayout>

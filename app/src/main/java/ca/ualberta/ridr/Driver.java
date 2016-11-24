@@ -22,8 +22,6 @@ public class Driver extends User {
                     String vechileDescription) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.vehicleDescription = vechileDescription;
-
-        this.rideArrayList = new ArrayList<Ride>();
     }
 
     public String getName() {
@@ -101,6 +99,9 @@ public class Driver extends User {
         return super.getPhoneNumber();
     }
 
+    public void setVehicleDescription(String vehicleDescription){
+        this.vehicleDescription = vehicleDescription;
+    }
     public String getEmail() {
         return super.getEmail();
     }

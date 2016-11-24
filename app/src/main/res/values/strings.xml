@@ -22,6 +22,10 @@
     <string name="credit_add_account">Credit Card Number:</string>
     <string name="credit_add_account_edit_text">Example: XXXXBBBBYYYYAAAA</string>
     <string name="title_activity_add_driver_view">AddDriverView</string>
+    <string name="vehicle_description">Vehicle description...</string>
+    <string name="vehicle">Vehicle</string>
+    <string name="enter_username">Enter username...</string>
+    <string name="create_driver_button">Create</string>
 
 
 </resources>
