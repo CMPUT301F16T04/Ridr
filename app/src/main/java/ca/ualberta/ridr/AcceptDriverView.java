@@ -78,12 +78,12 @@ public class AcceptDriverView extends Activity {
         final Driver driver = getDriver(driverId);
         final Request request  = getRequest(requestId);
 
-        String driverEmailStr = driver.getEmail();
+        final String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
 
         driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(driver.getName());
+        xProfile.setText(capitalizeName(driver.getName()));
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -118,9 +118,19 @@ public class AcceptDriverView extends Activity {
         driverEmail.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //TODO lookup a way to do this, previously found one but not sure if there are apps that can be transferred to?
-                Toast.makeText(AcceptDriverView.this, "going to send an email later!", Toast.LENGTH_SHORT).show();
 
+                //http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application?rq=1
+                // Nov 24 2016
+                // author Jeremy Logan
+                //note in order for this to work you must set up an email on your device
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{driverEmailStr});
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(AcceptDriverView.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -133,7 +143,7 @@ public class AcceptDriverView extends Activity {
      * @return Driver object
      */
     public Driver getDriver(String driverId){
-        Driver driver = driverCon.getDriverFromServer(driverId);
+        Driver driver = driverCon.getDriverFromServerUsingId(driverId);
         return(driver);
     }
 
@@ -155,9 +165,27 @@ public class AcceptDriverView extends Activity {
         return(request);
     }
 
+    /**
+     *  we need the rider's name when creating ride object
+     *  dont really need to fetch entire rider object into this view
+     *  this is only needed if we pass id's thru activities, not if we use names
+     *
+     * @param riderId used to get the rider name
+     * @return rider name
+     */
     public String getRiderName(String riderId){
         Rider rider = riderCon.getRiderFromServer(riderId);
         return(rider.getName());
+    }
+
+    /** just some formatting, might not be necessary if the names are enforced
+     *  to be capitalized but wont hurt to have this til then
+     *
+     * @param name the possibly lowercased name
+     * @return the name with the first letter capitalized
+     */
+    private String capitalizeName(String name){
+        return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
     }
 
 

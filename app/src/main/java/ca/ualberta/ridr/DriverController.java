@@ -30,8 +30,13 @@ public class DriverController {
         driver.acceptRequest(request);
     }
 
-    public Driver getDriverFromServer(String driverId){
+    public Driver getDriverFromServerUsingId(String driverId){
         Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        return(driver);
+    }
+
+    public Driver getDriverFromServerUsingName(String driverName){
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "name", driverName), Driver.class);
         return(driver);
     }
 

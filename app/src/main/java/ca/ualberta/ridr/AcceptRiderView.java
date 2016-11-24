@@ -130,7 +130,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         String endLocationText = endLocation.getText() + space + request.getDropoff();
         endLocation.setText(endLocationText);
 
-        driverName = driverController.getDriverFromServer(driverID.toString()).getName();
+        //driverName = driverController.getDriverFromServer(driverID.toString()).getName();
         //have to check if the user previously accepted
         checkIfUserAccepted(requestID.toString());
 
