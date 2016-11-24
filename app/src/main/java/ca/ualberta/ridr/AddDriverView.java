@@ -25,7 +25,7 @@ import static android.app.DatePickerDialog.*;
 
 /**
  * Add Driver view
- * Created by Justin Barclay Nov 22, 2016, modified code by Storm
+ * Created by Justin Barclay Nov 22, 2016, modified code from Storm's AddRiderView
  *
  * This activity displays the add Driver screen, and handles the text input logic, and parsing of data.
  * Also checks to see if the user we are attempting to make is already in the database, and adds the
@@ -94,10 +94,9 @@ public class AddDriverView extends Activity implements ACallback {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        username = "Justin";
-        if (username != null) {
+        if (extras != null) {
             // We're getting passed in here from another view, let's see if we update a user
-            username = "Justin";
+            username = extras.getString("username");
             updateUser = true;
             accountController.loginUser(username);
         }

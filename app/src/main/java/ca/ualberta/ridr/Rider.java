@@ -23,6 +23,10 @@ public class Rider extends User {
         this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();
     }
+
+    public Rider (User user){
+        super(user);
+    }
     public void setRiderStatus(boolean status) {
         super.setRiderStatus(status);
     }

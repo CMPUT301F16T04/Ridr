@@ -96,7 +96,12 @@ public class LoginView extends Activity {
             @Override
             public void onClick(View view){
                 //launches to account creator activity
-                Intent addAccountIntent = new Intent(LoginView.this, AddRiderView.class);
+                Intent addAccountIntent;
+                if(asDriver){
+                    addAccountIntent = new Intent(LoginView.this, AddDriverView.class);
+                } else {
+                    addAccountIntent = new Intent(LoginView.this, AddRiderView.class);
+                }
                 startActivity(addAccountIntent);
             }
         });

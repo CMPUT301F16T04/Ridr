@@ -25,7 +25,7 @@
         android:layout_marginLeft="10dp"
         android:typeface="normal"
         android:textColor="@color/primary_colour" />
-    
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
