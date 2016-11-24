@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -33,12 +34,14 @@ public class AsyncController {
      * The Controller.
      */
     AsyncDatabaseController controller;
+    Context context;
 
     /**
      * Instantiates a new Async controller.
      */
-    public AsyncController(){
+    public AsyncController(Context context) {
         super();
+        this.context = context;
     }
 
     /**
@@ -180,7 +183,7 @@ public class AsyncController {
     private JsonArray loadFromFile(String file) {
         JsonArray jsonArray;
         try {
-            FileInputStream fis = new FileInputStream(file);
+            FileInputStream fis = context.openFileInput(file);
             BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 
             Gson gson = new Gson();
@@ -203,9 +206,9 @@ public class AsyncController {
 
     private void saveInFile(JsonArray jsonArray, String file) {
         try {
-            FileOutputStream fos = new FileOutputStream(file,
-                    false);
-
+            FileOutputStream fos = context.openFileOutput(file,
+                    0);
+            
             BufferedWriter out = new BufferedWriter(new OutputStreamWriter(fos));
 
             Gson gson = new Gson();
@@ -218,7 +221,7 @@ public class AsyncController {
             throw new RuntimeException();
         } catch (IOException e) {
             // TODO Auto-generated catch block
-            throw new RuntimeException();
+            Log.i("ioerror", e.toString());
         }
     }
 

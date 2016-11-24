@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -47,8 +48,11 @@ public class RequestController {
     private JsonArray jsonArray;
     private ArrayList<Request> requests;
     private ACallback cbInterface;
+    Context context;
 
-    public RequestController(){}
+    public RequestController(Context context) {
+        this.context = context;
+    }
 
     public RequestController(ACallback cbInterface){
         this.cbInterface = cbInterface;
@@ -65,7 +69,7 @@ public class RequestController {
      * @param date Date at which the rider wishes to be picked up
      */
     public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         currenRequest = new Request(rider.getID().toString(), pickup, dropoff, pickupCoords, dropOffCoords, date);
         rider.setRequests(new ArrayList<Request>());
         //commented for now so that we can actually create the request without breaking
@@ -100,7 +104,7 @@ public class RequestController {
      * @return ArrayList<Request>
      */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
-        jsonArray = new AsyncController().getAllFromIndex("request");
+        jsonArray = new AsyncController(this.context).getAllFromIndex("request");
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
 
@@ -151,7 +155,7 @@ public class RequestController {
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
     public Request getRequestFromServer(String requestId) {
-        AsyncController con = new AsyncController();
+        AsyncController con = new AsyncController(this.context);
         try {
             JsonObject requestObj = con.get("request", "id", requestId).getAsJsonObject();
             Request request = new Request(requestObj);
@@ -185,7 +189,7 @@ public class RequestController {
      */
     public void getUserRequest(final UUID userID) {
         // Get all user requests from the database
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
         for (JsonElement result : queryResults) {
             try {
@@ -203,7 +207,7 @@ public class RequestController {
      */
     public void getAllRequests() {
             // Get all user requests from the database
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getAllFromIndex("request");
         for (JsonElement result : queryResults) {
             try {
@@ -222,7 +226,7 @@ public class RequestController {
      * @param distance distance of the point to filter requests from
      */
     public void findAllRequestsWithinDistance(final LatLng center, final String distance){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
         requests.clear();
         for (JsonElement result : queryResults) {

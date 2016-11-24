@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -25,7 +26,7 @@ public class SearchResultsView extends Activity {
     private RequestAdapter requestAdapter;
     private EditText bodyText;
     private UUID userID;
-
+    private Context context;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,7 +57,7 @@ public class SearchResultsView extends Activity {
 
             public void onClick(View v) {
                 String text = bodyText.getText().toString();
-                searchResultsByKeyword(text);
+                searchResultsByKeyword(context, text);
                 requestAdapter.notifyDataSetChanged();
             }
         });
@@ -86,9 +87,9 @@ public class SearchResultsView extends Activity {
      * Updates the requestList without making it a new object (Clear and re add)
      * @param keyword
      */
-    protected void searchResultsByKeyword(String keyword) {
+    protected void searchResultsByKeyword(Context context, String keyword) {
         if(keyword != null) {
-            ArrayList<Request> tempRequestList = requestController.searchRequestsKeyword(keyword);
+            ArrayList<Request> tempRequestList = requestController.searchRequestsKeyword(keyword, context);
             requestList.clear();
             requestList.addAll(tempRequestList);
         }
