@@ -1,12 +1,3 @@
-/**
- * Modified by nkaefer on 2016/11/08, further modified by Justin Nov 24, 2016
- *
- * This activity displays the add user screen, and handles the text input logic, and parsing of data.
- * Also checks to see if the user we are attempting to make is already in the database, and adds the
- * user if the user is valid.
- */
-
-
 package ca.ualberta.ridr;
 
         import android.app.Activity;
@@ -28,7 +19,13 @@ package ca.ualberta.ridr;
 
         import java.text.SimpleDateFormat;
         import java.util.Calendar;
-
+/**
+ * Modified by nkaefer on 2016/11/08, further modified by Justin Nov 24, 2016
+ *
+ * This activity displays the add user screen, and handles the text input logic, and parsing of data.
+ * Also checks to see if the user we are attempting to make is already in the database, and adds the
+ * user if the user is valid.
+ */
 public class AddRiderView extends Activity implements ACallback {
 
     private String username;
@@ -92,7 +89,7 @@ public class AddRiderView extends Activity implements ACallback {
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        if (username != null) {
+        if (extras != null) {
             // We're getting passed in here from another view, let's see if we update a user
             username = extras.getString("username");
             updateUser = true;

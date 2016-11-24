@@ -20,6 +20,7 @@ import com.google.gson.Gson;
  *
  */
 public class LoginView extends Activity {
+    AsyncController asyncController;
     /**
      * The Rider login.
      */
@@ -49,6 +50,8 @@ public class LoginView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+        asyncController = new AsyncController();
+
         asDriver = true;
         driverLogin = (TextView) findViewById(R.id.DriverLogin);
         riderLogin = (TextView) findViewById(R.id.RiderLogin);
@@ -68,7 +71,7 @@ public class LoginView extends Activity {
                 }
                 User myUser = null;
                 try{
-                    myUser = new Gson().fromJson(new AsyncController().get("user", "name", usernameLogin.getText().toString().trim()), User.class);
+                    myUser = new Gson().fromJson(asyncController.get("user", "name", usernameLogin.getText().toString().trim()), User.class);
                 } catch (Exception e){
                     Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
                     return;
@@ -97,11 +100,14 @@ public class LoginView extends Activity {
             public void onClick(View view){
                 //launches to account creator activity
                 Intent addAccountIntent;
+                String username = usernameLogin.getText().toString();
+
                 if(asDriver){
                     addAccountIntent = new Intent(LoginView.this, AddDriverView.class);
                 } else {
                     addAccountIntent = new Intent(LoginView.this, AddRiderView.class);
                 }
+                addAccountIntent.putExtra("username", username);
                 startActivity(addAccountIntent);
             }
         });
@@ -112,19 +118,27 @@ public class LoginView extends Activity {
         if(myUser == null){
             return;
         }
-        Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
-        riderScreenIntent.putExtra("UUID", myUser.getID().toString());
-        System.out.println(myUser.getID().toString());
-        startActivity(riderScreenIntent);
+        if(myUser.isRider()) {
+            Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
+            riderScreenIntent.putExtra("username", myUser.getName());
+            System.out.println(myUser.getID().toString());
+            startActivity(riderScreenIntent);
+        } else {
+            Toast.makeText(LoginView.this, "Sorry, this user is not a rider. Please add your rider info to your account", Toast.LENGTH_LONG).show();
+        }
     }
     private void loginDriver(User myUser){
         //if our user is logging in as a driver
         if(myUser == null){
             return;
         }
-        Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
-        driverScreenIntent.putExtra("UUID", myUser.getID().toString());
-        startActivity(driverScreenIntent);
+        if(myUser.isDriver()) {
+            Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
+            driverScreenIntent.putExtra("username", myUser.getName());
+            startActivity(driverScreenIntent);
+        } else {
+            Toast.makeText(LoginView.this, "Sorry, this user is not a driver. Please add your driver info to your account.", Toast.LENGTH_LONG).show();
+        }
     }
 
     /**
