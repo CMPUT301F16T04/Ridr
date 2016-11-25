@@ -64,31 +64,23 @@ public class RequestController {
      * @param dropOffCoords Coordinates of dropoff location
      * @param date Date at which the rider wishes to be picked up
      */
-    public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date){
-        AsyncController controller = new AsyncController();
+    public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date, float fare, float costDistance){
+//        AsyncController controller = new AsyncController();
         currenRequest = new Request(rider.getID().toString(), pickup, dropoff, pickupCoords, dropOffCoords, date);
-        rider.setRequests(new ArrayList<Request>());
+        currenRequest.setFare(fare);
+        currenRequest.setCostDistance(costDistance);
+        //rider.setRequests(new ArrayList<Request>());
         //commented for now so that we can actually create the request without breaking
         //rider.addRequest(currenRequest);
         this.add(currenRequest);
 
-        try{
-            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
-        } catch (Exception e){
-            Log.i("Error creating request", e.toString());
-        }
+//        try{
+//            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+//        } catch (Exception e){
+//            Log.i("Error creating request", e.toString());
+//        }
     }
 
-    /**
-     * Estimates a fare based on distance
-     * @param distance distance from pickup to dropoff
-     * @return a recommended fare
-     */
-    public float getFareEstimate(float distance){
-        //return currenRequest.estimateFare(distance);
-        float gasCostFactor = 4; // calculate something later
-        return distance/1000 *gasCostFactor;
-    }
 
     public void updateFare(float newFare) {
         currenRequest.setFare(newFare);
