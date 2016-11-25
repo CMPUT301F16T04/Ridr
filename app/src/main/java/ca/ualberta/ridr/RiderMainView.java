@@ -56,6 +56,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
     private EditText fareInput;
 
+    //TODO change tests to hints
     private TextView dateTextView;
     private TextView timeTextView;
 
@@ -71,7 +72,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private String currentIDStr; // string of the current UUID
     private Rider currentRider;
 
-    private String defaultStartText = "Enter Start Location";
+    private String defaultStartText = "Enter Pick Up Location";
     private String defaultDestinationText = "Enter Destination";
     private String defaultFareText = "Enter a Fare";
 
@@ -300,22 +301,22 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
         pickupAutocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.pickup_autocomplete_fragment);
-        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultStartText);
+        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setHint(defaultStartText);
 
         dropoffAutocompleteFragment = (PlaceAutocompleteFragment)
                 getFragmentManager().findFragmentById(R.id.dropoff_autocomplete_fragment);
-        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultDestinationText);
+        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setHint(defaultDestinationText);
     }
 
     /**
      * reset text inputs in the view
      */
     private void resetText(){
-        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultStartText);
-        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText(defaultDestinationText);
+        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText("");
+        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText("");
         dateTextView.setText("");
         timeTextView.setText("");
-        fareInput.setText(defaultFareText);
+        fareInput.setText("");
     }
 
     /**
