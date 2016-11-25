@@ -242,9 +242,8 @@ public class Request {
     //intentions : to be able to store and retrieve a list of possible drivers.
     private ArrayList<String> buildPossibleDriversList(JsonArray array){
         ArrayList<String> drivers = new ArrayList<String>();
-        if(array.size() == 0){
+        if(array == null || array.size() == 0){
             return drivers;
-
         }
 
         for(int i = 0; i < array.size(); ++i){
