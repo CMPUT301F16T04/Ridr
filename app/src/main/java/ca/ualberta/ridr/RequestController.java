@@ -99,7 +99,7 @@ public class RequestController {
      */
     public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date){
         AsyncController controller = new AsyncController();
-        currenRequest = new Request(rider.getID().toString(), pickup, dropoff, pickupCoords, dropOffCoords, date);
+        currenRequest = new Request(rider.getName(), pickup, dropoff, pickupCoords, dropOffCoords, date);
         rider.setRequests(new ArrayList<Request>());
         //commented for now so that we can actually create the request without breaking
         //rider.addRequest(currenRequest);
