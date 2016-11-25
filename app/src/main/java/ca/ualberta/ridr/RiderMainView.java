@@ -63,8 +63,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Button timeButton;
     private Button menuButton;
 
-    private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String currentUsername; // string of the curretn UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Start Location";
@@ -106,12 +105,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentIDStr = extras.getString("UUID");
-            currentUUID = UUID.fromString(currentIDStr);
+            currentUsername = extras.getString("username");
         }
         //from the UUID, get the rider object
         try {
-            currentRider = new Gson().fromJson(new AsyncController().get("user", "id", currentIDStr), Rider.class);
+            currentRider = new Gson().fromJson(new AsyncController().get("user", "name", currentUsername ), Rider.class);
         } catch(Exception e){
             Log.i("Error parsing Rider", e.toString());
         }
@@ -337,14 +335,14 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
-                        editInfoIntent.putExtra("UUID", currentIDStr);
+                        editInfoIntent.putExtra("username", currentUsername);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
-                        viewRequestsIntent.putExtra("UUID", currentIDStr);
+                        viewRequestsIntent.putExtra("username", currentUsername);
                         startActivity(viewRequestsIntent);
                         return true;
                     default:

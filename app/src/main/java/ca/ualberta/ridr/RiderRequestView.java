@@ -34,8 +34,7 @@ import java.util.ArrayList;
 
 public class RiderRequestView extends Activity {
 
-    private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String currentUsername; // string of the current logged in user's username
     private String clickedDriverIdStr; //id of driver who is clicked in popup
     private String clickedDriverNameStr; //name of driver who is clicked in popup
     private String clickedRequestIDStr; //id string of request that is clicked in listview
@@ -127,7 +126,7 @@ public class RiderRequestView extends Activity {
 
 
         ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
-        ArrayAdapter<String> adapter_popup = new ArrayAdapter<String>(activity, R.layout.driver_who_accepted, possibleDrivers);
+        ArrayAdapter<String> adapter_popup = new ArrayAdapter<>(activity, R.layout.driver_who_accepted, possibleDrivers);
         popupList.setAdapter(adapter_popup);
 
         //this is to recognize listview item presses within the popup
@@ -136,23 +135,16 @@ public class RiderRequestView extends Activity {
 
 
                 clickedDriverNameStr = possibleDrivers.get(position);
-                //Driver joe = driverCon.getDriverFromServerUsingName(clickedDriverNameStr);
-                clickedDriverIdStr = driverCon.getDriverFromServerUsingName(clickedDriverNameStr).getElasticID();
-//                Log.i("the id for driver", clickedDriverIdStr);
-//                Log.i("the name of the driver", clickedDriverNameStr);
-//                Log.i("the name of the driver", joe.getElasticID());
 
                 //must close popup before going to next activity
                 driverPopUp.dismiss();
 
 
-                //TODO pass the driver at clicked position to the next activity
                 Intent intent = new Intent(activity, AcceptDriverView.class);
                 ArrayList<String> ids = new ArrayList<>();
-                ids.add(currentIDStr); //pass the current user
-                ids.add(clickedDriverIdStr);
+                ids.add(currentUsername); //pass the current user
+                ids.add(clickedDriverNameStr);
                 ids.add(clickedRequestIDStr);
-                //System.out.println(ids);
                 intent.putStringArrayListExtra("ids", ids);
                 startActivity(intent);
                 //go to driver profile

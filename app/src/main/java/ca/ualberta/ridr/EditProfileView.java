@@ -9,8 +9,7 @@ import java.util.UUID;
 
 public class EditProfileView extends Activity {
 
-    private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String currentUsername; // string of the current username
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -20,8 +19,7 @@ public class EditProfileView extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentIDStr = extras.getString("UUID");
-            currentUUID = UUID.fromString(currentIDStr);
+            currentUsername= extras.getString("username");
         }
 
     }
