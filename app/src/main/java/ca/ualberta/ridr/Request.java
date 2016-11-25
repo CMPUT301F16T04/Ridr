@@ -28,7 +28,7 @@ public class Request {
     private String dropoff;
     private LatLng pickupCoord;
     private LatLng dropOffCoord;
-    private transient ArrayList<Driver> possibleDrivers;
+    private transient ArrayList<String> possibleDrivers;
     private Boolean accepted;
     private UUID id;
     private float fare;
@@ -86,7 +86,7 @@ public class Request {
         return dropoff;
     }
 
-    public void addAccepted(Driver driver) {
+    public void addAccepted(String driver) {
     }
 
     public String getRider() {
@@ -101,11 +101,11 @@ public class Request {
         this.pickup = pickup;
     }
 
-    public ArrayList<Driver> getPossibleDrivers() {
+    public ArrayList<String> getPossibleDrivers() {
         return possibleDrivers;
     }
 
-    public void setPossibleDrivers(ArrayList<Driver> drivers) {
+    public void setPossibleDrivers(ArrayList<String> drivers) {
         this.possibleDrivers = drivers;
     }
 

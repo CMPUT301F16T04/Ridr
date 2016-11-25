@@ -34,5 +34,9 @@ public class RiderController {
         return(rider.getRequests());
     }
 
+    public Rider getDriverFromServerUsingName(String username) {
+        Rider rider = new Gson().fromJson(new AsyncController().get("user", "name", username), Rider.class);
+        return(rider);
+    }
 }
 

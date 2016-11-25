@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -39,17 +41,23 @@ public class AcceptDriverView extends Activity {
     private Button accept;
     private TextView xProfile;
 
-    private String riderId;
-    private String driverId;
+    private String username;
+    private String driverName;
     private String requestId;
+
+    private DriverController driverCon = new DriverController();
+    private RideController rideCon = new RideController();
+    private RequestController reqCon = new RequestController();
+    private RiderController riderCon = new RiderController();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_driver);
 
-        driverEmail = (TextView) findViewById(R.id.driver_email);
-        driverPhone = (TextView) findViewById(R.id.driver_phone);
+        driverEmail = (Button) findViewById(R.id.driver_email);
+        driverPhone = (Button) findViewById(R.id.driver_phone);
         xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
@@ -57,8 +65,8 @@ public class AcceptDriverView extends Activity {
         Intent intent = getIntent();
         ArrayList<String> ids = intent.getStringArrayListExtra("ids");
         if (ids != null) {
-            riderId= ids.get(0);
-            driverId= ids.get(1);
+            username = ids.get(0);
+            driverName = ids.get(1);
             requestId = ids.get(2);
         }
         else{
@@ -66,23 +74,16 @@ public class AcceptDriverView extends Activity {
             finish();
         }
 
-//just here for testing, might leave for now.
-//        final String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-//        final String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-//        final String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
 
-
-        final Driver driver = getDriver(driverId);
+        final Driver driver = getDriver(driverName);
         final Request request  = getRequest(requestId);
 
-        String driverEmailStr = driver.getEmail();
+        final String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
-
-        String profileString = checkProfileString(driver.getName());
 
         driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(profileString);
+        xProfile.setText(capitalizeName(driverName));
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -91,15 +92,8 @@ public class AcceptDriverView extends Activity {
             public void onClick(View v) {
 
 
-                RideController RideC = new RideController();
-                RideC.createRide(driverId, request, riderId);
-
-                RequestController reqCon = new RequestController();
-                reqCon.setRequestAccepted(request);
-
-                //TODO once we have a user request list we can uncomment this
-                //requestCon.removeRequest(request, rider);
-                //cant do while rider's request list is null
+                rideCon.createRide(driverName, request, username);
+                reqCon.accept(request);
 
                 finish();
 
@@ -120,42 +114,36 @@ public class AcceptDriverView extends Activity {
             }
         });
 
-        //if the user clicks the drivers displaye email we will want to take them to an email app
+        //if the user clicks the drivers displayed email we will want to take them to an email app
         driverEmail.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //TODO lookup a way to do this, previously found one but not sure if there are apps that can be transferred to?
-                Toast.makeText(AcceptDriverView.this, "going to send an email later!", Toast.LENGTH_SHORT).show();
 
+                //http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application?rq=1
+                // Nov 24 2016
+                // author Jeremy Logan
+                //note in order for this to work you must set up an email on your device
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{driverEmailStr});
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(AcceptDriverView.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
     }
 
     /**
-     * this function just checks on which way we want to format the title depending on the driver's name
-     *
-     * @param name is the driver's name
-     * @return String for view title
-     */
-    private String checkProfileString(String name) {
-        if(name.endsWith("s")) {
-            return(name+"' Profile");
-        }
-        else{
-            return(name+"'s Profile");
-        }
-    }
-
-    /**
      * gets the driver for the data we display on this view
      *
-     * @param driverId used to fetch the driver
+     * @param driverName used to fetch the driver
      * @return Driver object
      */
-    public Driver getDriver(String driverId){
-        DriverController DC = new DriverController();
-        Driver driver = DC.getDriverFromServer(driverId);
+    public Driver getDriver(String driverName){
+        Driver driver = driverCon.getDriverFromServerUsingName(driverName);
         return(driver);
     }
 
@@ -167,8 +155,7 @@ public class AcceptDriverView extends Activity {
      * @return Request object
      */
     public Request getRequest(String requestId){
-        RequestController requestCon = new RequestController();
-        Request request = requestCon.getRequestFromServer(requestId);
+        Request request = reqCon.getRequestFromServer(requestId);
 
         //if we could not fetch the request and return null then... go back to previous activity?
         if(request==null) {
@@ -177,5 +164,16 @@ public class AcceptDriverView extends Activity {
 
         return(request);
     }
+
+    /** just some formatting, might not be necessary if the names are enforced
+     *  to be capitalized but wont hurt to have this til then
+     *
+     * @param name the possibly lowercased name
+     * @return the name with the first letter capitalized
+     */
+    private String capitalizeName(String name){
+        return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
+    }
+
 
 }

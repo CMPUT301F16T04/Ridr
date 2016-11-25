@@ -23,10 +23,11 @@ import io.searchbox.core.SearchResult;
  */
 public class DriverController {
 
-    DriverController(){
-    }
-    public Driver getDriverFromServer(String driverId){
-        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+    DriverController(){}
+
+
+    public Driver getDriverFromServerUsingName(String driverName){
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "name", driverName), Driver.class);
         return(driver);
     }
 
