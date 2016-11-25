@@ -142,7 +142,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
         setViews();
 
-        // autocomplete for dates
+        // autocomplete for the pick up location
         pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -153,8 +153,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 //addMarkers(pickupCoord, "Pickup");
                 addMarkers(pickupCoord, true);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
-                //TODO check that there are two locations. if there is, estimate fare
-                if(endMarker != null){
+                if(dropoffCoord != null){
                     estimateFare(pickupCoord, dropoffCoord);
                 }
             }
@@ -165,6 +164,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         });
 
+        //autocomplete for the drop off location
         dropoffAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -175,8 +175,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 //addMarkers(dropoffCoord, "Dropoff");
                 addMarkers(dropoffCoord, false);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dropoffCoord, 11));
-                //TODO check that there are two locations
-                if(startMarker != null){
+                if(pickupCoord != null){
                     estimateFare(pickupCoord, dropoffCoord);
                 }
 
@@ -260,7 +259,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
             gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
-            //gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
         }
 
     }
@@ -294,8 +292,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      * finds views by their ID's and assigns them to their respective variable
      */
     private void setViews(){
-        //startLocation = (EditText) findViewById(R.id.editStartLocationText);
-        //endLocation = (EditText) findViewById(R.id.editEndLocationText);
         fareInput = (EditText) findViewById(R.id.editFare);
 
         dateTextView = (TextView) findViewById(R.id.dateText);
@@ -332,15 +328,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      */
     private void addRequestEvent(Rider rider){
 
-        //TODO check that there locations have been selected (maybe by checking the number of markers)
-//        if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
-//            Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
-//        if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
-//            Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
-//            return;
-//        }
         if(pickupCoord == null){
             Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
@@ -361,12 +348,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             Toast.makeText(RiderMainView.this, "Please enter a fare", Toast.LENGTH_SHORT).show();
             return;
         }
-        //String pickupStr = startLocation.getText().toString();
-        //String dropoffStr = endLocation.getText().toString();
-        //LatLng pickupCoord = getLocationFromAddress(pickupStr);
-        //LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
-        //pickupCoord = new LatLng(53.525288, -113.525454);
-        //dropoffCoord =  new LatLng(53.484775, -113.505067);
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
 
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, fare/distance);
@@ -376,6 +357,10 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         resetText();
         //clear map of markers
         gMap.clear();
+
+        //reset coordinates
+        pickupCoord = null;
+        dropoffCoord = null;
 
     }
 
@@ -468,6 +453,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
     }
 
+    /**
+     * estimate a fare based on the distance between two locations
+     * @param pickup coordinates of the pick up address
+     * @param dropoff coordinates of the drop off address
+     */
     private void estimateFare(LatLng pickup, LatLng dropoff){
         float[] results = new float[1];
         Location.distanceBetween(pickup.latitude, pickup.longitude,
@@ -476,7 +466,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         distance = results[0] / 1000; // in KM
         float gasCostFactor = 4; // calculate something later
         fare =  distance *gasCostFactor;
-        fareInput.setText(Float.toString(fare));
+        fareInput.setText((String.format("%.2f", fare)));
     }
 
 
