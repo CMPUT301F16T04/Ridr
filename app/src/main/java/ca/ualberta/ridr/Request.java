@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -15,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -28,7 +30,7 @@ public class Request {
     private String dropoff;
     private LatLng pickupCoord;
     private LatLng dropOffCoord;
-    private transient ArrayList<Driver> possibleDrivers;
+    private ArrayList<String> possibleDrivers;
     private Boolean accepted;
     private UUID id;
     private float fare;
@@ -46,6 +48,7 @@ public class Request {
         this.date = date;
         this.fare = 20;
         this.accepted = false;
+        this.possibleDrivers = new ArrayList<String>();
     }
 
     public Date getDate(){
@@ -86,7 +89,8 @@ public class Request {
         return dropoff;
     }
 
-    public void addAccepted(Driver driver) {
+    public void addAccepted(String driverId) {
+        possibleDrivers.add(driverId);
     }
 
     public String getRider() {
@@ -101,11 +105,11 @@ public class Request {
         this.pickup = pickup;
     }
 
-    public ArrayList<Driver> getPossibleDrivers() {
+    public ArrayList<String> getPossibleDrivers() {
         return possibleDrivers;
     }
 
-    public void setPossibleDrivers(ArrayList<Driver> drivers) {
+    public void setPossibleDrivers(ArrayList<String> drivers) {
         this.possibleDrivers = drivers;
     }
 
@@ -156,6 +160,7 @@ public class Request {
             toReturn.put("accepted", this.accepted);
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
+            toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -179,8 +184,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-       // this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
-        // maybe one day we will reach this dream
+        this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
 
     }
 
@@ -219,12 +223,21 @@ public class Request {
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
 
-    //also a faroff dream
+
+
     //intentions : to be able to store and retrieve a list of possible drivers.
-//    private ArrayList<Driver> buildPossibleDriversList(JsonArray array){
-//        ArrayList<Driver> drivers = new ArrayList<Driver>();
-//
-//        return(drivers);
-//    }
+    private ArrayList<String> buildPossibleDriversList(JsonArray array){
+        ArrayList<String> drivers = new ArrayList<String>();
+        if(array.size() == 0){
+            return drivers;
+
+        }
+
+        for(int i = 0; i < array.size(); ++i){
+            drivers.add(0, array.get(i).getAsString());
+        }
+
+        return(drivers);
+    }
 
 }

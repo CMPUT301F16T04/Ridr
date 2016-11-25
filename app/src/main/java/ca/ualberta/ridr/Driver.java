@@ -9,6 +9,7 @@ import io.searchbox.annotations.JestId;
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
+
     @JestId
     private String elasticID;
 
@@ -17,6 +18,7 @@ public class Driver extends User {
     //private transient Vehicle vehicle;
     private transient String bankAccountNo;
     private transient ArrayList<Ride> rideArrayList;
+    private transient ArrayList<Request> requestArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
 
@@ -25,6 +27,7 @@ public class Driver extends User {
         this.bankAccountNo = bankAccountNo;
 
         this.rideArrayList = new ArrayList<Ride>();
+        this.requestArrayList = new ArrayList<Request>();
         this.setDriverStatus(true);
     }
 
@@ -77,6 +80,8 @@ public class Driver extends User {
     }
 
     public void acceptRide(Ride ride) {
+    }
+    public void acceptRequest(Request request) {
     }
 
     public boolean completeRide(Ride ride) {

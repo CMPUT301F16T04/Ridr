@@ -23,8 +23,13 @@ import io.searchbox.core.SearchResult;
  */
 public class DriverController {
 
-    DriverController(){
+    DriverController(){}
+
+    //is this supposed to be a driver controller item or a request controller item... look at UML in the morning
+    public void acceptRequest(Driver driver, Request request){
+        driver.acceptRequest(request);
     }
+
     public Driver getDriverFromServer(String driverId){
         Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
         return(driver);

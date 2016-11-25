@@ -4,6 +4,7 @@
     android:layout_height="fill_parent"
     android:padding="10dp"
     android:textSize="16sp"
+    android:gravity="center"
     android:background="@color/secondary_colour"
     android:textColor="@color/primary_colour"
     android:id="@+id/driver_who_accepted"

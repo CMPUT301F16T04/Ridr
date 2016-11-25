@@ -7,6 +7,8 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -60,16 +62,13 @@ public class AcceptDriverView extends Activity {
             riderId= ids.get(0);
             driverId= ids.get(1);
             requestId = ids.get(2);
+            //System.out.println(ids);
+            //System.out.println(driverId);
         }
         else{
             //this is if there was some error retrieving data passed, just go back to prev activity
             finish();
         }
-
-//just here for testing, might leave for now.
-//        final String riderId = "6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
-//        final String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
-//        final String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
 
 
         final Driver driver = getDriver(driverId);
@@ -80,7 +79,15 @@ public class AcceptDriverView extends Activity {
 
         String profileString = checkProfileString(driver.getName());
 
-        driverEmail.setText(driverEmailStr);
+        //found how to underline text in textview at: http://stackoverflow.com/questions/10019001/how-do-you-underline-a-text-in-android-xml
+        //accessed on Nov 22 / 16
+        //author : George Artemiou and R4chi7
+        SpannableString emailUnderlined = new SpannableString(driverEmailStr);
+        emailUnderlined.setSpan(new UnderlineSpan(), 0, emailUnderlined.length(), 0);
+
+        //TODO see which of these looks best 
+
+        driverEmail.setText(emailUnderlined);
         driverPhone.setText(driverPhoneStr);
         xProfile.setText(profileString);
 
@@ -95,7 +102,7 @@ public class AcceptDriverView extends Activity {
                 RideC.createRide(driverId, request, riderId);
 
                 RequestController reqCon = new RequestController();
-                reqCon.setRequestAccepted(request);
+                reqCon.accept(request);
 
                 //TODO once we have a user request list we can uncomment this
                 //requestCon.removeRequest(request, rider);
