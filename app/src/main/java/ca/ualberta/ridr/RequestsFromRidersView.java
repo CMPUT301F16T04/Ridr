@@ -29,7 +29,7 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userName = extras.getString("driverName");
+            userName = extras.getString("Name");
         }
     }
 
@@ -55,11 +55,11 @@ public class RequestsFromRidersView extends Activity implements ACallback{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
                 String clickedRequestIDStr = request.getID().toString();
-                /* Not ready yet, need to wait to merge with the rest of the app,
-                so we can figure out how this works
-                Intent intent = new Intent(RequestsFromRidersView.this, AcceptDriverView.class);
-                intent.putExtra("RequestID", clickedRequestIDStr);
-                startActivity(intent);*/
+                Intent intent = new Intent(RequestsFromRidersView.this, AcceptRiderView.class);
+                intent.putExtra("RequestUUID", request.getID().toString());
+                intent.putExtra("userName", userName);
+                startActivity(intent);
+                startActivity(intent);
             }
         });
 
