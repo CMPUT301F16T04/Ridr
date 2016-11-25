@@ -33,7 +33,7 @@ import java.util.Date;
 public class RiderRequestView extends Activity {
 
     private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String currentIDStr; // string of the current UUID
     private String clickedDriverIDStr; //string of driver who is clicked in popup
     private String clickedRequestIDStr; //string of request that is clicked in listview
     private Activity activity = this;

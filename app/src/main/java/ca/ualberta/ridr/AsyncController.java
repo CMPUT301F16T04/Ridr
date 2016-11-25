@@ -75,7 +75,7 @@ public class AsyncController {
      */
     public JsonArray getAllFromIndex(String dataClass) {
         controller = new AsyncDatabaseController("getAllFromIndex");
-        String file = "requests.sav";
+        String file = getFile(dataClass);
         try{
             String searchString = "{\"query\": { \"match_all\": { }}}";
 
@@ -83,10 +83,8 @@ public class AsyncController {
             saveInFile(jArray, file);
             return jArray;
 
-        } catch(Exception e){
+        } catch(Exception e) {
             return loadFromFile(file);
-            //Log.i("error", e.toString());
-            //return null;
         }
     }
 
@@ -228,6 +226,12 @@ public class AsyncController {
             Log.i("ioerror", e.toString());
         }
     }
+
+    private String getFile(String dataClass) {
+        String file = dataClass + ".sav";
+        return file;
+    }
+
 
 
 }
