@@ -110,7 +110,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
         //TODO dont really need to get rider once we fix the names thing
         request = requestController.getRequestFromServer(requestID.toString());
-        requestRider = riderController.getRiderFromServer(request.getRider());
+        requestRider = riderController.getRiderFromServerUsingName(request.getRider());
 
         String isFrom = "Request from " + capitalizeName(requestRider.getName()) + ":";
 
