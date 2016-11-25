@@ -14,7 +14,7 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 /**
- * Modified by nkaefer on 2016/11/08
+ * Modified by nkaefer on 2016/11/08, Modified by Jusitn on November 24, 2016
  *
  * This activity displays the login screen, and handles the logic of logging in as a rider or a driver.
  *
@@ -101,6 +101,11 @@ public class LoginView extends Activity implements ACallback {
 
     }
 
+    /**
+     * Checks to see if a user has the rider attribute, and if so logs the user in as a rider
+     * if not, the user is asked to add his driver information to his account.
+     * @param myUser
+     */
     private void loginRider(User myUser){
         if(myUser == null){
             return;
@@ -117,6 +122,12 @@ public class LoginView extends Activity implements ACallback {
             startActivity(updateAccount);
         }
     }
+
+    /**
+     * Checks to see if a user has the driver attribute, and if so logs the user in as a driver
+     * if not, the user is asked to add his driver information to his account.
+     * @param myUser
+     */
     private void loginDriver(User myUser){
         //if our user is logging in as a driver
         if(myUser == null){
@@ -135,6 +146,10 @@ public class LoginView extends Activity implements ACallback {
         }
     }
 
+
+    /**
+     * An update function for when we get data back from the server
+     */
     public void update(){
         User myUser = accountController.getUser();
         if(myUser == null) {
@@ -151,7 +166,7 @@ public class LoginView extends Activity implements ACallback {
 
     }
     /**
-     * The Change user type.
+     * Change type of user trying to log on
      */
 //switches between user login type
     View.OnClickListener changeUserType = new View.OnClickListener() {

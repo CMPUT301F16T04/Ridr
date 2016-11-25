@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.telephony.PhoneNumberFormattingTextWatcher;
 import android.telephony.PhoneNumberUtils;
 import android.text.TextUtils;
@@ -66,9 +67,6 @@ public class AddDriverView extends Activity implements ACallback {
      */
     Button createAccountButton;
 
-
-
-
     private Calendar birthday;
     private Context context;
     @Override
@@ -91,7 +89,7 @@ public class AddDriverView extends Activity implements ACallback {
         vehicleEditText = (EditText)  findViewById(R.id.driver_add_vehicle);
         createAccountButton = (Button) findViewById(R.id.create_driver_button);
 
-
+        // Check to see if a username is passed in
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
@@ -104,7 +102,7 @@ public class AddDriverView extends Activity implements ACallback {
         phoneEditText.addTextChangedListener(new PhoneNumberFormattingTextWatcher());
 
 
-
+        // Allow user to tap to enter date
         dobEditText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +110,7 @@ public class AddDriverView extends Activity implements ACallback {
                 frag.show();
             };
         });
+
         //Create account Button code.
         createAccountButton.setOnClickListener( new View.OnClickListener() {
             @Override
@@ -123,7 +122,7 @@ public class AddDriverView extends Activity implements ACallback {
                 String phoneNumber = PhoneNumberUtils.formatNumber(phoneEditText.getText().toString().trim());
                 String vehicleDescription = vehicleEditText.getText().toString().trim();
 
-                if(checkForBadInformation(username, birthdayText, email, phoneNumber, creditCard)) {
+                if(checkForBadInformation(username, birthdayText, email, phoneNumber, creditCard, vehicleDescription)) {
                     return;
                 }
 
@@ -142,13 +141,17 @@ public class AddDriverView extends Activity implements ACallback {
 
     }
 
+    /* A method that validates data created by the user
+     * @return boolean
+     */
 
-    private Boolean checkForBadInformation(String username, String birthday, String email, String phoneNumber, String creditCard){
+    @NonNull
+    private Boolean checkForBadInformation(String username, String birthday, String email, String phoneNumber, String creditCard, String vehicle){
         //if the username edit text is empty or hasn't been changed
         if(badUserame(username)){
             return true;
         }
-        //if the dob edit text is empty or hasn't been changed
+        // Check for valid data, if not return false
         if(badBirthday(birthday)){
             return true;
         }
@@ -163,11 +166,36 @@ public class AddDriverView extends Activity implements ACallback {
         if(badCreditCart(creditCard)){
             return true;
         }
+
+        if(badVehicle(vehicle)){
+            return true;
+        }
         return false;
     }
 
     // Validation of data entry
 
+
+    /**
+     * A function to validate a vehicle, and if it fails give an appropriate error message
+     * explaining the failure
+     * @param vehicle
+     * @return boolean
+     */
+    private boolean badVehicle(String vehicle){
+        if(TextUtils.isEmpty(vehicle)) {
+            vehicleEditText.setError("The Vehicle field cannot be empty");
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * A function to validate a username, and if it fails give an appropriate error message
+     * explaining the failure
+     * @param username
+     * @return boolean
+     */
     private boolean badUserame(String username){
         if(TextUtils.isEmpty(username)){
             usernameEditText.setError("The Name Field cannot be empty.");
@@ -175,6 +203,13 @@ public class AddDriverView extends Activity implements ACallback {
         }
         return false;
     }
+
+    /**
+     * A function to validate a birth date, and if it fails give an appropriate error message
+     * explaining the failure
+     * @param birthday
+     * @return boolean
+     */
     private boolean badBirthday(String birthday){
         if(TextUtils.isEmpty(birthday)){
             dobEditText.setError("The Date Field cannot be empty. It must be in format YYYY/MM/DD.");
@@ -182,6 +217,13 @@ public class AddDriverView extends Activity implements ACallback {
         }
         return false;
     }
+
+    /**
+     *      * A function to validate a phone number, and if it fails give an appropriate error message
+     * explaining the failure
+     * @param email
+     * @return boolean
+     */
     private boolean badEmail(String email){
         //if the email edit text is empty or hasn't been changed
         if(TextUtils.isEmpty(email)){
@@ -199,6 +241,13 @@ public class AddDriverView extends Activity implements ACallback {
         return false;
     }
 
+
+    /**
+     * A function to validate a phone number, and if it fails give an appropriate error message
+     * explaining the failure
+     * @param phoneNumber
+     * @return boolean
+     */
     private boolean badPhoneNumber(String phoneNumber){
         if(phoneNumber.length() != 14){
             phoneEditText.setError("The Phone Field cannot be empty, and must be of pattern (123) 456-7890, or 1 123-456-7890.");
@@ -214,6 +263,11 @@ public class AddDriverView extends Activity implements ACallback {
         return false;
     }
 
+    /**
+     * A function to validate a credit card, and if it fails give an appropriate error message
+     * @param creditCard
+     * @return boolean
+     */
     private boolean badCreditCart(String creditCard){
         //if the credit edit text is empty or hasn't been changed
         //I didn't think parsing credit info was important at this moment, but here's how to do it
@@ -237,13 +291,15 @@ public class AddDriverView extends Activity implements ACallback {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
             birthday.set(year, month, dayOfMonth);
-            SimpleDateFormat date = new SimpleDateFormat("MMM dd, yyyy");
+            SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
             dobEditText.setText(date.format(birthday.getTime()));
         }
     };
 
+    /**
+     * Passes the created user to database to try and create
+     */
     private void createAccount(){
-        System.out.println("creating account");
         try {
             controller.create("user", newDriver.getID().toString(), new Gson().toJson(newDriver));
             //successful account creation
@@ -255,6 +311,10 @@ public class AddDriverView extends Activity implements ACallback {
         finish();
     }
 
+    /**
+     * A function for filling in textfields of a user, if they all ready have an account with us
+     * @param user
+     */
     private void addUserInfoToField(User user){
         System.out.println(new Gson().toJson(user));
         SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
@@ -264,10 +324,15 @@ public class AddDriverView extends Activity implements ACallback {
         phoneEditText.setText(user.getPhoneNumber());
         creditEditText.setText(user.getCreditCard());
     }
+
+    /* The update function for the login view, called when a new user is gotten from the server.
+     *
+     */
     public void update(){
 
         User currentUser = accountController.getUser();
-        // this is very hacky. But let's check what state we're in.
+        // this is very hacky. But let's check what state we're in and if we're trying to update a
+        // driver we just need to set a status glag
         if(!updateUser){
             try{
                 if(currentUser != null){
