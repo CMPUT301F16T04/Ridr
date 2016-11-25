@@ -99,7 +99,7 @@ public class SearchResultsView extends Activity {
         //get driver object from server, and display notification if there is one
         //we want this in OnStart, as every time we load up this activity we want to check for notifications
         DriverController driverController = new DriverController();
-        driver = driverController.getDriverFromServer(userID.toString());
+        driver = driverController.getDriverFromServerUsingId(userID.toString());
         //check for notifications, display
         if(driver.getPendingNotification() != null){
             Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();

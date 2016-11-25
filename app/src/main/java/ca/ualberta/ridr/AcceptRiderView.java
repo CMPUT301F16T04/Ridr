@@ -27,6 +27,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.gson.Gson;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -166,7 +167,21 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     return;
                 }
                 else {
+                    //driver is now willing to fulfill the ride
                     requestController.addDriverToList(request, driverName);
+                    //set pending notification on riders account
+                    requestRider.setPendingNotification("A driver is willing to " +
+                            "fulfill your Ride! Check your Requests for more info.");
+                    try {
+                        AsyncController asyncController = new AsyncController();
+                        asyncController.create("user", requestRider.getID().toString(), new Gson().toJson(requestRider));
+                        //successful account creation
+                        Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
+                                "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
+                    } catch (Exception e){
+                        Log.i("Communication Error", "Could not communicate with the elastic search server");
+                        return;
+                    }
 
                     agreedToFulfill = true;
                     String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
