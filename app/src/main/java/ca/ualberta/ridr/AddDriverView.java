@@ -257,7 +257,7 @@ public class AddDriverView extends Activity implements ACallback {
 
     private void addUserInfoToField(User user){
         System.out.println(new Gson().toJson(user));
-        SimpleDateFormat date = new SimpleDateFormat("MMM dd, yyyy");
+        SimpleDateFormat date = new SimpleDateFormat("yyyy/MM/dd");
         usernameEditText.setText(user.getName());
         dobEditText.setText(date.format(user.getDateOfBirth()));
         emailEditText.setText(user.getEmail());
