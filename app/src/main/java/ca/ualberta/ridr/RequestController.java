@@ -64,12 +64,13 @@ public class RequestController {
      * @param dropOffCoords Coordinates of dropoff location
      * @param date Date at which the rider wishes to be picked up
      */
+
     public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date, float fare, float costDistance){
-//        AsyncController controller = new AsyncController();
-        currenRequest = new Request(rider.getID().toString(), pickup, dropoff, pickupCoords, dropOffCoords, date);
+        AsyncController controller = new AsyncController();
+        currenRequest = new Request(rider.getName(), pickup, dropoff, pickupCoords, dropOffCoords, date);
         currenRequest.setFare(fare);
         currenRequest.setCostDistance(costDistance);
-        //rider.setRequests(new ArrayList<Request>());
+        rider.setRequests(new ArrayList<Request>());
         //commented for now so that we can actually create the request without breaking
         //rider.addRequest(currenRequest);
         this.add(currenRequest);

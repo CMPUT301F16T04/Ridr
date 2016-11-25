@@ -147,7 +147,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             @Override
             public void onPlaceSelected(Place place) {
                 //startLocation.setText(place.getAddress().toString());
-                Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
                 pickupStr = place.getAddress().toString();
                 pickupCoord = place.getLatLng();
                 //addMarkers(pickupCoord, "Pickup");
@@ -169,7 +169,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             @Override
             public void onPlaceSelected(Place place) {
                 //endLocation.setText(place.getAddress().toString());
-                Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
                 dropoffStr = place.getAddress().toString();
                 dropoffCoord = place.getLatLng();
                 //addMarkers(dropoffCoord, "Dropoff");
