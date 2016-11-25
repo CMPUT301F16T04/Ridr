@@ -49,7 +49,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<Marker> markers;
-    private UUID userID;
+    private String username;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
@@ -81,8 +81,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         autocompleteFragment.setOnPlaceSelectedListener(searchForRequests);
 
         Intent intent = getIntent();
-        String user = intent.getExtras().getString("user");
-        userID = UUID.fromString(user);
+        username = intent.getExtras().getString("user");
     }
 
     protected void onStart() {

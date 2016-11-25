@@ -42,12 +42,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private TextView status;
     private Button acceptRider;
 
-    private UUID driverID;
-    private String driverName;
+    private String username;
     private UUID requestID;
     private Rider requestRider;
     private Request request;
-    private Driver driver;
 
     private boolean agreedToFulfill = false;
 
@@ -100,7 +98,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            driverID = UUID.fromString(extras.getString("userUUID"));
+            username = extras.getString("username");
             requestID = UUID.fromString(extras.getString("RequestUUID"));
         } else {
             Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
@@ -129,7 +127,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         String endLocationText = endLocation.getText() + space + request.getDropoff();
         endLocation.setText(endLocationText);
 
-        //driverName = driverController.getDriverFromServer(driverID.toString()).getName();
         //have to check if the user previously accepted
         checkIfUserAccepted(requestID.toString());
 
@@ -148,7 +145,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
-                intent.putExtra("RiderUUID", requestRider.getID().toString());
+                intent.putExtra("username", requestRider.getName());
                 startActivity(intent);
             }
         });
@@ -165,7 +162,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     return;
                 }
                 else {
-                    requestController.addDriverToList(request, driverName);
+                    requestController.addDriverToList(request, username);
 
                     agreedToFulfill = true;
                     String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
@@ -284,7 +281,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private void checkIfUserAccepted(String requestId) {
         ArrayList<String> drivers = requestController.getPossibleDrivers(requestId);
         for (int i = 0; i < drivers.size(); ++i) {
-            if (drivers.get(i).equals(driverName)) {
+            if (drivers.get(i).equals(username)) {
                 agreedToFulfill = true;
                 break;
             }

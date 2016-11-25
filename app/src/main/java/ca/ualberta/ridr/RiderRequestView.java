@@ -35,7 +35,6 @@ import java.util.ArrayList;
 public class RiderRequestView extends Activity {
 
     private String currentUsername; // string of the current logged in user's username
-    private String clickedDriverIdStr; //id of driver who is clicked in popup
     private String clickedDriverNameStr; //name of driver who is clicked in popup
     private String clickedRequestIDStr; //id string of request that is clicked in listview
     private Activity activity = this;
@@ -44,8 +43,6 @@ public class RiderRequestView extends Activity {
     ListView oldRequestsList;
 
     private RequestController reqCon = new RequestController();
-    private DriverController driverCon = new DriverController();
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,12 +54,11 @@ public class RiderRequestView extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentIDStr = extras.getString("UUID");
-            currentUUID = UUID.fromString(currentIDStr);
+            currentUsername = extras.getString("username");
         }
 
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr);
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentUsername);
         requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
@@ -70,28 +66,30 @@ public class RiderRequestView extends Activity {
             } catch (Exception e) {
                 Log.i("Error parsing requests", e.toString());
             }
+        }
 
 
-            RequestAdapter customAdapter = new RequestAdapter(activity, requests);
-            oldRequestsList.setAdapter(customAdapter);
 
-            //this is to recognize listview item presses within the view
-            oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        RequestAdapter customAdapter = new RequestAdapter(activity, requests);
+        oldRequestsList.setAdapter(customAdapter);
+
+        //this is to recognize listview item presses within the view
+        oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     Request request = requests.get(position);
                     clickedRequestIDStr = request.getID().toString();
-                    displayDrivers(request);
+                    displayDrivers();
                 }
             });
             
         }
-    }
+
 
 
     //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
     //date link accessed : Nov 5 2016
     //author: Emil Adz ,edited Vladimir Kulyk
-    public void displayDrivers(Request request) {
+    public void displayDrivers() {
 
         // Inflate the popup_layout.xml
         LinearLayout viewGroup = (LinearLayout) findViewById(R.id.drivers_who_accepted);

@@ -41,8 +41,8 @@ public class AcceptDriverView extends Activity {
     private Button accept;
     private TextView xProfile;
 
-    private String riderId;
-    private String driverId;
+    private String username;
+    private String driverName;
     private String requestId;
 
     private DriverController driverCon = new DriverController();
@@ -65,8 +65,8 @@ public class AcceptDriverView extends Activity {
         Intent intent = getIntent();
         ArrayList<String> ids = intent.getStringArrayListExtra("ids");
         if (ids != null) {
-            riderId= ids.get(0);
-            driverId= ids.get(1);
+            username = ids.get(0);
+            driverName = ids.get(1);
             requestId = ids.get(2);
         }
         else{
@@ -75,7 +75,7 @@ public class AcceptDriverView extends Activity {
         }
 
 
-        final Driver driver = getDriver(driverId);
+        final Driver driver = getDriver(driverName);
         final Request request  = getRequest(requestId);
 
         final String driverEmailStr = driver.getEmail();
@@ -83,7 +83,7 @@ public class AcceptDriverView extends Activity {
 
         driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(capitalizeName(driver.getName()));
+        xProfile.setText(capitalizeName(driverName));
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -92,7 +92,7 @@ public class AcceptDriverView extends Activity {
             public void onClick(View v) {
 
 
-                rideCon.createRide(driver.getName(), request, getRiderName(riderId));
+                rideCon.createRide(driverName, request, username);
                 reqCon.accept(request);
 
                 finish();
@@ -139,11 +139,11 @@ public class AcceptDriverView extends Activity {
     /**
      * gets the driver for the data we display on this view
      *
-     * @param driverId used to fetch the driver
+     * @param driverName used to fetch the driver
      * @return Driver object
      */
-    public Driver getDriver(String driverId){
-        Driver driver = driverCon.getDriverFromServerUsingId(driverId);
+    public Driver getDriver(String driverName){
+        Driver driver = driverCon.getDriverFromServerUsingName(driverName);
         return(driver);
     }
 
@@ -163,19 +163,6 @@ public class AcceptDriverView extends Activity {
         }
 
         return(request);
-    }
-
-    /**
-     *  we need the rider's name when creating ride object
-     *  dont really need to fetch entire rider object into this view
-     *  this is only needed if we pass id's thru activities, not if we use names
-     *
-     * @param riderId used to get the rider name
-     * @return rider name
-     */
-    public String getRiderName(String riderId){
-        Rider rider = riderCon.getRiderFromServer(riderId);
-        return(rider.getName());
     }
 
     /** just some formatting, might not be necessary if the names are enforced

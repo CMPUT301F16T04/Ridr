@@ -18,7 +18,7 @@ import java.util.UUID;
 public class RequestsFromRidersView extends Activity {
     //must extend activity, not appcompatactivity
 
-    private UUID userID;
+    private String username;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
 
@@ -33,7 +33,7 @@ public class RequestsFromRidersView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userID = UUID.fromString(extras.getString("UUID"));
+            username = extras.getString("username");
         }
     }
 
@@ -46,7 +46,7 @@ public class RequestsFromRidersView extends Activity {
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", userID.toString());
+        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", username);
 
         for (JsonElement result : queryResults) {
             try {

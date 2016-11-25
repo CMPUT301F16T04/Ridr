@@ -31,7 +31,7 @@ public class SearchResultsView extends Activity {
     private RequestAdapter requestAdapter;
     private EditText bodyText;
     private Button mainMenu;
-    private UUID userID;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +42,7 @@ public class SearchResultsView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userID = UUID.fromString(extras.getString("UUID"));
+            username = extras.getString("username");
         }
 
         //main menu button
@@ -61,7 +61,7 @@ public class SearchResultsView extends Activity {
                 Intent intent = new Intent(SearchResultsView.this, AcceptRiderView.class);
                 Request clickedRequest = (Request)searchResults.getItemAtPosition(position);
                 intent.putExtra("RequestUUID", clickedRequest.getID().toString());
-                intent.putExtra("userUUID", userID.toString());
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -83,7 +83,7 @@ public class SearchResultsView extends Activity {
         switchGeoButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                String text = userID.toString();
+                String text = username;
                 Intent intent = new Intent(SearchResultsView.this, GeoView.class);
                 intent.putExtra("user", text);
                 startActivity(intent);
@@ -127,13 +127,13 @@ public class SearchResultsView extends Activity {
                     case R.id.mainRiderMenuEditUserInfo:
                         Toast.makeText(SearchResultsView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         Intent editInfoIntent = new Intent(SearchResultsView.this, EditProfileView.class);
-                        editInfoIntent.putExtra("UUID", userID.toString());
+                        editInfoIntent.putExtra("username", username);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(SearchResultsView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
-                        viewRequestsIntent.putExtra("UUID", userID.toString());
+                        viewRequestsIntent.putExtra("username", username);
                         startActivity(viewRequestsIntent);
                         return true;
                     default:
