@@ -9,6 +9,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonObject;
+
 /**
  * this view displays the info of the user when a username was presented and clicked on
  * one note is that the user in prev activity could have been either a rider or a driver
@@ -56,7 +58,7 @@ public class ProfileView extends Activity {
 //            rider = getRider(username);
 //            userEmailStr = rider.getEmail();
 //            userPhoneStr = rider.getPhoneNumber();
-              vehicleTitle.setVisibility(View.GONE);
+          //    vehicleTitle.setVisibility(View.GONE);
 //        }
 //        //else user was a driver
 //        else{
@@ -71,8 +73,8 @@ public class ProfileView extends Activity {
 
 
         //for testing only
-       // vehicleInfo = (TextView) findViewById(R.id.vehicle_info);
-        //vehicleInfo.setText("Autodomahickey");
+        vehicleInfo = (TextView) findViewById(R.id.vehicle_info);
+        vehicleInfo.setText("Autodomahickey");
 
 
         userEmail.setText(userEmailStr);
@@ -143,6 +145,18 @@ public class ProfileView extends Activity {
      */
     private String capitalizeName(String name){
         return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
+    }
+
+    /**
+     * gets a user but we dont cast to rider or driver yet
+     *
+     * @param username the username of the user
+     * @return a jsonobject user
+     */
+    private JsonObject getUser(String username){
+        AsyncController controller = new AsyncController();
+        JsonObject user = controller.get("user", "name", username);
+        return(user);
     }
 
 }

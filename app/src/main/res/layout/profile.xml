@@ -5,7 +5,7 @@
     android:background="@color/secondary_colour"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="ca.ualberta.ridr.AcceptDriverView"
+    tools:context="ca.ualberta.ridr.ProfileView"
     android:orientation="vertical"
     android:weightSum="1">
 
@@ -21,27 +21,6 @@
         android:textStyle="bold"
         android:layout_weight="0.25" />
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/vehicle_title"
-        android:text="Vehicle Description"
-        android:textSize="20sp"
-        android:layout_weight="0.05" />
-
-    <TextView
-        android:gravity="center"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/vehicle_info"
-        android:textSize="20sp"
-        android:layout_weight="0.15" />
-
     <Button
         android:text="Button"
         android:layout_marginTop="20dp"
@@ -51,7 +30,7 @@
         android:layout_height="wrap_content"
         android:background="@color/tertiary_colour"
         android:id="@+id/user_phone"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.04" />
 
     <Button
         android:text="Button"
@@ -62,7 +41,27 @@
         android:layout_height="wrap_content"
         android:background="@color/tertiary_colour"
         android:id="@+id/user_email"
-        android:layout_weight="0.15" />
+        android:layout_weight="0.04" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/vehicle_title"
+        android:text="Vehicle Description"
+        android:textSize="20sp" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/vehicle_info"
+        android:textSize="20sp"
+        android:layout_weight="0.06" />
 
 
 </LinearLayout>
