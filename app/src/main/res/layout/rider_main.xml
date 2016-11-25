@@ -33,17 +33,6 @@
         android:layout_alignParentEnd="true"
         android:inputType="numberDecimal" />
 
-    <!--
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editEndLocationText"
-        android:text="Enter Destination"
-        android:layout_above="@+id/editFare"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        />
-        -->
 
     <fragment
         android:id="@+id/dropoff_autocomplete_fragment"
@@ -56,16 +45,6 @@
         android:layout_alignParentEnd="true"
         android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
         />
-    <!--
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/editStartLocationText"
-        android:text="Enter Start Location"
-        android:layout_above="@+id/editEndLocationText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true" />
-    -->
 
     <fragment
         android:id="@+id/pickup_autocomplete_fragment"

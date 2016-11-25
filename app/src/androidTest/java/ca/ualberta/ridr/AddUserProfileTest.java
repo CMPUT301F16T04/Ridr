@@ -38,9 +38,9 @@ public class AddUserProfileTest {
      */
     public void testUserProfile(){
 
-        //user named testy must not be in database before tests!!**
+        //user named testyyy must not be in database before tests!!**
         Date date1 = new Date();
-        User user = new User("testy", date1, "321", "goodemail", "9999999");
+        User user = new User("testyyy", date1, "321", "goodemail", "9999999");
 
         //add user
         AsyncController controller = new AsyncController();
