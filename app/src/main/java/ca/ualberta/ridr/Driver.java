@@ -26,6 +26,7 @@ public class Driver extends User {
 
     public Driver(User user){
         super(user);
+        super.setDriverStatus(true);
     }
     public String getName() {
         return super.getName();

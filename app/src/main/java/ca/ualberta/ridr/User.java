@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import android.util.Log;
+
 import java.util.Date;
 import java.util.UUID;
 
@@ -36,8 +38,10 @@ public class User {
         this.email = user.email;
         this.phoneNumber = user.phoneNumber;
         this.id = user.id;
-        this.isRider = false;
-        this.isDriver = false;
+
+        this.isDriver = user.isDriver;
+        this.isRider = user.isRider;
+
     }
 
     public String getName() {
@@ -100,6 +104,7 @@ public class User {
     public void setDriverStatus(boolean status) {
         this.isDriver = status;
     }
+
     public boolean isDriver(){
         return isDriver;
     }
