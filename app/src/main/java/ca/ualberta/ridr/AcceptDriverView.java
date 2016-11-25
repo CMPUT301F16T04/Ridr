@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.SpannableString;
 import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -94,6 +95,18 @@ public class AcceptDriverView extends Activity {
 
                 rideCon.createRide(driver.getName(), request, getRiderName(riderId));
                 reqCon.accept(request);
+
+                //save pendingNotification for driver, upload to elastic search
+                driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides" +
+                        "for more info.");
+                try {
+                    AsyncController asyncController = new AsyncController();
+                    asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                    //successful account creation
+                } catch (Exception e){
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                    return;
+                }
 
                 finish();
 
