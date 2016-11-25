@@ -44,7 +44,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private TextView status;
     private Button acceptRider;
 
-    private UUID driverID;
     private String driverName;
     private UUID requestID;
     private Rider requestRider;
@@ -102,7 +101,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            driverID = UUID.fromString(extras.getString("userUUID"));
+            driverName = extras.getString("userName");
             requestID = UUID.fromString(extras.getString("RequestUUID"));
         } else {
             Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");

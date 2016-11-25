@@ -7,11 +7,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,7 +30,7 @@ import java.util.ArrayList;
 public class RiderRequestView extends Activity {
 
     private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String riderName; // string of the curretn UUID
     private String clickedDriverIdStr; //id of driver who is clicked in popup
     private String clickedDriverNameStr; //name of driver who is clicked in popup
     private String clickedRequestIDStr; //id string of request that is clicked in listview
@@ -58,12 +53,11 @@ public class RiderRequestView extends Activity {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentIDStr = extras.getString("UUID");
-            currentUUID = UUID.fromString(currentIDStr);
+            riderName = extras.getString("Name");
         }
 
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", currentIDStr);
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", riderName);
         requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
@@ -149,7 +143,7 @@ public class RiderRequestView extends Activity {
                 //TODO pass the driver at clicked position to the next activity
                 Intent intent = new Intent(activity, AcceptDriverView.class);
                 ArrayList<String> ids = new ArrayList<>();
-                ids.add(currentIDStr); //pass the current user
+                ids.add(riderName); //pass the current user
                 ids.add(clickedDriverIdStr);
                 ids.add(clickedRequestIDStr);
                 //System.out.println(ids);

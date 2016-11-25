@@ -16,8 +16,6 @@ import android.widget.Toast;
 import java.util.ArrayList;
 import java.util.UUID;
 
-import io.searchbox.core.SearchResult;
-
 /**
  * The view that shows keyword search results for a driver
  * Also allows new keyword searches to be performed
@@ -31,7 +29,7 @@ public class SearchResultsView extends Activity {
     private RequestAdapter requestAdapter;
     private EditText bodyText;
     private Button mainMenu;
-    private UUID userID;
+    private String driverName;
     private Driver driver;
 
     @Override
@@ -43,7 +41,7 @@ public class SearchResultsView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userID = UUID.fromString(extras.getString("UUID"));
+            driverName = extras.getString("Name");
         }
 
         //main menu button
@@ -62,7 +60,7 @@ public class SearchResultsView extends Activity {
                 Intent intent = new Intent(SearchResultsView.this, AcceptRiderView.class);
                 Request clickedRequest = (Request)searchResults.getItemAtPosition(position);
                 intent.putExtra("RequestUUID", clickedRequest.getID().toString());
-                intent.putExtra("userUUID", userID.toString());
+                intent.putExtra("userName", driverName);
                 startActivity(intent);
             }
         });
@@ -84,9 +82,8 @@ public class SearchResultsView extends Activity {
         switchGeoButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                String text = userID.toString();
                 Intent intent = new Intent(SearchResultsView.this, GeoView.class);
-                intent.putExtra("user", text);
+                intent.putExtra("userName", driverName);
                 startActivity(intent);
             }
         });
@@ -99,7 +96,7 @@ public class SearchResultsView extends Activity {
         //get driver object from server, and display notification if there is one
         //we want this in OnStart, as every time we load up this activity we want to check for notifications
         DriverController driverController = new DriverController();
-        driver = driverController.getDriverFromServerUsingId(userID.toString());
+        driver = driverController.getDriverFromServerUsingName(driverName);
         //check for notifications, display
         if(driver.getPendingNotification() != null){
             Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
@@ -138,13 +135,13 @@ public class SearchResultsView extends Activity {
                     case R.id.mainRiderMenuEditUserInfo:
                         Toast.makeText(SearchResultsView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         Intent editInfoIntent = new Intent(SearchResultsView.this, EditProfileView.class);
-                        editInfoIntent.putExtra("UUID", userID.toString());
+                        editInfoIntent.putExtra("Name", driverName);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(SearchResultsView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
-                        viewRequestsIntent.putExtra("UUID", userID.toString());
+                        viewRequestsIntent.putExtra("Name", driverName);
                         startActivity(viewRequestsIntent);
                         return true;
                     default:

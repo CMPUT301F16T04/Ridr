@@ -109,7 +109,7 @@ public class LoginView extends Activity {
             return;
         }
         Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
-        riderScreenIntent.putExtra("UUID", myUser.getID().toString());
+        riderScreenIntent.putExtra("Name", myUser.getName());
         startActivity(riderScreenIntent);
     }
     private void loginDriver(User myUser){
@@ -118,7 +118,7 @@ public class LoginView extends Activity {
             return;
         }
         Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
-        driverScreenIntent.putExtra("UUID", myUser.getID().toString());
+        driverScreenIntent.putExtra("Name", myUser.getName());
         startActivity(driverScreenIntent);
     }
 

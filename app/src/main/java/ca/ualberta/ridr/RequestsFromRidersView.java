@@ -2,7 +2,6 @@ package ca.ualberta.ridr;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,12 +12,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class RequestsFromRidersView extends Activity {
     //must extend activity, not appcompatactivity
 
-    private UUID userID;
+    private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
 
@@ -33,7 +31,7 @@ public class RequestsFromRidersView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userID = UUID.fromString(extras.getString("UUID"));
+            userName = extras.getString("driverName");
         }
     }
 
@@ -46,7 +44,7 @@ public class RequestsFromRidersView extends Activity {
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
         AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", userID.toString());
+        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", userName);
 
         for (JsonElement result : queryResults) {
             try {
