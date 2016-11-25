@@ -59,7 +59,6 @@ public class RequestsFromRidersView extends Activity implements ACallback{
                 intent.putExtra("RequestUUID", request.getID().toString());
                 intent.putExtra("userName", userName);
                 startActivity(intent);
-                startActivity(intent);
             }
         });
 
