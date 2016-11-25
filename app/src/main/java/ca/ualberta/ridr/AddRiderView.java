@@ -256,7 +256,7 @@ public class AddRiderView extends Activity implements ACallback {
         creditEditText.setText(user.getCreditCard());
     }
     public void update(){
-
+        // This is messy because my observables are really lazy
         User currentUser = accountController.getUser();
         // this is very hacky. But let's check what state we're in.
         if(!updateUser){
