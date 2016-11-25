@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -25,6 +26,7 @@ public class SearchResultsView extends Activity {
     private RequestAdapter requestAdapter;
     private EditText bodyText;
     private UUID userID;
+    private Driver driver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +79,16 @@ public class SearchResultsView extends Activity {
     @Override
     protected void onStart() {
         super.onStart();
+
+        //get driver object from server, and display notification if there is one
+        //we want this in OnStart, as every time we load up this activity we want to check for notifications
+        DriverController driverController = new DriverController();
+        driver = driverController.getDriverFromServer(userID.toString());
+        //check for notifications, display
+        if(driver.getPendingNotification() != null){
+            Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
+        }
+
         requestAdapter = new RequestAdapter(this, requestList);
         searchResults.setAdapter(requestAdapter);
     }

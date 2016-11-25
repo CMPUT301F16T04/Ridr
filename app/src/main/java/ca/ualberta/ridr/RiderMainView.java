@@ -80,6 +80,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     RequestController reqController;
     //RiderController riderController = new RiderController();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -108,12 +109,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         if (extras != null) {
             currentIDStr = extras.getString("UUID");
             currentUUID = UUID.fromString(currentIDStr);
-        }
-        //from the UUID, get the rider object
-        try {
-            currentRider = new Gson().fromJson(new AsyncController().get("user", "id", currentIDStr), Rider.class);
-        } catch(Exception e){
-            Log.i("Error parsing Rider", e.toString());
         }
 
 
@@ -202,6 +197,19 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
+
+        //from the UUID, get the rider object
+        //we want this in onStart, because we want to pull notification every time we go back to the activity
+        try {
+            currentRider = new Gson().fromJson(new AsyncController().get("user", "id", currentIDStr), Rider.class);
+        } catch(Exception e){
+            Log.i("Error parsing Rider", e.toString());
+        }
+
+        //check for notifications, display
+        if(currentRider.getPendingNotification() != null){
+            Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_SHORT).show();
+        }
     }
     protected void onResume(){
         super.onResume();
