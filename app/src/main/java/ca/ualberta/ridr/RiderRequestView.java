@@ -14,14 +14,24 @@ import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
+
+import java.text.ParseException;
 import java.util.UUID;
 
 
+import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
+/**
+ * Displays information pertaining to a rider's active requests. Allows them to accept requests, as
+ * wel as cancel requests
+ *
+ */
 
 /** The RiderRequestView displays a list of active requests for a logged in rider
  * @author mackenzie
@@ -65,21 +75,21 @@ public class RiderRequestView extends Activity {
             } catch (Exception e) {
                 Log.i("Error parsing requests", e.toString());
             }
-
-
-            RequestAdapter customAdapter = new RequestAdapter(activity, requests);
-            oldRequestsList.setAdapter(customAdapter);
-
-            //this is to recognize listview item presses within the view
-            oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    Request request = requests.get(position);
-                    clickedRequestIDStr = request.getID().toString();
-                    displayDrivers(request);
-                }
-            });
-            
         }
+
+
+        final RequestAdapter customAdapter = new RequestAdapter(activity, requests);
+        oldRequestsList.setAdapter(customAdapter);
+
+        //this is to recognize listview item presses within the view
+        oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Request request = requests.get(position);
+                clickedRequestIDStr = request.getID().toString();
+                displayDrivers(request);
+            }
+        });
+            
     }
 
 
@@ -131,7 +141,7 @@ public class RiderRequestView extends Activity {
 
                 clickedDriverNameStr = possibleDrivers.get(position);
                 //Driver joe = driverCon.getDriverFromServerUsingName(clickedDriverNameStr);
-                clickedDriverIdStr = driverCon.getDriverFromServerUsingName(clickedDriverNameStr).getElasticID();
+                clickedDriverIdStr = driverCon.getDriverFromServerUsingName(clickedDriverNameStr).getID().toString();
 //                Log.i("the id for driver", clickedDriverIdStr);
 //                Log.i("the name of the driver", clickedDriverNameStr);
 //                Log.i("the name of the driver", joe.getElasticID());
@@ -140,7 +150,6 @@ public class RiderRequestView extends Activity {
                 driverPopUp.dismiss();
 
 
-                //TODO pass the driver at clicked position to the next activity
                 Intent intent = new Intent(activity, AcceptDriverView.class);
                 ArrayList<String> ids = new ArrayList<>();
                 ids.add(riderName); //pass the current user
@@ -152,7 +161,6 @@ public class RiderRequestView extends Activity {
                 //go to driver profile
             }
         });
-
 
     }
 
@@ -178,6 +186,8 @@ public class RiderRequestView extends Activity {
             captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
         }
         return(captNames);
+
     }
 }
+
 

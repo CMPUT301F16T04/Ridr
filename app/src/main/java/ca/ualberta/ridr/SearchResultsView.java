@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,6 +13,8 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.PopupMenu;
 import android.widget.Toast;
+
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -100,6 +103,15 @@ public class SearchResultsView extends Activity {
         //check for notifications, display
         if(driver.getPendingNotification() != null){
             Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
+            driver.setPendingNotification(null);
+            //update the user object in the database
+            try {
+                AsyncController asyncController = new AsyncController();
+                asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                //successful account updating
+            } catch (Exception e){
+                Log.i("Communication Error", "Could not communicate with the elastic search server");
+            }
         }
 
         requestAdapter = new RequestAdapter(this, requestList);

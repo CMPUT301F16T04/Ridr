@@ -278,4 +278,18 @@ public class RequestController {
         cbInterface.update();
 
     }
+
+    public void findAllRequestsWithDataMember(String dataType, String variable, String variableValue){
+        AsyncController controller = new AsyncController();
+        JsonArray queryResults = controller.getFromIndexObjectInArray(dataType, variable, variableValue);
+
+        for (JsonElement result : queryResults) {
+            try {
+                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
+            }
+        }
+        cbInterface.update();
+    }
 }

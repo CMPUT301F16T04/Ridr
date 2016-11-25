@@ -11,7 +11,6 @@ import io.searchbox.annotations.JestId;
 public class Driver extends User {
 
     @JestId
-    private String elasticID;
 
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
@@ -51,15 +50,6 @@ public class Driver extends User {
     public String getBankAccountNo() {
         return bankAccountNo;
     }
-    public String getElasticID() {
-        return super.getID().toString();
-
-    }
-
-    public void setElasticID(String elasticID) {
-        this.elasticID = elasticID;
-    }
-
     public ArrayList<Ride> getRides() {
         return rideArrayList;
     }

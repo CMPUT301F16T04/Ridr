@@ -1,0 +1,38 @@
+* Storm
+- Possible drivers list
+    - View request as a driver
+- Also working on the driver request list
+    - Almost done
+    - Figured out how to search for something in an array in the request
+      controller
+- Planning on finish driver request list, working on stuff that needs to be
+  done
+- Must update storyboard
+- Blockers: 2 projects on monday (all major)
+* Justin B
+- Setup a view for driver to be able to see current rides
+- Sorts on various stuff
+- Mocking out async test controller
+- Test that view
+- Planning on mapView for rides
+- Blockers: 350, 333, 366(procrastinate)
+- Routes need to be done by someone 
+- Code review
+* Justin F
+- Work on implementing offline stuff
+- Tried to save async controller for offline
+- Blockers: labs and assignments due
+* Kirsty
+- Refactoring on rider accepts driver
+- Made it functional, needs a bit of clean up
+- Must work on driver accepting the rider
+- Maybe square away view
+- Blockers:
+* Mack
+- Worked on views
+- Fixed some bugs
+* Marco
+- Absent
+- 
+* Other
+- For presentation, use projector. Test beforehand

@@ -205,7 +205,16 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
         //check for notifications, display
         if(currentRider.getPendingNotification() != null){
-            Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_LONG).show();
+            currentRider.setPendingNotification(null);
+            //update the user object in the database
+            try {
+                AsyncController asyncController = new AsyncController();
+                asyncController.create("user", currentRider.getID().toString(), new Gson().toJson(currentRider));
+                //successful account updating
+            } catch (Exception e){
+                Log.i("Communication Error", "Could not communicate with the elastic search server");
+            }
         }
     }
     protected void onResume(){

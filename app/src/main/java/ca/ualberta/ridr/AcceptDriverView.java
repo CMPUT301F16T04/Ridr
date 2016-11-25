@@ -87,12 +87,12 @@ public class AcceptDriverView extends Activity {
                 reqCon.accept(request);
 
                 //save pendingNotification for driver, upload to elastic search
-                driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides" +
+                driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides " +
                         "for more info.");
                 try {
                     AsyncController asyncController = new AsyncController();
                     asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
-                    //successful account creation
+                    //successful account updating
                 } catch (Exception e){
                     Log.i("Communication Error", "Could not communicate with the elastic search server");
                     return;

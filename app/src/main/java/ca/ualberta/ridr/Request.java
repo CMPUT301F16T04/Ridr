@@ -36,6 +36,12 @@ public class Request {
     private float fare;
     private Date date;
 
+    public void setIsValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    private Boolean isValid;
+
 
     Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
         this.pickup = pickup;
@@ -49,6 +55,7 @@ public class Request {
         this.fare = 20;
         this.accepted = false;
         this.possibleDrivers = new ArrayList<String>();
+        this.isValid = true;
     }
 
     public Date getDate(){
@@ -61,6 +68,11 @@ public class Request {
     public LatLng getPickupCoords() {
         return pickupCoord;
     }
+
+    public Boolean isValid(){
+        return isValid;
+    }
+
 
     public void setPickupCoords(LatLng pickupCoords) {
         this.pickupCoord = pickupCoords;
@@ -161,6 +173,7 @@ public class Request {
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
             toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
+            toReturn.put("isValid", isValid);
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -185,6 +198,7 @@ public class Request {
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
         this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
+        this.isValid = request.get("isValid").getAsBoolean();
 
     }
 

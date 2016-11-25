@@ -21,6 +21,9 @@
     <string name="phone_add_account_edit_text">(123) 456-7890 or 1 123-456-7890</string>
     <string name="credit_add_account">Credit Card Number:</string>
     <string name="credit_add_account_edit_text">Example: XXXXBBBBYYYYAAAA</string>
+    <string name="cancel_request_text">Cancel Request</string>
+    <string name="exit_canceling_request">Exit</string>
+    <string name="cancel">Cancel</string>
 
     <!-- accept_rider view strings -->
     <string name="payment_accept_rider">Payment:  </string>

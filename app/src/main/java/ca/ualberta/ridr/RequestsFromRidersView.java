@@ -3,22 +3,20 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 
-public class RequestsFromRidersView extends Activity {
+public class RequestsFromRidersView extends Activity implements ACallback{
     //must extend activity, not appcompatactivity
 
     private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
+    private RequestController requestController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,19 +41,13 @@ public class RequestsFromRidersView extends Activity {
         }
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
-        AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", userName);
-
-        for (JsonElement result : queryResults) {
-            try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-            } catch (Exception e) {
-                Log.i("Error parsing requests", e.toString());
-            }
-        }
+        requestController = new RequestController(this);
+        requestController.findAllRequestsWithDataMember("request", "possibleDrivers", userName);
+        //search for our name in any possibleDriver list
+        //update gets called from Acallback
 
 
-        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests);
+        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests, userName);
         requestList.setAdapter(customAdapter);
 
         //this is to recognize listview item presses within the view
@@ -71,6 +63,22 @@ public class RequestsFromRidersView extends Activity {
             }
         });
 
+        if(requests.size() <= 0){
+            Toast.makeText(RequestsFromRidersView.this, "You haven't accepted any requests yet!", Toast.LENGTH_LONG).show();
+        }
 
+    }
+
+    @Override
+    //for Acallback
+    public void update() {
+        requests.clear();
+        ArrayList<Request> requestControllerList = requestController.getList();
+        for (int i = 0; i < requestControllerList.size(); ++i){
+            if(requestControllerList.get(i).isValid()){
+                //add to our request list, if the request is a valid request (not cancelled)
+                requests.add(requestControllerList.get(i));
+            }
+        }
     }
 }
