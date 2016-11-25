@@ -9,8 +9,6 @@ import android.location.Geocoder;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -26,7 +24,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import android.support.v4.app.FragmentActivity;
@@ -56,8 +53,7 @@ import android.location.Location;
  */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
-    //private EditText startLocation;
-    //private EditText endLocation;
+
     private EditText fareInput;
 
     private TextView dateTextView;
@@ -72,7 +68,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private PlaceAutocompleteFragment dropoffAutocompleteFragment;
 
     private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String currentIDStr; // string of the current UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Start Location";
@@ -99,7 +95,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
 
     RequestController reqController;
-    //RiderController riderController = new RiderController();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -129,6 +124,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
+            //TODO change UUID to rider's name
             currentIDStr = extras.getString("UUID");
             currentUUID = UUID.fromString(currentIDStr);
         }
@@ -379,6 +375,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
+                        //TODO change UUID to rider's name
                         editInfoIntent.putExtra("UUID", currentIDStr);
                         startActivity(editInfoIntent);
                         return true;
@@ -386,6 +383,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
+                        //TODO change UUID to rider's name
                         viewRequestsIntent.putExtra("UUID", currentIDStr);
                         startActivity(viewRequestsIntent);
                         return true;
