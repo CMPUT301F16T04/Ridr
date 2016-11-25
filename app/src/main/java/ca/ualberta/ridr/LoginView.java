@@ -112,6 +112,9 @@ public class LoginView extends Activity implements ACallback {
             startActivity(riderScreenIntent);
         } else {
             Toast.makeText(LoginView.this, "Sorry, this user is not a rider. Please add your rider info to your account", Toast.LENGTH_LONG).show();
+            Intent updateAccount = new Intent(LoginView.this, AddRiderView.class);
+            updateAccount.putExtra("username", myUser.getName());
+            startActivity(updateAccount);
         }
     }
     private void loginDriver(User myUser){
@@ -119,12 +122,16 @@ public class LoginView extends Activity implements ACallback {
         if(myUser == null){
             return;
         }
+
         if(myUser.isDriver()) {
             Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
             driverScreenIntent.putExtra("username", myUser.getName());
             startActivity(driverScreenIntent);
         } else {
             Toast.makeText(LoginView.this, "Sorry, this user is not a driver. Please add your driver info to your account.", Toast.LENGTH_LONG).show();
+            Intent updateAccount = new Intent(LoginView.this, AddDriverView.class);
+            updateAccount.putExtra("username", myUser.getName());
+            startActivity(updateAccount);
         }
     }
 
