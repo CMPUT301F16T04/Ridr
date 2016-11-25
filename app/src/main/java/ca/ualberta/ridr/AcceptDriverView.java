@@ -45,13 +45,19 @@ public class AcceptDriverView extends Activity {
     private String driverId;
     private String requestId;
 
+    private DriverController driverCon = new DriverController();
+    private RideController rideCon = new RideController();
+    private RequestController reqCon = new RequestController();
+    private RiderController riderCon = new RiderController();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.accept_driver);
 
-        driverEmail = (TextView) findViewById(R.id.driver_email);
-        driverPhone = (TextView) findViewById(R.id.driver_phone);
+        driverEmail = (Button) findViewById(R.id.driver_email);
+        driverPhone = (Button) findViewById(R.id.driver_phone);
         xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
@@ -62,8 +68,6 @@ public class AcceptDriverView extends Activity {
             riderId= ids.get(0);
             driverId= ids.get(1);
             requestId = ids.get(2);
-            //System.out.println(ids);
-            //System.out.println(driverId);
         }
         else{
             //this is if there was some error retrieving data passed, just go back to prev activity
@@ -74,22 +78,12 @@ public class AcceptDriverView extends Activity {
         final Driver driver = getDriver(driverId);
         final Request request  = getRequest(requestId);
 
-        String driverEmailStr = driver.getEmail();
+        final String driverEmailStr = driver.getEmail();
         String driverPhoneStr = driver.getPhoneNumber();
 
-        String profileString = checkProfileString(driver.getName());
-
-        //found how to underline text in textview at: http://stackoverflow.com/questions/10019001/how-do-you-underline-a-text-in-android-xml
-        //accessed on Nov 22 / 16
-        //author : George Artemiou and R4chi7
-        SpannableString emailUnderlined = new SpannableString(driverEmailStr);
-        emailUnderlined.setSpan(new UnderlineSpan(), 0, emailUnderlined.length(), 0);
-
-        //TODO see which of these looks best 
-
-        driverEmail.setText(emailUnderlined);
+        driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(profileString);
+        xProfile.setText(capitalizeName(driver.getName()));
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -98,15 +92,8 @@ public class AcceptDriverView extends Activity {
             public void onClick(View v) {
 
 
-                RideController RideC = new RideController();
-                RideC.createRide(driverId, request, riderId);
-
-                RequestController reqCon = new RequestController();
+                rideCon.createRide(driver.getName(), request, getRiderName(riderId));
                 reqCon.accept(request);
-
-                //TODO once we have a user request list we can uncomment this
-                //requestCon.removeRequest(request, rider);
-                //cant do while rider's request list is null
 
                 finish();
 
@@ -127,31 +114,26 @@ public class AcceptDriverView extends Activity {
             }
         });
 
-        //if the user clicks the drivers displaye email we will want to take them to an email app
+        //if the user clicks the drivers displayed email we will want to take them to an email app
         driverEmail.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View v){
-                //TODO lookup a way to do this, previously found one but not sure if there are apps that can be transferred to?
-                Toast.makeText(AcceptDriverView.this, "going to send an email later!", Toast.LENGTH_SHORT).show();
 
+                //http://stackoverflow.com/questions/2197741/how-can-i-send-emails-from-my-android-application?rq=1
+                // Nov 24 2016
+                // author Jeremy Logan
+                //note in order for this to work you must set up an email on your device
+                Intent i = new Intent(Intent.ACTION_SEND);
+                i.setType("message/rfc822");
+                i.putExtra(Intent.EXTRA_EMAIL  , new String[]{driverEmailStr});
+                try {
+                    startActivity(Intent.createChooser(i, "Send mail..."));
+                } catch (android.content.ActivityNotFoundException ex) {
+                    Toast.makeText(AcceptDriverView.this, "There are no email clients installed.", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
-    }
-
-    /**
-     * this function just checks on which way we want to format the title depending on the driver's name
-     *
-     * @param name is the driver's name
-     * @return String for view title
-     */
-    private String checkProfileString(String name) {
-        if(name.endsWith("s")) {
-            return(name+"' Profile");
-        }
-        else{
-            return(name+"'s Profile");
-        }
     }
 
     /**
@@ -161,8 +143,7 @@ public class AcceptDriverView extends Activity {
      * @return Driver object
      */
     public Driver getDriver(String driverId){
-        DriverController DC = new DriverController();
-        Driver driver = DC.getDriverFromServer(driverId);
+        Driver driver = driverCon.getDriverFromServerUsingId(driverId);
         return(driver);
     }
 
@@ -174,8 +155,7 @@ public class AcceptDriverView extends Activity {
      * @return Request object
      */
     public Request getRequest(String requestId){
-        RequestController requestCon = new RequestController();
-        Request request = requestCon.getRequestFromServer(requestId);
+        Request request = reqCon.getRequestFromServer(requestId);
 
         //if we could not fetch the request and return null then... go back to previous activity?
         if(request==null) {
@@ -184,5 +164,29 @@ public class AcceptDriverView extends Activity {
 
         return(request);
     }
+
+    /**
+     *  we need the rider's name when creating ride object
+     *  dont really need to fetch entire rider object into this view
+     *  this is only needed if we pass id's thru activities, not if we use names
+     *
+     * @param riderId used to get the rider name
+     * @return rider name
+     */
+    public String getRiderName(String riderId){
+        Rider rider = riderCon.getRiderFromServer(riderId);
+        return(rider.getName());
+    }
+
+    /** just some formatting, might not be necessary if the names are enforced
+     *  to be capitalized but wont hurt to have this til then
+     *
+     * @param name the possibly lowercased name
+     * @return the name with the first letter capitalized
+     */
+    private String capitalizeName(String name){
+        return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
+    }
+
 
 }

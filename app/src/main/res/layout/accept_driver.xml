@@ -21,35 +21,28 @@
         android:textStyle="bold"
         android:layout_weight="0.15" />
 
-    <TextView
-        android:gravity="center|top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/driver_email" />
-
-    <TextView
-        android:gravity="center|top"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_marginTop="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:id="@+id/driver_phone1" />
-
     <Button
         android:text="Button"
+        android:layout_marginTop="20dp"
         android:layout_marginLeft="25dp"
         android:layout_marginRight="25dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/primaryDark"
+        android:background="@color/tertiary_colour"
         android:id="@+id/driver_phone"
         android:layout_weight="0.15" />
+
+    <Button
+        android:text="Button"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tertiary_colour"
+        android:id="@+id/driver_email"
+        android:layout_weight="0.15" />
+
 
     <Button
         android:text="Accept"
@@ -60,6 +53,8 @@
         android:background="@color/tertiary_colour"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
         android:id="@+id/accept_button" />
 
 </LinearLayout>

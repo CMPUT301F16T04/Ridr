@@ -36,12 +36,16 @@ public class RiderRequestView extends Activity {
 
     private UUID currentUUID; // UUID of the currently logged-in rider
     private String currentIDStr; // string of the curretn UUID
-    private String clickedDriverIDStr; //string of driver who is clicked in popup
-    private String clickedRequestIDStr; //string of request that is clicked in listview
+    private String clickedDriverIdStr; //id of driver who is clicked in popup
+    private String clickedDriverNameStr; //name of driver who is clicked in popup
+    private String clickedRequestIDStr; //id string of request that is clicked in listview
     private Activity activity = this;
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
+
+    private RequestController reqCon = new RequestController();
+    private DriverController driverCon = new DriverController();
 
 
     @Override
@@ -102,13 +106,9 @@ public class RiderRequestView extends Activity {
         driverPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         driverPopUp.setFocusable(true);
 
-        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
-        int OFFSET_X = 60;
-        int OFFSET_Y = 600;
-
 
         // Displaying the popup at the specified location, + offsets.
-        driverPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, OFFSET_X, OFFSET_Y);
+        driverPopUp.showAtLocation(layout, Gravity.CENTER, 0, 0);
 
 
         // Getting a reference to Close button, and close the popup when clicked.
@@ -122,17 +122,7 @@ public class RiderRequestView extends Activity {
         });
 
 
-        RequestController reqCon = new RequestController();
-        DriverController driverCon = new DriverController();
-        final ArrayList<String> possibleDrivers = new ArrayList<>();
-        final ArrayList<String> possibleDriversIds = reqCon.getPossibleDrivers(clickedRequestIDStr);
-        System.out.println(possibleDriversIds);
-        System.out.println(possibleDriversIds.size());
-        // one last for now fix to fix the fact that we store id's and i want names
-        //lots of hitting server tho so later should fix this....
-        for (int i = 0; i < possibleDriversIds.size(); i++) {
-            possibleDrivers.add(driverCon.getDriverFromServer(possibleDriversIds.get(i)).getName());
-        }
+        final ArrayList<String> possibleDrivers = capitalizeAllNames(reqCon.getPossibleDrivers(clickedRequestIDStr));
         System.out.println(possibleDrivers);
 
 
@@ -145,9 +135,12 @@ public class RiderRequestView extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 
-                clickedDriverIDStr = possibleDriversIds.get(position);
-                System.out.println(possibleDriversIds);
-                System.out.println(clickedDriverIDStr);
+                clickedDriverNameStr = possibleDrivers.get(position);
+                //Driver joe = driverCon.getDriverFromServerUsingName(clickedDriverNameStr);
+                clickedDriverIdStr = driverCon.getDriverFromServerUsingName(clickedDriverNameStr).getElasticID();
+//                Log.i("the id for driver", clickedDriverIdStr);
+//                Log.i("the name of the driver", clickedDriverNameStr);
+//                Log.i("the name of the driver", joe.getElasticID());
 
                 //must close popup before going to next activity
                 driverPopUp.dismiss();
@@ -157,7 +150,7 @@ public class RiderRequestView extends Activity {
                 Intent intent = new Intent(activity, AcceptDriverView.class);
                 ArrayList<String> ids = new ArrayList<>();
                 ids.add(currentIDStr); //pass the current user
-                ids.add(clickedDriverIDStr);
+                ids.add(clickedDriverIdStr);
                 ids.add(clickedRequestIDStr);
                 //System.out.println(ids);
                 intent.putStringArrayListExtra("ids", ids);
@@ -176,6 +169,21 @@ public class RiderRequestView extends Activity {
         super.onStart();
 
 
+    }
+    /** capitalizes all of the names in the possible drivers list so that when we
+     *  display them in the popup they are guaranteed to be capitalized
+     *  this may become obsolete if we enforce qualities on the usernames
+     *
+     *
+     * @param names the possibly lowercased names in the list of possibel drivers
+     * @return a list of the names, all with the first letter capitalized
+     */
+    private ArrayList<String> capitalizeAllNames(ArrayList<String> names) {
+        ArrayList<String> captNames = new ArrayList<>();
+        for (int i = 0; i < names.size(); i++) {
+            captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
+        }
+        return(captNames);
     }
 }
 

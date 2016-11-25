@@ -71,9 +71,15 @@ public class RequestController {
         }
     }
 
+    /** adds the name of the driver to the list of possible drivers
+     *  when the driver accepts a request
+     *
+     * @param request the request the driver is accepting
+     * @param driverName the info stored to know who has accepted the request
+     */
 
-    public void addDriverToList(Request request, String driverID){
-        request.addAccepted(driverID);
+    public void addDriverToList(Request request, String driverName){
+        request.addAccepted(driverName);
         AsyncController controller = new AsyncController();
         String requestId = request.getID().toString();
         try{
