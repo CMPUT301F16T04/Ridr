@@ -35,10 +35,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
     private TextView requestFrom;
     private TextView payment;
-    private TextView contactInfo;
     private TextView pickupTime;
-    private TextView startLocation;
-    private TextView endLocation;
     private TextView status;
     private Button acceptRider;
 
@@ -87,10 +84,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         //set all the xml elements
         requestFrom = (TextView) findViewById(R.id.request_from);
         payment = (TextView) findViewById(R.id.payment_accept_rider);
-        contactInfo = (TextView) findViewById(R.id.contact_info_accept_rider);
         pickupTime = (TextView) findViewById(R.id.pickup_time_accept_rider);
-        startLocation = (TextView) findViewById(R.id.start_location_accept_rider);
-        endLocation = (TextView) findViewById(R.id.end_location_accept_rider);
         status = (TextView) findViewById(R.id.status_accept_rider);
         acceptRider = (Button) findViewById(R.id.accept_rider_button);
 
@@ -118,14 +112,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         requestFrom.setText(isFrom);
         String paymentText = payment.getText() + space+ Float.toString(request.getFare());
         payment.setText(paymentText);
-        String contactInfoText = contactInfo.getText() + space + requestRider.getPhoneNumber();
-        contactInfo.setText(contactInfoText);
         String pickupTimeText = pickupTime.getText() + space + rideDate.format(request.getDate());
         pickupTime.setText(pickupTimeText);
-        String startLocationText = startLocation.getText() + space + request.getPickup();
-        startLocation.setText(startLocationText);
-        String endLocationText = endLocation.getText() + space + request.getDropoff();
-        endLocation.setText(endLocationText);
 
         //have to check if the user previously accepted
         checkIfUserAccepted(requestID.toString());
@@ -242,9 +230,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private void setupMap(Request request){
 
         //adds markers and then move camera to where they are
-        Marker startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
+        Marker startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Start Location: " + request.getPickup()));
         startMarker.setTag(request);
-        Marker endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title(request.getDropoff()));
+        Marker endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("End Location: " + request.getDropoff()));
         endMarker.setTag(request);
 
         zoomToMid(request);
