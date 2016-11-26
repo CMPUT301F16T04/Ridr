@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/accept_driver"
+    android:background="@color/secondary_colour"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="ca.ualberta.ridr.AcceptDriverView"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/x_profile"
+        android:textSize="45sp"
+        android:textStyle="bold"
+        android:layout_weight="0.15" />
+
+    <Button
+        android:text="Button"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tertiary_colour"
+        android:id="@+id/driver_phone"
+        android:layout_weight="0.15" />
+
+    <Button
+        android:text="Button"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="25dp"
+        android:layout_marginRight="25dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/tertiary_colour"
+        android:id="@+id/driver_email"
+        android:layout_weight="0.15" />
+
+
+    <Button
+        android:text="Accept"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="250dp"
+        android:layout_marginBottom="5dp"
+        android:background="@color/tertiary_colour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingBottom="20dp"
+        android:paddingTop="20dp"
+        android:id="@+id/accept_button" />
+
+</LinearLayout>
