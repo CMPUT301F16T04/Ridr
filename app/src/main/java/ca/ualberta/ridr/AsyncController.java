@@ -1,6 +1,8 @@
 package ca.ualberta.ridr;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -77,14 +79,18 @@ public class AsyncController {
         controller = new AsyncDatabaseController("getAllFromIndex");
         String file = getFile(dataClass);
         try{
-            String searchString = "{\"query\": { \"match_all\": { }}}";
+            if(isConnected()) {
+                String searchString = "{\"query\": { \"match_all\": { }}}";
 
-            JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
-            saveInFile(jArray, file);
-            return jArray;
+                JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
+                saveInFile(jArray, file);
+                return jArray;
+            } else {
+                return loadFromFile(file);
+            }
 
         } catch(Exception e) {
-            return loadFromFile(file);
+            return null;
         }
     }
 
@@ -230,6 +236,17 @@ public class AsyncController {
     private String getFile(String dataClass) {
         String file = dataClass + ".sav";
         return file;
+    }
+
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 
 
