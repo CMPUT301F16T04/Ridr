@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 /**
  * Modified by nkaefer on 2016/11/08
@@ -83,8 +84,11 @@ public class LoginView extends Activity {
                 }
                 //code for switching between a rider login and a driver login
                 if(asDriver){
+                    //Call to save requests to file for offline functionality
+                    new AsyncController(context).getAllFromIndex("request");
                     loginDriver(myUser);
                 } else {
+                    new AsyncController(context).getAllFromIndexFiltered("request", "rider", myUser.getName());
                     loginRider(myUser);
                 }
             }
