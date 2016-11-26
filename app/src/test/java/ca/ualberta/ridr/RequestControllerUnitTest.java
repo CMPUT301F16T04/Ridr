@@ -26,10 +26,15 @@ public class RequestControllerUnitTest {
         RequestController RC = new RequestController();
         String start = "start";
         String end = "end";
-        LatLng a = new LatLng(1,2);
-        LatLng b = new LatLng(2,3);
-        RC.createRequest(rider, start, end, a, b, date);
-        Request request = new Request(rider.getID().toString(), start, end, a, b, date);
+        LatLng startLocation = new LatLng(1,2);
+        LatLng endLocation = new LatLng(2,3);
+        float fare = 15;
+        float costDistance = fare/8;
+        RC.createRequest(rider, start, end, startLocation, endLocation , date, fare, costDistance);
+        Request request = new Request(rider.getID().toString(), start, end, startLocation, endLocation , date);
+        request.setFare(fare);
+        request.setCostDistance(costDistance);
+        // need to find beter way of retrieving request. should test database
         ArrayList<Request>  riderRequest = rider.getRequests();
         assertTrue(riderRequest.get(0).getPickup() == request.getPickup());
         //still cant use isEquals here because we do create two separate instances of requests in this test

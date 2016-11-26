@@ -77,7 +77,7 @@ public class AsyncController {
      */
     public JsonArray getAllFromIndex(String dataClass) {
         controller = new AsyncDatabaseController("getAllFromIndex");
-        String file = getFile(dataClass);
+        String file = getFile(dataClass, "");
         try{
             if(isConnected()) {
                 String searchString = "{\"query\": { \"match_all\": { }}}";
@@ -104,11 +104,18 @@ public class AsyncController {
      */
     public JsonArray getAllFromIndexFiltered(String dataClass, String variable, String variableValue ) {
         controller = new AsyncDatabaseController("get");
+        String file = getFile(dataClass, variable);
         try{
-            String searchString = "{\"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
-                    "fields: [ \"" + variable + "\"]}}}";
+            if(isConnected()) {
+                String searchString = "{\"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
+                        "fields: [ \"" + variable + "\"]}}}";
 
-            return extractAllElements(controller.execute(dataClass, searchString).get());
+                JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
+                saveInFile(jArray, file);
+                return jArray;
+            } else {
+                return loadFromFile(file);
+            }
         } catch(Exception e){
             return null;
         }
@@ -259,8 +266,8 @@ public class AsyncController {
         }
     }
 
-    private String getFile(String dataClass) {
-        String file = dataClass + ".sav";
+    private String getFile(String dataClass, String variable) {
+        String file = dataClass + variable + ".sav";
         return file;
     }
 

@@ -34,6 +34,7 @@ public class Request {
     private Boolean accepted;
     private UUID id;
     private float fare;
+    private float costDistance;
     private Date date;
 
     public void setIsValid(Boolean valid) {
@@ -146,12 +147,18 @@ public class Request {
         this.fare = estimate;
     }
 
-    public float estimateFare(float distance){
-        float gasCostFactor = 4; // calculate something later
-        //return distance * gasCostFactor;
-        float tempVal = 20;
-        return tempVal;
+    public float getCostDistance(){
+        return costDistance;
     }
+
+    /**
+     * sets the cost per KM
+     * @param cost
+     */
+    public void setCostDistance(float cost){
+        this.costDistance = cost;
+    }
+
 
     public UUID getID() {
         return id;
