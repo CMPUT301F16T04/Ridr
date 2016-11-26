@@ -31,10 +31,9 @@ public class ProfileView extends Activity {
     private RiderController riderCon = new RiderController();
 
     //just hardcoded for now
-    private String username = "Justin";
-    private String type = "Driver";
-    private String userEmailStr = "anemail@email.email";
-    private  String userPhoneStr = "123123123213";
+    private String username = "Kristy";
+    private String userEmailStr;
+    private  String userPhoneStr;
 
 
     @Override
@@ -46,7 +45,6 @@ public class ProfileView extends Activity {
 //        Bundle extras = intent.getExtras();
 //        if (extras != null) {
 //            username = extras.getString("username");
-//            type = extras.getString("type");
 //        }
 
         userEmail = (Button) findViewById(R.id.user_email);
@@ -54,28 +52,24 @@ public class ProfileView extends Activity {
         xName = (TextView) findViewById(R.id.x_name);
         vehicleTitle = (TextView) findViewById(R.id.vehicle_title);
 
-//        if(type.equals("Rider")){
-//            rider = getRider(username);
-//            userEmailStr = rider.getEmail();
-//            userPhoneStr = rider.getPhoneNumber();
-          //    vehicleTitle.setVisibility(View.GONE);
-//        }
-//        //else user was a driver
-//        else{
-//            driver = getDriver(username);
-//            userEmailStr = driver.getEmail();
-//            userPhoneStr = driver.getPhoneNumber();
-//            vehicleInfo = (TextView) findViewById(R.id.vehicle_info);
-//            //vehicleInfo.setText(driver.getVehicleDescription());
-//            vehicleInfo.setText("Autodomahickey");
-//        }
+        JsonObject user = getUser(username);
 
+        //user was a driver (possibly both)
+        if(user.get("isDriver").toString().equals("true")){
+            driver = getDriver(username);
+            userEmailStr = driver.getEmail();
+            userPhoneStr = driver.getPhoneNumber();
+            vehicleInfo = (TextView) findViewById(R.id.vehicle_info);
+            vehicleInfo.setText(driver.getVehicleDescription());
+        }
+        //else user was a rider
+        else{
+            rider = getRider(username);
+            userEmailStr = rider.getEmail();
+            userPhoneStr = rider.getPhoneNumber();
+            vehicleTitle.setVisibility(View.GONE);
 
-
-        //for testing only
-        vehicleInfo = (TextView) findViewById(R.id.vehicle_info);
-        vehicleInfo.setText("Autodomahickey");
-
+        }
 
         userEmail.setText(userEmailStr);
         userPhone.setText(userPhoneStr);
@@ -149,6 +143,7 @@ public class ProfileView extends Activity {
 
     /**
      * gets a user but we dont cast to rider or driver yet
+     * because we have to a check first
      *
      * @param username the username of the user
      * @return a jsonobject user

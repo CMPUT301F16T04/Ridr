@@ -11,23 +11,23 @@ import io.searchbox.annotations.JestId;
 public class Driver extends User {
     @JestId
     private String elasticID;
-
+    String vehicleDescription;
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     //private transient Vehicle vehicle;
     private transient String bankAccountNo;
     private transient ArrayList<Ride> rideArrayList;
 
-    public Driver(String name, Date dateOfBirth, String creditCard,
-
-                  String email, String phoneNumber, String bankAccountNo) {
+    public Driver(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber,
+                    String vechileDescription) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.bankAccountNo = bankAccountNo;
-
-        this.rideArrayList = new ArrayList<Ride>();
-        this.setDriverStatus(true);
+        this.vehicleDescription = vechileDescription;
     }
 
+    public Driver(User user){
+        super(user);
+        super.setDriverStatus(true);
+    }
     public String getName() {
         return super.getName();
     }
@@ -103,6 +103,9 @@ public class Driver extends User {
         return super.getPhoneNumber();
     }
 
+    public void setVehicleDescription(String vehicleDescription){
+        this.vehicleDescription = vehicleDescription;
+    }
     public String getEmail() {
         return super.getEmail();
     }
@@ -111,6 +114,9 @@ public class Driver extends User {
         return false;
     }
 
+    public String getVehicleDescription() {
+        return vehicleDescription;
+    }
 }
 
 
