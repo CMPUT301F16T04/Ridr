@@ -2,6 +2,8 @@ package ca.ualberta.ridr;
 
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -47,16 +49,19 @@ public class RequestController {
     private Request currenRequest;
     private JsonArray jsonArray;
     private ArrayList<Request> requests;
+    private ArrayList<Request> offlineRequests;
     private ACallback cbInterface;
     Context context;
 
     public RequestController(Context context) {
         this.context = context;
+        this.offlineRequests = new ArrayList<>();
     }
 
     public RequestController(ACallback cbInterface, Context context){
         this.cbInterface = cbInterface;
         this.requests = new ArrayList<>();
+        this.offlineRequests = new ArrayList<>();
         this.context = context;
     }
 
@@ -112,7 +117,11 @@ public class RequestController {
         this.add(currenRequest);
 
         try{
-            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+            if(isConnected()) {
+                controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+            } else {
+                offlineRequests.add(currenRequest);
+            }
         } catch (Exception e){
             Log.i("Error creating request", e.toString());
         }
@@ -297,5 +306,32 @@ public class RequestController {
             }
         }
         cbInterface.update();
+    }
+
+    public void executeOfflineRequests() {
+        AsyncController controller = new AsyncController(this.context);
+        for(Request r: offlineRequests) {
+            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+        }
+        offlineRequests.clear();
+    }
+
+    public boolean isPendingRequests() {
+        if(offlineRequests.size() > 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 }

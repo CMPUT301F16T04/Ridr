@@ -8,6 +8,8 @@ import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -228,6 +230,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 Log.i("Communication Error", "Could not communicate with the elastic search server");
             }
         }
+
+        if(reqController.isPendingRequests()) {
+            reqController.executeOfflineRequests();
+            Toast.makeText(context, "pending requests sent", Toast.LENGTH_SHORT).show();
+        }
     }
     protected void onResume(){
         super.onResume();
@@ -342,6 +349,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         LatLng dropoffCoord =  new LatLng(53.484775, -113.505067);
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate);
+        if(reqController.isPendingRequests()) {
+            reqController.executeOfflineRequests();
+            Toast.makeText(context, "pending requests sent", Toast.LENGTH_SHORT).show();
+        }
+
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
