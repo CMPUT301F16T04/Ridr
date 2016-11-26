@@ -1,7 +1,38 @@
 <resources>
     <string name="app_name">Ridr</string>
+    <string name="title_activity_geo_view">Ridr Map</string>
     <string name="username_hint">Username</string>
     <string name="rider">Rider</string>
     <string name="log_in">Log In</string>
     <string name="driver">Driver</string>
+    <string name="add_account_login">Add Account</string>
+
+    <!-- add account view strings -->
+    <string name="create_account_title">Create Account:</string>
+    <string name="create_account_button">Create Account</string>
+    <string name="create_account_subtitle">This will create both a Rider and Driver account for you to use.</string>
+    <string name="username_add_account">Unique Username:</string>
+    <string name="username_add_account_edit_text">Rider/Driver Username</string>
+    <string name="dob_add_account">Date Of Birth:</string>
+    <string name="dob_add_account_edit_text">Format: YYYY/MM/DD</string>
+    <string name="email_add_account">Email:</string>
+    <string name="email_add_account_edit_text">john@example.com</string>
+    <string name="phone_add_account">Phone Number:</string>
+    <string name="phone_add_account_edit_text">(123) 456-7890 or 1 123-456-7890</string>
+    <string name="credit_add_account">Credit Card Number:</string>
+    <string name="credit_add_account_edit_text">Example: XXXXBBBBYYYYAAAA</string>
+    <string name="cancel_request_text">Cancel Request</string>
+    <string name="exit_canceling_request">Exit</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- accept_rider view strings -->
+    <string name="payment_accept_rider">Payment:  </string>
+    <string name="contact_info_accept_rider">Contact Info:  </string>
+    <string name="pickup_time_accept_rider">Time of Pickup:  </string>
+    <string name="start_location_accept_rider">Start Location:  </string>
+    <string name="end_location_accept_rider">End Location:  </string>
+    <string name="status_accept_rider">Status:  </string>
+    <string name="accept_rider_button">Accept This Request</string>
+
+
 </resources>

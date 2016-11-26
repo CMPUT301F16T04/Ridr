@@ -2,49 +2,54 @@ package ca.ualberta.ridr;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.UUID;
+
+import io.searchbox.annotations.JestId;
 
 /**
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
-    private Vehicle vehicle;
-    private String bankAccountNo;
-    private ArrayList<Ride> rideArrayList;
+
+    @JestId
+
+    // These are all marked transient as we don't want them serialized when we pass this object to
+    // our AsyncDatabaseController
+    //private transient Vehicle vehicle;
+    private transient String bankAccountNo;
+    private transient ArrayList<Ride> rideArrayList;
+    private transient ArrayList<Request> requestArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
-                  String email, String phoneNumber, Vehicle vehicle, String bankAccountNo) {
+
+                  String email, String phoneNumber, String bankAccountNo) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.vehicle = vehicle;
         this.bankAccountNo = bankAccountNo;
+
         this.rideArrayList = new ArrayList<Ride>();
+        this.requestArrayList = new ArrayList<Request>();
+        this.setDriverStatus(true);
     }
 
     public String getName() {
-        return this.getName();
+        return super.getName();
     }
 
     public void setName(String name) {
-        this.setName(name);
+        super.setName(name);
     }
 
     public Date getDateOfBirth() {
-        return this.getDateOfBirth();
+        return super.getDateOfBirth();
     }
 
     public void setDateOfBirth(Date dateOfBirth) {
-        this.setDateOfBirth(dateOfBirth);
+        super.setDateOfBirth(dateOfBirth);
     }
 
 
     public String getBankAccountNo() {
         return bankAccountNo;
     }
-
-    public void setBankAccountNo(String bankAccountNo) {
-        this.bankAccountNo = bankAccountNo;
-    }
-
     public ArrayList<Ride> getRides() {
         return rideArrayList;
     }
@@ -56,7 +61,7 @@ public class Driver extends User {
     public void addRide() {
     }
 
-    public boolean kewordSearch(String input) {
+    public boolean keywordSearch(String input) {
         return false;
     }
 
@@ -65,6 +70,8 @@ public class Driver extends User {
     }
 
     public void acceptRide(Ride ride) {
+    }
+    public void acceptRequest(Request request) {
     }
 
     public boolean completeRide(Ride ride) {
@@ -88,11 +95,11 @@ public class Driver extends User {
     }
 
     public String getPhoneNumber() {
-        return this.getPhoneNumber();
+        return super.getPhoneNumber();
     }
 
     public String getEmail() {
-        return this.getEmail();
+        return super.getEmail();
     }
 
     public boolean isOffline() {
@@ -100,3 +107,5 @@ public class Driver extends User {
     }
 
 }
+
+

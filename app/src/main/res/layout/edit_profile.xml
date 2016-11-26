@@ -7,101 +7,83 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@color/light_secondary_colour"
     tools:context="ca.ualberta.ridr.EditProfileView">
 
     <Button
-        android:text="Cancel"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/cancelProfileEditButton"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true" />
 
-    <Button
         android:text="Save Changes"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/saveChangesButton"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:id="@+id/finishEditButton"
+        android:layout_alignParentEnd="true"
+        android:background="@color/tertiary_colour"
+        android:layout_alignParentStart="true" />
 
-    <TextView
-        android:text="Email:"
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="52dp"
-        android:id="@+id/textEmail"
-        android:layout_alignBottom="@+id/changeEmailText"
+        android:ems="10"
+        android:layout_marginBottom="65dp"
+        android:id="@+id/editVehicleInfo"
+        android:layout_above="@+id/finishEditButton"
         android:layout_alignParentStart="true"
-        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+        android:layout_alignParentEnd="true"
+        android:inputType="text" />
 
     <TextView
-        android:text="Phone Number:"
+        android:text="Edit Vehicle Info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/textPhoneText"
-        android:layout_alignBottom="@+id/changePhoneText"
-        android:layout_alignStart="@+id/changePhoneText"
-        android:layout_marginBottom="49dp"
-        android:textAppearance="@android:style/TextAppearance.Material.Large" />
+        android:layout_marginBottom="15dp"
+        android:id="@+id/textVehicleEdit"
+        android:textAppearance="@android:style/TextAppearance.DeviceDefault.Large"
+        android:layout_above="@+id/editVehicleInfo"
+        android:layout_alignParentStart="true" />
+
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="textEmailAddress"
         android:ems="10"
-        android:layout_marginTop="62dp"
-        android:id="@+id/changeEmailText"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
+        android:layout_centerVertical="true"
+        android:layout_alignParentStart="true"
+        android:id="@+id/editEmail"
+        android:layout_alignParentEnd="true" />
 
     <TextView
-        android:text="Credit Card Number:"
+        android:text="Edit E-mail Address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/creditText"
-        android:textAppearance="@android:style/TextAppearance.Material.Large"
-        android:layout_alignBottom="@+id/changeCreditText"
+        android:layout_above="@+id/editEmail"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="46dp" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="text"
-        android:ems="10"
-        android:id="@+id/changeCreditText"
-        android:layout_marginTop="38dp"
-        android:layout_below="@+id/textPhoneText"
-        android:layout_alignParentStart="true" />
-
-    <TextView
-        android:text="Date of Birth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/chageDOBText"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="41dp"
-        android:id="@+id/textDOB"
+        android:layout_marginBottom="18dp"
+        android:id="@+id/textEmailEdit"
         android:textAppearance="@android:style/TextAppearance.Material.Large" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="date"
-        android:ems="10"
-        android:layout_marginTop="31dp"
-        android:id="@+id/chageDOBText"
-        android:layout_below="@+id/creditText"
-        android:layout_alignParentStart="true" />
+        android:layout_above="@+id/editPhone"
+        android:layout_alignParentStart="true"
+        android:layout_marginBottom="18dp"
+        android:id="@+id/textPhoneEdit"
+        android:textAppearance="@android:style/TextAppearance.Material.Large"
+        android:text="Edit Phone Number" />
+
 
     <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:inputType="phone"
         android:ems="10"
-        android:layout_marginTop="45dp"
-        android:id="@+id/changePhoneText"
-        android:layout_below="@+id/textEmail"
-        android:layout_alignParentStart="true" />
+        android:layout_marginBottom="48dp"
+        android:id="@+id/editPhone"
+        android:layout_above="@+id/textEmailEdit"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true" />
+
+
 </RelativeLayout>
