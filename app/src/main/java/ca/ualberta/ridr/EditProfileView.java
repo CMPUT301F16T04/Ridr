@@ -23,4 +23,11 @@ public class EditProfileView extends Activity {
         }
 
     }
+
+    /**
+     * finds views by their ID's and assigns them to their respective variable
+     */
+    private void setViews(){
+
+    }
 }
