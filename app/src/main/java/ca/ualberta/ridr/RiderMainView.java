@@ -107,21 +107,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     .build();
         }
 
-        //retrieve the current rider's UUID
+        //retrieve the current rider's name
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentIDStr = extras.getString("UUID");
-            currentUUID = UUID.fromString(currentIDStr);
-        }
-        //from the UUID, get the rider object
-        try {
-            currentRider = new Gson().fromJson(new AsyncController(context).get("user", "id", currentIDStr), Rider.class);
-        } catch(Exception e){
-            Log.i("Error parsing Rider", e.toString());
             riderName = extras.getString("Name");
         }
-
 
         setViews();
         //TODO afterTextChanged for destination, and start location, get distance and estimate fare
@@ -209,7 +200,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         mGoogleApiClient.connect();
         super.onStart();
 
-        //from the UUID, get the rider object
+        //from the name, get the rider object
         //we want this in onStart, because we want to pull notification every time we go back to the activity
         try {
             currentRider = new Gson().fromJson(new AsyncController().get("user", "name", riderName), Rider.class);
@@ -231,9 +222,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         }
 
-        if(reqController.isPendingRequests()) {
+        if(reqController.isPendingExecutableRequests()) {
             reqController.executeOfflineRequests();
-            Toast.makeText(context, "pending requests sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
         }
     }
     protected void onResume(){
@@ -349,9 +340,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         LatLng dropoffCoord =  new LatLng(53.484775, -113.505067);
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate);
-        if(reqController.isPendingRequests()) {
+        if(reqController.isPendingExecutableRequests()) {
             reqController.executeOfflineRequests();
-            Toast.makeText(context, "pending requests sent", Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
         }
 
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();

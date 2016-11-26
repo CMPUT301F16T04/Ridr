@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -51,7 +52,8 @@ public class RequestController {
     private ArrayList<Request> requests;
     private ArrayList<Request> offlineRequests;
     private ACallback cbInterface;
-    Context context;
+    private Context context;
+    private OfflineSingleton offlineSingleton = OfflineSingleton.getInstance();
 
     public RequestController(Context context) {
         this.context = context;
@@ -120,7 +122,8 @@ public class RequestController {
             if(isConnected()) {
                 controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
             } else {
-                offlineRequests.add(currenRequest);
+                offlineSingleton.addRiderRequest(currenRequest);
+                Toast.makeText(context, "No internet connectivity, request will be sent once online", Toast.LENGTH_SHORT).show();
             }
         } catch (Exception e){
             Log.i("Error creating request", e.toString());
@@ -310,14 +313,14 @@ public class RequestController {
 
     public void executeOfflineRequests() {
         AsyncController controller = new AsyncController(this.context);
-        for(Request r: offlineRequests) {
-            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+        for(Request r: offlineSingleton.getRiderRequests()) {
+            controller.create("request", r.getID().toString(), r.toJsonString());
         }
-        offlineRequests.clear();
+        offlineSingleton.clearRiderRequests();
     }
 
-    public boolean isPendingRequests() {
-        if(offlineRequests.size() > 0) {
+    public boolean isPendingExecutableRequests() {
+        if(offlineSingleton.getRiderRequests().size() > 0 && isConnected()) {
             return true;
         } else {
             return false;
