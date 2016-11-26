@@ -2,6 +2,7 @@ package ca.ualberta.ridr;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Geocoder;
@@ -60,8 +61,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private ArrayList<Marker> markers;
     private Geocoder geocoder;
 
-    private RequestController requestController = new RequestController();
-    private RiderController riderController = new RiderController();
+    private Context context = this;
+    private RequestController requestController = new RequestController(context);
+    private RiderController riderController = new RiderController(context);
     private DriverController driverController = new DriverController();
 
     @Override
