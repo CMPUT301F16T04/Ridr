@@ -12,7 +12,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class RideControllerTest {
-    @Test
+    /*@Test
     public void testRideControllerConfirmDriver(){
         Vehicle vehicle = new Vehicle(1990, "pontiac", "grandam");
         Driver driver = new Driver("john", new Date(), "credit", "email", "phone", vehicle, "bankaccountno");
@@ -25,7 +25,7 @@ public class RideControllerTest {
 
         assertTrue(rider.getRides().get(0).getDriver().equals(driver));
 
-    }
+    }*/
 
 
 }

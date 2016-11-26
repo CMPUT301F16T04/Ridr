@@ -36,7 +36,8 @@
         <activity android:name=".MainActivity" />
         <activity android:name=".ProfileView" />
         <activity android:name=".EditProfileView" />
-        <activity android:name=".AcceptRiderView" />
+        <activity android:name=".AcceptRiderView"
+            android:exported="true"/>
         <activity android:name=".RiderRequestView"
             android:exported="true"/>
         <activity android:name=".RiderMainView"
@@ -60,6 +61,7 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
     </application>
 
 </manifest>

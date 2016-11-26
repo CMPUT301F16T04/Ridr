@@ -13,6 +13,7 @@ import com.searchly.jestdroid.JestClientFactory;
 import com.searchly.jestdroid.JestDroidClient;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.regex.Pattern;
 
@@ -35,7 +36,6 @@ import java.util.UUID;
 
 
 /*
-=======
 /**
  * This controller controls access to all requests used by a view
  * This controllers uses threads to asynchronously perform network requests
@@ -61,6 +61,39 @@ public class RequestController {
     }
 
     /**
+     * Updates a request in the elasticsearch database after it has been accepted by the rider and turned into ride
+     *
+     * @param request
+     */
+    public void accept(Request request){
+        request.setAccepted(Boolean.TRUE);
+        AsyncController controller = new AsyncController();
+        String requestId = request.getID().toString();
+        try{
+            controller.create("request", requestId, request.toJsonString());
+        } catch (Exception e){
+            Log.i("Error accepting req", e.toString());
+        }
+    }
+
+    /** adds the name of the driver to the list of possible drivers
+     *  when the driver accepts a request
+     *
+     * @param request the request the driver is accepting
+     * @param driverName the info stored to know who has accepted the request
+     */
+
+    public void addDriverToList(Request request, String driverName){
+        request.addAccepted(driverName);
+        AsyncController controller = new AsyncController();
+        String requestId = request.getID().toString();
+        try{
+            controller.create("request", requestId, request.toJsonString());
+        } catch (Exception e){
+            Log.i("Error updating driver", e.toString());
+        }
+    }
+    /**
      * Creates a new request
      * @param rider Rider object. currently logged in rider who is creating the request
      * @param pickup String of the pickup address
@@ -84,6 +117,7 @@ public class RequestController {
             Log.i("Error creating request", e.toString());
         }
     }
+
 
     /**
      * Estimates a fare based on distance
@@ -114,6 +148,7 @@ public class RequestController {
             if(doesJsonContainKeyword(keyword, element)) {
                 try {
                     request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
+                    //System.out.println(request);
                     requestsKeyword.add(request);
                 } catch(Exception e) {
                     Log.i("Error returning keyword", e.toString());
@@ -135,7 +170,9 @@ public class RequestController {
         Pattern p = Pattern.compile(keyword);
         Request request;
         try {
+            Log.i("doesContain", jsonElement.toString());
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
+
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();
@@ -151,8 +188,18 @@ public class RequestController {
     }
 
 
-
-    public ArrayList<Driver> getPossibleDrivers(Request request){return(request.getPossibleDrivers());}
+    public ArrayList<String> getPossibleDrivers(String requestId) {
+        AsyncController con = new AsyncController();
+        try {
+            JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
+            Request request = new Request(requestJson);
+            ArrayList<String> drivers = request.getPossibleDrivers();
+            return(drivers);
+        } catch (Exception e) {
+            Log.i("Error parsing requests", e.toString());
+        }
+        return (null);
+    }
 
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
@@ -166,10 +213,6 @@ public class RequestController {
             Log.i("Error parsing requests", e.toString());
         }
         return(null);
-    }
-
-    public void setRequestAccepted(Request request) {
-        request.setAccepted(Boolean.TRUE);
     }
 
 
@@ -240,5 +283,19 @@ public class RequestController {
         }
         cbInterface.update();
 
+    }
+
+    public void findAllRequestsWithDataMember(String dataType, String variable, String variableValue){
+        AsyncController controller = new AsyncController();
+        JsonArray queryResults = controller.getFromIndexObjectInArray(dataType, variable, variableValue);
+
+        for (JsonElement result : queryResults) {
+            try {
+                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+            } catch (Exception e) {
+                Log.i("Error parsing requests", e.toString());
+            }
+        }
+        cbInterface.update();
     }
 }

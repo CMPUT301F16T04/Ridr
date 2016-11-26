@@ -28,8 +28,26 @@ public class DriverController {
     DriverController(Context context){
         this.context = context;
     }
-    public Driver getDriverFromServer(String driverId){
+
+    public Driver getDriverFromServer(String driverId) {
         Driver driver = new Gson().fromJson(new AsyncController(context).get("user", "id", driverId), Driver.class);
+        return driver;
+    }
+
+    DriverController(){}
+
+    //is this supposed to be a driver controller item or a request controller item... look at UML in the morning
+    public void acceptRequest(Driver driver, Request request){
+        driver.acceptRequest(request);
+    }
+
+    public Driver getDriverFromServerUsingId(String driverId){
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        return(driver);
+    }
+
+    public Driver getDriverFromServerUsingName(String driverName){
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "name", driverName), Driver.class);
         return(driver);
     }
 
