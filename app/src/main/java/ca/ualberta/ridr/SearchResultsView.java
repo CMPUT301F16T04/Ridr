@@ -86,7 +86,7 @@ public class SearchResultsView extends Activity {
 
             public void onClick(View v) {
                 Intent intent = new Intent(SearchResultsView.this, GeoView.class);
-                intent.putExtra("userName", driverName);
+                intent.putExtra("username", driverName);
                 startActivity(intent);
             }
         });
