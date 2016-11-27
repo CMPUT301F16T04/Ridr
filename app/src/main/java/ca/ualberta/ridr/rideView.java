@@ -32,6 +32,7 @@ import com.google.android.gms.maps.GoogleMap.OnMarkerClickListener;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -251,6 +252,15 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()));
         pickup.setTitle(ride.getDropOffAddress());
         markers.add(dropoff);
+
+        // Constrain map
+        LatLngBounds.Builder boundedMap = new LatLngBounds.Builder();
+        boundedMap.include(ride.getPickupCoords());
+        boundedMap.include(ride.getDropOffCoords());
+
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 100));
+
+
 
     }
 
