@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -9,6 +10,10 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.android.gms.common.ConnectionResult;
@@ -54,16 +59,20 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     private LatLng restrictToPlace;
     private RideController rides;
     private String rideID;
+    private Button info;
+    private Context context;
     private boolean firstLoad;
     private boolean test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.ride_view);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+        info = (Button) findViewById(R.id.accept_rider_button);
         firstLoad = false;
         rides = new RideController(this);
         if (mGoogleApiClient == null && !test) {
@@ -76,6 +85,12 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
                     .build();
         }
 
+        info.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                slideUp();
+            }
+        });
         markers = new ArrayList<>();
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
@@ -177,33 +192,40 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         }
     };
 
-    /**
-     * Allows us to display arbitrary data in the info window of a google marker
-     */
-//    GoogleMap.InfoWindowAdapter displayRequest = new GoogleMap.InfoWindowAdapter() {
-//        @Override
-//        public View getInfoWindow(Marker marker) {
-//            return null;
-//        }
-//
-//        @Override
-//        public View getInfoContents(Marker marker) {
-//            Request currentRequest = (Request) marker.getTag();
-//            View infoView = getLayoutInflater().inflate(R.layout.info_window_fragment, null);
-//            TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
-//            TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
-//            TextView fareView = (TextView) infoView.findViewById(R.id.amount);
-//            TextView pickupTIme = (TextView) infoView.findViewById(R.id.pickupTime);
-//
-//            SimpleDateFormat date = new SimpleDateFormat("hh:mm on DD/MM/yyyy");
-//            pickUpView.setText("Pickup: " + currentRequest.getPickup());
-//            dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
-//            pickupTIme.setText("Pickup time: " + date.format(currentRequest.getDate()));
-//            fareView.setText("Amount: $" + currentRequest.getFare());
-//
-//            return infoView;
-//        }
-//    };
+    //    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
+// How to disable a button during animations
+    private void slideUp(){
+        LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.rideInfo);
+        if(hiddenPanel.getVisibility() == View.VISIBLE){
+            Animation topDown = AnimationUtils.loadAnimation(context,
+                    R.anim.slide_to_bottom);
+            hiddenPanel.startAnimation(topDown);
+            hiddenPanel.setVisibility(View.INVISIBLE);
+
+        } else {
+            Animation bottomUp = AnimationUtils.loadAnimation(context,
+                    R.anim.slide_from_bottom);
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+        }
+    }
+
+    Animation.AnimationListener listener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+            info.setClickable(false);
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            info.setClickable(true);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {}
+    };
+
+
 
     /**
      * Callback for an outside Class to get the view to check for new data
@@ -255,29 +277,3 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         return 0;
     }
 }
-
-
-// Example of how to remove a marker using this as a hack for onLongClick
-//        map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-//            @Override
-//            public void onMarkerDragStart(Marker marker) {
-//                marker.remove();
-//            }
-//        });
-
-// This method is not needed for loading requests, but demonstrates how to drop a marker
-// map.setOnMapLongClickListener(addMarker);
-
-//    // OnLongClickListener for a marker
-//    GoogleMap.OnMapLongClickListener addMarker = new GoogleMap.OnMapLongClickListener(){
-//        @Override
-//        public void onMapLongClick(LatLng pos){
-//            if(map != null) {
-//                // Move camera to long click position
-//                map.moveCamera(CameraUpdateFactory.newLatLng(pos));
-//
-//                // Drop marker at location
-//                map.addMarker(new MarkerOptions().position(pos));
-//            }
-//        }
-//    };

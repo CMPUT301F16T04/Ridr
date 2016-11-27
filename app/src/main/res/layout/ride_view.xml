@@ -34,5 +34,36 @@
         android:text="@string/accept_rider_button" />
     />
     </fragment>
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:orientation="vertical"
+        android:layout_width="300dp"
+        android:layout_height="200dp"
+        android:background="@color/secondary_colour"
+        android:layout_marginBottom="200dp"
+        android:layout_centerInParent="true"
+        android:id="@+id/rideInfo"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible">
 
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:text="Driven"
+            android:id="@+id/textView"
+            android:textColor="@color/primary_colour" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item2"
+            android:textColor="@color/primary_colour" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Item3"
+            android:textColor="@color/primary_colour" />
+
+
+    </LinearLayout>
 </RelativeLayout>
