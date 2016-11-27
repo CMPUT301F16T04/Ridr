@@ -21,6 +21,7 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -40,7 +41,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private TextView pickupTime;
     private TextView status;
     private Button acceptRider;
-    private Button viewInfo;
 
     private String username;
     private UUID requestID;
@@ -54,7 +54,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private GoogleApiClient mGoogleApiClient;
     private LatLng lastKnownPlace;
     private boolean firstLoad;
-    private ArrayList<Marker> markers;
+    private Marker startMarker;
+    private Marker endMarker;
     private Geocoder geocoder;
 
     private RequestController requestController = new RequestController();
@@ -90,7 +91,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         pickupTime = (TextView) findViewById(R.id.pickup_time_accept_rider);
         status = (TextView) findViewById(R.id.status_accept_rider);
         acceptRider = (Button) findViewById(R.id.accept_rider_button);
-        viewInfo = (Button) findViewById(R.id.view_request_info);
 
         username = "joe";
         requestID = UUID.fromString("23d361d8-02b9-4dda-ae15-71f21e14e908");
@@ -168,12 +168,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
         });
 
-       viewInfo.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View view) {
-                slideUp();
-            }
-       });
+
     }
 
     //gmap stuff
@@ -244,11 +239,20 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private void setupMap(Request request){
 
         //adds markers and then move camera to where they are
-        Marker startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Start Location: " + request.getPickup()));
+        startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Start Location: " + request.getPickup()));
         startMarker.setTag(request);
-        Marker endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("End Location: " + request.getDropoff()));
+        endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("End Location: " + request.getDropoff()));
         endMarker.setTag(request);
 
+        GoogleMap.OnMarkerClickListener bringUpAnimation = new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                slideUp();
+                return true;
+            }
+        };
+
+        gMap.setOnMarkerClickListener(bringUpAnimation);
         zoomToMid(request);
 
     }
@@ -317,18 +321,25 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             bottomUp.setAnimationListener(listener);
             hiddenPanel.startAnimation(bottomUp);
             hiddenPanel.setVisibility(View.VISIBLE);
+            //this will allow the displaly to be clickable and if clicked will hide it
+            //necessary in case the displayed window covers the markers
+            hiddenPanel.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    slideUp();
+                }
+            });
+
         }
     }
 
     Animation.AnimationListener listener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
-            viewInfo.setClickable(false);
         }
 
         @Override
         public void onAnimationEnd(Animation animation) {
-            viewInfo.setClickable(true);
         }
 
         @Override

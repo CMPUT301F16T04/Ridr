@@ -15,6 +15,7 @@
         requestMap:mapType="normal"
         requestMap:uiCompass="true"
         requestMap:uiZoomControls="false"
+        requestMap:uiScrollGestures="false"
         tools:context="ca.ualberta.ridr.RiderMainView"
         class="com.google.android.gms.maps.SupportMapFragment"
         >
@@ -30,20 +31,6 @@
             android:layout_alignParentTop="true"
             android:textStyle="normal|bold"
             android:textColor="@color/primary_colour" />
-
-        <Button
-            android:background="@color/tertiary_colour"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/view_request_info"
-            android:layout_gravity="bottom|center"
-            android:layout_marginBottom="60dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:text="@string/view_request_info_button" />
 
         <Button
             android:background="@color/tertiary_colour"
