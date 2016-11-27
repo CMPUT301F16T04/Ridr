@@ -147,7 +147,7 @@ public class Ride {
             toReturn.put("fare", fare);
             return toReturn.toString();
         } catch(Exception e){
-            Log.d("Error", e.toString());
+            Log.d("Error", String.valueOf(e));
             return null;
 
         }
@@ -167,9 +167,11 @@ public class Ride {
         this.dropOffCoords = buildLatLng(ride.getAsJsonObject("dropOffCoords"));
         this.pickupCoords = buildLatLng(ride.getAsJsonObject("pickupCoords"));
         this.isCompleted = ride.get("isCompleted").getAsBoolean();
-        this.rideDate = formatter.parse(ride.get("rideDate").getAsString());
+        this.rideDate = formatter.parse(ride.get("date").getAsString());
         this.id = UUID.fromString(ride.get("id").getAsString());
         this.fare = ride.get("fare").getAsFloat();
+        Log.i("Done", "done");
+        Log.i("PickupCoords", String.valueOf(pickupCoords));
 
     }
 

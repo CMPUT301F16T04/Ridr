@@ -76,13 +76,14 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
                     .build();
         }
 
-
+        markers = new ArrayList<>();
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
         if(extra != null){
             user = extra.getString("username");
             rideID = extra.getString("rideID");
         }
+        rideID = "513eb9ed-9c45-4468-97ae-73cdcfe5619a";
     }
 
     protected void onStart() {
@@ -123,7 +124,9 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     @Override
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
-        rides.findRide("rideID");
+        if(rideID != null) {
+            rides.findRide(rideID);
+        }
     }
 
     // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
@@ -159,9 +162,9 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         }
 
         // Let's listen for clicks on our markers to display information
-        map.setOnMarkerClickListener(showInfoWindow);
+//        map.setOnMarkerClickListener(showInfoWindow);
 
-        map.setInfoWindowAdapter(displayRequest);
+//        map.setInfoWindowAdapter(displayRequest);
 
     }
 
@@ -177,30 +180,30 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     /**
      * Allows us to display arbitrary data in the info window of a google marker
      */
-    GoogleMap.InfoWindowAdapter displayRequest = new GoogleMap.InfoWindowAdapter() {
-        @Override
-        public View getInfoWindow(Marker marker) {
-            return null;
-        }
-
-        @Override
-        public View getInfoContents(Marker marker) {
-            Request currentRequest = (Request) marker.getTag();
-            View infoView = getLayoutInflater().inflate(R.layout.info_window_fragment, null);
-            TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
-            TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
-            TextView fareView = (TextView) infoView.findViewById(R.id.amount);
-            TextView pickupTIme = (TextView) infoView.findViewById(R.id.pickupTime);
-
-            SimpleDateFormat date = new SimpleDateFormat("hh:mm on DD/MM/yyyy");
-            pickUpView.setText("Pickup: " + currentRequest.getPickup());
-            dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
-            pickupTIme.setText("Pickup time: " + date.format(currentRequest.getDate()));
-            fareView.setText("Amount: $" + currentRequest.getFare());
-
-            return infoView;
-        }
-    };
+//    GoogleMap.InfoWindowAdapter displayRequest = new GoogleMap.InfoWindowAdapter() {
+//        @Override
+//        public View getInfoWindow(Marker marker) {
+//            return null;
+//        }
+//
+//        @Override
+//        public View getInfoContents(Marker marker) {
+//            Request currentRequest = (Request) marker.getTag();
+//            View infoView = getLayoutInflater().inflate(R.layout.info_window_fragment, null);
+//            TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
+//            TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
+//            TextView fareView = (TextView) infoView.findViewById(R.id.amount);
+//            TextView pickupTIme = (TextView) infoView.findViewById(R.id.pickupTime);
+//
+//            SimpleDateFormat date = new SimpleDateFormat("hh:mm on DD/MM/yyyy");
+//            pickUpView.setText("Pickup: " + currentRequest.getPickup());
+//            dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
+//            pickupTIme.setText("Pickup time: " + date.format(currentRequest.getDate()));
+//            fareView.setText("Amount: $" + currentRequest.getFare());
+//
+//            return infoView;
+//        }
+//    };
 
     /**
      * Callback for an outside Class to get the view to check for new data
@@ -210,19 +213,19 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     public void update(){
         try {
             Ride ride = rides.getRide(rideID);
+            Log.i("Ride", ride.toJsonString());
             showRide(ride);
         } catch (Exception e){
-
-
+            Log.i("Update failed", String.valueOf(e));
         }
     }
-    
+
     public void showRide(Ride ride){
         Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()));
         pickup.setTitle(ride.getPickupAddress());
         markers.add(pickup);
 
-        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()));
+        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()));
         pickup.setTitle(ride.getDropOffAddress());
         markers.add(dropoff);
 
