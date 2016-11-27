@@ -41,8 +41,8 @@ import java.util.Date;
 
 public class RiderRequestView extends Activity {
 
-    private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+
+    private String currentName; // string of the logged in user
     private String clickedDriverIDStr; //string of driver who is clicked in popup
     private String clickedRequestIDStr; //string of request that is clicked in listview
     private Activity activity = this;
@@ -61,8 +61,8 @@ public class RiderRequestView extends Activity {
             final Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                currentIDStr = extras.getString("UUID");
-                currentUUID = UUID.fromString(currentIDStr);
+                currentName = extras.getString("name");
+
             }
         }
 
@@ -175,7 +175,7 @@ public class RiderRequestView extends Activity {
                     //TODO pass the driver at clicked position to the next activity
                     Intent intent = new Intent(activity, AcceptDriverView.class);
                     ArrayList<String> ids = new ArrayList<>();
-                    ids.add(currentIDStr); //pass the current user
+                    ids.add(currentName); //pass the current user
                     ids.add(clickedDriverIDStr);
                     ids.add(clickedRequestIDStr);
                     intent.putStringArrayListExtra("ids", ids);
