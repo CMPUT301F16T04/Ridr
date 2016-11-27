@@ -15,6 +15,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -56,14 +57,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<Marker> markers;
     private String user;
-    private LatLng lastKnownPlace;
-    private LatLng restrictToPlace;
     private RideController rides;
     private String rideID;
     private Button info;
+    private Button complete;
     private Context context;
-    private boolean firstLoad;
-    private boolean test;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,9 +72,9 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         info = (Button) findViewById(R.id.accept_rider_button);
-        firstLoad = false;
+        complete = (Button) findViewById(R.id.completeRideButton);
         rides = new RideController(this);
-        if (mGoogleApiClient == null && !test) {
+        if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
                     .addOnConnectionFailedListener(this)
@@ -86,6 +84,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
                     .build();
         }
 
+        complete.setOnClickListener(completeRide);
         info.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,31 +110,23 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     };
 
     protected void onStart() {
-        if(!test){
-            mGoogleApiClient.connect();
-        }
-
+        mGoogleApiClient.connect();
         super.onStart();
     }
     protected void onResume(){
 
         super.onResume();
-        if(!test) {
-            mGoogleApiClient.reconnect();
-        }
+        mGoogleApiClient.reconnect();
+
     }
 
     protected void onPause(){
-        if(!test) {
-            mGoogleApiClient.disconnect();
-        }
+        mGoogleApiClient.disconnect();
         super.onPause();
     }
 
     protected void onStop() {
-        if(!test) {
-            mGoogleApiClient.disconnect();
-        }
+        mGoogleApiClient.disconnect();
         super.onStop();
     }
 
@@ -196,6 +187,9 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 // How to disable a button during animations
     private void slideUp(){
         LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.rideInfo);
+        if(rides.getRide(rideID).getCompleted()){
+            complete.setVisibility(View.INVISIBLE);
+        }
         if(hiddenPanel.getVisibility() == View.VISIBLE){
             Animation topDown = AnimationUtils.loadAnimation(context,
                     R.anim.slide_to_bottom);
@@ -211,6 +205,16 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
             hiddenPanel.setVisibility(View.VISIBLE);
         }
     }
+
+    Button.OnClickListener completeRide = new Button.OnClickListener(){
+        @Override
+        public void onClick(View v) {
+            Toast.makeText(RideView.this, "Your account has been charged $" + rides.getRide(rideID).getFare(), Toast.LENGTH_LONG).show();
+            complete.setVisibility(View.INVISIBLE);
+            rides.completeRide(rideID);
+        }
+
+    };
 
     Animation.AnimationListener listener = new Animation.AnimationListener() {
         @Override
@@ -247,7 +251,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
         rideFare.setText("Is paid" + Double.toString(ride.getFare()));
-
     }
     /**
      * Callback for an outside Class to get the view to check for new data

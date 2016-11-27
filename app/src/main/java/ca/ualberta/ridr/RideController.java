@@ -41,11 +41,9 @@ public class RideController {
 
     @Nullable
     public Ride getRide(String id){
-        for(int i=0; i<rides.size(); ++i){
-            Ride ride = rides.get(0);
-            if(ride.getId().equals(UUID.fromString(id))){
-                return ride;
-            }
+        Ride ride = findRideInList(id);
+        if(ride != null){
+            return ride;
         }
         return null;
     }
@@ -60,5 +58,24 @@ public class RideController {
             Log.i("Failed to make ride", String.valueOf(e));
         }
     }
+    public void updateRide(String id){
+        Ride ride = findRideInList(id);
+        asyncController.create("ride", ride.getId().toString(), ride.toJsonString());
+    }
 
+    public void completeRide(String rideid){
+        Ride ride = findRideInList(rideid);
+        ride.setCompleted(true);
+        asyncController.create("ride", ride.getId().toString(), ride.toJsonString());
+    }
+    @Nullable
+    public Ride findRideInList(String id){
+        for(int i=0; i<rides.size(); ++i){
+            Ride ride = rides.get(0);
+            if(ride.getId().equals(UUID.fromString(id))){
+                return ride;
+            }
+        }
+        return null;
+    }
 }
