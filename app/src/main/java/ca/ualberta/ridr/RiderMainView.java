@@ -391,7 +391,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             public boolean onMenuItemClick(MenuItem item){
                 switch(item.getItemId()){
                     case R.id.mainRiderMenuEditUserInfo:
-                        Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
 
@@ -399,7 +398,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
-                        Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
 

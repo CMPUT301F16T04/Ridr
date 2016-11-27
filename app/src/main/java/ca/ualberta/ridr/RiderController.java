@@ -44,7 +44,7 @@ public class RiderController {
         rider.setPhoneNumber(phone);
         rider.setEmail(email);
         AsyncController controller = new AsyncController();
-        controller.create("user", rider.getName(), new Gson().toJson(rider));
+        controller.create("user", rider.getID().toString(), new Gson().toJson(rider));
     }
 
 }

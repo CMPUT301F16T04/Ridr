@@ -56,9 +56,6 @@ public class EditProfileView extends Activity {
         setViews();
         user = getUser(userName);
         getInfo(user, userName);
-//        phoneStr = "780-555-1234";
-//        emailStr = "someone@email.com";
-//        vehicleStr = "car";
         //hide or show vehicle info depending on driver status
         hideShowVehicle(driverStatus(user));
         //set user's info to the EditText views
@@ -66,14 +63,14 @@ public class EditProfileView extends Activity {
 
         saveChangesButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
-                getNewUserInfo(false);
+                getNewUserInfo(driverStatus(user));
                 Toast.makeText(EditProfileView.this, "saving changes", Toast.LENGTH_SHORT).show();
                 if(driverStatus(user)){
                     driverController.saveChanges(userName, phoneStr, emailStr, vehicleStr);
                 } else{
                     riderController.saveChanges(userName, phoneStr, emailStr);
                 }
-                //finish();
+                finish();
             }
         });
 
@@ -147,12 +144,6 @@ public class EditProfileView extends Activity {
      * @return the isDriver boolean
      */
     private boolean driverStatus(User user){
-//        try{
-//            return user.get("isDriver").toString().equals("true");
-//        } catch (Exception e){
-//            // if the atribute doesn't exist, then it can't be a driver
-//            return false;
-//        }
         return user.isDriver();
     }
     /**
