@@ -13,7 +13,7 @@ import static junit.framework.Assert.assertTrue;
 
 public class DriverControllerTest {
 
-    @Test
+   /* @Test
     public void testDriverControllerAcceptRequest(){
         Request request = new Request("campus", "home");
         Vehicle vehicle = new Vehicle(1800, "Carriage", "firstEver");
@@ -26,5 +26,5 @@ public class DriverControllerTest {
         assertEquals(driver.getRequests().size(), 1);
         assertTrue(driver.getRequests().get(0).equals(request));
 
-    }
+    }*/
 }

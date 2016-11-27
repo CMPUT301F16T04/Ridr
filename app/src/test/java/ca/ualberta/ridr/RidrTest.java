@@ -25,7 +25,7 @@ import static org.junit.Assert.assertTrue;
  */
 public class RidrTest{
     /**General testing of classes */
-    @Test
+    /*@Test
     public void createRideTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankaccono");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -44,7 +44,7 @@ public class RidrTest{
     }
 
     //Testing Rider Stories 1-6
-    // Test for creating ride request US 01.01.01*/
+    // Test for creating ride request US 01.01.01*//*
 
     @Test
     public void testRequestCreation(){
@@ -56,7 +56,7 @@ public class RidrTest{
         assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
     }
 
-    // Test for retrieving current ridr's request US 01.02.01*/
+    // Test for retrieving current ridr's request US 01.02.01*//*
     @Test
     public void testGetRequests(){
         Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -67,7 +67,7 @@ public class RidrTest{
         assertTrue(requests.get(0) instanceof Request);
     }
 
-    // Test for retrieving current ridr's request US 01.03.01*/
+    // Test for retrieving current ridr's request US 01.03.01*//*
     @Test
     public void testAcceptedNotification(){
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -82,7 +82,7 @@ public class RidrTest{
         assertTrue(requests.get(0).getPossibleDrivers().size() > 0);
     }
 
-    // Test for retrieving current ridr's request US 01.04.01*/
+    // Test for retrieving current ridr's request US 01.04.01*//*
     @Test
     public void testCancelRequest(){
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -96,7 +96,7 @@ public class RidrTest{
 
     }
 
-    // Test for retrieving drivr's contact info US 01.05.01*/
+    // Test for retrieving drivr's contact info US 01.05.01*//*
     @Test
     public void testDrivrInfo(){
         String email = "driver@email.com";
@@ -111,7 +111,7 @@ public class RidrTest{
         assertEquals(driver.getPhoneNumber(), phoneNumber);
     }
 
-    // Test for retrieving ride's fair US 01.06.01*/
+    // Test for retrieving ride's fair US 01.06.01*//*
     @Test
     public void testFairEstimation(){
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -195,7 +195,7 @@ public class RidrTest{
         assertEquals(ride.getRider(), rider);
     }
 
-    /* Test for Rider Profile US 03.01.01
+    *//* Test for Rider Profile US 03.01.01
 
     NOTE: This isn't the correct test. Test is in androidTest, and is called AddUserProfileTest.
     Needs to be an instrumentation test, as we are working with Async
@@ -220,15 +220,15 @@ public class RidrTest{
         Driver newDriver = driverController.GetDriverByNameTaskTest("Storm");
         Rider newRider  = riderController.GetRiderByNameTaskTest("Storm");
 
-        /* Code for Async tests, has to be tested in android emulator
+        *//* Code for Async tests, has to be tested in android emulator
         Driver newDriver = null;
         try{
             newDriver = getDriverTask.get();
         } catch (Exception e){
             Log.i("Error", "Failed to get the driver out of the async object.");
-        }*/
+        }*//*
 
-        /* Code for Async tests, has to be tested in android emulator
+        *//* Code for Async tests, has to be tested in android emulator
         getRiderTask.execute("Steve");
         Rider newRider = null;
         try{
@@ -248,7 +248,7 @@ public class RidrTest{
         assertEquals("123", newDriver.getCreditCard());
         assertEquals(null, newDriver.getVehicle());
 
-    }*/
+    }*//*
 
     // Test for Edit Profile US 03.02.01
     @Test
@@ -277,9 +277,9 @@ public class RidrTest{
         assertEquals("321", rider.getCreditCard());
     }
 
-    //**Testing of Rider stories 13-18/
+    /*//**Testing of Rider stories 13-18/
 
-    /** Test for geolocation US 04.01.01*/
+    *//** Test for geolocation US 04.01.01*//*
     @Test
     public void geoLocationTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
@@ -291,8 +291,8 @@ public class RidrTest{
         assertTrue(driver.geoSort("100.0.0, 100.0.0", myLocation));
     }
 
-    /** Test for keyword search US 04.02.01 */
-    /*@Test
+    *//** Test for keyword search US 04.02.01 *//*
+    *//*@Test
     public void keywordRideSearchTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         //Add open ride to driver
@@ -301,10 +301,10 @@ public class RidrTest{
         //Search driver's list of rides for the keyword
         assertTrue(driver.kewordSearch("James"));
 
-    }*/
+    }*//*
 
     @Test
-    //** Test for driver request accept US 05.01.01*/
+    /*//** Test for driver request accept US 05.01.01*//*
     public void driverAccceptRequestTest() throws Exception {
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -316,7 +316,7 @@ public class RidrTest{
     }
 
     @Test
-    //** Test for view list of rides that have abeen accepted and are pending US 05.02.01*//
+    /*//** Test for view list of rides that have abeen accepted and are pending US 05.02.01*//*/
     public void driverRideStateTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -333,7 +333,7 @@ public class RidrTest{
     }
 
     @Test
-    //** Check ride state for driver US 05.03.01 */
+    /*//** Check ride state for driver US 05.03.01 *//*
     public void driverRiderAcceptRideStateTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -345,7 +345,7 @@ public class RidrTest{
     }
 
     @Test
-    /** test push notification to Driver 05.04.01 */
+    *//** test push notification to Driver 05.04.01 *//*
     public void RiderAcceptPushTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         Rider Rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -357,7 +357,7 @@ public class RidrTest{
     }
 
     @Test
-    /* See requests while offline as Driver for US 08.01.01 */
+    *//* See requests while offline as Driver for US 08.01.01 *//*
     public void offlineDriverRequestListTest() throws Exception {
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -372,7 +372,7 @@ public class RidrTest{
     }
 
     @Test
-    /* Rider see requests while offline for US 08.02.01*/
+    *//* Rider see requests while offline for US 08.02.01*//*
     public void offlineRiderRequestsListTest() throws Exception {
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         rider.requestRide("University of Alberta", "West Edmonton Mall");
@@ -386,7 +386,7 @@ public class RidrTest{
     }
 
     @Test
-    /* Rider able to send requests while offline, sent when online for US 08.03.01*/
+    *//* Rider able to send requests while offline, sent when online for US 08.03.01*//*
     public void offlineSendRequestTest() throws Exception {
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         rider.goOffline();
@@ -404,7 +404,7 @@ public class RidrTest{
     }
 
     @Test
-    /*Driver accept requests offline, accepted once online for US 08.04.01 */
+    *//*Driver accept requests offline, accepted once online for US 08.04.01 *//*
     public void offlineAcceptRequestTest() {
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
@@ -423,7 +423,7 @@ public class RidrTest{
     }
 
     @Test
-    /*Rider specify start and end on map for request for US 10.01.01 */
+    *//*Rider specify start and end on map for request for US 10.01.01 *//*
     public void RiderSetLocationMapTest() {
         Rider rider = new Rider("Steve", new Date(), "321", "goodemail", "9999999");
         rider.requestRide("University of Alberta", "West Edmonton Mall");
@@ -439,7 +439,7 @@ public class RidrTest{
     }
 
     @Test
-    /* Driver view start and end geo locations on map for US 10.02.01*/
+    *//* Driver view start and end geo locations on map for US 10.02.01*//*
     public void driverLocationMapTest() {
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         driver.addRide();
@@ -455,7 +455,7 @@ public class RidrTest{
         assertEquals(requests.get(0).getDropoff(), "West Edmonton Mall");
         assertEquals(map.getStartPinLocation(),requests.get(0).getPickup());
         assertEquals(map.getEndPinLocation(),requests.get(0).getDropoff());
-    }
+    }*/
 
 
 }

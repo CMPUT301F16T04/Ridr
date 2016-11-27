@@ -32,7 +32,7 @@ public class RequestControllerTest{
 
     }
 
-    @Test
+    /*@Test
     public void testRequestControllerAddDriver() {
         LatLng coords = new LatLng(1,2);
 
@@ -46,7 +46,7 @@ public class RequestControllerTest{
 
         assertEquals(request.getPossibleDrivers().size(), 1);
         assertTrue(request.getPossibleDrivers().get(0).equals(driver));
-    }
+    }*/
 
     /*@Test
     public void testRequestControllerGetPossibleDrivers(){

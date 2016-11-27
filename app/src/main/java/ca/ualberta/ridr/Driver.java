@@ -15,15 +15,13 @@ public class Driver extends User {
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     //private transient Vehicle vehicle;
-    private transient String bankAccountNo;
     private transient ArrayList<Ride> rideArrayList;
     private transient ArrayList<Request> requestArrayList;
 
     public Driver(String name, Date dateOfBirth, String creditCard,
 
-                  String email, String phoneNumber, String bankAccountNo) {
+                  String email, String phoneNumber) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.bankAccountNo = bankAccountNo;
 
         this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();
@@ -47,9 +45,6 @@ public class Driver extends User {
     }
 
 
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
     public ArrayList<Ride> getRides() {
         return rideArrayList;
     }
