@@ -16,8 +16,8 @@
         requestMap:uiCompass="true"
         requestMap:uiZoomControls="false"
         requestMap:uiScrollGestures="false"
-        tools:context="ca.ualberta.ridr.RiderMainView"
-        class="com.google.android.gms.maps.SupportMapFragment"
+        tools:context="ca.ualberta.ridr.AcceptRiderView"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
         >
 
         <TextView
@@ -28,7 +28,6 @@
             android:id="@+id/request_from"
             android:clickable="true"
             android:gravity="center_vertical|center_horizontal"
-            android:layout_alignParentTop="true"
             android:textStyle="normal|bold"
             android:textColor="@color/primary_colour" />
 
@@ -49,10 +48,10 @@
     </fragment>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="300dp"
-    android:layout_height="300dp"
+    android:layout_width="match_parent"
+    android:layout_height="350dp"
     android:background="@color/secondary_colour"
-    android:layout_marginBottom="200dp"
+    android:layout_marginBottom="100dp"
     android:layout_centerInParent="true"
     android:id="@+id/requestInfo"
     android:layout_alignParentBottom="true"
