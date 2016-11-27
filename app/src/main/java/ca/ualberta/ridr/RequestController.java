@@ -267,6 +267,7 @@ public class RequestController {
      */
     public void getAllRequests() {
             // Get all user requests from the database
+        requests.clear();
         AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getAllFromIndex("request");
         for (JsonElement result : queryResults) {
@@ -286,15 +287,19 @@ public class RequestController {
      * @param distance distance of the point to filter requests from
      */
     public void findAllRequestsWithinDistance(final LatLng center, final String distance){
-        AsyncController controller = new AsyncController(this.context);
-        JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
-        requests.clear();
-        for (JsonElement result : queryResults) {
-            try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-            } catch (Exception e) {
-                Log.i("Error parsing requests", e.toString());
+        if(isConnected()) {
+            AsyncController controller = new AsyncController(this.context);
+            JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
+            requests.clear();
+            for (JsonElement result : queryResults) {
+                try {
+                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                } catch (Exception e) {
+                    Log.i("Error parsing requests", e.toString());
+                }
             }
+        } else {
+            getAllRequests();
         }
         cbInterface.update();
 
@@ -312,6 +317,26 @@ public class RequestController {
             }
         }
         cbInterface.update();
+    }
+    public void driverAcceptRequest(Request request, String driverName, Rider rider) {
+        rider.setPendingNotification("A driver is willing to " +
+                "fulfill your Ride! Check your Requests for more info.");
+        if(isConnected()) {
+            request.addAccepted(driverName);
+            AsyncController controller = new AsyncController();
+            String requestId = request.getID().toString();
+            try {
+                controller.create("request", requestId, request.toJsonString());
+                controller.create("user", rider.getID().toString(), new Gson().toJson(rider));
+                //successful account creation
+                Toast.makeText(context, "You have agreed to fulfill a riders request! " +
+                        "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Log.i("Error updating driver", e.toString());
+            }
+        } else {
+            offlineSingleton.addDriverAcceptance(request);
+        }
     }
 
     public void executeAllPending(String driverName) {
@@ -354,6 +379,10 @@ public class RequestController {
 
     public boolean isPendingExecutableAcceptance() {
         return offlineSingleton.isPendingAcceptance() && isConnected();
+    }
+
+    public boolean isPendingExecutableNotification() {
+        return offlineSingleton.isPendingNotification() && isConnected();
     }
 
     private Boolean isConnected() {

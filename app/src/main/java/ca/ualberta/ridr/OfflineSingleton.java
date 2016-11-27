@@ -16,10 +16,12 @@ public class OfflineSingleton {
             new OfflineSingleton();
     private ArrayList<Request> riderRequests;
     private ArrayList<Request> driverRequests;
+    private ArrayList<Rider> riderList;
 
     private OfflineSingleton() {
         this.riderRequests = new ArrayList<>();
         this.driverRequests = new ArrayList<>();
+        this.riderList = new ArrayList<>();
     };
 
     public static OfflineSingleton getInstance() {
@@ -52,5 +54,21 @@ public class OfflineSingleton {
 
     public void clearDriverRequests() {
         driverRequests.clear();
+    }
+
+    public ArrayList<Rider> getRiderList() {
+        return riderList;
+    }
+
+    public void addRider(Rider rider) {
+        riderList.add(rider);
+    }
+
+    public boolean isPendingNotification() {
+        return riderList.size() > 0;
+    }
+
+    public void clearRiderList() {
+        riderList.clear();
     }
 }

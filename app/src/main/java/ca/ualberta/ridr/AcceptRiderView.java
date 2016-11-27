@@ -162,7 +162,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view){
 
-                if(agreedToFulfill){
+                if(agreedToFulfill) {
                     //chose this particular toast over "accepted already" so
                     //they dont think that someone accepting prevents their own acceptance
                     Toast.makeText(AcceptRiderView.this, "You've already accepted", Toast.LENGTH_SHORT).show();
@@ -180,7 +180,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                         //successful account creation
                         Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
                                 "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
-                    } catch (Exception e){
+                    } catch (Exception e) {
                         Log.i("Communication Error", "Could not communicate with the elastic search server");
                         return;
                     }
@@ -206,12 +206,12 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         //Executes any pending functions from offline functionality once online
         requestController.executeAllPending(driverName);
     }
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         mGoogleApiClient.reconnect();
     }
 
-    protected void onPause(){
+    protected void onPause() {
         mGoogleApiClient.disconnect();
         super.onPause();
     }
@@ -230,7 +230,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
     @Override
     //On connected listener, required to be able to zoom to users location at login
-    public void onConnected(Bundle connectionHint){
+    public void onConnected(Bundle connectionHint) {
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
         }
@@ -253,7 +253,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap){
+    public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         setupMap(request);
 

@@ -281,7 +281,4 @@ public class AsyncController {
 
         return isConnected;
     }
-
-
-
 }

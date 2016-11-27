@@ -207,7 +207,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
             TextView fareView = (TextView) infoView.findViewById(R.id.amount);
             TextView pickupTIme = (TextView) infoView.findViewById(R.id.pickupTime);
 
-            SimpleDateFormat date = new SimpleDateFormat("hh:mm on DD/MM/yyyy");
+            SimpleDateFormat date = new SimpleDateFormat("hh:mm 'on' dd/MM/yyyy");
             pickUpView.setText("Pickup: " + currentRequest.getPickup());
             dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
             pickupTIme.setText("Pickup time: " + date.format(currentRequest.getDate()));
