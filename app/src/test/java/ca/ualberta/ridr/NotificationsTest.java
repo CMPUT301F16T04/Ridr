@@ -15,6 +15,9 @@ import static junit.framework.Assert.assertTrue;
  */
 
 public class NotificationsTest {
+    /**
+     * Tests US 1.03.01 and US 5.04.01
+     */
 
     @Test
     public void pendingNotificationDriverTest(){
@@ -29,6 +32,7 @@ public class NotificationsTest {
 
         Driver newDriver = new Gson().fromJson(jsonDriver, Driver.class);
 
+        assertTrue(newDriver.getPendingNotification() != null);
         assertTrue(newDriver.getPendingNotification().equals(driver.getPendingNotification()));
     }
 
@@ -45,6 +49,7 @@ public class NotificationsTest {
 
         Rider newRider = new Gson().fromJson(jsonRider, Rider.class);
 
+        assertTrue(newRider.getPendingNotification() != null);
         assertTrue(newRider.getPendingNotification().equals(rider.getPendingNotification()));
     }
 
