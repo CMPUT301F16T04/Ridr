@@ -3,6 +3,8 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -79,6 +81,12 @@ public class SearchResultsView extends Activity {
                 String text = bodyText.getText().toString();
                 searchResultsByKeyword(context, text);
                 requestAdapter.notifyDataSetChanged();
+
+                //Check for pending acceptance of requests made offline
+                if(requestController.isPendingExecutableAcceptance()) {
+                    requestController.executePendingAcceptance(driverName);
+                    Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -100,24 +108,32 @@ public class SearchResultsView extends Activity {
 
         //get driver object from server, and display notification if there is one
         //we want this in OnStart, as every time we load up this activity we want to check for notifications
-        DriverController driverController = new DriverController();
-        driver = driverController.getDriverFromServerUsingName(driverName);
-        //check for notifications, display
-        if(driver.getPendingNotification() != null){
-            Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
-            driver.setPendingNotification(null);
-            //update the user object in the database
-            try {
-                AsyncController asyncController = new AsyncController();
-                asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
-                //successful account updating
-            } catch (Exception e){
-                Log.i("Communication Error", "Could not communicate with the elastic search server");
+        if(isConnected()) {
+            DriverController driverController = new DriverController();
+            driver = driverController.getDriverFromServerUsingName(driverName);
+            //check for notifications, display
+            if (driver.getPendingNotification() != null) {
+                Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
+                driver.setPendingNotification(null);
+                //update the user object in the database
+                try {
+                    AsyncController asyncController = new AsyncController();
+                    asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                    //successful account updating
+                } catch (Exception e) {
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                }
             }
         }
 
         requestAdapter = new RequestAdapter(this, requestList);
         searchResults.setAdapter(requestAdapter);
+
+        //Check for pending acceptance of requests made offline
+        if(requestController.isPendingExecutableAcceptance()) {
+            requestController.executePendingAcceptance(driverName);
+            Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
+        }
     }
 
     /**
@@ -165,6 +181,17 @@ public class SearchResultsView extends Activity {
         });
 
         popup.show();
+    }
+
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 }
 

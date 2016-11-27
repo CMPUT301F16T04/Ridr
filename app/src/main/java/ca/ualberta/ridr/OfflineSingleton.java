@@ -37,4 +37,20 @@ public class OfflineSingleton {
     public void clearRiderRequests() {
         riderRequests.clear();
     }
+
+    public void addDriverAcceptance(Request request) {
+        driverRequests.add(request);
+    }
+
+    public boolean isPendingAcceptance() {
+        return driverRequests.size() > 0;
+    }
+
+    public ArrayList<Request> getDriverRequests() {
+        return driverRequests;
+    }
+
+    public void clearDriverRequests() {
+        driverRequests.clear();
+    }
 }

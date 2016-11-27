@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.text.ParseException;
 import java.util.UUID;
@@ -105,6 +106,12 @@ public class RiderRequestView extends Activity {
                 displayDrivers(request);
             }
         });
+
+        //For offline functionality sends requests if went online then switched to this view
+        if(reqCon.isPendingExecutableRequests()) {
+            reqCon.executePendingRequests();
+            Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
+        }
             
     }
 

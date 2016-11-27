@@ -92,13 +92,17 @@ public class RequestController {
      */
 
     public void addDriverToList(Request request, String driverName){
-        request.addAccepted(driverName);
-        AsyncController controller = new AsyncController();
-        String requestId = request.getID().toString();
-        try{
-            controller.create("request", requestId, request.toJsonString());
-        } catch (Exception e){
-            Log.i("Error updating driver", e.toString());
+        if(isConnected()) {
+            request.addAccepted(driverName);
+            AsyncController controller = new AsyncController();
+            String requestId = request.getID().toString();
+            try {
+                controller.create("request", requestId, request.toJsonString());
+            } catch (Exception e) {
+                Log.i("Error updating driver", e.toString());
+            }
+        } else {
+            offlineSingleton.addDriverAcceptance(request);
         }
     }
     /**
@@ -310,7 +314,26 @@ public class RequestController {
         cbInterface.update();
     }
 
-    public void executeOfflineRequests() {
+    public void executeAllPending(String driverName) {
+        try {
+            //For offline functionality if went online and started this view send pending acceptance of requests
+            if (isPendingExecutableAcceptance()) {
+                executePendingAcceptance(driverName);
+                Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
+            }
+
+            //Sending requests made when offline if go online
+            if (isPendingExecutableRequests()) {
+                executePendingRequests();
+                Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch(Exception e) {
+            Log.i("Error executing pending", e.toString());
+        }
+    }
+
+    public void executePendingRequests() {
         AsyncController controller = new AsyncController(this.context);
         for(Request r: offlineSingleton.getRiderRequests()) {
             controller.create("request", r.getID().toString(), r.toJsonString());
@@ -318,12 +341,19 @@ public class RequestController {
         offlineSingleton.clearRiderRequests();
     }
 
-    public boolean isPendingExecutableRequests() {
-        if(offlineSingleton.getRiderRequests().size() > 0 && isConnected()) {
-            return true;
-        } else {
-            return false;
+    public void executePendingAcceptance(String driver) {
+        for(Request r: offlineSingleton.getDriverRequests()) {
+            addDriverToList(r, driver);
         }
+        offlineSingleton.clearDriverRequests();
+    }
+
+    public boolean isPendingExecutableRequests() {
+        return offlineSingleton.getRiderRequests().size() > 0 && isConnected();
+    }
+
+    public boolean isPendingExecutableAcceptance() {
+        return offlineSingleton.isPendingAcceptance() && isConnected();
     }
 
     private Boolean isConnected() {

@@ -245,7 +245,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
 
         if(reqController.isPendingExecutableRequests()) {
-            reqController.executeOfflineRequests();
+            reqController.executePendingRequests();
             Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
         }
     }
@@ -370,8 +370,10 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             return;
         }
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
+
+        //Sending requests made when offline if go online
         if(reqController.isPendingExecutableRequests()) {
-            reqController.executeOfflineRequests();
+            reqController.executePendingRequests();
             Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
         }
 
