@@ -37,4 +37,6 @@
     <string name="end_location_accept_rider">End Location:  </string>
     <string name="status_accept_rider">Status:  </string>
     <string name="accept_rider_button">Accept This Request</string>
+    <string name="complete_ride">Complete</string>
+    <string name="view_ride_info">View Ride Info</string>
 </resources>

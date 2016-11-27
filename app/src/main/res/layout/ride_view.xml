@@ -29,39 +29,55 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:text="@string/accept_rider_button" />
+        android:text="@string/view_ride_info" />
     />
     </fragment>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical"
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:background="@color/secondary_colour"
-        android:layout_marginBottom="200dp"
-        android:layout_centerInParent="true"
+        android:orientation="vertical" android:layout_width="match_parent"
         android:id="@+id/rideInfo"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible">
-
+        android:visibility="invisible"
+        android:layout_height="wrap_content"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="Driven"
-            android:id="@+id/textView"
-            android:textColor="@color/primary_colour" />
-
+            android:id="@+id/rideCompleted"
+            android:textColor="@color/primary_colour"
+            android:textSize="21sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Item2"
-            android:textColor="@color/primary_colour" />
+            android:id="@+id/riderName"
+            android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Item3"
-            android:textColor="@color/primary_colour" />
-
+            android:id="@+id/ridePickup"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/ridePickupTime"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rideDropoff"
+            android:textSize="20sp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/rideFare"
+            android:textSize="20sp"
+            android:layout_marginBottom="9dp"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:id="@+id/completeRideButton"
+            android:visibility="invisible"
+            android:text="@string/complete_ride"/>
 
     </LinearLayout>
 </RelativeLayout>
