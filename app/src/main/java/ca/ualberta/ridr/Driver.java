@@ -23,9 +23,9 @@ public class Driver extends User {
 
     public Driver(String name, Date dateOfBirth, String creditCard,
 
-                  String email, String phoneNumber, String bankAccountNo) {
+                  String email, String phoneNumber) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.bankAccountNo = bankAccountNo;
+        //this.bankAccountNo = bankAccountNo;
 
         this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();

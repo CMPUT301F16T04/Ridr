@@ -17,6 +17,7 @@ import java.util.Date;
  * Created by Marco on 03-Nov-2016.
  */
 public class RequestControllerUnitTest {
+    //test better represented using asyncTest
 
     @Test
     // needs to be updated since changes were made to the controller
@@ -35,6 +36,7 @@ public class RequestControllerUnitTest {
         request.setFare(fare);
         request.setCostDistance(costDistance);
         // need to find beter way of retrieving request. should test database
+
         ArrayList<Request>  riderRequest = rider.getRequests();
         assertTrue(riderRequest.get(0).getPickup() == request.getPickup());
         //still cant use isEquals here because we do create two separate instances of requests in this test
