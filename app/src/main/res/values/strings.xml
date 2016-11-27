@@ -8,11 +8,11 @@
     <string name="add_account_login">Add Account</string>
 
     <!-- add account view strings -->
-    <string name="create_account_title">Create Account:</string>
-    <string name="create_account_button">Create Account</string>
-    <string name="create_account_subtitle">This will create both a Rider and Driver account for you to use.</string>
+    <string name="create_account_title">Create Rider:</string>
+    <string name="create_account_button">Create</string>
+    <string name="create_account_subtitle">This will create both a rider account for you to use.</string>
     <string name="username_add_account">Unique Username:</string>
-    <string name="username_add_account_edit_text">Rider/Driver Username</string>
+    <string name="username_add_account_edit_text">Username</string>
     <string name="dob_add_account">Date Of Birth:</string>
     <string name="dob_add_account_edit_text">Format: YYYY/MM/DD</string>
     <string name="email_add_account">Email:</string>
@@ -21,6 +21,13 @@
     <string name="phone_add_account_edit_text">(123) 456-7890 or 1 123-456-7890</string>
     <string name="credit_add_account">Credit Card Number:</string>
     <string name="credit_add_account_edit_text">Example: XXXXBBBBYYYYAAAA</string>
+    <string name="title_activity_add_driver_view">AddDriverView</string>
+    <string name="vehicle_description">Vehicle description...</string>
+    <string name="vehicle">Vehicle:</string>
+    <string name="enter_username">Enter username...</string>
+    <string name="create_driver_button">Create</string>
+    <string name="driver_dob_hint">Enter date of birth...</string>
+    <string name="create_driver_text">Create Driver:</string>
 
 
 </resources>

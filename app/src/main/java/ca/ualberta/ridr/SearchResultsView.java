@@ -24,7 +24,7 @@ public class SearchResultsView extends Activity {
     private ListView searchResults;
     private RequestAdapter requestAdapter;
     private EditText bodyText;
-    private UUID userID;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +35,7 @@ public class SearchResultsView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userID = UUID.fromString(extras.getString("UUID"));
+            username = extras.getString("username");
         }
 
         searchResults = (ListView) findViewById(R.id.search_results);
@@ -66,7 +66,7 @@ public class SearchResultsView extends Activity {
         switchGeoButton.setOnClickListener(new View.OnClickListener() {
 
             public void onClick(View v) {
-                String text = userID.toString();
+                String text = username.toString();
                 Intent intent = new Intent(SearchResultsView.this, GeoView.class);
                 intent.putExtra("user", text);
                 startActivity(intent);
