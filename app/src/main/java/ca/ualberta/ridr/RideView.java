@@ -102,6 +102,14 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         rideID = "513eb9ed-9c45-4468-97ae-73cdcfe5619a";
     }
 
+    OnMarkerClickListener showInfoWindow = new OnMarkerClickListener() {
+        @Override
+        public boolean onMarkerClick(Marker marker) {
+            marker.showInfoWindow();
+            return true;
+        }
+    };
+
     protected void onStart() {
         if(!test){
             mGoogleApiClient.connect();
@@ -178,20 +186,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         }
 
         // Let's listen for clicks on our markers to display information
-//        map.setOnMarkerClickListener(showInfoWindow);
+        map.setOnMarkerClickListener(showInfoWindow);
 
 //        map.setInfoWindowAdapter(displayRequest);
 
     }
-
-
-    OnMarkerClickListener showInfoWindow = new OnMarkerClickListener() {
-        @Override
-        public boolean onMarkerClick(Marker marker) {
-            marker.showInfoWindow();
-            return false;
-        }
-    };
 
     //    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
 // How to disable a button during animations
@@ -265,11 +264,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     }
 
     public void showRide(Ride ride){
-        Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()));
-        pickup.setTitle(ride.getPickupAddress());
+        Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()).title(ride.getPickupAddress()));
+        //pickup.setTitle(ride.getPickupAddress());
         markers.add(pickup);
 
-        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()));
+        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()).title(ride.getDropOffAddress()));
         pickup.setTitle(ride.getDropOffAddress());
         markers.add(dropoff);
 
