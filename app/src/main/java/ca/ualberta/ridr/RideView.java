@@ -264,12 +264,12 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     }
 
     public void showRide(Ride ride){
-        Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()).title(ride.getPickupAddress()));
+        Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()).title("Pickup: " + ride.getPickupAddress()));
         //pickup.setTitle(ride.getPickupAddress());
         markers.add(pickup);
 
-        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()).title(ride.getDropOffAddress()));
-        pickup.setTitle(ride.getDropOffAddress());
+        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()).title("Drop off: " + ride.getDropOffAddress()));
+        //dropoff.setTitle(ride.getDropOffAddress());
         markers.add(dropoff);
 
         // Constrain map
@@ -277,7 +277,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         boundedMap.include(ride.getPickupCoords());
         boundedMap.include(ride.getDropOffCoords());
 
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 200));
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 320));
 
         updateRideInfo(ride);
     }
