@@ -167,7 +167,7 @@ public class EditProfileView extends Activity {
             phoneStr = driver.getPhoneNumber();
             emailStr = driver.getEmail();
             //vehicleStr = user.get("vehicle").toString();
-            vehicleStr = driver.getVehicle();
+            vehicleStr = driver.getVehicleDescription();
         } else{
             Rider rider = riderController.getRiderFromServerUsingName(username);
             phoneStr = rider.getPhoneNumber();

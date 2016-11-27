@@ -45,7 +45,7 @@ public class DriverController {
         Driver driver = getDriverFromServerUsingName(driverName);
         driver.setPhoneNumber(phone);
         driver.setEmail(email);
-        driver.setVehicle(vehicle);
+        driver.setVehicleDescription(vehicle);
         AsyncController controller = new AsyncController();
         controller.create("user", driver.getName(), new Gson().toJson(driver));
     }

@@ -16,7 +16,7 @@ public class Driver extends User {
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     //private transient Vehicle vehicle;
-    private transient String vehicle;
+    private  String vehicleDescription;
     private transient String bankAccountNo;
     private transient ArrayList<Ride> rideArrayList;
     private transient ArrayList<Request> requestArrayList;
@@ -108,12 +108,12 @@ public class Driver extends User {
         return false;
     }
 
-    public String getVehicle() {
-        return vehicle;
+    public String getVehicleDescription() {
+        return vehicleDescription;
     }
 
-    public void setVehicle(String vehicle) {
-        this.vehicle = vehicle;
+    public void setVehicleDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
     }
 
 }
