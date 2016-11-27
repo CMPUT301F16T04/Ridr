@@ -108,11 +108,11 @@ public class RequestController {
         //rider.addRequest(currenRequest);
         this.add(currenRequest);
 
-//        try{
-//            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
-//        } catch (Exception e){
-//            Log.i("Error creating request", e.toString());
-//        }
+        try{
+            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+        } catch (Exception e){
+            Log.i("Error creating request", e.toString());
+        }
     }
 
 
