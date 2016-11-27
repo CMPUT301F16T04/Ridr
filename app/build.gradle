@@ -37,8 +37,8 @@ dependencies {
     compile files('src/include/jest-droid-2.0.1-SNAPSHOT.jar')
     compile 'org.elasticsearch:parent:2.4.1'
     compile 'com.jayway.android.robotium:robotium-solo:5.6.3'
-    compile 'com.jayway.android.robotium:robotium:5.6.3'
-    compile 'org.mockito:mockito-core:2.2.25'
+    //compile 'com.jayway.android.robotium:robotium:5.6.3'
+    //compile 'org.mockito:mockito-core:2.2.25'
 }
 
 

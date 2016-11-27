@@ -18,7 +18,7 @@ import static junit.framework.TestCase.assertEquals;
  * Created by Justin on 2016-11-11.
  */
     public class AsyncTest {
-    @Test
+   /* @Test
     public void addRequestTest() {
         // Create data
         Rider rider = new Rider("Justin Barclay", new Date(), "5555 5555 5555 5555", "jbarclay@ualberta.ca", "780-995-3417");
@@ -86,5 +86,5 @@ import static junit.framework.TestCase.assertEquals;
 
         //Check data
         verify(mockedController).get("request", "id", request.getID().toString());
-    }
+    }*/
 }

@@ -162,12 +162,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view){
 
-                //For offline functionality if went online and started this view send pending acceptance of requests
-                if(requestController.isPendingExecutableAcceptance()) {
-                    requestController.executePendingAcceptance(driverName);
-                    Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
-                }
-
                 if(agreedToFulfill){
                     //chose this particular toast over "accepted already" so
                     //they dont think that someone accepting prevents their own acceptance
@@ -194,6 +188,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     agreedToFulfill = true;
                     String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
                     status.setText(statusText);
+
+                    //Executes any pending functions from offline functionality once online
+                    requestController.executeAllPending(driverName);
                 }
             }
 
@@ -206,11 +203,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         mGoogleApiClient.connect();
         super.onStart();
 
-        //For offline functionality if went online and started this view send pending acceptance of requests
-        if(requestController.isPendingExecutableAcceptance()) {
-            requestController.executePendingAcceptance(driverName);
-            Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
-        }
+        //Executes any pending functions from offline functionality once online
+        requestController.executeAllPending(driverName);
     }
     protected void onResume(){
         super.onResume();

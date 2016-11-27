@@ -317,7 +317,7 @@ public class RequestController {
     public void executeAllPending(String driverName) {
         try {
             //For offline functionality if went online and started this view send pending acceptance of requests
-            if (isPendingExecutableAcceptance()) {
+            if (isPendingExecutableAcceptance() && driverName != null) {
                 executePendingAcceptance(driverName);
                 Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
             }

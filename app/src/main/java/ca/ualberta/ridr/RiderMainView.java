@@ -206,6 +206,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 //Rider rider = null; // for now just so that we wont get compile errors
                 System.out.println(new Gson().toJson(currentRider));
                 addRequestEvent(currentRider);
+                //Executes any pending functions from offline functionality once online
+                reqController.executeAllPending(riderName);
             }
         });
 
@@ -244,10 +246,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         }
 
-        if(reqController.isPendingExecutableRequests()) {
-            reqController.executePendingRequests();
-            Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
-        }
+        //Executes any pending functions from offline functionality once online
+        reqController.executeAllPending(riderName);
     }
     protected void onResume(){
         super.onResume();

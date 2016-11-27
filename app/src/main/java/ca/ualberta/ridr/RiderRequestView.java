@@ -107,11 +107,8 @@ public class RiderRequestView extends Activity {
             }
         });
 
-        //For offline functionality sends requests if went online then switched to this view
-        if(reqCon.isPendingExecutableRequests()) {
-            reqCon.executePendingRequests();
-            Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
-        }
+        //Executes any pending functions from offline functionality once online
+        reqCon.executeAllPending(riderName);
             
     }
 
@@ -197,11 +194,16 @@ public class RiderRequestView extends Activity {
      * @return a list of the names, all with the first letter capitalized
      */
     private ArrayList<String> capitalizeAllNames(ArrayList<String> names) {
-        ArrayList<String> captNames = new ArrayList<>();
-        for (int i = 0; i < names.size(); i++) {
-            captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
+        try {
+            ArrayList<String> captNames = new ArrayList<>();
+            for (int i = 0; i < names.size(); i++) {
+                captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
+            }
+            return (captNames);
         }
-        return(captNames);
+        catch(Exception e) {
+            return new ArrayList<String>();
+        }
 
     }
 }

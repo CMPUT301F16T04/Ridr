@@ -140,6 +140,14 @@ public class AcceptDriverView extends Activity {
 
     }
 
+    protected void onStart() {
+        super.onStart();
+
+        //Executes any pending functions from offline functionality once online
+        reqCon.executeAllPending(riderName);
+
+    }
+
     /**
      * gets the driver for the data we display on this view
      *
