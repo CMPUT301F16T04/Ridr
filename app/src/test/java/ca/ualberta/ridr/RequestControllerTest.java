@@ -18,7 +18,7 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class RequestControllerTest{
-
+/*
     @Test
     public void testRequestControllerAccept(){
         LatLng coords = new LatLng(1,2);
