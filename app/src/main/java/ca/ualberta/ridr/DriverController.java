@@ -41,7 +41,8 @@ public class DriverController {
         return(driver);
     }
 
-    public void saveChanges(Driver driver, String phone, String email, String vehicle){
+    public void saveChanges(String driverName, String phone, String email, String vehicle){
+        Driver driver = getDriverFromServerUsingName(driverName);
         driver.setPhoneNumber(phone);
         driver.setEmail(email);
         driver.setVehicle(vehicle);

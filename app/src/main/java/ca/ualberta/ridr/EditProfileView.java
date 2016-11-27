@@ -67,8 +67,12 @@ public class EditProfileView extends Activity {
         saveChangesButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 getNewUserInfo(false);
-                //TODO update user's info through the controller
                 Toast.makeText(EditProfileView.this, "saving changes", Toast.LENGTH_SHORT).show();
+                if(driverStatus(user)){
+                    driverController.saveChanges(userName, phoneStr, emailStr, vehicleStr);
+                } else{
+                    riderController.saveChanges(userName, phoneStr, emailStr);
+                }
                 //finish();
             }
         });
@@ -135,6 +139,7 @@ public class EditProfileView extends Activity {
     private User getUser(String username){
         return new Gson().fromJson(new AsyncController().get("user", "name", username), User.class);
     }
+
 
     /**
      * returns true if the user is a driver

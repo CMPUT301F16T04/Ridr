@@ -39,7 +39,8 @@ public class RiderController {
         return(rider.getRequests());
     }
 
-    public void saveChanges(Rider rider, String phone, String email){
+    public void saveChanges(String riderName, String phone, String email){
+        Rider rider = getRiderFromServerUsingName(riderName);
         rider.setPhoneNumber(phone);
         rider.setEmail(email);
         AsyncController controller = new AsyncController();
