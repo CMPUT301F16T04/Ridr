@@ -11,7 +11,7 @@ import com.google.gson.Gson;
 /*
  * A controller for the creation of new users and for logging them into the system
  */
- 
+
 public class AccountController {
     private ACallback cbInterface;
     private User currentUser;

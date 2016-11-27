@@ -229,7 +229,27 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     };
 
 
+    public void updateRideInfo(Ride ride){
+        TextView rideCompleted = (TextView) findViewById(R.id.rideCompleted);
+        TextView ridePickup = (TextView) findViewById(R.id.ridePickup);
+        TextView rideDropoff = (TextView) findViewById(R.id.rideDropoff);
+        TextView riderName = (TextView) findViewById(R.id.riderName);
+        TextView ridePickupTime = (TextView) findViewById(R.id.ridePickupTime);
+        TextView rideFare = (TextView) findViewById(R.id.rideFare);
 
+        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
+
+        //String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
+        //String completed = ride.isCompleted().toString();
+        String completed = "completed";
+        rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
+        riderName.setText("Rider: " + ride.getRider());
+        ridePickup.setText("Pickup: " + ride.getPickupAddress());
+        ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
+        rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
+        rideFare.setText("Is paid" + Double.toString(ride.getFare()));
+
+    }
     /**
      * Callback for an outside Class to get the view to check for new data
      * This interface is used when a controller updates it's data
@@ -258,10 +278,9 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         boundedMap.include(ride.getPickupCoords());
         boundedMap.include(ride.getDropOffCoords());
 
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 100));
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 200));
 
-
-
+        updateRideInfo(ride);
     }
 
     /**

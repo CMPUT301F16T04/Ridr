@@ -36,12 +36,4 @@
         android:id="@+id/rideFare"
         android:textSize="20sp"
         android:layout_marginBottom="9dp"/>
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:id="@+id/completeRideButton"
-        android:visibility="invisible"
-        android:text="@string/complete_ride"/>
-
 </LinearLayout>

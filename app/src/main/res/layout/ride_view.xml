@@ -6,7 +6,6 @@
     android:orientation="vertical"
     tools:context="ca.ualberta.ridr.AcceptRiderView"
     android:weightSum="1">
-
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -15,9 +14,12 @@
         map:mapType="normal"
         map:uiCompass="true"
         map:uiZoomControls="false"
+        map:uiRotateGestures="false"
+        map:uiScrollGestures="false"
+        map:uiTiltGestures="false"
+        map:uiZoomGestures="false"
         tools:context="ca.ualberta.ridr.RiderMainView"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        >
+        class="com.google.android.gms.maps.SupportMapFragment">
 
     <Button
         android:background="@color/tertiary_colour"
@@ -25,6 +27,7 @@
         android:layout_height="wrap_content"
         android:id="@+id/accept_rider_button"
         android:layout_gravity="bottom|center"
+        android:padding="10dp"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
@@ -33,51 +36,65 @@
     />
     </fragment>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:orientation="vertical" android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
         android:id="@+id/rideInfo"
         android:visibility="invisible"
+        android:background="@color/secondary_colour"
         android:layout_height="wrap_content"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp">
+        android:layout_centerInParent="true">
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/rideCompleted"
             android:textColor="@color/primary_colour"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:textSize="21sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:id="@+id/riderName"
             android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:id="@+id/ridePickup"
             android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:id="@+id/ridePickupTime"
             android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:id="@+id/rideDropoff"
             android:textSize="20sp"/>
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
             android:id="@+id/rideFare"
             android:textSize="20sp"
             android:layout_marginBottom="9dp"/>
         <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginBottom="-6dp"
+            android:layout_marginStart="-16dp"
+            android:layout_marginEnd="-16dp"
+            android:layout_gravity="bottom"
             android:id="@+id/completeRideButton"
-            android:visibility="invisible"
             android:text="@string/complete_ride"/>
-
     </LinearLayout>
 </RelativeLayout>
