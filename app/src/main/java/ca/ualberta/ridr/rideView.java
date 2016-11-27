@@ -60,7 +60,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.geo_view);
+        setContentView(R.layout.ride_view);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
