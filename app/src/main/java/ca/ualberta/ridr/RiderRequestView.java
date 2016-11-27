@@ -44,6 +44,8 @@ public class RiderRequestView extends Activity {
     private String clickedDriverIdStr; //id of driver who is clicked in popup
     private String clickedDriverNameStr; //name of driver who is clicked in popup
     private String clickedRequestIDStr; //id string of request that is clicked in listview
+
+
     private Activity activity = this;
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
@@ -59,15 +61,27 @@ public class RiderRequestView extends Activity {
         setContentView(R.layout.rider_request_view);
         oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
 
+            final Intent intent = getIntent();
+            Bundle extras = intent.getExtras();
+            if (extras != null) {
+                riderName = extras.getString("name");
 
+            }
+        }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
+
         if (extras != null) {
             riderName = extras.getString("Name");
         }
 
         AsyncController controller = new AsyncController();
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", riderName);
+
         requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
@@ -89,7 +103,18 @@ public class RiderRequestView extends Activity {
                 displayDrivers(request);
             }
         });
-            
+        oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
+                Request request = requests.get(position);
+
+                cancelRequest(request, customAdapter);
+
+                return true;
+            }
+        });
+
     }
 
 
@@ -163,15 +188,6 @@ public class RiderRequestView extends Activity {
         });
 
     }
-
-
-    @Override
-    protected void onStart() {
-        // TODO Auto-generated method stub
-        super.onStart();
-
-
-    }
     /** capitalizes all of the names in the possible drivers list so that when we
      *  display them in the popup they are guaranteed to be capitalized
      *  this may become obsolete if we enforce qualities on the usernames
@@ -180,12 +196,48 @@ public class RiderRequestView extends Activity {
      * @param names the possibly lowercased names in the list of possibel drivers
      * @return a list of the names, all with the first letter capitalized
      */
+
     private ArrayList<String> capitalizeAllNames(ArrayList<String> names) {
         ArrayList<String> captNames = new ArrayList<>();
         for (int i = 0; i < names.size(); i++) {
             captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
         }
         return(captNames);
+    }
+
+    public void cancelRequest(final Request request, final RequestAdapter customAdapter) {
+
+        // Inflate the popup_layout.xml
+        LinearLayout viewCancelGroup = (LinearLayout) findViewById(R.id.cancel_request);
+        LayoutInflater layoutCancelInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View cancelLayout = layoutCancelInflater.inflate(R.layout.cancel_request, viewCancelGroup);
+
+        // Creating the PopupWindow
+        final PopupWindow cancelPopUp = new PopupWindow(activity);
+        cancelPopUp.setContentView(cancelLayout);
+        cancelPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        cancelPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        cancelPopUp.setFocusable(true);
+
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int CANCEL_OFFSET_X = 1000;
+        int CANCEL_OFFSET_Y = 300;
+
+        // Displaying the popup at the specified location, + offsets.
+        cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
+
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
+        TextView textView = (TextView) cancelLayout.findViewById(R.id.request_state);
+        // Display state of request
+
+        if (request.getPossibleDrivers().size() > 0){
+            String size = Integer.toString(request.getPossibleDrivers().size());
+            textView.setText("Request is accepted by " + size + "drivers");
+        } else{
+            textView.setText("Request is hasn't been accepted by any drivers");
+
+        }
 
     }
 }
