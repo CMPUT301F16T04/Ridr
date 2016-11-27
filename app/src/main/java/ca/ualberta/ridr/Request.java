@@ -16,6 +16,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.UUID;
 
@@ -100,7 +101,8 @@ public class Request {
         return dropoff;
     }
 
-    public void addAccepted(Driver driver) {
+    public void addAccepted(String driverId) {
+        possibleDrivers.add(driverId);
     }
 
     public String getRider() {
@@ -235,13 +237,15 @@ public class Request {
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
 
-    //also a faroff dream
+
+
     //intentions : to be able to store and retrieve a list of possible drivers.
     private ArrayList<String> buildPossibleDriversList(JsonArray array){
         ArrayList<String> drivers = new ArrayList<String>();
-        if(array == null){
-            return null;
+        if(array == null || array.size() == 0){
+            return drivers;
         }
+
         for(int i = 0; i < array.size(); ++i){
             drivers.add(0, array.get(i).getAsString());
         }

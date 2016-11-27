@@ -9,12 +9,11 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 public class RequestsFromRidersView extends Activity implements ACallback{
     //must extend activity, not appcompatactivity
 
-    private UUID userID;
+    private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
     private RequestController requestController;
@@ -30,7 +29,7 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            userID = UUID.fromString(extras.getString("UUID"));
+            userName = extras.getString("Name");
         }
     }
 
@@ -42,15 +41,13 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         }
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
-        DriverController driverController = new DriverController();
-        Driver myself = driverController.getDriverFromServer(userID.toString());
         requestController = new RequestController(this);
-        requestController.findAllRequestsWithDataMember("request", "possibleDrivers", myself.getName());
+        requestController.findAllRequestsWithDataMember("request", "possibleDrivers", userName);
         //search for our name in any possibleDriver list
         //update gets called from Acallback
 
 
-        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests, myself.getName());
+        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests, userName);
         requestList.setAdapter(customAdapter);
 
         //this is to recognize listview item presses within the view
@@ -58,11 +55,10 @@ public class RequestsFromRidersView extends Activity implements ACallback{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
                 String clickedRequestIDStr = request.getID().toString();
-                /* Not ready yet, need to wait to merge with the rest of the app,
-                so we can figure out how this works
-                Intent intent = new Intent(RequestsFromRidersView.this, AcceptDriverView.class);
-                intent.putExtra("RequestID", clickedRequestIDStr);
-                startActivity(intent);*/
+                Intent intent = new Intent(RequestsFromRidersView.this, AcceptRiderView.class);
+                intent.putExtra("RequestUUID", request.getID().toString());
+                intent.putExtra("userName", userName);
+                startActivity(intent);
             }
         });
 

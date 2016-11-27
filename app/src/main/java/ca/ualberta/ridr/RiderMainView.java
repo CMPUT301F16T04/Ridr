@@ -8,8 +8,6 @@ import android.location.Address;
 import android.location.Geocoder;
 
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -64,7 +62,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Button menuButton;
 
     private UUID currentUUID; // UUID of the currently logged-in rider
-    private String currentIDStr; // string of the curretn UUID
+    private String riderName; // string of the curretn UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Start Location";
@@ -79,6 +77,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
     RequestController reqController;
     //RiderController riderController = new RiderController();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,14 +105,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            currentIDStr = extras.getString("UUID");
-            currentUUID = UUID.fromString(currentIDStr);
-        }
-        //from the UUID, get the rider object
-        try {
-            currentRider = new Gson().fromJson(new AsyncController().get("user", "id", currentIDStr), Rider.class);
-        } catch(Exception e){
-            Log.i("Error parsing Rider", e.toString());
+            riderName = extras.getString("Name");
         }
 
 
@@ -202,6 +194,28 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
+
+        //from the UUID, get the rider object
+        //we want this in onStart, because we want to pull notification every time we go back to the activity
+        try {
+            currentRider = new Gson().fromJson(new AsyncController().get("user", "name", riderName), Rider.class);
+        } catch(Exception e){
+            Log.i("Error parsing Rider", e.toString());
+        }
+
+        //check for notifications, display
+        if(currentRider.getPendingNotification() != null){
+            Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_LONG).show();
+            currentRider.setPendingNotification(null);
+            //update the user object in the database
+            try {
+                AsyncController asyncController = new AsyncController();
+                asyncController.create("user", currentRider.getID().toString(), new Gson().toJson(currentRider));
+                //successful account updating
+            } catch (Exception e){
+                Log.i("Communication Error", "Could not communicate with the elastic search server");
+            }
+        }
     }
     protected void onResume(){
         super.onResume();
@@ -337,14 +351,14 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
-                        editInfoIntent.putExtra("UUID", currentIDStr);
+                        editInfoIntent.putExtra("Name", riderName);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
-                        viewRequestsIntent.putExtra("UUID", currentIDStr);
+                        viewRequestsIntent.putExtra("Name", riderName);
                         startActivity(viewRequestsIntent);
                         return true;
                     default:

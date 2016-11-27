@@ -26,8 +26,13 @@ public class RiderController {
 
     RiderController(){
     }
-    public Rider getRiderFromServer(String riderId){
+    public Rider getRiderFromServerUsingId(String riderId){
         Rider rider = new Gson().fromJson(new AsyncController().get("user", "id", riderId), Rider.class);
+        return(rider);
+    }
+
+    public Rider getRiderFromServerUsingName(String riderName){
+        Rider rider = new Gson().fromJson(new AsyncController().get("user", "name", riderName), Rider.class);
         return(rider);
     }
     public ArrayList<Request> getRequests(Rider rider){

@@ -49,7 +49,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<Marker> markers;
-    private UUID userID;
+    private String user;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
@@ -81,8 +81,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         autocompleteFragment.setOnPlaceSelectedListener(searchForRequests);
 
         Intent intent = getIntent();
-        String user = intent.getExtras().getString("user");
-        userID = UUID.fromString(user);
+        Bundle extra = intent.getExtras();
+        if(extra != null){
+            user = extra.getString("username");
+        }
     }
 
     protected void onStart() {
@@ -157,6 +159,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         // Allow the user to go home at any time
         map.setMyLocationEnabled(true);
 
+        map.setOnMapLongClickListener(searchAtPoint);
         // What time is it?
         Calendar current = Calendar.getInstance();
 
@@ -200,9 +203,12 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
             TextView pickUpView = (TextView) infoView.findViewById(R.id.pickup);
             TextView dropoffView = (TextView) infoView.findViewById(R.id.dropoff);
             TextView fareView = (TextView) infoView.findViewById(R.id.amount);
+            TextView pickupTIme = (TextView) infoView.findViewById(R.id.pickupTime);
 
+            SimpleDateFormat date = new SimpleDateFormat("hh:mm on DD/MM/yyyy");
             pickUpView.setText("Pickup: " + currentRequest.getPickup());
             dropoffView.setText("Drop-off: " + currentRequest.getDropoff());
+            pickupTIme.setText("Pickup time: " + date.format(currentRequest.getDate()));
             fareView.setText("Amount: $" + currentRequest.getFare());
 
             return infoView;
@@ -313,6 +319,17 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
         return 0;
     }
+
+    GoogleMap.OnMapLongClickListener searchAtPoint = new GoogleMap.OnMapLongClickListener(){
+        @Override
+        public void onMapLongClick(LatLng pos){
+            if(map != null) {
+                // Move camera to long click position
+                map.moveCamera(CameraUpdateFactory.newLatLng(pos));
+                requests.findAllRequestsWithinDistance(pos, "2");
+            }
+        }
+    };
 
     public RequestController getRequestController() {
         return requests;
