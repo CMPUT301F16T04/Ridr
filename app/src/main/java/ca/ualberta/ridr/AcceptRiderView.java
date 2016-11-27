@@ -1,6 +1,5 @@
 package ca.ualberta.ridr;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,7 +8,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -38,6 +40,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private TextView pickupTime;
     private TextView status;
     private Button acceptRider;
+    private Button viewInfo;
 
     private String username;
     private UUID requestID;
@@ -64,7 +67,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.accept_rider);
 
         //set google map stuff
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.newRequestMap);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.requestMap);
         mapFragment.getMapAsync(this);
         firstLoad = false;
         geocoder = new Geocoder(this);
@@ -87,17 +90,21 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         pickupTime = (TextView) findViewById(R.id.pickup_time_accept_rider);
         status = (TextView) findViewById(R.id.status_accept_rider);
         acceptRider = (Button) findViewById(R.id.accept_rider_button);
+        viewInfo = (Button) findViewById(R.id.view_request_info);
 
-        Intent intent = getIntent();
-        Bundle extras = intent.getExtras();
-        if(extras!=null)
-        {
-            username = extras.getString("username");
-            requestID = UUID.fromString(extras.getString("RequestUUID"));
-        } else {
-            Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
-            finish();
-        }
+        username = "joe";
+        requestID = UUID.fromString("23d361d8-02b9-4dda-ae15-71f21e14e908");
+//
+//        Intent intent = getIntent();
+//        Bundle extras = intent.getExtras();
+//        if(extras!=null)
+//        {
+//            username = extras.getString("username");
+//            requestID = UUID.fromString(extras.getString("RequestUUID"));
+//        } else {
+//            Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
+//            finish();
+//        }
 
         //TODO dont really need to get rider once we fix the names thing
         request = requestController.getRequestFromServer(requestID.toString());
@@ -150,7 +157,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     return;
                 }
                 else {
-                    requestController.addDriverToList(request, username);
+                    //For now!!!
+                    //requestController.addDriverToList(request, username);
 
                     agreedToFulfill = true;
                     String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
@@ -160,6 +168,12 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
         });
 
+       viewInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                slideUp();
+            }
+       });
     }
 
     //gmap stuff
@@ -255,7 +269,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 250));
             }
         });
     }
@@ -285,6 +299,41 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private String capitalizeName(String name){
         return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
     }
+
+    //    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
+// How to disable a button during animations
+    private void slideUp(){
+        LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.requestInfo);
+        if(hiddenPanel.getVisibility() == View.VISIBLE){
+            Animation topDown = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_to_bottom);
+            topDown.setAnimationListener(listener);
+            hiddenPanel.startAnimation(topDown);
+            hiddenPanel.setVisibility(View.INVISIBLE);
+
+        } else {
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_from_bottom);
+            bottomUp.setAnimationListener(listener);
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+        }
+    }
+
+    Animation.AnimationListener listener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+            viewInfo.setClickable(false);
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+            viewInfo.setClickable(true);
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {}
+    };
 
 
 }

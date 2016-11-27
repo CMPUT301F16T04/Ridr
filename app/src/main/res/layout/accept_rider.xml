@@ -4,22 +4,72 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/secondary_colour"
     tools:context="ca.ualberta.ridr.AcceptRiderView"
     android:weightSum="1">
 
-    <TextView
-        android:textSize="30dp"
-        android:layout_marginLeft="10dp"
-        android:layout_width="363dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/request_from"
-        android:clickable="true"
-        android:gravity="center_vertical|center_horizontal"
-        android:layout_alignParentTop="true"
-        android:layout_alignEnd="@+id/pickup_time_accept_rider"
-        android:textStyle="normal|bold"
-        android:textColor="@color/primary_colour" />
+    <fragment
+        xmlns:requestMap="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/requestMap"
+        requestMap:mapType="normal"
+        requestMap:uiCompass="true"
+        requestMap:uiZoomControls="false"
+        tools:context="ca.ualberta.ridr.RiderMainView"
+        class="com.google.android.gms.maps.SupportMapFragment"
+        >
+
+        <TextView
+            android:background="@color/secondary_colour"
+            android:textSize="30sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/request_from"
+            android:clickable="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_alignParentTop="true"
+            android:textStyle="normal|bold"
+            android:textColor="@color/primary_colour" />
+
+        <Button
+            android:background="@color/tertiary_colour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/view_request_info"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="60dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/view_request_info_button" />
+
+        <Button
+            android:background="@color/tertiary_colour"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/accept_rider_button"
+            android:layout_gravity="bottom|center"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="@string/accept_rider_button" />
+        />
+    </fragment>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="300dp"
+    android:layout_height="200dp"
+    android:background="@color/secondary_colour"
+    android:layout_marginBottom="200dp"
+    android:layout_centerInParent="true"
+    android:id="@+id/requestInfo"
+    android:layout_alignParentBottom="true"
+    android:visibility="invisible">
 
     <TextView
         android:layout_width="match_parent"
@@ -30,8 +80,6 @@
         android:layout_marginRight="10dp"
         android:id="@+id/payment_accept_rider"
         android:layout_weight="0.95"
-        android:layout_below="@+id/request_from"
-        android:layout_centerHorizontal="true"
         android:text="@string/payment_accept_rider"
         android:textColor="?android:attr/textColorTertiary" />
 
@@ -43,8 +91,6 @@
         android:layout_marginRight="10dp"
         android:id="@+id/pickup_time_accept_rider"
         android:layout_weight="0.95"
-        android:layout_below="@+id/payment_accept_rider"
-        android:layout_centerHorizontal="true"
         android:text="@string/pickup_time_accept_rider"
         android:textColor="?android:attr/textColorTertiary" />
 
@@ -56,35 +102,9 @@
         android:layout_marginRight="10dp"
         android:id="@+id/status_accept_rider"
         android:layout_weight="0.95"
-        android:layout_below="@+id/pickup_time_accept_rider"
-        android:layout_centerHorizontal="true"
         android:text="@string/status_accept_rider"
         android:textColor="?android:attr/textColorTertiary" />
 
-    <fragment
-        xmlns:map="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="320dp"
-        android:id="@+id/newRequestMap"
-        map:mapType="normal"
-        map:uiCompass="true"
-        map:uiZoomControls="true"
-        tools:context="ca.ualberta.ridr.RiderMainView"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_above="@+id/accept_rider_button"
-        android:layout_alignParentStart="true" />
 
-    <Button
-        android:background="@color/tertiary_colour"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/accept_rider_button"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/accept_rider_button" />
-
+</LinearLayout>
 </RelativeLayout>
