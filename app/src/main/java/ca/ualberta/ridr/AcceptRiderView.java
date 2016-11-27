@@ -39,8 +39,11 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private TextView requestFrom;
     private TextView payment;
     private TextView pickupTime;
+    private TextView startLocation;
+    private TextView endLocation;
     private TextView status;
     private Button acceptRider;
+    private Button viewRequestInfo;
 
     private String username;
     private UUID requestID;
@@ -89,7 +92,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         requestFrom = (TextView) findViewById(R.id.request_from);
         payment = (TextView) findViewById(R.id.payment_accept_rider);
         pickupTime = (TextView) findViewById(R.id.pickup_time_accept_rider);
+        startLocation = (TextView) findViewById(R.id.start_location);
+        endLocation = (TextView) findViewById(R.id.end_location);
         status = (TextView) findViewById(R.id.status_accept_rider);
+        viewRequestInfo = (Button) findViewById(R.id.view_request_info_button);
         acceptRider = (Button) findViewById(R.id.accept_rider_button);
 
         username = "joe";
@@ -103,7 +109,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 //            requestID = UUID.fromString(extras.getString("RequestUUID"));
 //        } else {
 //            Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
-//            finish();
+//            Intent intent = new Intent(AcceptRiderView.this, LoginView.class);
+//            startActivity(intent);
 //        }
 
         //TODO dont really need to get rider once we fix the names thing
@@ -121,6 +128,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         payment.setText(paymentText);
         String pickupTimeText = pickupTime.getText() + space + rideDate.format(request.getDate());
         pickupTime.setText(pickupTimeText);
+        String startLocText = startLocation.getText() + space + request.getPickup();
+        startLocation.setText(startLocText);
+        String endLocText = endLocation.getText() + space + request.getDropoff();
+        endLocation.setText(endLocText);
 
         //have to check if the user previously accepted
         checkIfUserAccepted(requestID.toString());
@@ -142,6 +153,13 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
                 intent.putExtra("username", requestRider.getName());
                 startActivity(intent);
+            }
+        });
+
+        viewRequestInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                slideUp();
             }
         });
 
@@ -236,23 +254,23 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      * @param request used to set marker points
      */
     //TODO put the route between start and end on the map
-    private void setupMap(Request request){
+    private void setupMap(final Request request){
 
         //adds markers and then move camera to where they are
         startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Start Location: " + request.getPickup()));
-        startMarker.setTag(request);
+        startMarker.setTag(0);
         endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("End Location: " + request.getDropoff()));
-        endMarker.setTag(request);
+        endMarker.setTag(0);
 
-        GoogleMap.OnMarkerClickListener bringUpAnimation = new GoogleMap.OnMarkerClickListener() {
+        GoogleMap.OnMarkerClickListener markerClick = new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                slideUp();
+                marker.showInfoWindow();
                 return true;
             }
         };
 
-        gMap.setOnMarkerClickListener(bringUpAnimation);
+        gMap.setOnMarkerClickListener(markerClick);
         zoomToMid(request);
 
     }
@@ -273,7 +291,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 250));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 400));
             }
         });
     }

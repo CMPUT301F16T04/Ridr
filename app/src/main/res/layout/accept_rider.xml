@@ -36,7 +36,7 @@
             android:background="@color/tertiary_colour"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/accept_rider_button"
+            android:id="@+id/view_request_info_button"
             android:layout_gravity="bottom|center"
             android:layout_marginBottom="10dp"
             android:layout_marginTop="10dp"
@@ -44,13 +44,13 @@
             android:layout_marginRight="10dp"
             android:paddingLeft="10dp"
             android:paddingRight="10dp"
-            android:text="@string/accept_rider_button" />
+            android:text="@string/view_request_info_button" />
         />
     </fragment>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="300dp"
-    android:layout_height="200dp"
+    android:layout_height="300dp"
     android:background="@color/secondary_colour"
     android:layout_marginBottom="200dp"
     android:layout_centerInParent="true"
@@ -87,10 +87,43 @@
         android:textSize="20sp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
+        android:id="@+id/start_location"
+        android:layout_weight="0.95"
+        android:text="@string/start_location_accept_rider"
+        android:textColor="?android:attr/textColorTertiary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/end_location"
+        android:layout_weight="0.95"
+        android:text="@string/end_location_accept_rider"
+        android:textColor="?android:attr/textColorTertiary" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
         android:id="@+id/status_accept_rider"
         android:layout_weight="0.95"
         android:text="@string/status_accept_rider"
         android:textColor="?android:attr/textColorTertiary" />
+
+    <Button
+        android:background="@color/tertiary_colour"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/accept_rider_button"
+        android:layout_gravity="bottom|center"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:text="@string/accept_rider_button" />
 
 
 </LinearLayout>
