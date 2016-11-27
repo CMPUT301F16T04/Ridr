@@ -26,6 +26,7 @@ public class Rider extends User {
 
     public Rider (User user){
         super(user);
+        super.setRiderStatus(true);
     }
     public void setRiderStatus(boolean status) {
         super.setRiderStatus(status);

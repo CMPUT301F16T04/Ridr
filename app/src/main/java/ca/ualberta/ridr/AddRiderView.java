@@ -277,15 +277,21 @@ public class AddRiderView extends Activity implements ACallback {
             }
         } else {
             // We're updating a user to become a driver
-            if(addAccount){
-                newRider.setRiderStatus(true);
-                createAccount();
-            } else{
-                Log.i("Get user", "logging in user " + currentUser.getName());
-                // Dangerous, but should copy current user into a driver object and then all we
-                // need to do is update vehicle info and driver status
-                newRider = new Rider(currentUser);
-                addUserInfoToField(currentUser);
+
+            if(currentUser != null) {
+                if(addAccount){
+                    newRider.setRiderStatus(true);
+                    createAccount();
+                } else{
+                    Log.i("Get user", "logging in user " + currentUser.getName());
+                    // Dangerous, but should copy current user into a driver object and then all we
+                    // need to do is update vehicle info and driver status
+                    newRider = new Rider(currentUser);
+                    addUserInfoToField(currentUser);
+                }
+            } else {
+                addAccount = false;
+                updateUser = false;
             }
 
         }
