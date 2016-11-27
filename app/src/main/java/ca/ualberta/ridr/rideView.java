@@ -216,17 +216,15 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
         }
     }
-
-    /**
-     * Add markers to the map.
-     * Takes in a list of requests and adds them as maps to the marker and keeps track of the markers
-     * place on the map
-     * @param filteredReqeusts the filtered reqeusts
-     */
+    
     public void showRide(Ride ride){
         Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()));
         pickup.setTitle(ride.getPickupAddress());
         markers.add(pickup);
+
+        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()));
+        pickup.setTitle(ride.getDropOffAddress());
+        markers.add(dropoff);
 
     }
 
