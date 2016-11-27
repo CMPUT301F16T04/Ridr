@@ -4,7 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/secondary_colour"
     tools:context="ca.ualberta.ridr.AcceptRiderView"
     android:weightSum="1">
 
@@ -26,7 +25,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/accept_rider_button"
         android:layout_gravity="bottom|center"
-        android:layout_centerHorizontal="true"
         android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
