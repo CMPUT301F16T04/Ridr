@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="ca.ualberta.ridr.AcceptRiderView"
+    tools:context="ca.ualberta.ridr.RideView"
     android:weightSum="1">
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
@@ -18,17 +18,17 @@
         map:uiScrollGestures="false"
         map:uiTiltGestures="false"
         map:uiZoomGestures="false"
-        tools:context="ca.ualberta.ridr.RiderMainView"
-        class="com.google.android.gms.maps.SupportMapFragment">
+        tools:context="ca.ualberta.ridr.RideView"
+        android:name="com.google.android.gms.maps.SupportMapFragment">
 
     <Button
-        android:background="@color/tertiary_colour"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
         android:id="@+id/accept_rider_button"
         android:layout_gravity="bottom|center"
-        android:padding="10dp"
         android:layout_marginBottom="10dp"
+        android:paddingLeft="75dp"
+        android:paddingRight="75dp"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
