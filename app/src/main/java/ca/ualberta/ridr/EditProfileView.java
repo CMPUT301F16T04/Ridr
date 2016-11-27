@@ -10,13 +10,16 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
+
 import java.util.UUID;
 
 public class EditProfileView extends Activity {
 
 
     private UUID currentUUID; // UUID of the currently logged-in rider
-    private String riderName; // string of the current UUID
+    private String userName; // string of the current UUID
 
     private EditText editVehicleView;
     private EditText editEmailView;
@@ -33,32 +36,34 @@ public class EditProfileView extends Activity {
     private DriverController driverController;
     private RiderController riderController;
 
+    private User user;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile);
 
-        //TODO set user controller
+
         driverController = new DriverController();
         riderController = new RiderController();
         //retrieve intent from previous activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            riderName = extras.getString("Name");
+            userName = extras.getString("Name");
         }
 
         setViews();
-        //TODO retrieve user's info
-        phoneStr = "780-555-1234";
-        emailStr = "someone@email.com";
-        vehicleStr = "car";
-        //TODO hide or show vehicle info depending on driver status
-        hideShowVehicle(false);
-        //TODO set user's info to the EditText views
+        user = getUser(userName);
+        getInfo(user, userName);
+//        phoneStr = "780-555-1234";
+//        emailStr = "someone@email.com";
+//        vehicleStr = "car";
+        //hide or show vehicle info depending on driver status
+        hideShowVehicle(driverStatus(user));
+        //set user's info to the EditText views
+        setEditableTextInfo(driverStatus(user));
 
-        setEditableTextInfo(false);
-        //TODO make button
         saveChangesButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 getNewUserInfo(false);
@@ -110,7 +115,7 @@ public class EditProfileView extends Activity {
     }
 
     /**
-     * retrives the user's info from the EditText views
+     * retrieve's the user's info from the EditText views
      * @param driverStatus true is the user is a driver
      */
     private void getNewUserInfo(boolean driverStatus){
@@ -120,6 +125,49 @@ public class EditProfileView extends Activity {
             vehicleStr = editVehicleView.getText().toString();
         }
 
+    }
+
+    /**
+     * retieves the user from the database
+     * @param username the username of the user
+     * @return a User object
+     */
+    private User getUser(String username){
+        return new Gson().fromJson(new AsyncController().get("user", "name", username), User.class);
+    }
+
+    /**
+     * returns true if the user is a driver
+     * @param user jsonobject user
+     * @return the isDriver boolean
+     */
+    private boolean driverStatus(User user){
+//        try{
+//            return user.get("isDriver").toString().equals("true");
+//        } catch (Exception e){
+//            // if the atribute doesn't exist, then it can't be a driver
+//            return false;
+//        }
+        return user.isDriver();
+    }
+    /**
+     * retrieves phone number, email, and vehicle information from a user Json object
+     * @param user a jsonobject user
+     */
+    private void getInfo(User user, String username){
+        //phoneStr = user.get("phoneNumber").toString();;
+        //emailStr = user.get("email").toString();
+        if(driverStatus(user)){
+            Driver driver = driverController.getDriverFromServerUsingName(username);
+            phoneStr = driver.getPhoneNumber();
+            emailStr = driver.getEmail();
+            //vehicleStr = user.get("vehicle").toString();
+            vehicleStr = driver.getVehicle();
+        } else{
+            Rider rider = riderController.getRiderFromServerUsingName(username);
+            phoneStr = rider.getPhoneNumber();
+            emailStr = rider.getEmail();
+        }
     }
 
 
