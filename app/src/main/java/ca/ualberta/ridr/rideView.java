@@ -199,12 +199,14 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         if(hiddenPanel.getVisibility() == View.VISIBLE){
             Animation topDown = AnimationUtils.loadAnimation(context,
                     R.anim.slide_to_bottom);
+            topDown.setAnimationListener(listener);
             hiddenPanel.startAnimation(topDown);
             hiddenPanel.setVisibility(View.INVISIBLE);
 
         } else {
             Animation bottomUp = AnimationUtils.loadAnimation(context,
                     R.anim.slide_from_bottom);
+            bottomUp.setAnimationListener(listener);
             hiddenPanel.startAnimation(bottomUp);
             hiddenPanel.setVisibility(View.VISIBLE);
         }
