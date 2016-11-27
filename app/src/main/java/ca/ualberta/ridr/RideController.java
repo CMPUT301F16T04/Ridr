@@ -43,10 +43,7 @@ public class RideController {
     public Ride getRide(String id){
         for(int i=0; i<rides.size(); ++i){
             Ride ride = rides.get(0);
-            Log.i("Ride", ride.getId().toString());
-            Log.i("Ride", id);
             if(ride.getId().equals(UUID.fromString(id))){
-                Log.i("Ridish", ride.toJsonString());
                 return ride;
             }
         }
@@ -55,10 +52,8 @@ public class RideController {
 
     public void findRide(String rideID) {
         JsonObject ride = asyncController.get("ride", "id", rideID);
-        Log.i("Printing ride", ride.toString());
         try {
             Ride aRide = new Ride(ride);
-            Log.i("Printing ride", ride.toString());
             rides.add(new Ride(ride));
             cb.update();
         } catch (Exception e){

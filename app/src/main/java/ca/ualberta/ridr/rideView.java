@@ -213,7 +213,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     public void update(){
         try {
             Ride ride = rides.getRide(rideID);
-            Log.i("Ride", ride.toJsonString());
             showRide(ride);
         } catch (Exception e){
             Log.i("Update failed", String.valueOf(e));

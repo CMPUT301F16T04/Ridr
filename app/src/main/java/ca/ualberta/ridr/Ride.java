@@ -170,8 +170,6 @@ public class Ride {
         this.rideDate = formatter.parse(ride.get("date").getAsString());
         this.id = UUID.fromString(ride.get("id").getAsString());
         this.fare = ride.get("fare").getAsFloat();
-        Log.i("Done", "done");
-        Log.i("PickupCoords", String.valueOf(pickupCoords));
 
     }
 
