@@ -39,5 +39,12 @@ public class RiderController {
         return(rider.getRequests());
     }
 
+    public void saveChanges(Rider rider, String phone, String email){
+        rider.setPhoneNumber(phone);
+        rider.setEmail(email);
+        AsyncController controller = new AsyncController();
+        controller.create("user", rider.getName(), new Gson().toJson(rider));
+    }
+
 }
 

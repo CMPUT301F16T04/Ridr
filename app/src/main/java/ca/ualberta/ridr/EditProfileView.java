@@ -30,12 +30,17 @@ public class EditProfileView extends Activity {
     private String emailStr;
     private String vehicleStr;
 
+    private DriverController driverController;
+    private RiderController riderController;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_profile);
 
         //TODO set user controller
+        driverController = new DriverController();
+        riderController = new RiderController();
         //retrieve intent from previous activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -55,7 +60,7 @@ public class EditProfileView extends Activity {
         setEditableTextInfo(false);
         //TODO make button
         saveChangesButton.setOnClickListener(new View.OnClickListener(){
-            public void Onclick(View v){
+            public void onClick(View v){
                 getNewUserInfo(false);
                 //TODO update user's info through the controller
                 Toast.makeText(EditProfileView.this, "saving changes", Toast.LENGTH_SHORT).show();

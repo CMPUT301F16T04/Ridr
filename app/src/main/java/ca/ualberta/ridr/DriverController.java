@@ -23,6 +23,7 @@ import io.searchbox.core.SearchResult;
  */
 public class DriverController {
 
+
     DriverController(){}
 
     //is this supposed to be a driver controller item or a request controller item... look at UML in the morning
@@ -38,6 +39,14 @@ public class DriverController {
     public Driver getDriverFromServerUsingName(String driverName){
         Driver driver = new Gson().fromJson(new AsyncController().get("user", "name", driverName), Driver.class);
         return(driver);
+    }
+
+    public void saveChanges(Driver driver, String phone, String email, String vehicle){
+        driver.setPhoneNumber(phone);
+        driver.setEmail(email);
+        driver.setVehicle(vehicle);
+        AsyncController controller = new AsyncController();
+        controller.create("user", driver.getName(), new Gson().toJson(driver));
     }
 
 }
