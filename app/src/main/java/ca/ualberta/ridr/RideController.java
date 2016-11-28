@@ -176,7 +176,7 @@ public class RideController {
     /**
      * Get a single ride from the rides array list
      * @param id
-     * @return
+     * @return Ride
      */
     @Nullable
     public Ride getRide(String id){

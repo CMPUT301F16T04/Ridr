@@ -21,7 +21,8 @@ import java.util.UUID;
 
 /**
  * The view that shows keyword search results for a driver
- * Also allows new keyword searches to be performed
+ * Also allows new keyword searches to be performed.
+ * Can also launch to searching for rides by geolocation, and viewing a Drivers Requests and Rides.
  */
 public class SearchResultsView extends Activity {
 

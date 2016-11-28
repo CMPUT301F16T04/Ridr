@@ -23,8 +23,9 @@ import com.google.gson.JsonElement;
 import java.util.ArrayList;
 
 /** The RiderRequestView displays a list of active requests for a logged in rider
+ *
  * @author mackenzie
- * */
+ */
 
 public class RiderRequestView extends Activity {
 

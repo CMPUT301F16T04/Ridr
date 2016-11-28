@@ -33,7 +33,7 @@ public class DriverRideView extends Activity implements ACallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_ride_view);
 
-        rides = new RideController(this);
+
         //retrieve the current driver's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -69,6 +69,7 @@ public class DriverRideView extends Activity implements ACallback {
     protected void onStart(){
         super.onStart();
         //Get driver rides from the server
+        rides = new RideController(this);
         rides.getDriverRides(driver);
 
         // Set ride adapter
