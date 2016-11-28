@@ -304,7 +304,11 @@ public class RequestController {
             requests.clear();
             for (JsonElement result : queryResults) {
                 try {
-                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                    Request request = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
+                    //System.out.println(request);
+                    if (!request.isAccepted() && request.isValid()){
+                        requests.add(request);
+                    }
                 } catch (Exception e) {
                     Log.i("Error parsing requests", e.toString());
                 }
@@ -396,15 +400,11 @@ public class RequestController {
     }
 
     public boolean isPendingExecutableRequests() {
-        return offlineSingleton.getRiderRequests().size() > 0 && isConnected();
+        return offlineSingleton.isPendingRequest() && isConnected();
     }
 
     public boolean isPendingExecutableAcceptance() {
         return offlineSingleton.isPendingAcceptance() && isConnected();
-    }
-
-    public boolean isPendingExecutableNotification() {
-        return offlineSingleton.isPendingNotification() && isConnected();
     }
 
     private Boolean isConnected() {

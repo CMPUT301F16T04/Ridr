@@ -40,6 +40,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolygonOptions;
 
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -326,7 +327,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
-        rideFare.setText(fareText + Double.toString(ride.getFare()));
+        rideFare.setText(fareText + Float.toString(roundFloatToTwoDec(ride.getFare())));
     }
     /**
      * A function to check if it's night time or not
@@ -356,5 +357,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
             return markers.size();
         }
         return 0;
+    }
+
+    private float roundFloatToTwoDec(float number){
+        BigDecimal dec = new BigDecimal(Float.toString(number));
+        dec = dec.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return dec.floatValue();
     }
 }

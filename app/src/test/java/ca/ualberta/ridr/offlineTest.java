@@ -6,6 +6,9 @@ import org.junit.Test;
 
 import java.util.Date;
 
+import static junit.framework.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 /**
  * Created by jferris on 28/11/16.
  */
@@ -23,5 +26,21 @@ public class offlineTest {
 
         offlineSingleton.addDriverAcceptance(request);
         offlineSingleton.addRiderRequest(request2);
+        offlineSingleton.addRider(rider);
+
+        assertTrue(offlineSingleton.isPendingAcceptance());
+        assertTrue(offlineSingleton.isPendingNotification());
+        assertTrue(offlineSingleton.isPendingRequest());
+
+        offlineSingleton.clearRiderList();
+        assertFalse(offlineSingleton.isPendingNotification());
+
+        offlineSingleton.clearDriverRequests();
+        assertFalse(offlineSingleton.isPendingAcceptance());
+
+        offlineSingleton.clearRiderRequests();
+        assertFalse(offlineSingleton.isPendingRequest());
+
     }
+
 }
