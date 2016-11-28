@@ -15,6 +15,7 @@
         requestMap:mapType="normal"
         requestMap:uiCompass="true"
         requestMap:uiZoomControls="false"
+        requestMap:uiZoomGestures="false"
         requestMap:uiScrollGestures="false"
         tools:context="ca.ualberta.ridr.AcceptRiderView"
         android:name="com.google.android.gms.maps.SupportMapFragment"

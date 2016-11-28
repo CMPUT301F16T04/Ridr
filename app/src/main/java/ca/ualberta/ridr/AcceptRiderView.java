@@ -26,12 +26,16 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
 public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
@@ -243,6 +247,17 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap){
         gMap = googleMap;
+
+        Calendar current = Calendar.getInstance();
+
+        // Add night view for nice viewing when it's dark out
+        // Dark styling is easier on the eyes
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+        if (nightTime(time.format(current.getTime()))) {
+            MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_night_style);
+            gMap.setMapStyle(style);
+        }
+
         setupMap(request);
 
     }
@@ -257,10 +272,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private void setupMap(final Request request){
 
         //adds markers and then move camera to where they are
-        startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Start Location: " + request.getPickup()));
-        startMarker.setTag(0);
-        endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("End Location: " + request.getDropoff()));
-        endMarker.setTag(0);
+        startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Pickup: " + request.getPickup()));
+        //startMarker.setTag(0);
+        endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("Drop off: " + request.getDropoff()));
+        //endMarker.setTag(0);
 
         GoogleMap.OnMarkerClickListener markerClick = new GoogleMap.OnMarkerClickListener() {
             @Override
@@ -364,6 +379,23 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         public void onAnimationRepeat(Animation animation) {}
     };
 
+    /**
+     * A function to check if it's night time or not
+     * Plus this is easier on the eyes in night
+     * @param time the time
+     * @return boolean
+     */
+    private boolean nightTime(String time){
+        try {
+            Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
+            Date nightTime = new SimpleDateFormat("HH:mm:ss").parse("18:00:00");
+            Date earlyMorning = new SimpleDateFormat("HH:mm:ss").parse("6:00:00");
+            return currentTime.getTime() > nightTime.getTime() || currentTime.getTime() < earlyMorning.getTime();
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
 
