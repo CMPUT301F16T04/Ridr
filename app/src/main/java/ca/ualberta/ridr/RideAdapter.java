@@ -14,17 +14,20 @@ import java.util.ArrayList;
 /**
  * Created by Justin Barclay on 20/11/16.
  *
- * This is a simple view adapter that display a single ride request
+ * This is a simple view adapter that display a single ride request.
  */
 public class RideAdapter extends ArrayAdapter<Ride> {
     private Context context;
     private ArrayList<Ride> rides = new ArrayList<>();
+    private String userType;
 
 
-    public RideAdapter(Context context, ArrayList<Ride> rides) {
+    public RideAdapter(Context context, ArrayList<Ride> rides, String userType) {
         super(context, 0, rides);
         this.context = context;
         this.rides = rides;
+        this.userType = userType;
+
     }
 
     @Override
@@ -43,12 +46,19 @@ public class RideAdapter extends ArrayAdapter<Ride> {
 
         Ride ride = getItem(position);
 
+        String contractPartner;
+        if(userType == "rider"){
+            contractPartner = "Driver: " + ride.getRider();
+        } else{
+            contractPartner = "Rider: " + ride.getRider();
+        }
+
         SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
 
         String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
         String completed = ride.isCompleted().toString();
         rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
-        riderName.setText("Rider: " + ride.getRider());
+        riderName.setText(contractPartner);
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());

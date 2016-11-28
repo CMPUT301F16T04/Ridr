@@ -54,7 +54,8 @@ import com.google.gson.Gson;
 import android.location.Location;
 
 /**
- * This view allows for a rider to create a new request
+ * This view allows for a rider to create a new request. Allows Rider to also see his requests and
+ * rides from the menu option. Implements google maps methods, as well as ACallback.
  */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
@@ -73,7 +74,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private PlaceAutocompleteFragment pickupAutocompleteFragment;
     private PlaceAutocompleteFragment dropoffAutocompleteFragment;
 
-    private String riderName; // string of the curretn UUID
+    private String riderName; // string of the current UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Pick Up Location";
