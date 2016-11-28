@@ -173,7 +173,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         // Let's listen for clicks on our markers to display information
         map.setOnMarkerClickListener(showInfoWindow);
-        map.setOnMarkerDragListener(goToRequest);
+        map.setOnInfoWindowClickListener(gotoRequest);
         map.setInfoWindowAdapter(displayRequest);
 
     }
@@ -184,8 +184,9 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         public void onMarkerDragStart(Marker marker) {
             Intent requestIntent = new Intent(GeoView.this, AcceptRiderView.class);
             Request request = (Request) marker.getTag();
+
             requestIntent.putExtra("username", username);
-            requestIntent.putExtra("RequestUUID", request.getID());
+            requestIntent.putExtra("RequestUUID", request.getID().toString());
             startActivity(requestIntent);
         }
 
@@ -199,12 +200,23 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         }
     };
-    
+
     OnMarkerClickListener showInfoWindow = new OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
             marker.showInfoWindow();
             return false;
+        }
+    };
+
+    GoogleMap.OnInfoWindowClickListener gotoRequest = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            Intent requestIntent = new Intent(GeoView.this, AcceptRiderView.class);
+            Request request = (Request) marker.getTag();
+            requestIntent.putExtra("username", username);
+            requestIntent.putExtra("RequestUUID", request.getID().toString());
+            startActivity(requestIntent);
         }
     };
 
