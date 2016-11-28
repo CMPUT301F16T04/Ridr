@@ -127,7 +127,7 @@ public class AddDriverView extends Activity implements ACallback {
                 }
 
                 //make the objects
-                if(newDriver == null) {
+                if(newDriver == null || updateUser != true) {
                     newDriver = new Driver(username, birthday.getTime(), creditCard, email, phoneNumber
                             , vehicleDescription);
                 } else{

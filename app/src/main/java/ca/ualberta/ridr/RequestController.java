@@ -183,11 +183,11 @@ public class RequestController {
             fare = 999999; //set as some high number
         }
         try {
-            //Log.i("doesContain", jsonElement.toString());
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
             if(fare < request.getFare()) {
                 return true;
             }
+
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();
