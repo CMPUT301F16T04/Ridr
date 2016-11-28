@@ -73,7 +73,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private PlaceAutocompleteFragment pickupAutocompleteFragment;
     private PlaceAutocompleteFragment dropoffAutocompleteFragment;
 
-    private String riderName; // string of the curretn UUID
+    private String riderName; // string of the current UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Pick Up Location";
