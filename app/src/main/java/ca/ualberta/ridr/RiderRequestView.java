@@ -3,6 +3,7 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 
 import android.content.Context;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -31,13 +32,14 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
+
 import java.util.Date;
 
 /**
  * Displays information pertaining to a rider's active requests. Allows them to accept requests, as
- * wel as cancel requests
- *
- */
+ * wel as cancel requests. The RiderRequestView displays a list of active requests for a logged in rider
+ * @author mackenzie
+ * */
 
 public class RiderRequestView extends Activity {
 
@@ -49,33 +51,40 @@ public class RiderRequestView extends Activity {
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
+    public String loggedInRiderName;
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.rider_request_view);
-            oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.rider_request_view);
+        oldRequestsList = (ListView) (findViewById(R.id.oldRequestLists));
 
-            //grab riders uuid
+        //grab riders uuid
 
-            final Intent intent = getIntent();
-            Bundle extras = intent.getExtras();
-            if (extras != null) {
-                currentName = extras.getString("name");
-
-            }
+        final Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            currentName = extras.getString("name");
         }
+    }
+
 
 
     @Override
     protected void onStart() {
         super.onStart();
-        AsyncController controller = new AsyncController();
-        //TODO fix hardcoded value
-        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", "726a1db2-1424-4b82-b85d-6968396dcd4a"); //"8e16686b-f72d-42e1-90ea-e7a8cf270732"
-        requests.clear();
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
 
-        System.out.println(queryResults);
+        if(extras != null){
+            loggedInRiderName = extras.getString("name");
+        }
+
+        AsyncController controller = new AsyncController();
+        JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider",
+                loggedInRiderName);
+
+        requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
                 Request req = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
@@ -86,6 +95,7 @@ public class RiderRequestView extends Activity {
                 Log.i("Error parsing requests", e.toString());
             }
         }
+
 
 
         final RequestAdapter customAdapter = new RequestAdapter(activity, requests);
@@ -111,79 +121,81 @@ public class RiderRequestView extends Activity {
         });
     }
 
-    //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
-        //date link accessed : Nov 5 2016
-        //author: Emil Adz ,edited Vladimir Kulyk
-        public void displayDrivers(Request request) {
 
-            // Inflate the popup_layout.xml
-            LinearLayout viewGroup = (LinearLayout) findViewById(R.id.drivers_who_accepted);
-            LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            View layout = layoutInflater.inflate(R.layout.drivers_who_accepted, viewGroup);
+    //thinking of popup window as outlined in
+    // http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
+    //date link accessed : Nov 5 2016
+    //author: Emil Adz ,edited Vladimir Kulyk
+    public void displayDrivers(Request request) {
 
-            // Creating the PopupWindow
-            final PopupWindow driverPopUp = new PopupWindow(activity);
-            driverPopUp.setContentView(layout);
-            driverPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
-            driverPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
-            driverPopUp.setFocusable(true);
+        // Inflate the popup_layout.xml
+        LinearLayout viewGroup = (LinearLayout) findViewById(R.id.drivers_who_accepted);
+        LayoutInflater layoutInflater = (LayoutInflater) activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        View layout = layoutInflater.inflate(R.layout.drivers_who_accepted, viewGroup);
 
-            // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
-            int OFFSET_X = 60;
-            int OFFSET_Y = 600;
+        // Creating the PopupWindow
+        final PopupWindow driverPopUp = new PopupWindow(activity);
+        driverPopUp.setContentView(layout);
+        driverPopUp.setWidth(LinearLayout.LayoutParams.WRAP_CONTENT);
+        driverPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
+        driverPopUp.setFocusable(true);
 
-
-            // Displaying the popup at the specified location, + offsets.
-            driverPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, OFFSET_X, OFFSET_Y);
+        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
+        int OFFSET_X = 60;
+        int OFFSET_Y = 600;
 
 
-            // Getting a reference to Close button, and close the popup when clicked.
-            Button close = (Button) layout.findViewById(R.id.exit_popup);
-            close.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View v) {
-                    driverPopUp.dismiss();
-                }
-            });
-
-            //reason this is fudge is because we dont have that list of possible drivers stored
-            final ArrayList<String> possibleDrivers = new ArrayList<>();
-            final ArrayList<String> possibleDriversIds = new ArrayList<>();
-            Driver driver = new Driver("Sample hardcoded driver", new Date(), "creditcard", "email@emailme.email", "123-123-1234", "banckaccono");
-            possibleDrivers.add(driver.getName());
-            possibleDriversIds.add("475a3caa-88b5-46b2-9a44-cd02ef8a2d28");
+        // Displaying the popup at the specified location, + offsets.
+        driverPopUp.showAtLocation(layout, Gravity.NO_GRAVITY, OFFSET_X, OFFSET_Y);
 
 
-            ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
-            ArrayAdapter<String> adapter_popup = new ArrayAdapter<String>(activity, R.layout.driver_who_accepted, possibleDrivers);
-            popupList.setAdapter(adapter_popup);
+        // Getting a reference to Close button, and close the popup when clicked.
+        Button close = (Button) layout.findViewById(R.id.exit_popup);
+        close.setOnClickListener(new View.OnClickListener() {
 
-            //this is to recognize listview item presses within the popup
-            popupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            @Override
+            public void onClick(View v) {
+                driverPopUp.dismiss();
+            }
+        });
+
+        //reason this is fudge is because we dont have that list of possible drivers stored
+        final ArrayList<String> possibleDrivers = new ArrayList<>();
+        final ArrayList<String> possibleDriversIds = new ArrayList<>();
+        Driver driver = new Driver("Sample hardcoded driver", new Date(), "creditcard", "email@emailme.email", "123-123-1234", "banckaccono");
+        possibleDrivers.add(driver.getName());
+        possibleDriversIds.add("475a3caa-88b5-46b2-9a44-cd02ef8a2d28");
+
+
+        ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
+        ArrayAdapter<String> adapter_popup = new ArrayAdapter<String>(activity, R.layout.driver_who_accepted, possibleDrivers);
+        popupList.setAdapter(adapter_popup);
+
+        //this is to recognize listview item presses within the popup
+        popupList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
 //                    String riderId = "8e16686b-f72d-42e1-90ea-e7a8cf270732"; //"6a5f339c-2679-4e18-825f-2d6fc6cdc3e2";
 //                    String driverId = "475a3caa-88b5-46b2-9a44-cd02ef8a2d28";
 //                    String requestId = "4d08b0e5-9bf7-45fb-b5ea-37a5cb03eeba";
 
-                    clickedDriverIDStr = possibleDriversIds.get(position);
+                clickedDriverIDStr = possibleDriversIds.get(position);
 
-                    //must close popup before going to next activity
-                    driverPopUp.dismiss();
+                //must close popup before going to next activity
+                driverPopUp.dismiss();
 
-                    //TODO pass the driver at clicked position to the next activity
-                    Intent intent = new Intent(activity, AcceptDriverView.class);
-                    ArrayList<String> ids = new ArrayList<>();
-                    ids.add(currentName); //pass the current user
-                    ids.add(clickedDriverIDStr);
-                    ids.add(clickedRequestIDStr);
-                    intent.putStringArrayListExtra("ids", ids);
-                    startActivity(intent);
-                    //go to driver profile
-                }
-            });
-        }
+                //TODO pass the driver at clicked position to the next activity
+                Intent intent = new Intent(activity, AcceptDriverView.class);
+                ArrayList<String> ids = new ArrayList<>();
+                ids.add(currentName); //pass the current user
+                ids.add(clickedDriverIDStr);
+                ids.add(clickedRequestIDStr);
+                intent.putStringArrayListExtra("ids", ids);
+                startActivity(intent);
+                //go to driver profile
+            }
+        });
+    }
 
     /**
      * Cancels a request when selected in the listView using the asynchronous controller
