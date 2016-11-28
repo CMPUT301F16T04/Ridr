@@ -317,7 +317,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         TextView rideFare = (TextView) findViewById(R.id.rideFare);
 
         SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
-        
+
         String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
         String completed = ride.isCompleted().toString();
         rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
