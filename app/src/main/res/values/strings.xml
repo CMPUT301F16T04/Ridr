@@ -45,5 +45,6 @@
     <string name="view_request_info_button">View Request Info</string>
     <string name="complete_ride">Complete</string>
     <string name="view_ride_info">View Ride Info</string>
+    <string name="title_activity_rider_rides_view">RiderRidesView</string>
 
 </resources>
