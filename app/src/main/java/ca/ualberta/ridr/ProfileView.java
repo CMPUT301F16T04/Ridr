@@ -31,7 +31,7 @@ public class ProfileView extends Activity {
     private RiderController riderCon = new RiderController();
 
     //just hardcoded for now
-    private String username = "Kristy";
+    private String username; //= "Kristy";
     private String userEmailStr;
     private  String userPhoneStr;
 
@@ -41,11 +41,11 @@ public class ProfileView extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.profile);
 
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
-//        if (extras != null) {
-//            username = extras.getString("username");
-//        }
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if (extras != null) {
+            username = extras.getString("username");
+        }
 
         userEmail = (Button) findViewById(R.id.user_email);
         userPhone = (Button) findViewById(R.id.user_phone);
