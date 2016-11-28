@@ -51,7 +51,8 @@ import java.util.UUID;
  * This view shows all requests by default, and then upon user input shows the user all requests
  * centered around the input in a 2km radius
  */
-public class RideView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, ACallback {
+public class RideView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks,
+        OnConnectionFailedListener, ACallback {
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
