@@ -95,10 +95,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private float distance;
     private float fare;
 
-
-
     RequestController reqController;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,8 +119,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     .build();
         }
 
-
-
         //retrieve the current rider's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -138,11 +133,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                //startLocation.setText(place.getAddress().toString());
-                //Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
                 pickupStr = place.getAddress().toString();
                 pickupCoord = place.getLatLng();
-                //addMarkers(pickupCoord, "Pickup");
                 addMarkers(pickupCoord, true);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
                 if(dropoffCoord != null){
@@ -160,11 +152,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         dropoffAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                //endLocation.setText(place.getAddress().toString());
-                //Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
                 dropoffStr = place.getAddress().toString();
                 dropoffCoord = place.getLatLng();
-                //addMarkers(dropoffCoord, "Dropoff");
                 addMarkers(dropoffCoord, false);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dropoffCoord, 11));
                 if(pickupCoord != null){
