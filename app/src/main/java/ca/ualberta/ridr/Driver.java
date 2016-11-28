@@ -10,27 +10,23 @@ import io.searchbox.annotations.JestId;
  */
 public class Driver extends User {
 
-    @JestId
-    private String elasticID;
 
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     //private transient Vehicle vehicle;
-    private transient String bankAccountNo;
-    private transient ArrayList<Ride> rideArrayList;
-    private transient ArrayList<Request> requestArrayList;
+    private  String vehicleDescription;
 
-    public Driver(String name, Date dateOfBirth, String creditCard,
-
-                  String email, String phoneNumber, String bankAccountNo) {
+    public Driver(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber,
+                    String vechileDescription) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.bankAccountNo = bankAccountNo;
-
-        this.rideArrayList = new ArrayList<Ride>();
-        this.requestArrayList = new ArrayList<Request>();
-        this.setDriverStatus(true);
+        this.vehicleDescription = vechileDescription;
+        super.setDriverStatus(true);
     }
 
+    public Driver(User user){
+        super(user);
+        super.setDriverStatus(true);
+    }
     public String getName() {
         return super.getName();
     }
@@ -45,27 +41,6 @@ public class Driver extends User {
 
     public void setDateOfBirth(Date dateOfBirth) {
         super.setDateOfBirth(dateOfBirth);
-    }
-
-
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
-    public String getElasticID() {
-        return super.getID().toString();
-
-    }
-
-    public void setElasticID(String elasticID) {
-        this.elasticID = elasticID;
-    }
-
-    public ArrayList<Ride> getRides() {
-        return rideArrayList;
-    }
-
-    public void setRides(ArrayList<Ride> rideArrayList) {
-        this.rideArrayList = rideArrayList;
     }
 
     public void addRide() {
@@ -114,6 +89,14 @@ public class Driver extends User {
 
     public boolean isOffline() {
         return false;
+    }
+
+    public String getVehicleDescription() {
+        return vehicleDescription;
+    }
+
+    public void setVehicleDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
     }
 
 }

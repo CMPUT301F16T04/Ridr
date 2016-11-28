@@ -2,25 +2,22 @@ package ca.ualberta.ridr;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
+import android.widget.Toast;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
-public class RequestsFromRidersView extends Activity {
+public class RequestsFromRidersView extends Activity implements ACallback{
     //must extend activity, not appcompatactivity
 
-    private String username;
+
+    private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
+    private RequestController requestController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,7 +30,7 @@ public class RequestsFromRidersView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            username = extras.getString("username");
+            userName = extras.getString("Name");
         }
     }
 
@@ -45,19 +42,13 @@ public class RequestsFromRidersView extends Activity {
         }
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
-        AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.getFromIndexObjectInArray("requests", "possibleDrivers", username);
-
-        for (JsonElement result : queryResults) {
-            try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-            } catch (Exception e) {
-                Log.i("Error parsing requests", e.toString());
-            }
-        }
+        requestController = new RequestController(this);
+        requestController.findAllRequestsWithDataMember("request", "possibleDrivers", userName);
+        //search for our name in any possibleDriver list
+        //update gets called from Acallback
 
 
-        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests);
+        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests, userName);
         requestList.setAdapter(customAdapter);
 
         //this is to recognize listview item presses within the view
@@ -65,14 +56,29 @@ public class RequestsFromRidersView extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
                 String clickedRequestIDStr = request.getID().toString();
-                /* Not ready yet, need to wait to merge with the rest of the app,
-                so we can figure out how this works
-                Intent intent = new Intent(RequestsFromRidersView.this, AcceptDriverView.class);
-                intent.putExtra("RequestID", clickedRequestIDStr);
-                startActivity(intent);*/
+                Intent intent = new Intent(RequestsFromRidersView.this, AcceptRiderView.class);
+                intent.putExtra("RequestUUID", request.getID().toString());
+                intent.putExtra("userName", userName);
+                startActivity(intent);
             }
         });
 
+        if(requests.size() <= 0){
+            Toast.makeText(RequestsFromRidersView.this, "You haven't accepted any requests yet!", Toast.LENGTH_LONG).show();
+        }
 
+    }
+
+    @Override
+    //for Acallback
+    public void update() {
+        requests.clear();
+        ArrayList<Request> requestControllerList = requestController.getList();
+        for (int i = 0; i < requestControllerList.size(); ++i){
+            if(requestControllerList.get(i).isValid()){
+                //add to our request list, if the request is a valid request (not cancelled)
+                requests.add(requestControllerList.get(i));
+            }
+        }
     }
 }

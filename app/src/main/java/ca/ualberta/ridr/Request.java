@@ -34,7 +34,14 @@ public class Request {
     private Boolean accepted;
     private UUID id;
     private float fare;
+    private float costDistance;
     private Date date;
+
+    public void setIsValid(Boolean valid) {
+        isValid = valid;
+    }
+
+    private Boolean isValid;
 
 
     Request(String rider, String pickup, String dropoff, LatLng pickupCoords, LatLng dropOffCoords, Date date){
@@ -49,6 +56,7 @@ public class Request {
         this.fare = 20;
         this.accepted = false;
         this.possibleDrivers = new ArrayList<String>();
+        this.isValid = true;
     }
 
     public Date getDate(){
@@ -61,6 +69,11 @@ public class Request {
     public LatLng getPickupCoords() {
         return pickupCoord;
     }
+
+    public Boolean isValid(){
+        return isValid;
+    }
+
 
     public void setPickupCoords(LatLng pickupCoords) {
         this.pickupCoord = pickupCoords;
@@ -134,19 +147,25 @@ public class Request {
         this.fare = estimate;
     }
 
-    public float estimateFare(float distance){
-        float gasCostFactor = 4; // calculate something later
-        //return distance * gasCostFactor;
-        float tempVal = 20;
-        return tempVal;
+    public float getCostDistance(){
+        return costDistance;
     }
+
+    /**
+     * sets the cost per KM
+     * @param cost
+     */
+    public void setCostDistance(float cost){
+        this.costDistance = cost;
+    }
+
 
     public UUID getID() {
         return id;
     }
 
     public String toJsonString(){
-        // Attempt to conver request into a JsonObject
+        // Attempt to convert request into a JsonObject
         // If fail return a null pointer
         // Need to use the java standard JSON object here because we are nesting JSON items
         JSONObject toReturn = new JSONObject();
@@ -161,6 +180,7 @@ public class Request {
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
             toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
+            toReturn.put("isValid", isValid);
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -185,6 +205,7 @@ public class Request {
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
         this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
+        this.isValid = request.get("isValid").getAsBoolean();
 
     }
 
@@ -228,9 +249,8 @@ public class Request {
     //intentions : to be able to store and retrieve a list of possible drivers.
     private ArrayList<String> buildPossibleDriversList(JsonArray array){
         ArrayList<String> drivers = new ArrayList<String>();
-        if(array.size() == 0){
+        if(array == null || array.size() == 0){
             return drivers;
-
         }
 
         for(int i = 0; i < array.size(); ++i){

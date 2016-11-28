@@ -22,6 +22,19 @@ import io.searchbox.core.SearchResult;
  * Created by jferris on 22/10/16.
  */
 public class DriverController {
+    ACallback cbInterface;
+    Driver currentDriver;
+    AsyncController controller;
+
+    DriverController(ACallback cbInterface){
+        this.cbInterface = cbInterface;
+    }
+
+    public Driver getDriverFromServer(String driverId) {
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        return(driver);
+    }
+
 
     DriverController(){}
 
@@ -33,6 +46,15 @@ public class DriverController {
     public Driver getDriverFromServerUsingName(String driverName){
         Driver driver = new Gson().fromJson(new AsyncController().get("user", "name", driverName), Driver.class);
         return(driver);
+    }
+
+    public void saveChanges(String driverName, String phone, String email, String vehicle){
+        Driver driver = getDriverFromServerUsingName(driverName);
+        driver.setPhoneNumber(phone);
+        driver.setEmail(email);
+        driver.setVehicleDescription(vehicle);
+        AsyncController controller = new AsyncController();
+        controller.create("user", driver.getID().toString(), new Gson().toJson(driver));
     }
 
 }

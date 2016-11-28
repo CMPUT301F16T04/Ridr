@@ -29,6 +29,7 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.gson.Gson;
 
 
 import java.text.ParseException;
@@ -102,24 +103,23 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         viewRequestInfo = (Button) findViewById(R.id.view_request_info_button);
         acceptRider = (Button) findViewById(R.id.accept_rider_button);
 
-        username = "joe";
-        requestID = UUID.fromString("23d361d8-02b9-4dda-ae15-71f21e14e908");
-//
-//        Intent intent = getIntent();
-//        Bundle extras = intent.getExtras();
-//        if(extras!=null)
-//        {
-//            username = extras.getString("username");
-//            requestID = UUID.fromString(extras.getString("RequestUUID"));
-//        } else {
-//            Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
-//            Intent intent = new Intent(AcceptRiderView.this, LoginView.class);
-//            startActivity(intent);
-//        }
+
+        Intent intent = getIntent();
+        Bundle extras = intent.getExtras();
+        if(extras!=null)
+        {
+            username = extras.getString("username");
+            requestID = UUID.fromString(extras.getString("RequestUUID"));
+        } else {
+            Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
+            intent = new Intent(AcceptRiderView.this, LoginView.class);
+            startActivity(intent);
+        }
+
 
         //TODO dont really need to get rider once we fix the names thing
         request = requestController.getRequestFromServer(requestID.toString());
-        requestRider = riderController.getRiderFromServer(request.getRider());
+        requestRider = riderController.getRiderFromServerUsingName(request.getRider());
 
         String isFrom = "Request from " + capitalizeName(requestRider.getName()) + ":";
 
@@ -179,8 +179,22 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     return;
                 }
                 else {
-                    //For now!!!
-                    //requestController.addDriverToList(request, username);
+<
+                    //driver is now willing to fulfill the ride
+                    requestController.addDriverToList(request, username);
+                    //set pending notification on riders account
+                    requestRider.setPendingNotification("A driver is willing to " +
+                            "fulfill your Ride! Check your Requests for more info.");
+                    try {
+                        AsyncController asyncController = new AsyncController();
+                        asyncController.create("user", requestRider.getID().toString(), new Gson().toJson(requestRider));
+                        //successful account creation
+                        Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
+                                "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
+                    } catch (Exception e){
+                        Log.i("Communication Error", "Could not communicate with the elastic search server");
+                        return;
+                    }
 
                     agreedToFulfill = true;
                     String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";

@@ -7,6 +7,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 
+import java.util.*;
+
 /**
  * Created by Justin on 2016-11-10.
  *
@@ -17,13 +19,13 @@ public class AsyncController {
     /**
      * The Controller.
      */
-    AsyncDatabaseController controller;
-
+    HashMap<String, JsonObject> database;
     /**
      * Instantiates a new Async controller.
      */
     public AsyncController(){
         super();
+        database = new HashMap<>();
     }
 
     /**
@@ -54,14 +56,7 @@ public class AsyncController {
      * @return an array of jsonObjects from that mapping
      */
     public JsonArray getAllFromIndex(String dataClass) {
-        controller = new AsyncDatabaseController("getAllFromIndex");
-        try{
-            String searchString = "{\"query\": { \"match_all\": { }}}";
-
-            return extractAllElements(controller.execute(dataClass, searchString).get());
-        } catch(Exception e){
-            return null;
-        }
+        return database.get(dataClass);
     }
 
     /**
@@ -115,53 +110,27 @@ public class AsyncController {
         controller = new AsyncDatabaseController("get");
         String query =
                 "{"+
-                    "\"query\": {" +
+                        "\"query\": {" +
                         "\"bool\" : {"+
-                            "\"must\" : {"+
-                                "\"match_all\" : {}" +
-                            "}," +
-                            "\"filter\" : {"+
-                                "\"geo_distance\" : {" +
-                                    "\"distance\" : \""+ kmDistance+ "km\"," +
-                                    "\"pickupCoord\" : {" +
-                                            "\"lat\" :" + center.latitude + "," +
-                                            "\"lon\" :" + center.longitude +
-                                    "}" +
-                                "}" +
-                            "}" +
+                        "\"must\" : {"+
+                        "\"match_all\" : {}" +
+                        "}," +
+                        "\"filter\" : {"+
+                        "\"geo_distance\" : {" +
+                        "\"distance\" : \""+ kmDistance+ "km\"," +
+                        "\"pickupCoord\" : {" +
+                        "\"lat\" :" + center.latitude + "," +
+                        "\"lon\" :" + center.longitude +
                         "}" +
-                    "}"+
-                "}";
+                        "}" +
+                        "}" +
+                        "}" +
+                        "}"+
+                        "}";
         try{
             return extractAllElements(controller.execute(dataClass, query).get());
         } catch(Exception e){
             Log.d("Elastic search filter", e.toString());
-            return null;
-        }
-    }
-
-    public JsonArray getFromIndexObjectInArray(String dataClass, String variable, String variableValue){
-        controller = new AsyncDatabaseController("get");
-        //got help with query from http://www.tugberkugurlu.com/archive/elasticsearch-array-contains-search-with-terms-filter -Tugberk Ugurlu
-        String query =
-                "{"+
-                    "\"query\": {" +
-                        "\"filtered\" : {"+
-                            "\"query\": {" +
-                                "\"match_all\": {}" +
-                            "}," +
-                            "\"filter\": {" +
-                                "\"terms\": {" +
-                                    "\"" + variable + "\": [\"" + variableValue + "\"]" +
-                                "}" +
-                            "}" +
-                        "}" +
-                    "}"+
-                "}";
-        try{
-            return extractAllElements(controller.execute(dataClass, query).get());
-        } catch(Exception e){
-            Log.d("Elastic search filter", "getFromIndexObjectInArray: " + e.toString());
             return null;
         }
     }
