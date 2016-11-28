@@ -177,9 +177,9 @@ public class RequestController {
         keyword = keyword.toLowerCase();
         Pattern p;
         Request request;
-        int fare;
+        float fare;
         try{
-            fare = Integer.parseInt(keyword.replaceAll("[\\D]", ""));
+            fare = Float.valueOf(keyword.replaceAll("[^\\d.]+|\\.(?!\\d)", ""));
         } catch(Exception e) {
             fare = 999999; //set as some high number
         }
@@ -187,13 +187,13 @@ public class RequestController {
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
             p = Pattern.compile("fare");
             if(p.matcher(keyword).find()) {
-                if(fare < request.getFare()) {
+                if(fare <= request.getFare()) {
                     return true;
                 }
             }
             p = Pattern.compile("costdistance");
             if(p.matcher(keyword).find()) {
-                if(fare < request.getCostDistance()) {
+                if(fare <= request.getCostDistance()) {
                     return true;
                 }
             }
