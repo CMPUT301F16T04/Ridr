@@ -28,11 +28,9 @@
         <activity
             android:name=".GeoView"
             android:exported="true" />
-        <activity android:name=".DriverMainView" />
         <activity android:name=".SearchRequestsView" />
         <activity android:name=".SearchResultsView" />
         <activity android:name=".RequestsFromRidersView" />
-        <activity android:name=".MainActivity" />
         <activity android:name=".ProfileView"
             android:exported="true"/>
         <activity android:name=".EditProfileView" />
