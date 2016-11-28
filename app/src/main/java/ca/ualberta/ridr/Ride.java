@@ -190,4 +190,8 @@ public class Ride {
     private LatLng buildLatLng(JsonObject coords){
         return new LatLng(coords.get("lat").getAsDouble(), coords.get("lon").getAsDouble());
     }
+
+    public void setPaid(boolean paid) {
+        this.paid = paid;
+    }
 }

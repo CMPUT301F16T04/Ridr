@@ -62,6 +62,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     private Button info;
     private Button complete;
     private Context context;
+    private boolean viewingAsDriver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +77,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         info = (Button) findViewById(R.id.accept_rider_button);
         complete = (Button) findViewById(R.id.completeRideButton);
 
-
+        viewingAsDriver = false;
         rides = new RideController(this);
 
         if (mGoogleApiClient == null) {
@@ -202,7 +203,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
      */
     private void slideUp(){
         LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.rideInfo);
-        if(rides.getRide(rideID).isCompleted()){
+        if(rides.getRide(rideID).isCompleted() || viewingAsDriver){
             complete.setVisibility(View.INVISIBLE);
         }
         if(hiddenPanel.getVisibility() == View.VISIBLE){
@@ -266,6 +267,8 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     public void update(){
         try {
             Ride ride = rides.getRide(rideID);
+
+            viewingAsDriver = ride.getDriver() == user;
             showRide(ride);
         } catch (Exception e){
             Log.i("Update failed", String.valueOf(e));

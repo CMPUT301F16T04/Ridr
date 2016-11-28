@@ -203,6 +203,7 @@ public class RideController {
     public void completeRide(String rideid){
         Ride ride = findRideInList(rideid);
         ride.setCompleted(true);
+        ride.setPaid(true);
         controller.create("ride", ride.getId().toString(), ride.toJsonString());
     }
 
