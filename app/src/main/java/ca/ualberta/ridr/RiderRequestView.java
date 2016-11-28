@@ -68,8 +68,6 @@ public class RiderRequestView extends Activity {
         }
     }
 
-
-
     @Override
     protected void onStart() {
         super.onStart();
@@ -79,7 +77,7 @@ public class RiderRequestView extends Activity {
         if(extras != null){
             loggedInRiderName = extras.getString("name");
         }
-
+        loggedInRiderName = "kirsty";
         AsyncController controller = new AsyncController();
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider",
                 loggedInRiderName);
