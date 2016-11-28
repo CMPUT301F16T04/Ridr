@@ -122,7 +122,7 @@ public class AddRiderView extends Activity implements ACallback {
                 }
 
                 //make the objects
-                if(newRider == null) {
+                if(newRider == null || updateUser != true) {
                     newRider = new Rider(username, birthday.getTime(), creditCard, email, phoneNumber);
                 }
                 addAccount = true;

@@ -156,8 +156,8 @@ public class RequestController {
         Request request;
         try {
             Log.i("doesContain", jsonElement.toString());
+           // Log.i("Request", request.toJsonString(jsonElement.getAsJsonObject().getAsJsonObject("_source")));
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
-
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();
