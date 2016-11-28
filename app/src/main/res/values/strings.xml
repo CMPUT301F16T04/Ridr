@@ -30,6 +30,11 @@
     <string name="create_driver_text">Create Driver:</string>
     <string name="title_activity_driver_ride_view">Rides</string>
     <string name="title_activity_ride_view">RideView</string>
+    <string name="cancel_request_text">Cancel Request</string>
+    <string name="exit_canceling_request">Exit</string>
+    <string name="cancel">Cancel</string>
+
+    <!-- accept_rider view strings -->
     <string name="payment_accept_rider">Payment:  </string>
     <string name="contact_info_accept_rider">Contact Info:  </string>
     <string name="pickup_time_accept_rider">Time of Pickup:  </string>
@@ -39,4 +44,5 @@
     <string name="accept_rider_button">Accept This Request</string>
     <string name="complete_ride">Complete</string>
     <string name="view_ride_info">View Ride Info</string>
+
 </resources>

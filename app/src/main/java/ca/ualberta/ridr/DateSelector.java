@@ -9,7 +9,8 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 
 /**
- * Created by Marco on 11-Nov-2016.
+ * fragment that allows the user to chose a date from a calender
+ * sets the text in a text view to a date of the format dd/MM/yyyy
  */
 
 public class DateSelector extends DialogFragment implements DatePickerDialog.OnDateSetListener{

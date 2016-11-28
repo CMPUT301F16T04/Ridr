@@ -49,10 +49,10 @@ public class Ride {
 
 
 
-    public Ride(String driverId, String riderId, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
+    public Ride(String driverName, String riderName, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
         this.rideDate = date;
-        this.driver = driverId;
-        this.rider = riderId;
+        this.driver = driverName;
+        this.rider = riderName;
         this.pickup = pickup;
         this.dropoff = dropoff;
         this.pickupCoords = pickupCoords;
@@ -89,7 +89,7 @@ public class Ride {
     }
 
     public void setDriver(Driver driver) {
-        this.driver = driver.getID().toString();
+        this.driver = driver.getName();
     }
 
     public String getRider() {
@@ -97,7 +97,7 @@ public class Ride {
     }
 
     public void setRider(Rider rider) {
-        this.rider = rider.getID().toString();
+        this.rider = rider.getName();
     }
 
     public Boolean isCompleted() {

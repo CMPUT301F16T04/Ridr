@@ -140,6 +140,32 @@ public class AsyncController {
         }
     }
 
+    public JsonArray getFromIndexObjectInArray(String dataClass, String variable, String variableValue){
+        controller = new AsyncDatabaseController("get");
+        //got help with query from http://www.tugberkugurlu.com/archive/elasticsearch-array-contains-search-with-terms-filter -Tugberk Ugurlu
+        String query =
+                "{"+
+                    "\"query\": {" +
+                        "\"filtered\" : {"+
+                            "\"query\": {" +
+                                "\"match_all\": {}" +
+                            "}," +
+                            "\"filter\": {" +
+                                "\"terms\": {" +
+                                    "\"" + variable + "\": [\"" + variableValue + "\"]" +
+                                "}" +
+                            "}" +
+                        "}" +
+                    "}"+
+                "}";
+        try{
+            return extractAllElements(controller.execute(dataClass, query).get());
+        } catch(Exception e){
+            Log.d("Elastic search filter", "getFromIndexObjectInArray: " + e.toString());
+            return null;
+        }
+    }
+
     /**
      * A simple function to extract the jsonArray from the results
      * @param result  the result of a query
