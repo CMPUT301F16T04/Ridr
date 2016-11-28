@@ -7,9 +7,6 @@ import android.widget.ListView;
 import com.google.android.gms.maps.model.LatLng;
 import com.robotium.solo.Solo;
 
-import org.apache.http.client.protocol.RequestExpectContinue;
-import org.junit.Test;
-
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -17,15 +14,15 @@ import java.util.Date;
  * Created by Storm on 2016-11-22.
  */
 
-public class RequestsFromRidersViewTest extends ActivityInstrumentationTestCase2<RequestsFromRidersView> {
+public class RequestsFromRidersViewTest extends ActivityInstrumentationTestCase2<DriverRequestsView> {
 
 private Solo solo;
 
     /**
-     * Instantiates a new RequestsFromRidersView activity test.
+     * Instantiates a new DriverRequestsView activity test.
      */
     public RequestsFromRidersViewTest() {
-        super(ca.ualberta.ridr.RequestsFromRidersView.class);
+        super(DriverRequestsView.class);
     }
 
     public void testEmptyRequestList(){
@@ -34,7 +31,7 @@ private Solo solo;
         setActivityIntent(editInfoIntent);
         solo = new Solo(getInstrumentation(), getActivity());
 
-        solo.assertCurrentActivity("wrong activity", RequestsFromRidersView.class);
+        solo.assertCurrentActivity("wrong activity", DriverRequestsView.class);
         assertTrue(solo.waitForText("You haven't accepted any requests yet!"));
         // Assertion of toast message, may not work
 
