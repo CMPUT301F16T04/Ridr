@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -17,12 +16,13 @@ import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 
 /**
- * Modified by nkaefer on 2016/11/08
+ * Modified by nkaefer on 2016/11/08, Modified by Jusitn on November 24, 2016
  *
  * This activity displays the login screen, and handles the logic of logging in as a rider or a driver.
  *
  */
-public class LoginView extends Activity {
+public class LoginView extends Activity implements ACallback {
+    AccountController accountController;
     /**
      * The Rider login.
      */
@@ -53,7 +53,11 @@ public class LoginView extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
+
+        accountController = new AccountController(this, context);
+
         asDriver = true;
+
         driverLogin = (TextView) findViewById(R.id.DriverLogin);
         riderLogin = (TextView) findViewById(R.id.RiderLogin);
         loginButton = (Button) findViewById(R.id.loginButton);
@@ -66,7 +70,8 @@ public class LoginView extends Activity {
             public void onClick(View view) {
                 //launches to next activity activity
                 //check for empty textbox
-                if(TextUtils.isEmpty(usernameLogin.getText().toString())){
+                String username = usernameLogin.getText().toString();
+                if(TextUtils.isEmpty(username)){
                     Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -91,6 +96,7 @@ public class LoginView extends Activity {
                     new AsyncController(context).getAllFromIndexFiltered("request", "rider", myUser.getName());
                     loginRider(myUser);
                 }
+                accountController.loginUser(username);
             }
         });
 
@@ -103,33 +109,88 @@ public class LoginView extends Activity {
             @Override
             public void onClick(View view){
                 //launches to account creator activity
-                Intent addAccountIntent = new Intent(LoginView.this, AddUserView.class);
+                Intent addAccountIntent;
+                String username = usernameLogin.getText().toString();
+
+                if(asDriver){
+                    addAccountIntent = new Intent(LoginView.this, AddDriverView.class);
+                } else {
+                    addAccountIntent = new Intent(LoginView.this, AddRiderView.class);
+                }
+                if(!TextUtils.isEmpty(username)) {
+                    addAccountIntent.putExtra("username", username);
+                }
                 startActivity(addAccountIntent);
             }
         });
 
     }
 
+    /**
+     * Checks to see if a user has the rider attribute, and if so logs the user in as a rider
+     * if not, the user is asked to add his driver information to his account.
+     * @param myUser
+     */
     private void loginRider(User myUser){
         if(myUser == null){
             return;
         }
-        Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
-        riderScreenIntent.putExtra("Name", myUser.getName());
-        startActivity(riderScreenIntent);
-    }
-    private void loginDriver(User myUser){
-        //if our user is logging in as a driver
-        if(myUser == null){
-            return;
+        if(myUser.isRider()) {
+            Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
+            riderScreenIntent.putExtra("username", myUser.getName());
+            startActivity(riderScreenIntent);
+        } else {
+            Toast.makeText(LoginView.this, "Sorry, this user is not a rider. Please add your rider info to your account", Toast.LENGTH_LONG).show();
+            Intent updateAccount = new Intent(LoginView.this, AddRiderView.class);
+            updateAccount.putExtra("username", myUser.getName());
+            startActivity(updateAccount);
         }
-        Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
-        driverScreenIntent.putExtra("Name", myUser.getName());
-        startActivity(driverScreenIntent);
     }
 
     /**
-     * The Change user type.
+     * Checks to see if a user has the driver attribute, and if so logs the user in as a driver
+     * if not, the user is asked to add his driver information to his account.
+     * @param myUser
+     */
+    private void loginDriver(User myUser){
+        //if our user is logging in as a driver
+        if(myUser == null) {
+            return;
+        }
+
+        if(myUser.isDriver()) {
+            Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
+            driverScreenIntent.putExtra("username", myUser.getName());
+            startActivity(driverScreenIntent);
+        } else {
+            Toast.makeText(LoginView.this, "Sorry, this user is not a driver. Please add your driver info to your account.", Toast.LENGTH_LONG).show();
+            Intent updateAccount = new Intent(LoginView.this, AddDriverView.class);
+            updateAccount.putExtra("username", myUser.getName());
+            startActivity(updateAccount);
+        }
+    }
+
+
+    /**
+     * An update function for when we get data back from the server
+     */
+    public void update(){
+        User myUser = accountController.getUser();
+        if(myUser == null) {
+            //if we found another driver with the same name
+            Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        //code for switching between a rider login and a driver login
+        if(asDriver){
+            loginDriver(myUser);
+        } else {
+            loginRider(myUser);
+        }
+
+    }
+    /**
+     * Change type of user trying to log on
      */
 //switches between user login type
     View.OnClickListener changeUserType = new View.OnClickListener() {

@@ -86,5 +86,13 @@ public class RiderController {
 
         return isConnected;
     }
+    public void saveChanges(String riderName, String phone, String email){
+        Rider rider = getRiderFromServerUsingName(riderName);
+        rider.setPhoneNumber(phone);
+        rider.setEmail(email);
+        AsyncController controller = new AsyncController(context);
+        controller.create("user", rider.getID().toString(), new Gson().toJson(rider));
+    }
+
 }
 

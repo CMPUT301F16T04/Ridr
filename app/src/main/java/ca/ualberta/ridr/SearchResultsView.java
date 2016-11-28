@@ -36,8 +36,8 @@ public class SearchResultsView extends Activity {
     private ListView searchResults;
     private RequestAdapter requestAdapter;
     private EditText bodyText;
+    private String username;
     private Button mainMenu;
-    private String driverName;
     private Driver driver;
 
     @Override
@@ -49,7 +49,7 @@ public class SearchResultsView extends Activity {
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            driverName = extras.getString("Name");
+            username = extras.getString("username");
         }
 
         //main menu button
@@ -68,7 +68,7 @@ public class SearchResultsView extends Activity {
                 Intent intent = new Intent(SearchResultsView.this, AcceptRiderView.class);
                 Request clickedRequest = (Request)searchResults.getItemAtPosition(position);
                 intent.putExtra("RequestUUID", clickedRequest.getID().toString());
-                intent.putExtra("userName", driverName);
+                intent.putExtra("userName", username);
                 startActivity(intent);
             }
         });
@@ -83,11 +83,7 @@ public class SearchResultsView extends Activity {
                 searchResultsByKeyword(context, text);
                 requestAdapter.notifyDataSetChanged();
 
-                //Check for pending acceptance of requests made offline
-                if(requestController.isPendingExecutableAcceptance()) {
-                    requestController.executePendingAcceptance(driverName);
-                    Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
-                }
+                requestController.executeAllPending(username);
             }
         });
 
@@ -97,7 +93,7 @@ public class SearchResultsView extends Activity {
 
             public void onClick(View v) {
                 Intent intent = new Intent(SearchResultsView.this, GeoView.class);
-                intent.putExtra("username", driverName);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });
@@ -111,7 +107,7 @@ public class SearchResultsView extends Activity {
         //we want this in OnStart, as every time we load up this activity we want to check for notifications
         if(isConnected()) {
             DriverController driverController = new DriverController(context);
-            driver = driverController.getDriverFromServerUsingName(driverName);
+            driver = driverController.getDriverFromServerUsingName(username);
             //check for notifications, display
             if (driver.getPendingNotification() != null) {
                 Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
@@ -124,6 +120,20 @@ public class SearchResultsView extends Activity {
                 } catch (Exception e) {
                     Log.i("Communication Error", "Could not communicate with the elastic search server");
                 }
+                driver = driverController.getDriverFromServerUsingName(username);
+                //check for notifications, display
+                if (driver.getPendingNotification() != null) {
+                    Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
+                    driver.setPendingNotification(null);
+                    //update the user object in the database
+                    try {
+                        AsyncController asyncController = new AsyncController(context);
+                        asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                        //successful account updating
+                    } catch (Exception e) {
+                        Log.i("Communication Error", "Could not communicate with the elastic search server");
+                    }
+                }
             }
         }
 
@@ -131,7 +141,7 @@ public class SearchResultsView extends Activity {
         searchResults.setAdapter(requestAdapter);
 
         //Executes any pending functions from offline functionality once online
-        requestController.executeAllPending(driverName);
+        requestController.executeAllPending(username);
         riderController.pushPendingNotifications();
     }
 
@@ -164,13 +174,13 @@ public class SearchResultsView extends Activity {
                     case R.id.mainRiderMenuEditUserInfo:
                         Toast.makeText(SearchResultsView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         Intent editInfoIntent = new Intent(SearchResultsView.this, EditProfileView.class);
-                        editInfoIntent.putExtra("Name", driverName);
+                        editInfoIntent.putExtra("Name", username);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(SearchResultsView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
-                        viewRequestsIntent.putExtra("Name", driverName);
+                        viewRequestsIntent.putExtra("Name", username);
                         startActivity(viewRequestsIntent);
                         return true;
                     default:

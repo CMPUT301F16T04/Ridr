@@ -48,7 +48,6 @@ import java.util.UUID;
 public class RequestController {
 
     private Request currenRequest;
-    private JsonArray jsonArray;
     private ArrayList<Request> requests;
     private ArrayList<Request> offlineRequests;
     private ACallback cbInterface;
@@ -134,11 +133,7 @@ public class RequestController {
         } catch (Exception e){
             Log.i("Error creating request", e.toString());
         }
-//        try{
-//            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
-//        } catch (Exception e){
-//            Log.i("Error creating request", e.toString());
-//        }
+
     }
 
 
@@ -155,7 +150,7 @@ public class RequestController {
      * @return ArrayList<Request>
      */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
-        jsonArray = new AsyncController(this.context).getAllFromIndex("request");
+        JsonArray jsonArray = new AsyncController(context).getAllFromIndex("request");
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
 
@@ -202,7 +197,6 @@ public class RequestController {
         return false;
     }
 
-
     public ArrayList<String> getPossibleDrivers(String requestId) {
         AsyncController con = new AsyncController(context);
         try {
@@ -216,7 +210,9 @@ public class RequestController {
         return (null);
     }
 
-    public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
+    public void removeRequest(Request request, Rider rider){
+        rider.removeRequest(request);
+    }
 
     public Request getRequestFromServer(String requestId) {
         AsyncController con = new AsyncController(this.context);

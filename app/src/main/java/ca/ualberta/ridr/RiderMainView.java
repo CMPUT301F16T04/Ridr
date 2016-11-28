@@ -25,6 +25,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -132,8 +133,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-
-            riderName = extras.getString("Name");
+            riderName = extras.getString("username");
         }
 
         setViews();
@@ -378,14 +378,13 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
 
-        //Sending requests made when offline if go online
-        if(reqController.isPendingExecutableRequests()) {
-            reqController.executePendingRequests();
-            Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
-        }
+        reqController.executeAllPending(riderName);
 
 
-        reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, fare/distance);
+        Float costDist = fare/distance;
+        costDist = roundFloatToTwoDec(costDist);
+        fare = roundFloatToTwoDec(fare);
+        reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, costDist);
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
@@ -411,18 +410,14 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             public boolean onMenuItemClick(MenuItem item){
                 switch(item.getItemId()){
                     case R.id.mainRiderMenuEditUserInfo:
-                        Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
-
                         editInfoIntent.putExtra("Name", riderName);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
-                        Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
-
                         viewRequestsIntent.putExtra("Name", riderName);
                         startActivity(viewRequestsIntent);
                         return true;
@@ -481,12 +476,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             if(startMarker != null){
                 startMarker.remove();
             }
-            startMarker = gMap.addMarker((new MarkerOptions().position(coords).title("Pickup")));
+            startMarker = gMap.addMarker((new MarkerOptions().position(coords).title("Pick up")));
         } else{
             if(endMarker != null){
                 endMarker.remove();
             }
-            endMarker = gMap.addMarker((new MarkerOptions().position(coords).title("Pickup")));
+            endMarker = gMap.addMarker((new MarkerOptions().position(coords).title("Destination")));
         }
     }
 
@@ -503,10 +498,15 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         distance = results[0] / 1000; // in KM
         float gasCostFactor = 4; // calculate something later
         fare =  distance *gasCostFactor;
-        fareInput.setText((String.format("%.2f", fare)));
+        //fareInput.setText((String.format("%.2f", fare)));
+        fareInput.setText(String.valueOf(roundFloatToTwoDec(fare)));
     }
 
-
+    private float roundFloatToTwoDec(Float number){
+        BigDecimal dec = new BigDecimal(Float.toString(number));
+        dec = dec.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return dec.floatValue();
+    }
 
 
 }
