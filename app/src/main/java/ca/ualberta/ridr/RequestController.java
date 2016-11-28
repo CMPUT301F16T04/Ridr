@@ -38,7 +38,6 @@ import java.util.Date;
 import java.util.UUID;
 
 
-/*
 /**
  * This controller controls access to all requests used by a view
  * This controllers uses threads to asynchronously perform network requests
@@ -136,8 +135,6 @@ public class RequestController {
 
     }
 
-
-
     public void updateFare(float newFare) {
         currenRequest.setFare(newFare);
     }
@@ -205,7 +202,7 @@ public class RequestController {
         return false;
     }
 
-    public ArrayList<String> getPossibleDrivers(String requestId) {
+    public ArrayList<String> getPossibleDriversWithRequestID(String requestId) {
         AsyncController con = new AsyncController(context);
         try {
             JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
@@ -218,9 +215,7 @@ public class RequestController {
         return (null);
     }
 
-    public void removeRequest(Request request, Rider rider){
-        rider.removeRequest(request);
-    }
+    public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
     public Request getRequestFromServer(String requestId) {
         AsyncController con = new AsyncController(this.context);

@@ -1,24 +1,24 @@
+
 package ca.ualberta.ridr;
+ import android.app.Activity;
+ import android.app.DatePickerDialog;
+ import android.content.Context;
+ import android.content.Intent;
+ import android.os.Bundle;
+ import android.telephony.PhoneNumberFormattingTextWatcher;
+ import android.telephony.PhoneNumberUtils;
+ import android.text.TextUtils;
+ import android.util.Log;
+ import android.view.View;
+ import android.widget.Button;
+ import android.widget.DatePicker;
+ import android.widget.EditText;
+ import android.widget.Toast;
 
-        import android.app.Activity;
-        import android.app.DatePickerDialog;
-        import android.content.Context;
-        import android.content.Intent;
-        import android.os.Bundle;
-        import android.telephony.PhoneNumberFormattingTextWatcher;
-        import android.telephony.PhoneNumberUtils;
-        import android.text.TextUtils;
-        import android.util.Log;
-        import android.view.View;
-        import android.widget.Button;
-        import android.widget.DatePicker;
-        import android.widget.EditText;
-        import android.widget.Toast;
+ import com.google.gson.Gson;
 
-        import com.google.gson.Gson;
-
-        import java.text.SimpleDateFormat;
-        import java.util.Calendar;
+ import java.text.SimpleDateFormat;
+ import java.util.Calendar;
 /**
  * Modified by nkaefer on 2016/11/08, further modified by Justin Nov 24, 2016
  *
@@ -70,12 +70,12 @@ public class AddRiderView extends Activity implements ACallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_rider);
+        context = this;
         accountController = new AccountController(this, context);
         controller = new AsyncController(context);
         addAccount = false;
         updateUser =false;
         birthday = Calendar.getInstance();
-        context = this;
 
         //defining view objects
         usernameEditText = (EditText) findViewById(R.id.username_add_account_edit_text);
@@ -122,7 +122,7 @@ public class AddRiderView extends Activity implements ACallback {
                 }
 
                 //make the objects
-                if(newRider == null) {
+                if(newRider == null || updateUser != true) {
                     newRider = new Rider(username, birthday.getTime(), creditCard, email, phoneNumber);
                 }
                 addAccount = true;

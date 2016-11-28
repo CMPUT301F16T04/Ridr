@@ -51,7 +51,8 @@ import java.util.UUID;
  * This view shows all requests by default, and then upon user input shows the user all requests
  * centered around the input in a 2km radius
  */
-public class RideView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener, ACallback {
+public class RideView extends FragmentActivity implements OnMapReadyCallback, ConnectionCallbacks,
+        OnConnectionFailedListener, ACallback {
 
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
@@ -317,15 +318,14 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
         SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
 
-        //String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
-        //String completed = ride.isCompleted().toString();
-        String completed = "completed";
+        String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
+        String completed = ride.isCompleted().toString();
         rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
         riderName.setText("Rider: " + ride.getRider());
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
-        rideFare.setText("Is paid" + Double.toString(ride.getFare()));
+        rideFare.setText(fareText + Double.toString(ride.getFare()));
     }
     /**
      * A function to check if it's night time or not

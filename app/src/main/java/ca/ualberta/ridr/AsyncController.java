@@ -48,8 +48,6 @@ public class AsyncController {
         this.context = context;
     }
 
-    public AsyncController() {};
-
     /**
      * Gets a single object from the database and returns it as a JsonObject.
      *
@@ -61,7 +59,6 @@ public class AsyncController {
     public JsonObject get(String dataClass, String attribute, String value) {
         // This takes an objectType, attribute, and value and returns the first match that elastic
         // search finds
-        String file = getFile(dataClass, attribute);
         if(isConnected()) {
             controller = new AsyncDatabaseController("get");
             try {

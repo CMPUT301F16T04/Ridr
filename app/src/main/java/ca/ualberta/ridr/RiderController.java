@@ -26,6 +26,8 @@ import io.searchbox.core.SearchResult;
 
 /**
  * Created by jferris on 22/10/16.
+ *
+ * This controller can save and get Rider users from our server, using the AsyncController.
  */
 public class RiderController {
 
@@ -36,20 +38,51 @@ public class RiderController {
         this.context = context;
     }
 
-    public Rider getRiderFromServer(String riderId) {
-        Rider rider = new Gson().fromJson(new AsyncController(context).get("user", "id", riderId), Rider.class);
-        return rider;
+    /**
+     * Instantiates a new Rider controller.
+     */
+    RiderController(){
     }
 
+    /**
+     * Gets rider from server.
+     *
+     * @param riderName the rider name
+     * @return the rider from server
+     */
+    public Rider getRiderFromServer(String riderName) {
+        Rider rider = new Gson().fromJson(new AsyncController(context).get("user", "name", riderName), Rider.class);
+        return (rider);
+    }
+
+    /**
+     * Get rider from server using id rider.
+     *
+     * @param riderId the rider id
+     * @return the rider
+     */
     public Rider getRiderFromServerUsingId(String riderId){
         Rider rider = new Gson().fromJson(new AsyncController(context).get("user", "id", riderId), Rider.class);
         return(rider);
     }
 
+    /**
+     * Get rider from server using name of rider.
+     *
+     * @param riderName the rider name
+     * @return the rider
+     */
     public Rider getRiderFromServerUsingName(String riderName){
         Rider rider = new Gson().fromJson(new AsyncController(context).get("user", "name", riderName), Rider.class);
         return(rider);
     }
+
+    /**
+     * Get requests array list.
+     *
+     * @param rider the rider
+     * @return the array list
+     */
     public ArrayList<Request> getRequests(Rider rider){
         return(rider.getRequests());
     }
@@ -86,6 +119,13 @@ public class RiderController {
 
         return isConnected;
     }
+    /**
+     * Save changes to our server.
+     *
+     * @param riderName the rider name
+     * @param phone     the phone
+     * @param email     the email
+     */
     public void saveChanges(String riderName, String phone, String email){
         Rider rider = getRiderFromServerUsingName(riderName);
         rider.setPhoneNumber(phone);

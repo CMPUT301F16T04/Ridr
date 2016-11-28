@@ -4,7 +4,9 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import android.text.format.DateUtils;
 import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -31,15 +33,27 @@ public class TimeSelector extends DialogFragment implements TimePickerDialog.OnT
     }
 
     public void onTimeSet(TimePicker View, int hour, int minute){
+
         populateSetTime(hour, minute);
     }
 
     public void populateSetTime(int hour, int minute){
+        String date;
         TextView timeView = (TextView) getActivity().findViewById(R.id.timeText);
-        if(hour < 12 ){
-            timeView.setText(hour + ":" + minute +" AM");
+        if(hour < 12 && hour > 0){
+            date = DateUtils.formatElapsedTime(((hour)*60*60) + (minute*60));
+            timeView.setText(date.substring(0, date.length()-3) + " AM");
+        } else if(hour == 12){
+            // 12 pm
+            date = DateUtils.formatElapsedTime(12*60*60 + (minute*60));
+            timeView.setText(date.substring(0, date.length()-3) + " PM");
+        } else if(hour == 0||hour == 24){
+            // 12 am
+            date = DateUtils.formatElapsedTime(12*60*60 + (minute*60));
+            timeView.setText(date.substring(0, date.length()-3) + " AM");
         } else{
-            timeView.setText(hour + ":" + minute + " PM");
+            date = DateUtils.formatElapsedTime(((hour-12)*60*60) + (minute*60));
+            timeView.setText(date.substring(0, date.length()-3) + " PM");
         }
 
     }

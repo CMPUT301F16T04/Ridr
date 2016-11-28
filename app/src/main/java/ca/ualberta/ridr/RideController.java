@@ -2,20 +2,11 @@ package ca.ualberta.ridr;
 
 import android.content.Context;
 
-
-
-
-import android.content.Context;
-
-
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
-
-import org.json.JSONArray;
-import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -47,9 +38,19 @@ public class RideController {
         return rides;
     }
 
+    /**
+     * Create ride.
+     *
+     * @param driverName the driver name
+     * @param request    the request
+     * @param riderName  the rider name
+     */
     public void createRide(String driverName, Request request, String riderName) {
         //will need to replace the date I guess with actual date that ride is supposed to occur
-        Ride ride = new Ride(driverName, riderName,  request.getPickup(), request.getDropoff(), request.getDate() , request.getPickupCoords(), request.getDropOffCoords());
+        Ride ride = new Ride(driverName, riderName,  request.getPickup(), request.getDropoff(), new Date() , request.getPickupCoords(), request.getDropOffCoords());
+
+        //rider.confirmDriver(ride);
+        //another cant do while the ride array list of rider is null
 
         String rideString = ride.toJsonString();
         AsyncController con = new AsyncController(context);
@@ -179,7 +180,7 @@ public class RideController {
     /**
      * Get a single ride from the rides array list
      * @param id
-     * @return
+     * @return Ride
      */
     @Nullable
     public Ride getRide(String id){
@@ -228,4 +229,5 @@ public class RideController {
         }
         return null;
     }
+
 }

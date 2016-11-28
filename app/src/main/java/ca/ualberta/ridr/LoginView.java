@@ -3,6 +3,8 @@ package ca.ualberta.ridr;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -68,37 +70,24 @@ public class LoginView extends Activity implements ACallback {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //launches to next activity activity
-                //check for empty textbox
-                //Call to save requests to file for offline functionality
-                new AsyncController(context).getAllFromIndex("request");
-                new AsyncController(context).getAllFromIndex("user");
-                new AsyncController(context).getAllFromIndex("ride");
-                String username = usernameLogin.getText().toString();
-                if(TextUtils.isEmpty(username)){
-                    Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                User myUser = null;
-                try{
-                    myUser = new Gson().fromJson(new AsyncController(context).get("user", "name", usernameLogin.getText().toString().trim()), User.class);
-                } catch (Exception e){
-                    Toast.makeText(LoginView.this, "Could not communicate with the elastic search server", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                if(myUser == null) {
-                    //if we found another driver with the same name
-                    Toast.makeText(LoginView.this, "Sorry, that name does not have an account. Try again.", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                //code for switching between a rider login and a driver login
-                if(asDriver){
-                    loginDriver(myUser);
+                if(isConnected()) {
+
+                    //Call to save requests to file for offline functionality
+                    new AsyncController(context).getAllFromIndex("request");
+                    new AsyncController(context).getAllFromIndex("user");
+                    new AsyncController(context).getAllFromIndex("ride");
+
+                    //launches to next activity activity
+                    //check for empty textbox
+                    String username = usernameLogin.getText().toString();
+                    if(TextUtils.isEmpty(username)){
+                        Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    accountController.loginUser(username);
                 } else {
-                    new AsyncController(context).getAllFromIndexFiltered("request", "rider", myUser.getName());
-                    loginRider(myUser);
+                    Toast.makeText(LoginView.this, "Cannot communicate with the elastic search server while offline", Toast.LENGTH_SHORT).show();
                 }
-                accountController.loginUser(username);
             }
         });
 
@@ -164,7 +153,6 @@ public class LoginView extends Activity implements ACallback {
         if(myUser == null) {
             return;
         }
-
         if(myUser.isDriver()) {
             Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
             driverScreenIntent.putExtra("username", myUser.getName());
@@ -217,4 +205,14 @@ public class LoginView extends Activity implements ACallback {
             }
         }
     };
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+    }
 }

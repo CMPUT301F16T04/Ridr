@@ -12,14 +12,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
-import java.util.UUID;
-
+/**
+ * This is the view that is called when a user profile would like to be edited. It's populated with
+ * info from the current user calling the activity.
+ */
 public class EditProfileView extends Activity {
 
-
-    private UUID currentUUID; // UUID of the currently logged-in rider
     private String userName; // string of the current UUID
 
     private EditText editVehicleView;
@@ -53,6 +52,7 @@ public class EditProfileView extends Activity {
         Bundle extras = intent.getExtras();
         if (extras != null) {
             userName = extras.getString("Name");
+
         }
 
         setViews();
@@ -153,13 +153,10 @@ public class EditProfileView extends Activity {
      * @param user a jsonobject user
      */
     private void getInfo(User user, String username){
-        //phoneStr = user.get("phoneNumber").toString();;
-        //emailStr = user.get("email").toString();
         if(driverStatus(user)){
             Driver driver = driverController.getDriverFromServerUsingName(username);
             phoneStr = driver.getPhoneNumber();
             emailStr = driver.getEmail();
-            //vehicleStr = user.get("vehicle").toString();
             vehicleStr = driver.getVehicleDescription();
         } else{
             Rider rider = riderController.getRiderFromServerUsingName(username);

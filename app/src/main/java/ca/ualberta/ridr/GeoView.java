@@ -50,7 +50,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<Marker> markers;
-    private String user;
+    private String username;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
@@ -87,7 +87,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
         if(extra != null){
-            user = extra.getString("username");
+            username = extra.getString("username");
         }
     }
 
@@ -99,7 +99,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         super.onStart();
 
         //Executes any pending functions from offline functionality once online
-        requests.executeAllPending(user);
+        requests.executeAllPending(username);
         riders.pushPendingNotifications();
     }
     protected void onResume(){
@@ -181,7 +181,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         // Let's listen for clicks on our markers to display information
         map.setOnMarkerClickListener(showInfoWindow);
-
+        map.setOnInfoWindowClickListener(goToRequest);
         map.setInfoWindowAdapter(displayRequest);
 
     }
@@ -192,6 +192,20 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         public boolean onMarkerClick(Marker marker) {
             marker.showInfoWindow();
             return false;
+        }
+    };
+
+    /**
+     * Onclick listener to transger to AcceptRiderView
+     */
+    GoogleMap.OnInfoWindowClickListener goToRequest = new GoogleMap.OnInfoWindowClickListener() {
+        @Override
+        public void onInfoWindowClick(Marker marker) {
+            Intent requestIntent = new Intent(GeoView.this, AcceptRiderView.class);
+            Request request = (Request) marker.getTag();
+            requestIntent.putExtra("username", username);
+            requestIntent.putExtra("RequestUUID", request.getID().toString());
+            startActivity(requestIntent);
         }
     };
 
@@ -343,29 +357,3 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         return requests;
     }
 }
-
-
-// Example of how to remove a marker using this as a hack for onLongClick
-//        map.setOnMarkerDragListener(new GoogleMap.OnMarkerDragListener() {
-//            @Override
-//            public void onMarkerDragStart(Marker marker) {
-//                marker.remove();
-//            }
-//        });
-
-// This method is not needed for loading requests, but demonstrates how to drop a marker
-// map.setOnMapLongClickListener(addMarker);
-
-//    // OnLongClickListener for a marker
-//    GoogleMap.OnMapLongClickListener addMarker = new GoogleMap.OnMapLongClickListener(){
-//        @Override
-//        public void onMapLongClick(LatLng pos){
-//            if(map != null) {
-//                // Move camera to long click position
-//                map.moveCamera(CameraUpdateFactory.newLatLng(pos));
-//
-//                // Drop marker at location
-//                map.addMarker(new MarkerOptions().position(pos));
-//            }
-//        }
-//    };

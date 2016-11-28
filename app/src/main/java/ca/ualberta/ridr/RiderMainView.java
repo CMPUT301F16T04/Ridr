@@ -5,6 +5,7 @@ import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 
@@ -14,6 +15,7 @@ import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -55,7 +57,8 @@ import com.google.gson.Gson;
 import android.location.Location;
 
 /**
- * This view allows for a rider to create a new request
+ * This view allows for a rider to create a new request. Allows Rider to also see his requests and
+ * rides from the menu option. Implements google maps methods, as well as ACallback.
  */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
@@ -74,8 +77,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private PlaceAutocompleteFragment pickupAutocompleteFragment;
     private PlaceAutocompleteFragment dropoffAutocompleteFragment;
 
-    private String riderName; // string of the curretn UUID
-
+    private String riderName; // string of the current UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Pick Up Location";
@@ -101,10 +103,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private float fare;
 
 
-
     private RequestController reqController;
     private RiderController riderController;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,18 +142,14 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                //startLocation.setText(place.getAddress().toString());
-                //Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
                 pickupStr = place.getAddress().toString();
                 pickupCoord = place.getLatLng();
-                //addMarkers(pickupCoord, "Pickup");
                 addMarkers(pickupCoord, true);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
                 if(dropoffCoord != null){
                     estimateFare(pickupCoord, dropoffCoord);
                 }
             }
-
             @Override
             public void onError(Status status) {
                 Log.i("Places", "An error occurred: " + status);
@@ -164,11 +160,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         dropoffAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                //endLocation.setText(place.getAddress().toString());
-                //Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
                 dropoffStr = place.getAddress().toString();
                 dropoffCoord = place.getLatLng();
-                //addMarkers(dropoffCoord, "Dropoff");
                 addMarkers(dropoffCoord, false);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dropoffCoord, 11));
                 if(pickupCoord != null){
@@ -183,7 +176,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         });
 
-
+        pickupAutocompleteFragment.getView().findViewById(R.id.pickup_autocomplete_fragment).setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.primary_colour, null));
+        dropoffAutocompleteFragment.getView().findViewById(R.id.dropoff_autocomplete_fragment).setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.primary_colour, null));
         //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -381,11 +375,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         reqController.executeAllPending(riderName);
 
 
+        fare = Float.parseFloat(fareInput.getText().toString());
         Float costDist = fare/distance;
         costDist = roundFloatToTwoDec(costDist);
         fare = roundFloatToTwoDec(fare);
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, costDist);
-        Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RiderMainView.this, "You request has been made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
         resetText();
@@ -421,6 +416,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         viewRequestsIntent.putExtra("Name", riderName);
                         startActivity(viewRequestsIntent);
                         return true;
+                    case R.id.mainRiderMenuViewRides:
+                        resetText();
+                        Intent viewRidesIntent = new Intent(RiderMainView.this, RiderRidesView.class);
+                        viewRidesIntent.putExtra("Name", riderName);
+                        startActivity(viewRidesIntent);
+                        return true;
                     default:
                         return false;
                 }
@@ -435,7 +436,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     /**
      * converts data and time strings into a Date object
      * @param dateString string with format dd/MM/yyyy
-     * @param timeString string with format hh:mm a, where hh is the time from 1-12 and a is an am/pm indicator
+     * @param timeString string with format hit h:mm a, where hh is the time from 1-12 and a is an am/pm indicator
      * @return a date object with the format dd/MM/yyyy hh:mm a
      */
     private Date stringToDate(String dateString, String timeString){
@@ -496,7 +497,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 dropoff.latitude, dropoff.longitude, results);
         //Toast.makeText(RiderMainView.this, "distance is " + Float.toString(results[0]), Toast.LENGTH_SHORT).show();
         distance = results[0] / 1000; // in KM
-        float gasCostFactor = 4; // calculate something later
+        float gasCostFactor = 2; // calculate something later
         fare =  distance *gasCostFactor;
         //fareInput.setText((String.format("%.2f", fare)));
         fareInput.setText(String.valueOf(roundFloatToTwoDec(fare)));

@@ -1,6 +1,5 @@
 package ca.ualberta.ridr;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +11,10 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,34 +26,40 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.UUID;
 
+/**
+ * This view displays a request object from a drivers perspective, on top of a google maps
+ * view of the ride. It lets a driver accept a request from a rider.
+ */
 public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private TextView requestFrom;
     private TextView payment;
-    private TextView contactInfo;
     private TextView pickupTime;
     private TextView startLocation;
     private TextView endLocation;
     private TextView status;
     private Button acceptRider;
+    private Button viewRequestInfo;
 
-    private String driverName;
+    private String username;
     private UUID requestID;
     private Rider requestRider;
     private Request request;
-    private Driver driver;
 
     private boolean agreedToFulfill = false;
 
@@ -60,7 +68,8 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private GoogleApiClient mGoogleApiClient;
     private LatLng lastKnownPlace;
     private boolean firstLoad;
-    private ArrayList<Marker> markers;
+    private Marker startMarker;
+    private Marker endMarker;
     private Geocoder geocoder;
 
     private Context context = this;
@@ -74,7 +83,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         setContentView(R.layout.accept_rider);
 
         //set google map stuff
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.newRequestMap);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.requestMap);
         mapFragment.getMapAsync(this);
         firstLoad = false;
         geocoder = new Geocoder(this);
@@ -94,23 +103,26 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         //set all the xml elements
         requestFrom = (TextView) findViewById(R.id.request_from);
         payment = (TextView) findViewById(R.id.payment_accept_rider);
-        contactInfo = (TextView) findViewById(R.id.contact_info_accept_rider);
         pickupTime = (TextView) findViewById(R.id.pickup_time_accept_rider);
-        startLocation = (TextView) findViewById(R.id.start_location_accept_rider);
-        endLocation = (TextView) findViewById(R.id.end_location_accept_rider);
+        startLocation = (TextView) findViewById(R.id.start_location);
+        endLocation = (TextView) findViewById(R.id.end_location);
         status = (TextView) findViewById(R.id.status_accept_rider);
+        viewRequestInfo = (Button) findViewById(R.id.view_request_info_button);
         acceptRider = (Button) findViewById(R.id.accept_rider_button);
+
 
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if(extras!=null)
         {
-            driverName = extras.getString("userName");
+            username = extras.getString("username");
             requestID = UUID.fromString(extras.getString("RequestUUID"));
         } else {
             Log.i("Intent Extras Error", "Error getting driver and request ID from extras in AcceptRiderView");
-            finish();
+            intent = new Intent(AcceptRiderView.this, LoginView.class);
+            startActivity(intent);
         }
+
 
         //TODO dont really need to get rider once we fix the names thing
         request = requestController.getRequestFromServer(requestID.toString());
@@ -125,21 +137,13 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         requestFrom.setText(isFrom);
         String paymentText = payment.getText() + space+ Float.toString(request.getFare());
         payment.setText(paymentText);
-        String contactInfoText;
-        if(requestRider != null) {
-            contactInfoText = contactInfo.getText() + space + requestRider.getPhoneNumber();
-        } else {
-            contactInfoText = contactInfo.getText() + space + "cannot find #";
-        }
-        contactInfo.setText(contactInfoText);
         String pickupTimeText = pickupTime.getText() + space + rideDate.format(request.getDate());
         pickupTime.setText(pickupTimeText);
-        String startLocationText = startLocation.getText() + space + request.getPickup();
-        startLocation.setText(startLocationText);
-        String endLocationText = endLocation.getText() + space + request.getDropoff();
-        endLocation.setText(endLocationText);
+        String startLocText = startLocation.getText() + space + request.getPickup();
+        startLocation.setText(startLocText);
+        String endLocText = endLocation.getText() + space + request.getDropoff();
+        endLocation.setText(endLocText);
 
-        //driverName = driverController.getDriverFromServer(driverID.toString()).getName();
         //have to check if the user previously accepted
         checkIfUserAccepted(requestID.toString());
 
@@ -159,9 +163,16 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             public void onClick(View view){
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
                 if(requestRider != null) {
-                    intent.putExtra("RiderUUID", requestRider.getID().toString());
+                    intent.putExtra("username", requestRider.getName());
                 }
                 startActivity(intent);
+            }
+        });
+
+        viewRequestInfo.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View view) {
+                slideUp();
             }
         });
 
@@ -169,7 +180,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         //add ourselves to list of possibleDrivers in the request
         acceptRider.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){
+            public void onClick(View view) {
                 try {
                     if (agreedToFulfill) {
                         //chose this particular toast over "accepted already" so
@@ -178,26 +189,31 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                         return;
                     } else {
                         //driver is now willing to fulfill the ride
-                        requestController.addDriverToList(request, driverName);
+                        requestController.addDriverToList(request, username);
                         //set pending notification on riders account
                         riderController.setPendingNotification(requestRider);
-                        Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
-                                "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
-                        agreedToFulfill = true;
-                        String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
-                        status.setText(statusText);
+                        try {
+                            AsyncController asyncController = new AsyncController(context);
+                            asyncController.create("user", requestRider.getID().toString(), new Gson().toJson(requestRider));
+                            //successful account creation
+                            Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
+                                    "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
+                            agreedToFulfill = true;
+                            String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
+                            status.setText(statusText);
 
-                        //Executes any pending functions from offline functionality once online
-                        requestController.executeAllPending(driverName);
-                        riderController.pushPendingNotifications();
+                            //Executes any pending functions from offline functionality once online
+                            requestController.executeAllPending(username);
+                            riderController.pushPendingNotifications();
+                        } catch (Exception e) {
+                            return;
+                        }
                     }
-                } catch(Exception e) {
+                } catch (Exception e) {
                     return;
                 }
             }
-
         });
-
     }
 
     //gmap stuff
@@ -206,7 +222,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         super.onStart();
 
         //Executes any pending functions from offline functionality once online
-        requestController.executeAllPending(driverName);
+        requestController.executeAllPending(username);
         riderController.pushPendingNotifications();
     }
     protected void onResume() {
@@ -258,6 +274,17 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     @Override
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
+
+        Calendar current = Calendar.getInstance();
+
+        // Add night view for nice viewing when it's dark out
+        // Dark styling is easier on the eyes
+        SimpleDateFormat time = new SimpleDateFormat("HH:mm:ss");
+        if (nightTime(time.format(current.getTime()))) {
+            MapStyleOptions style = MapStyleOptions.loadRawResourceStyle(this, R.raw.maps_night_style);
+            gMap.setMapStyle(style);
+        }
+
         setupMap(request);
 
     }
@@ -269,14 +296,23 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      * @param request used to set marker points
      */
     //TODO put the route between start and end on the map
-    private void setupMap(Request request){
+    private void setupMap(final Request request){
 
         //adds markers and then move camera to where they are
-        Marker startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
-        startMarker.setTag(request);
-        Marker endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title(request.getDropoff()));
-        endMarker.setTag(request);
+        startMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title("Pickup: " + request.getPickup()));
+        //startMarker.setTag(0);
+        endMarker = gMap.addMarker(new MarkerOptions().position(request.getDropOffCoords()).title("Drop off: " + request.getDropoff()));
+        //endMarker.setTag(0);
 
+        GoogleMap.OnMarkerClickListener markerClick = new GoogleMap.OnMarkerClickListener() {
+            @Override
+            public boolean onMarkerClick(Marker marker) {
+                marker.showInfoWindow();
+                return true;
+            }
+        };
+
+        gMap.setOnMarkerClickListener(markerClick);
         zoomToMid(request);
 
     }
@@ -297,7 +333,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 400));
             }
         });
     }
@@ -309,9 +345,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      * @param requestId used to find the possible drivers list
      */
     private void checkIfUserAccepted(String requestId) {
-        ArrayList<String> drivers = requestController.getPossibleDrivers(requestId);
+        ArrayList<String> drivers = requestController.getPossibleDriversWithRequestID(requestId);
         for (int i = 0; i < drivers.size(); ++i) {
-            if (drivers.get(i).equals(driverName)) {
+            if (drivers.get(i).equals(username)) {
                 agreedToFulfill = true;
                 break;
             }
@@ -328,17 +364,69 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
     }
 
-    private Boolean isConnected() {
-        ConnectivityManager cm =
-                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+    //    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
+    //    How to disable a button during animations
 
-        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
-        boolean isConnected = activeNetwork != null &&
-                activeNetwork.isConnectedOrConnecting();
+    /**
+     * Does a slide up animation for our request info
+     */
+    private void slideUp(){
+        LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.requestInfo);
+        if(hiddenPanel.getVisibility() == View.VISIBLE){
+            Animation topDown = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_to_bottom);
+            topDown.setAnimationListener(listener);
+            hiddenPanel.startAnimation(topDown);
+            hiddenPanel.setVisibility(View.INVISIBLE);
 
-        return isConnected;
+        } else {
+            Animation bottomUp = AnimationUtils.loadAnimation(this,
+                    R.anim.slide_from_bottom);
+            bottomUp.setAnimationListener(listener);
+            hiddenPanel.startAnimation(bottomUp);
+            hiddenPanel.setVisibility(View.VISIBLE);
+            //this will allow the displaly to be clickable and if clicked will hide it
+            //necessary in case the displayed window covers the markers
+            hiddenPanel.setOnClickListener(new View.OnClickListener(){
+                @Override
+                public void onClick(View view) {
+                    slideUp();
+                }
+            });
+
+        }
     }
 
+    Animation.AnimationListener listener = new Animation.AnimationListener() {
+        @Override
+        public void onAnimationStart(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationEnd(Animation animation) {
+        }
+
+        @Override
+        public void onAnimationRepeat(Animation animation) {}
+    };
+
+    /**
+     * A function to check if it's night time or not
+     * Plus this is easier on the eyes in night
+     * @param time the time
+     * @return boolean
+     */
+    private boolean nightTime(String time){
+        try {
+            Date currentTime = new SimpleDateFormat("HH:mm:ss").parse(time);
+            Date nightTime = new SimpleDateFormat("HH:mm:ss").parse("18:00:00");
+            Date earlyMorning = new SimpleDateFormat("HH:mm:ss").parse("6:00:00");
+            return currentTime.getTime() > nightTime.getTime() || currentTime.getTime() < earlyMorning.getTime();
+        }catch(ParseException e){
+            e.printStackTrace();
+        }
+        return false;
+    }
 
 }
 

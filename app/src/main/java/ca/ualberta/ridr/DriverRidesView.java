@@ -1,51 +1,44 @@
 package ca.ualberta.ridr;
 
-import android.content.Context;
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
-public class DriverRideView extends Activity implements ACallback {
+/**
+ * This is the view that shows all of the rides that the Driver is fulfilling. It implements the
+ * ACallback interface, which updates code based on our controllers.
+ */
+public class DriverRidesView extends Activity implements ACallback {
     ListView rideList;
     RideController rides;
     String driver;
     RideAdapter rideAdapter;
-    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_ride_view);
 
-        rides = new RideController(this, context);
+
         //retrieve the current driver's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            driver = extras.getString("username");
+            driver = extras.getString("Name");
         }
         // If no driver is passed in go to login page
         if(driver == null) {
-            Intent loginPage = new Intent(DriverRideView.this, LoginView.class);
+            Intent loginPage = new Intent(DriverRidesView.this, LoginView.class);
             startActivity(loginPage);
             finish();
         }
         rideList = (ListView) findViewById(R.id.driverRidesList);
-        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
+        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>(), "driver");
 
 
         rideList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -54,7 +47,7 @@ public class DriverRideView extends Activity implements ACallback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Ride ride = rideAdapter.getItemAtPosition(position);
 
-                Intent intent = new Intent(DriverRideView.this, RideView.class);
+                Intent intent = new Intent(DriverRidesView.this, RideView.class);
                 //based on item add info to intent
                 intent.putExtra("username", driver);
                 intent.putExtra("rideID", ride.getId().toString());
@@ -67,6 +60,7 @@ public class DriverRideView extends Activity implements ACallback {
     protected void onStart(){
         super.onStart();
         //Get driver rides from the server
+        rides = new RideController(this);
         rides.getDriverRides(driver);
 
         // Set ride adapter
@@ -74,7 +68,8 @@ public class DriverRideView extends Activity implements ACallback {
     }
 
     @Override
-    /* Used when the ride controller is finishes fetching rides from the server or file storage
+    /**
+     * Used when the ride controller is finishes fetching rides from the server or file storage
      */
     public void update() {
         rideAdapter.clear();

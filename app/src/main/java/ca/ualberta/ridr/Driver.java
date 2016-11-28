@@ -7,14 +7,14 @@ import io.searchbox.annotations.JestId;
 
 /**
  * Created by mackenzie on 12/10/16.
+ * Modified by pretty much all of us.
+ *
+ * This is a Driver object, representing a user that is a driver in our app.
+ * It extends the base class User.
  */
 public class Driver extends User {
 
-
-    // These are all marked transient as we don't want them serialized when we pass this object to
-    // our AsyncDatabaseController
-    //private transient Vehicle vehicle;
-    private  String vehicleDescription;
+    private String vehicleDescription;
 
     public Driver(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber,
                     String vechileDescription) {
@@ -90,10 +90,10 @@ public class Driver extends User {
     public boolean isOffline() {
         return false;
     }
-
     public String getVehicleDescription() {
         return vehicleDescription;
     }
+
 
     public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;

@@ -12,6 +12,7 @@ import static junit.framework.TestCase.assertTrue;
  */
 
 public class DriverTest {
+<<<<<<< HEAD
    /* @Test
     public void testDriverEquality() {
         Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
@@ -30,4 +31,25 @@ public class DriverTest {
         assertEquals(driver.getRequests().size(), 1);
         assertTrue(driver.getRequests().get(0).equals(request));
     }*/
+=======
+
+//    @Test
+//    public void testDriverEquality() {
+//        /*Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+//        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle);
+//        assertTrue(driver.equals(driver));*/
+//    }
+//
+//    @Test
+//    public void testDriverAcceptRequest(){
+//        Vehicle vehicle = new Vehicle(1994, "chevy", "truck");
+//        Driver driver = new Driver("Jeff", new Date(), "111", "email", "8675309", vehicle, "123");
+//        Request request = new Request("campus", "home");
+//
+//        driver.acceptRequest(request);
+//
+//        assertEquals(driver.getRequests().size(), 1);
+//        assertTrue(driver.getRequests().get(0).equals(request));
+//    }
+>>>>>>> 2385fd7675cceed014c43f673d174e9e36f67d58
 }

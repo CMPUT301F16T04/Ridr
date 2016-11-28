@@ -18,7 +18,45 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class RequestControllerTest{
+<<<<<<< HEAD
 /*
+=======
+
+
+  //  @Test
+//    public void testRequestControllerGetPossibleDrivers(){
+//        Request request = new Request("Edmonton", "Timbuktu");
+//        ArrayList<Driver> drivers = new ArrayList<Driver>();
+//        Vehicle vehicle = new Vehicle(1990, "pontiac", "grandam");
+//        Driver john = new Driver("john", new Date(), "credit", "email", "phone", vehicle, "bankaccountno");
+//        drivers.add(john);
+//        request.setPossibleDrivers(drivers);
+//
+//        RequestController RC = new RequestController();
+//
+//        ArrayList<Driver> testdrivers = RC.getPossibleDriversWithRequestID(request);
+//
+//        assertTrue(testdrivers.get(0).equals(john));
+//    }
+//    @Test
+//    public void testRequestControllerRemoveRequest(){
+//        RequestController RC = new RequestController();
+//        Request request = new Request("Edmonton", "Timbuktu");
+//        Rider rider = new Rider("Guy", new Date(), "credit", "email", "phone");
+//
+//        rider.addRequest(request);
+//
+//        //check that it was successfully added
+//        assertEquals(rider.getRequests().size(), 1);
+//
+//        RC.removeRequest(request, rider);
+//
+//        //then the real check is to make sure the controller can remove it
+//        assertEquals(rider.getRequests().size(), 0);
+//
+//    }
+
+>>>>>>> 2385fd7675cceed014c43f673d174e9e36f67d58
     @Test
     public void testRequestControllerAccept(){
         LatLng coords = new LatLng(1,2);
@@ -44,8 +82,8 @@ public class RequestControllerTest{
 
         RC.addDriver(request, driver);
 
-        assertEquals(request.getPossibleDrivers().size(), 1);
-        assertTrue(request.getPossibleDrivers().get(0).equals(driver));
+        assertEquals(request.getPossibleDriversWithRequestID().size(), 1);
+        assertTrue(request.getPossibleDriversWithRequestID().get(0).equals(driver));
     }
     */
 
@@ -62,7 +100,7 @@ public class RequestControllerTest{
 
         RequestController RC = new RequestController();
 
-        ArrayList<Driver> testdrivers = RC.getPossibleDrivers(request);
+        ArrayList<Driver> testdrivers = RC.getPossibleDriversWithRequestID(request);
 
         assertTrue(testdrivers.get(0).equals(john));
     }

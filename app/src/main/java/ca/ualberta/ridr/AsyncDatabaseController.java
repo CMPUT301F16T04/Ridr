@@ -44,10 +44,8 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
     /**
      * Queries elastic search for an object with matching UUID
      *
-     * @return
+     * @return JsonObject
      *
-     * @Nullable
-     * @Overide
      */
     @Nullable
     @Override
