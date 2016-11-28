@@ -397,6 +397,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         viewRequestsIntent.putExtra("Name", riderName);
                         startActivity(viewRequestsIntent);
                         return true;
+                    case R.id.mainRiderMenuViewRides:
+                        resetText();
+                        Intent viewRidesIntent = new Intent(RiderMainView.this, RiderRidesView.class);
+                        viewRidesIntent.putExtra("Name", riderName);
+                        startActivity(viewRidesIntent);
+                        return true;
                     default:
                         return false;
                 }
