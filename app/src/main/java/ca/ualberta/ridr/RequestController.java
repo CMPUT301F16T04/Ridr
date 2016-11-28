@@ -304,7 +304,11 @@ public class RequestController {
             requests.clear();
             for (JsonElement result : queryResults) {
                 try {
-                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                    Request request = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
+                    //System.out.println(request);
+                    if (!request.isAccepted() && request.isValid()){
+                        requests.add(request);
+                    }
                 } catch (Exception e) {
                     Log.i("Error parsing requests", e.toString());
                 }
