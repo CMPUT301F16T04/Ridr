@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,6 +54,7 @@ public class ProfileView extends Activity {
         JsonObject user = getUser(username);
 
         //user was a driver (possibly both)
+        Log.i("the user gotten", user.get("isDriver").toString());
         if(user.get("isDriver").toString().equals("true")){
             driver = getDriver(username);
             userEmailStr = driver.getEmail();
