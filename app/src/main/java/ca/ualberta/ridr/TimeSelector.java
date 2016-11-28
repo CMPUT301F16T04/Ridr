@@ -39,7 +39,7 @@ public class TimeSelector extends DialogFragment implements TimePickerDialog.OnT
         if(hour < 12 ){
             timeView.setText(hour + ":" + minute +" AM");
         } else{
-            timeView.setText(hour + ":" + minute + " PM");
+            timeView.setText(hour - 12 + ":" + minute + " PM");
         }
 
     }

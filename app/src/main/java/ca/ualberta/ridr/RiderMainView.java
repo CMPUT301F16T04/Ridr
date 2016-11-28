@@ -418,7 +418,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     /**
      * converts data and time strings into a Date object
      * @param dateString string with format dd/MM/yyyy
-     * @param timeString string with format hh:mm a, where hh is the time from 1-12 and a is an am/pm indicator
+     * @param timeString string with format hit h:mm a, where hh is the time from 1-12 and a is an am/pm indicator
      * @return a date object with the format dd/MM/yyyy hh:mm a
      */
     private Date stringToDate(String dateString, String timeString){
