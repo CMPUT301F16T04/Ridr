@@ -32,6 +32,7 @@ public class RideController {
         this.cbInterface = rideInterface;
         this.rides = new ArrayList<>();
         controller = new AsyncController(context);
+        this.context = context;
     }
 
     public ArrayList<Ride> getAll() {
