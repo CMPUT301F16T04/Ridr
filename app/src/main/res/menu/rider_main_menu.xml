@@ -6,4 +6,7 @@
     <item android:id = "@+id/mainRiderMenuViewRequests"
         android:title="View Requests">
     </item>
+    <item android:id = "@+id/mainRiderMenuViewRides"
+        android:title="View Rides">
+    </item>
 </menu>

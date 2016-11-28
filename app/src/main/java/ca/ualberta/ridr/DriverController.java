@@ -20,6 +20,9 @@ import io.searchbox.core.SearchResult;
 
 /**
  * Created by jferris on 22/10/16.
+ *
+ * This controller gets and saves drivers to our elastic search database, by calling our AsyncController.
+ * Also, controller has the capability of using the ACallback interface.
  */
 public class DriverController {
 
