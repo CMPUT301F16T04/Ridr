@@ -149,7 +149,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
-                intent.putExtra("RiderUUID", requestRider.getID().toString());
+                intent.putExtra("username", requestRider.getName());
                 startActivity(intent);
             }
         });

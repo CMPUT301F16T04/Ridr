@@ -94,9 +94,6 @@ public class Driver extends User {
         return vehicleDescription;
     }
 
-    public String getVehicleDescription() {
-        return vehicleDescription;
-    }
 
     public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;

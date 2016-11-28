@@ -126,7 +126,7 @@ public class ProfileView extends Activity {
      * @return Driver object
      */
     public Rider getRider(String username){
-        return(riderCon.getDriverFromServerUsingName(username));
+        return(riderCon.getRiderFromServerUsingName(username));
     }
 
     /** just some formatting, might not be necessary if the names are enforced
