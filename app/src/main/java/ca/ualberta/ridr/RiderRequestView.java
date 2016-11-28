@@ -16,14 +16,9 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.util.UUID;
 
-
-import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
 
@@ -147,7 +142,7 @@ public class RiderRequestView extends Activity {
         });
 
 
-        final ArrayList<String> possibleDrivers = capitalizeAllNames(reqCon.getPossibleDrivers(clickedRequestIDStr));
+        final ArrayList<String> possibleDrivers = capitalizeAllNames(reqCon.getPossibleDriversWithRequestID(clickedRequestIDStr));
         System.out.println(possibleDrivers);
 
 

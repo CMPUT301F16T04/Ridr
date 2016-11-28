@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- *
- *
+ * This is a request object, which is when a Rider makes a request for somebody to drive them somewhere.
+ * This gets turned into a ride object when the Rider chooses a driver to fulfill their request.
  */
 public class Request {
     private String rider; //string of the id
@@ -164,6 +164,10 @@ public class Request {
         return id;
     }
 
+    /** Creates a Json String out of this Request object
+     *
+     * @return Json in String Format
+     */
     public String toJsonString(){
         // Attempt to convert request into a JsonObject
         // If fail return a null pointer
@@ -189,7 +193,9 @@ public class Request {
         }
     }
 
-    // Take a jsonObject as input and creates request out of it's keys
+    /**
+     * Take a jsonObject as input and creates request out of it's keys
+     */
     public Request(JsonObject request) throws ParseException {
         // There is one major limitation in what I have done so far,
         // currently I don't have or store a list of possible drivers

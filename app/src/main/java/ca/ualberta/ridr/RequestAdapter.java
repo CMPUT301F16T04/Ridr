@@ -11,6 +11,9 @@ import java.util.ArrayList;
 
 /**
  * Created by jferris on 13/11/16.
+ *
+ * Given a Request object, sets Textview elements in the listview that is calling this adapter,
+ * using the information from the request.
  */
 public class RequestAdapter extends ArrayAdapter<Request> {
     private Context context;

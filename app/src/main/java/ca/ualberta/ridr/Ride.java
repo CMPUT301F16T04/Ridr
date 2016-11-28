@@ -16,6 +16,8 @@ import java.util.UUID;
 
 /**
  * Created by mackenzie on 12/10/16.
+ *
+ * This object is a Ride object
  */
 public class Ride {
     private String pickup;
@@ -46,7 +48,6 @@ public class Ride {
     public void setDropOffCoords(LatLng dropOffCoords) {
         this.dropOffCoords = dropOffCoords;
     }
-
 
 
     public Ride(String driverName, String riderName, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
@@ -129,10 +130,17 @@ public class Ride {
     }
 
     //stolen directly from Justin's implementation in request, then made sure custom to ride attributes
-    // and database ride properties
+    //and database ride properties
+
+    /**
+     * Makes a Ride object to a Json formatted String.
+     * Attempt to convert request into a JsonObject.
+     * If fail return a null pointer.
+     *
+     * @return Json formatted String
+     */
     public String toJsonString(){
-        // Attempt to conver request into a JsonObject
-        // If fail return a null pointer
+        //
         // Need to use the java standard JSON object here because we are nesting JSON items
         JSONObject toReturn = new JSONObject();
         try {
@@ -158,16 +166,14 @@ public class Ride {
         return paid;
     }
 
-    // Take a jsonObject as input and creates request out of it's keys
+    /**
+     * Take a jsonObject as input and creates request out of it's keys
+     */
     public Ride(JsonObject ride) throws ParseException {
-        // There is one major limitation in what I have done so far,
-        // currently I don't have or store a list of possible drivers
-        // Because of the differences between JsonObject and JSONObject.
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
 
         this.rider = ride.get("rider").getAsString();
-//        this.driver = ride.get("driver").getAsString();
-        this.driver = "Bob";
+        this.driver = ride.get("driver").getAsString();
         this.pickup = ride.get("pickup").getAsString();
         this.dropoff = ride.get("dropoff").getAsString();
         this.dropOffCoords = buildLatLng(ride.getAsJsonObject("dropOffCoords"));
