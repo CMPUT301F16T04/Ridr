@@ -63,7 +63,9 @@ public class RideAdapter extends ArrayAdapter<Ride> {
         }
         return convertView;
     }
-
+    public Ride getItemAtPosition(int position){
+        return rides.get(position);
+    }
 }
 
 

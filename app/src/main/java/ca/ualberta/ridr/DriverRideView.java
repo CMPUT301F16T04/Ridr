@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -33,7 +34,7 @@ public class DriverRideView extends Activity implements ACallback {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            String driver = extras.getString("username");
+            driver = extras.getString("username");
         }
         // If no driver is passed in go to login page
         if(driver == null) {
@@ -43,6 +44,21 @@ public class DriverRideView extends Activity implements ACallback {
         }
         rideList = (ListView) findViewById(R.id.driverRidesList);
         rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
+
+
+        rideList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Ride ride = rideAdapter.getItemAtPosition(position);
+
+                Intent intent = new Intent(DriverRideView.this, RideView.class);
+                //based on item add info to intent
+                intent.putExtra("username", driver);
+                intent.putExtra("rideID", ride.getId().toString());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override

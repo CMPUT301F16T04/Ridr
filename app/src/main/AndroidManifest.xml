@@ -36,10 +36,6 @@
         <activity android:name=".ProfileView" />
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView" />
-            android:name=".AddDriverView"
-            android:exported="true"
-            android:label="@string/title_activity_add_driver_view"
-            android:windowSoftInputMode="adjustPan" />
         <activity
             android:name=".RiderRequestView"
             android:exported="true" />
@@ -48,9 +44,11 @@
             android:exported="true" />
         <activity android:name=".RideConfirmationView" />
         <activity
-            android:name=".AcceptDriverView"
+            android:name=".AddRiderView"
             android:exported="true" />
-        <activity android:name=".AddRiderView" />
+        <activity
+            android:name=".AddDriverView"
+            android:exported="true" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -71,15 +69,13 @@
             android:value="@integer/google_play_services_version" />
 
         <activity
-<<<<<<< HEAD
             android:name=".DriverRideView"
             android:exported="true"
-            android:label="@string/title_activity_driver_ride_view"></activity>
-=======
-            android:name=".RideView"
+            android:label="@string/title_activity_driver_ride_view"/>
+
+        <activity android:name=".RideView"
             android:label="@string/title_activity_ride_view"
-            android:exported="true"></activity>
->>>>>>> rideView
+            android:exported="true"/>
     </application>
 
 </manifest>

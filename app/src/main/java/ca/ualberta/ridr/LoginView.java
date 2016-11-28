@@ -135,7 +135,7 @@ public class LoginView extends Activity implements ACallback {
         }
 
         if(myUser.isDriver()) {
-            Intent driverScreenIntent = new Intent(LoginView.this, SearchResultsView.class);
+            Intent driverScreenIntent = new Intent(LoginView.this, DriverRideView.class);
             driverScreenIntent.putExtra("username", myUser.getName());
             startActivity(driverScreenIntent);
         } else {
