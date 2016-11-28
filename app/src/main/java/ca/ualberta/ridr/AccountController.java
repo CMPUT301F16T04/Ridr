@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
 import android.support.annotation.Nullable;
 import android.util.Log;
 
@@ -13,11 +14,13 @@ import com.google.gson.Gson;
 public class AccountController {
     private ACallback cbInterface;
     private User currentUser;
+    private Context context;
     private AsyncController controller;
 
-    public AccountController(ACallback cbInterface){
+    public AccountController(ACallback cbInterface, Context context){
+        this.context = context;
         this.cbInterface = cbInterface;
-        controller = new AsyncController();
+        controller = new AsyncController(this.context);
         currentUser = null;
     }
 

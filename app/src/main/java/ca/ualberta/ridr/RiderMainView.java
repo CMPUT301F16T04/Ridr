@@ -2,12 +2,15 @@ package ca.ualberta.ridr;
 
 import android.app.AlertDialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 
 import android.support.annotation.Nullable;
@@ -90,6 +93,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Marker endMarker;
     private Geocoder geocoder;
 
+    private Context context = this;
     private LatLng pickupCoord;
     private LatLng dropoffCoord;
     private String pickupStr;
@@ -98,14 +102,17 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private float distance;
     private float fare;
 
-    RequestController reqController;
+
+    private RequestController reqController;
+    private RiderController riderController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.rider_main);
-        reqController = new RequestController(this);
+        reqController = new RequestController(this, context);
+        riderController = new RiderController(context);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.newRequestMap);
         mapFragment.getMapAsync(this);
@@ -122,13 +129,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     .build();
         }
 
-        //retrieve the current rider's UUID
+        //retrieve the current rider's name
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
             riderName = extras.getString("username");
         }
-
 
         setViews();
 
@@ -196,6 +202,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 //Rider rider = null; // for now just so that we wont get compile errors
                 System.out.println(new Gson().toJson(currentRider));
                 addRequestEvent(currentRider);
+                //Executes any pending functions from offline functionality once online
+                reqController.executeAllPending(riderName);
             }
         });
 
@@ -212,27 +220,35 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         mGoogleApiClient.connect();
         super.onStart();
 
-        //from the UUID, get the rider object
+        //from the name, get the rider object
         //we want this in onStart, because we want to pull notification every time we go back to the activity
         try {
-            currentRider = new Gson().fromJson(new AsyncController().get("user", "name", riderName), Rider.class);
+            currentRider = new Gson().fromJson(new AsyncController(context).get("user", "name", riderName), Rider.class);
         } catch(Exception e){
             Log.i("Error parsing Rider", e.toString());
         }
 
         //check for notifications, display
-        if(currentRider.getPendingNotification() != null){
-            Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_LONG).show();
-            currentRider.setPendingNotification(null);
-            //update the user object in the database
-            try {
-                AsyncController asyncController = new AsyncController();
-                asyncController.create("user", currentRider.getID().toString(), new Gson().toJson(currentRider));
-                //successful account updating
-            } catch (Exception e){
-                Log.i("Communication Error", "Could not communicate with the elastic search server");
+        try {
+            if (currentRider.getPendingNotification() != null) {
+                Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_LONG).show();
+                currentRider.setPendingNotification(null);
+                //update the user object in the database
+                try {
+                    AsyncController asyncController = new AsyncController(context);
+                    asyncController.create("user", currentRider.getID().toString(), new Gson().toJson(currentRider));
+                    //successful account updating
+                } catch (Exception e) {
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                }
             }
+        } catch(Exception e) {
+            Log.i("error check notify", e.toString());
         }
+
+        //Executes any pending functions from offline functionality once online
+        reqController.executeAllPending(riderName);
+        riderController.pushPendingNotifications();
     }
     protected void onResume(){
         super.onResume();
@@ -355,6 +371,9 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             return;
         }
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
+
+        reqController.executeAllPending(riderName);
+
 
         fare = Float.parseFloat(fareInput.getText().toString());
         float costDist = fare/distance;

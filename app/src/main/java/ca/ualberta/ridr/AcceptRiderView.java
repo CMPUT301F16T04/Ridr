@@ -1,9 +1,12 @@
 package ca.ualberta.ridr;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -69,9 +72,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private Marker endMarker;
     private Geocoder geocoder;
 
-    private RequestController requestController = new RequestController();
-    private RiderController riderController = new RiderController();
-    private DriverController driverController = new DriverController();
+    private Context context = this;
+    private RequestController requestController = new RequestController(context);
+    private RiderController riderController = new RiderController(context);
+    private DriverController driverController = new DriverController(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -158,7 +162,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
-                intent.putExtra("username", requestRider.getName());
+                if(requestRider != null) {
+                    intent.putExtra("username", requestRider.getName());
+                }
                 startActivity(intent);
             }
         });
@@ -174,52 +180,57 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         //add ourselves to list of possibleDrivers in the request
         acceptRider.setOnClickListener(new View.OnClickListener(){
             @Override
-            public void onClick(View view){
-                if(agreedToFulfill){
-                    //chose this particular toast over "accepted already" so
-                    //they dont think that someone accepting prevents their own acceptance
-                    Toast.makeText(AcceptRiderView.this, "You've already accepted", Toast.LENGTH_SHORT).show();
+            public void onClick(View view) {
+                try {
+                    if (agreedToFulfill) {
+                        //chose this particular toast over "accepted already" so
+                        //they dont think that someone accepting prevents their own acceptance
+                        Toast.makeText(AcceptRiderView.this, "You've already accepted", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        //driver is now willing to fulfill the ride
+                        requestController.addDriverToList(request, username);
+                        //set pending notification on riders account
+                        riderController.setPendingNotification(requestRider);
+                        try {
+                            AsyncController asyncController = new AsyncController(context);
+                            asyncController.create("user", requestRider.getID().toString(), new Gson().toJson(requestRider));
+                            //successful account creation
+                            Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
+                                    "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
+                            agreedToFulfill = true;
+                            String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
+                            status.setText(statusText);
+
+                            //Executes any pending functions from offline functionality once online
+                            requestController.executeAllPending(username);
+                            riderController.pushPendingNotifications();
+                        } catch (Exception e) {
+                            return;
+                        }
+                    }
+                } catch (Exception e) {
                     return;
                 }
-                else {
-                    //driver is now willing to fulfill the ride
-                    requestController.addDriverToList(request, username);
-                    //set pending notification on riders account
-                    requestRider.setPendingNotification("A driver is willing to " +
-                            "fulfill your Ride! Check your Requests for more info.");
-                    try {
-                        AsyncController asyncController = new AsyncController();
-                        asyncController.create("user", requestRider.getID().toString(), new Gson().toJson(requestRider));
-                        //successful account creation
-                        Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
-                                "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
-                    } catch (Exception e){
-                        Log.i("Communication Error", "Could not communicate with the elastic search server");
-                        return;
-                    }
-
-                    agreedToFulfill = true;
-                    String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
-                    status.setText(statusText);
-                }
             }
-
         });
-
-
     }
 
     //gmap stuff
     protected void onStart() {
         mGoogleApiClient.connect();
         super.onStart();
+
+        //Executes any pending functions from offline functionality once online
+        requestController.executeAllPending(username);
+        riderController.pushPendingNotifications();
     }
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         mGoogleApiClient.reconnect();
     }
 
-    protected void onPause(){
+    protected void onPause() {
         mGoogleApiClient.disconnect();
         super.onPause();
     }
@@ -238,7 +249,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
     @Override
     //On connected listener, required to be able to zoom to users location at login
-    public void onConnected(Bundle connectionHint){
+    public void onConnected(Bundle connectionHint) {
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
         }
@@ -261,7 +272,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap){
+    public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
 
         Calendar current = Calendar.getInstance();

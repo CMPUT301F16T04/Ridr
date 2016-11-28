@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,11 +37,11 @@ public class AcceptDriverView extends Activity {
     private String driverName;
     private String requestId;
 
-    private DriverController driverCon = new DriverController();
-    private RideController rideCon = new RideController();
-    private RequestController reqCon = new RequestController();
-    private RiderController riderCon = new RiderController();
-
+    private Context context = this;
+    private DriverController driverCon = new DriverController(context);
+    private RideController rideCon = new RideController(context);
+    private RequestController reqCon = new RequestController(context);
+    private RiderController riderCon = new RiderController(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,6 +83,7 @@ public class AcceptDriverView extends Activity {
             @Override
             public void onClick(View v) {
 
+                RequestController reqCon = new RequestController(context);
                 rideCon.createRide(driverName, request, username);
                 reqCon.accept(request);
 
@@ -89,7 +91,7 @@ public class AcceptDriverView extends Activity {
                 driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides " +
                         "for more info.");
                 try {
-                    AsyncController asyncController = new AsyncController();
+                    AsyncController asyncController = new AsyncController(context);
                     asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
                     //successful account updating
                 } catch (Exception e){
@@ -138,6 +140,15 @@ public class AcceptDriverView extends Activity {
 
     }
 
+    protected void onStart() {
+        super.onStart();
+
+        //Executes any pending functions from offline functionality once online
+        reqCon.executeAllPending(username);
+        riderCon.pushPendingNotifications();
+
+    }
+
     /**
      * gets the driver for the data we display on this view
      *
@@ -157,6 +168,7 @@ public class AcceptDriverView extends Activity {
      * @return Request object
      */
     public Request getRequest(String requestId){
+
         Request request = reqCon.getRequestFromServer(requestId);
 
         //if we could not fetch the request and return null then... go back to previous activity?

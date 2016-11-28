@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
@@ -27,12 +28,14 @@ public class RiderRidesView extends Activity implements ACallback {
     RideController rides;
     String rider;
     RideAdapter rideAdapter;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_ride_view);
 
+        rides = new RideController(this, context);
         //retrieve the current driver's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();

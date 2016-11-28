@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import android.os.Bundle;
@@ -36,6 +37,7 @@ public class EditProfileView extends Activity {
     private RiderController riderController;
 
     private User user;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +45,8 @@ public class EditProfileView extends Activity {
         setContentView(R.layout.edit_profile);
 
 
-        driverController = new DriverController();
-        riderController = new RiderController();
+        driverController = new DriverController(context);
+        riderController = new RiderController(context);
         //retrieve intent from previous activity
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -134,7 +136,7 @@ public class EditProfileView extends Activity {
      * @return a User object
      */
     private User getUser(String username){
-        return new Gson().fromJson(new AsyncController().get("user", "name", username), User.class);
+        return new Gson().fromJson(new AsyncController(context).get("user", "name", username), User.class);
     }
 
 

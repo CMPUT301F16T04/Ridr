@@ -73,12 +73,12 @@ public class AddDriverView extends Activity implements ACallback {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.add_driver);
-        accountController = new AccountController(this);
-        controller = new AsyncController();
+        context = this;
+        accountController = new AccountController(this, context);
+        controller = new AsyncController(context);
         addAccount = false;
         updateUser =false;
         birthday = Calendar.getInstance();
-        context = this;
 
         //defining view objects
         usernameEditText = (EditText) findViewById(R.id.driver_username);

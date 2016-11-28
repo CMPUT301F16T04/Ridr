@@ -36,13 +36,16 @@ public class DriverController {
         this.cbInterface = cbInterface;
     }
 
-    public Driver getDriverFromServer(String driverId) {
-        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
-        return(driver);
+    private Context context;
+
+    DriverController(Context context){
+        this.context = context;
     }
 
-
-    DriverController(){}
+    public Driver getDriverFromServer(String driverId) {
+        Driver driver = new Gson().fromJson(new AsyncController(context).get("user", "id", driverId), Driver.class);
+        return driver;
+    }
 
     //is this supposed to be a driver controller item or a request controller item... look at UML in the morning
     public void acceptRequest(Driver driver, Request request){
@@ -50,12 +53,12 @@ public class DriverController {
     }
 
     public Driver getDriverFromServerUsingId(String driverId){
-        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        Driver driver = new Gson().fromJson(new AsyncController(context).get("user", "id", driverId), Driver.class);
         return(driver);
     }
 
     public Driver getDriverFromServerUsingName(String driverName){
-        Driver driver = new Gson().fromJson(new AsyncController().get("user", "name", driverName), Driver.class);
+        Driver driver = new Gson().fromJson(new AsyncController(context).get("user", "name", driverName), Driver.class);
         return(driver);
     }
 
@@ -64,7 +67,7 @@ public class DriverController {
         driver.setPhoneNumber(phone);
         driver.setEmail(email);
         driver.setVehicleDescription(vehicle);
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         controller.create("user", driver.getID().toString(), new Gson().toJson(driver));
     }
 

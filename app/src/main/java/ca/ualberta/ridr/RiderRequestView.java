@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.google.gson.JsonArray;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 
 public class RiderRequestView extends Activity {
 
+    private String currentIDStr; // string of the current UUID
 
     private String riderName; // string of the curretn UUID
     private String clickedDriverNameStr; //name of driver who is clicked in popup
@@ -36,11 +38,15 @@ public class RiderRequestView extends Activity {
 
 
     private Activity activity = this;
+    private Context context = this;
     public ArrayList<Request> requests = new ArrayList<>();
     //Declaring reference buttons in the GUI
     ListView oldRequestsList;
 
-    private RequestController reqCon = new RequestController();
+    private RequestController reqCon = new RequestController(context);
+    private DriverController driverCon = new DriverController(context);
+    private RiderController riderCon = new RiderController(context);
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +72,7 @@ public class RiderRequestView extends Activity {
             riderName = extras.getString("Name");
         }
 
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", riderName);
 
         requests.clear(); // Fix for duplicates in list
@@ -81,6 +87,7 @@ public class RiderRequestView extends Activity {
             }
         }
 
+
         final RequestAdapter customAdapter = new RequestAdapter(activity, requests);
         oldRequestsList.setAdapter(customAdapter);
 
@@ -92,6 +99,11 @@ public class RiderRequestView extends Activity {
                 displayDrivers();
             }
         });
+
+        //Executes any pending functions from offline functionality once online
+        reqCon.executeAllPending(riderName);
+        riderCon.pushPendingNotifications();
+            
         oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
@@ -194,11 +206,16 @@ public class RiderRequestView extends Activity {
      */
 
     private ArrayList<String> capitalizeAllNames(ArrayList<String> names) {
-        ArrayList<String> captNames = new ArrayList<>();
-        for (int i = 0; i < names.size(); i++) {
-            captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
+        try {
+            ArrayList<String> captNames = new ArrayList<>();
+            for (int i = 0; i < names.size(); i++) {
+                captNames.add(names.get(i).substring(0, 1).toUpperCase().concat(names.get(i).substring(1)));
+            }
+            return (captNames);
         }
-        return(captNames);
+        catch(Exception e) {
+            return new ArrayList<String>();
+        }
     }
 
     public void cancelRequest(final Request request, final RequestAdapter customAdapter) {
@@ -234,7 +251,7 @@ public class RiderRequestView extends Activity {
             @Override
             public void onClick(View v) {
                 // Cancel request
-                AsyncController controller = new AsyncController();
+                AsyncController controller = new AsyncController(context);
 
                 request.setIsValid(false);
 
