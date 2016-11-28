@@ -113,7 +113,6 @@ public class LoginView extends Activity implements ACallback {
         if(myUser.isRider()) {
             Intent riderScreenIntent = new Intent(LoginView.this, RiderMainView.class);
             riderScreenIntent.putExtra("username", myUser.getName());
-            System.out.println(myUser.getID().toString());
             startActivity(riderScreenIntent);
         } else {
             Toast.makeText(LoginView.this, "Sorry, this user is not a rider. Please add your rider info to your account", Toast.LENGTH_LONG).show();
@@ -130,7 +129,7 @@ public class LoginView extends Activity implements ACallback {
      */
     private void loginDriver(User myUser){
         //if our user is logging in as a driver
-        if(myUser == null){
+        if(myUser == null) {
             return;
         }
 

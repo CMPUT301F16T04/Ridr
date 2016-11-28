@@ -22,6 +22,7 @@ public class Rider extends User {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();
+        super.setRiderStatus(true);
     }
 
     public Rider (User user){
