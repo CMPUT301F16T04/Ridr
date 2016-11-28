@@ -54,9 +54,6 @@ public class ProfileView extends Activity {
         JsonObject user = getUser(username);
 
         //user was a driver (possibly both)
-        System.out.println("The bool!");
-        System.out.println(user.get("isDriver").toString());
-        Log.i("the user gotten", user.get("isDriver").toString());
         if(user.get("isDriver").toString().equals("true")){
             driver = getDriver(username);
             userEmailStr = driver.getEmail();
@@ -153,7 +150,6 @@ public class ProfileView extends Activity {
     private JsonObject getUser(String username){
         AsyncController controller = new AsyncController();
         JsonObject user = controller.get("user", "name", username);
-        Log.i("the user gotten", user.get("isDriver").toString());
         return(user);
     }
 

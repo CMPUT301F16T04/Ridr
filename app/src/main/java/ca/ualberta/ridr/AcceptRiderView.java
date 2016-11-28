@@ -322,7 +322,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         gMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
             @Override
             public void onMapLoaded() {
-                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 500));
+                gMap.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 400));
             }
         });
     }

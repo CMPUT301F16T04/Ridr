@@ -72,7 +72,7 @@ public class RiderRequestView extends Activity {
         for (JsonElement result : queryResults) {
             try {
                 Request localReq = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
-                if(localReq.isValid()){
+                if(localReq.isValid() && !localReq.isAccepted()){
                     requests.add(localReq);
                 }
             } catch (Exception e) {
