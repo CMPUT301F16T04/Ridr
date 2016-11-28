@@ -1,7 +1,10 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuInflater;
@@ -26,7 +29,9 @@ import java.util.ArrayList;
 public class SearchResultsView extends Activity {
 
     private ArrayList<Request> requestList = new ArrayList<>();
-    final RequestController requestController = new RequestController();
+    private Context context = this;
+    private RequestController requestController = new RequestController(context);
+    private RiderController riderController = new RiderController(context);
     private String keyword;
     private ListView searchResults;
     private RequestAdapter requestAdapter;
@@ -75,8 +80,10 @@ public class SearchResultsView extends Activity {
 
             public void onClick(View v) {
                 String text = bodyText.getText().toString();
-                searchResultsByKeyword(text);
+                searchResultsByKeyword(context, text);
                 requestAdapter.notifyDataSetChanged();
+
+                requestController.executeAllPending(username);
             }
         });
 
@@ -98,24 +105,44 @@ public class SearchResultsView extends Activity {
 
         //get driver object from server, and display notification if there is one
         //we want this in OnStart, as every time we load up this activity we want to check for notifications
-        DriverController driverController = new DriverController();
-        driver = driverController.getDriverFromServerUsingName(username);
-        //check for notifications, display
-        if(driver.getPendingNotification() != null){
-            Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
-            driver.setPendingNotification(null);
-            //update the user object in the database
-            try {
-                AsyncController asyncController = new AsyncController();
-                asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
-                //successful account updating
-            } catch (Exception e){
-                Log.i("Communication Error", "Could not communicate with the elastic search server");
+        if(isConnected()) {
+            DriverController driverController = new DriverController(context);
+            driver = driverController.getDriverFromServerUsingName(username);
+            //check for notifications, display
+            if (driver.getPendingNotification() != null) {
+                Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
+                driver.setPendingNotification(null);
+                //update the user object in the database
+                try {
+                    AsyncController asyncController = new AsyncController(context);
+                    asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                    //successful account updating
+                } catch (Exception e) {
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                }
+                driver = driverController.getDriverFromServerUsingName(username);
+                //check for notifications, display
+                if (driver.getPendingNotification() != null) {
+                    Toast.makeText(this, driver.getPendingNotification(), Toast.LENGTH_LONG).show();
+                    driver.setPendingNotification(null);
+                    //update the user object in the database
+                    try {
+                        AsyncController asyncController = new AsyncController(context);
+                        asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                        //successful account updating
+                    } catch (Exception e) {
+                        Log.i("Communication Error", "Could not communicate with the elastic search server");
+                    }
+                }
             }
         }
 
         requestAdapter = new RequestAdapter(this, requestList);
         searchResults.setAdapter(requestAdapter);
+
+        //Executes any pending functions from offline functionality once online
+        requestController.executeAllPending(username);
+        riderController.pushPendingNotifications();
     }
 
     /**
@@ -124,7 +151,7 @@ public class SearchResultsView extends Activity {
      *
      * @param keyword the keyword
      */
-    protected void searchResultsByKeyword(String keyword) {
+    protected void searchResultsByKeyword(Context context, String keyword) {
         if(keyword != null) {
             ArrayList<Request> tempRequestList = requestController.searchRequestsKeyword(keyword);
             requestList.clear();
@@ -169,6 +196,17 @@ public class SearchResultsView extends Activity {
         });
 
         popup.show();
+    }
+
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 }
 

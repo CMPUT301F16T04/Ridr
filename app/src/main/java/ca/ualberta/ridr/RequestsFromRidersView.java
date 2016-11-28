@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -19,7 +20,9 @@ public class RequestsFromRidersView extends Activity implements ACallback{
     private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
-    private RequestController requestController;
+    private Context context = this;
+    private RequestController requestController = new RequestController(context);
+    private RiderController riderController = new RiderController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,8 +46,12 @@ public class RequestsFromRidersView extends Activity implements ACallback{
             requests.clear();
         }
 
+        //Executes any pending functions from offline functionality once online
+        requestController.executeAllPending(userName);
+        riderController.pushPendingNotifications();
+
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
-        requestController = new RequestController(this);
+        requestController = new RequestController(this, context);
         requestController.findAllRequestsWithDataMember("request", "possibleDrivers", userName);
         //search for our name in any possibleDriver list
         //update gets called from Acallback

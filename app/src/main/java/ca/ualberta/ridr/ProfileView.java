@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -27,9 +28,10 @@ public class ProfileView extends Activity {
     private TextView vehicleTitle;
     private Driver driver;
     private Rider rider;
+    private Context context = this;
 
-    private DriverController driverCon = new DriverController();
-    private RiderController riderCon = new RiderController();
+    private DriverController driverCon = new DriverController(context);
+    private RiderController riderCon = new RiderController(context);
 
     private String username;
     private String userEmailStr;
@@ -148,7 +150,7 @@ public class ProfileView extends Activity {
      * @return a jsonobject user
      */
     private JsonObject getUser(String username){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         JsonObject user = controller.get("user", "name", username);
         return(user);
     }

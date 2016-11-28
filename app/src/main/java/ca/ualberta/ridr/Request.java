@@ -186,6 +186,7 @@ public class Request {
             toReturn.put("costDistance", costDistance);
             toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
             toReturn.put("isValid", isValid);
+
             return toReturn.toString();
         } catch(Exception e){
             Log.d("Error", e.toString());
@@ -201,7 +202,9 @@ public class Request {
         // currently I don't have or store a list of possible drivers
         // Because of the differences between JsonObject and JSONObject.
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
-        Log.i("JsonObject", request.toString());
+        /*if(request.get("rider") == null) {
+            request = request.getAsJsonObject("_source");
+        }*/
         this.rider = request.get("rider").getAsString();
         this.pickup = request.get("pickup").getAsString();
         this.dropoff = request.get("dropoff").getAsString();

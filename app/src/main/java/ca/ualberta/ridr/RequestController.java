@@ -1,6 +1,9 @@
 package ca.ualberta.ridr;
 
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -19,6 +22,7 @@ import java.util.regex.Pattern;
 import io.searchbox.core.Search;
 import io.searchbox.core.SearchResult;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -44,13 +48,22 @@ public class RequestController {
 
     private Request currenRequest;
     private ArrayList<Request> requests;
+    private ArrayList<Request> offlineRequests;
     private ACallback cbInterface;
+    private Context context;
+    private OfflineSingleton offlineSingleton = OfflineSingleton.getInstance();
 
-    public RequestController(){}
+    public RequestController(Context context) {
+        this.context = context;
+        this.offlineRequests = new ArrayList<>();
+        this.requests = new ArrayList<>();
+    }
 
-    public RequestController(ACallback cbInterface){
+    public RequestController(ACallback cbInterface, Context context){
         this.cbInterface = cbInterface;
         this.requests = new ArrayList<>();
+        this.offlineRequests = new ArrayList<>();
+        this.context = context;
     }
 
     /**
@@ -60,7 +73,7 @@ public class RequestController {
      */
     public void accept(Request request){
         request.setAccepted(Boolean.TRUE);
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         String requestId = request.getID().toString();
         try{
             controller.create("request", requestId, request.toJsonString());
@@ -77,13 +90,17 @@ public class RequestController {
      */
 
     public void addDriverToList(Request request, String driverName){
-        request.addAccepted(driverName);
-        AsyncController controller = new AsyncController();
-        String requestId = request.getID().toString();
-        try{
-            controller.create("request", requestId, request.toJsonString());
-        } catch (Exception e){
-            Log.i("Error updating driver", e.toString());
+        if(isConnected()) {
+            request.addAccepted(driverName);
+            AsyncController controller = new AsyncController(context);
+            String requestId = request.getID().toString();
+            try {
+                controller.create("request", requestId, request.toJsonString());
+            } catch (Exception e) {
+                Log.i("Error updating driver", e.toString());
+            }
+        } else {
+            offlineSingleton.addDriverAcceptance(request);
         }
     }
     /**
@@ -95,9 +112,8 @@ public class RequestController {
      * @param dropOffCoords Coordinates of dropoff location
      * @param date Date at which the rider wishes to be picked up
      */
-
     public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date, float fare, float costDistance){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         currenRequest = new Request(rider.getName(), pickup, dropoff, pickupCoords, dropOffCoords, date);
         currenRequest.setFare(fare);
         currenRequest.setCostDistance(costDistance);
@@ -107,10 +123,16 @@ public class RequestController {
         this.add(currenRequest);
 
         try{
-            controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+            if(isConnected()) {
+                controller.create("request", currenRequest.getID().toString(), currenRequest.toJsonString());
+            } else {
+                offlineSingleton.addRiderRequest(currenRequest);
+                Toast.makeText(context, "No internet connectivity, request will be sent once online", Toast.LENGTH_SHORT).show();
+            }
         } catch (Exception e){
             Log.i("Error creating request", e.toString());
         }
+
     }
 
     public void updateFare(float newFare) {
@@ -125,7 +147,7 @@ public class RequestController {
      * @return ArrayList<Request>
      */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
-        JsonArray jsonArray = new AsyncController().getAllFromIndex("request");
+        JsonArray jsonArray = new AsyncController(context).getAllFromIndex("request");
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
         for (JsonElement element: jsonArray) {
@@ -153,10 +175,18 @@ public class RequestController {
         keyword = keyword.toLowerCase();
         Pattern p = Pattern.compile(keyword);
         Request request;
+        int fare;
+        try{
+            fare = Integer.parseInt(keyword);
+        } catch(Exception e) {
+            fare = 999999; //set as some high number
+        }
         try {
-            Log.i("doesContain", jsonElement.toString());
-           // Log.i("Request", request.toJsonString(jsonElement.getAsJsonObject().getAsJsonObject("_source")));
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
+            if(fare < request.getFare()) {
+                return true;
+            }
+
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();
@@ -172,7 +202,7 @@ public class RequestController {
     }
 
     public ArrayList<String> getPossibleDriversWithRequestID(String requestId) {
-        AsyncController con = new AsyncController();
+        AsyncController con = new AsyncController(context);
         try {
             JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
             Request request = new Request(requestJson);
@@ -187,7 +217,7 @@ public class RequestController {
     public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
     public Request getRequestFromServer(String requestId) {
-        AsyncController con = new AsyncController();
+        AsyncController con = new AsyncController(this.context);
         try {
             JsonObject requestObj = con.get("request", "id", requestId).getAsJsonObject();
             Request request = new Request(requestObj);
@@ -217,7 +247,7 @@ public class RequestController {
      */
     public void getUserRequest(final UUID userID) {
         // Get all user requests from the database
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider", userID.toString());
         for (JsonElement result : queryResults) {
             try {
@@ -235,7 +265,8 @@ public class RequestController {
      */
     public void getAllRequests() {
             // Get all user requests from the database
-        AsyncController controller = new AsyncController();
+        requests.clear();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getAllFromIndex("request");
         for (JsonElement result : queryResults) {
             try {
@@ -254,22 +285,26 @@ public class RequestController {
      * @param distance distance of the point to filter requests from
      */
     public void findAllRequestsWithinDistance(final LatLng center, final String distance){
-        AsyncController controller = new AsyncController();
-        JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
-        requests.clear();
-        for (JsonElement result : queryResults) {
-            try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
-            } catch (Exception e) {
-                Log.i("Error parsing requests", e.toString());
+        if(isConnected()) {
+            AsyncController controller = new AsyncController(this.context);
+            JsonArray queryResults = controller.geoDistanceQuery("request", center, distance);
+            requests.clear();
+            for (JsonElement result : queryResults) {
+                try {
+                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                } catch (Exception e) {
+                    Log.i("Error parsing requests", e.toString());
+                }
             }
+        } else {
+            getAllRequests();
         }
         cbInterface.update();
 
     }
 
     public void findAllRequestsWithDataMember(String dataType, String variable, String variableValue){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getFromIndexObjectInArray(dataType, variable, variableValue);
 
         for (JsonElement result : queryResults) {
@@ -280,5 +315,93 @@ public class RequestController {
             }
         }
         cbInterface.update();
+    }
+    public void driverAcceptRequest(Request request, String driverName, Rider rider) {
+        rider.setPendingNotification("A driver is willing to " +
+                "fulfill your Ride! Check your Requests for more info.");
+        if(isConnected()) {
+            request.addAccepted(driverName);
+            AsyncController controller = new AsyncController(this.context);
+            String requestId = request.getID().toString();
+            try {
+                controller.create("request", requestId, request.toJsonString());
+                controller.create("user", rider.getID().toString(), new Gson().toJson(rider));
+                //successful account creation
+                Toast.makeText(context, "You have agreed to fulfill a riders request! " +
+                        "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
+            } catch (Exception e) {
+                Log.i("Error updating driver", e.toString());
+            }
+        } else {
+            offlineSingleton.addDriverAcceptance(request);
+        }
+    }
+
+    /**
+     * Executes all the pending driver acceptance and rider requests
+     * @param driverName
+     */
+    public void executeAllPending(String driverName) {
+        try {
+            //For offline functionality if went online and started this view send pending acceptance of requests
+            if (isPendingExecutableAcceptance() && driverName != null) {
+                executePendingAcceptance(driverName);
+                Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
+            }
+
+            //Sending requests made when offline if go online
+            if (isPendingExecutableRequests()) {
+                executePendingRequests();
+                Toast.makeText(context, "Now online, pending requests sent", Toast.LENGTH_SHORT).show();
+            }
+        }
+        catch(Exception e) {
+            Log.i("Error executing pending", e.toString());
+        }
+    }
+
+    /**
+     * Sends pending requests to the elastic search server
+     */
+    public void executePendingRequests() {
+        AsyncController controller = new AsyncController(this.context);
+        for(Request r: offlineSingleton.getRiderRequests()) {
+            controller.create("request", r.getID().toString(), r.toJsonString());
+        }
+        offlineSingleton.clearRiderRequests();
+    }
+
+    /**
+     * Sends pending acceptance to the elastic search server
+     * @param driver
+     */
+    public void executePendingAcceptance(String driver) {
+        for(Request r: offlineSingleton.getDriverRequests()) {
+            addDriverToList(r, driver);
+        }
+        offlineSingleton.clearDriverRequests();
+    }
+
+    public boolean isPendingExecutableRequests() {
+        return offlineSingleton.getRiderRequests().size() > 0 && isConnected();
+    }
+
+    public boolean isPendingExecutableAcceptance() {
+        return offlineSingleton.isPendingAcceptance() && isConnected();
+    }
+
+    public boolean isPendingExecutableNotification() {
+        return offlineSingleton.isPendingNotification() && isConnected();
+    }
+
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 }

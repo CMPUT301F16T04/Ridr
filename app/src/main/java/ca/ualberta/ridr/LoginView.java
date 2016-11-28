@@ -1,7 +1,10 @@
 package ca.ualberta.ridr;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
@@ -12,6 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
 
 /**
  * Modified by nkaefer on 2016/11/08, Modified by Jusitn on November 24, 2016
@@ -45,13 +49,14 @@ public class LoginView extends Activity implements ACallback {
      * The As driver.
      */
     boolean asDriver;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.login_screen);
 
-        accountController = new AccountController(this);
+        accountController = new AccountController(this, context);
 
         asDriver = true;
 
@@ -65,14 +70,24 @@ public class LoginView extends Activity implements ACallback {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //launches to next activity activity
-                //check for empty textbox
-                String username = usernameLogin.getText().toString();
-                if(TextUtils.isEmpty(username)){
-                    Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
-                    return;
+                if(isConnected()) {
+
+                    //Call to save requests to file for offline functionality
+                    new AsyncController(context).getAllFromIndex("request");
+                    new AsyncController(context).getAllFromIndex("user");
+                    new AsyncController(context).getAllFromIndex("ride");
+
+                    //launches to next activity activity
+                    //check for empty textbox
+                    String username = usernameLogin.getText().toString();
+                    if(TextUtils.isEmpty(username)){
+                        Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                    accountController.loginUser(username);
+                } else {
+                    Toast.makeText(LoginView.this, "Cannot communicate with the elastic search server while offline", Toast.LENGTH_SHORT).show();
                 }
-                accountController.loginUser(username);
             }
         });
 
@@ -99,6 +114,11 @@ public class LoginView extends Activity implements ACallback {
                 startActivity(addAccountIntent);
             }
         });
+
+    }
+
+    protected void onStart() {
+        super.onStart();
 
     }
 
@@ -185,4 +205,14 @@ public class LoginView extends Activity implements ACallback {
             }
         }
     };
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
+    }
 }

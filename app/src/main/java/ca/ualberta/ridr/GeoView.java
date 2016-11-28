@@ -1,6 +1,7 @@
 package ca.ualberta.ridr;
 
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Location;
@@ -53,8 +54,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
+    private RiderController riders;
     private boolean firstLoad;
     private boolean test;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +67,8 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
         firstLoad = false;
-        requests = new RequestController(this);
+        requests = new RequestController(this, context);
+        riders = new RiderController(context);
         if (mGoogleApiClient == null && !test) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -93,6 +97,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
 
         super.onStart();
+
+        //Executes any pending functions from offline functionality once online
+        requests.executeAllPending(username);
+        riders.pushPendingNotifications();
     }
     protected void onResume(){
 

@@ -1,5 +1,7 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
+
 import android.support.annotation.Nullable;
 import android.util.Log;
 import com.google.gson.JsonArray;
@@ -17,17 +19,19 @@ import java.util.UUID;
  */
 
 public class RideController {
+    Context context;
     ArrayList<Ride> rides;
     ACallback cbInterface;
     AsyncController controller;
 
-    RideController() {
+    RideController(Context context) {
+        this.context = context;
     }
 
-    RideController(ACallback rideInterface) {
+    RideController(ACallback rideInterface, Context context) {
         this.cbInterface = rideInterface;
         this.rides = new ArrayList<>();
-        controller = new AsyncController();
+        controller = new AsyncController(context);
     }
 
     public ArrayList<Ride> getAll() {
@@ -49,8 +53,8 @@ public class RideController {
         //another cant do while the ride array list of rider is null
 
         String rideString = ride.toJsonString();
-        AsyncController con = new AsyncController();
-        JsonObject s = con.create("ride", ride.getId().toString(), rideString);
+        AsyncController con = new AsyncController(context);
+        JsonObject s = con.create("ride",ride.getId().toString(), rideString);
 
     }
 
@@ -62,7 +66,7 @@ public class RideController {
      */
     public void getDriverRides(final String userID) {
         // Get all user rides from the database
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         try {
             JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "driver", userID);
             for (JsonElement result : queryResults) {
@@ -86,7 +90,7 @@ public class RideController {
      */
     public void getRiderRides(final String userID) {
         // Get all user rides from the database
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         try {
             JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "rider", userID.toString());
             for (JsonElement result : queryResults) {

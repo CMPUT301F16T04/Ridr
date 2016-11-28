@@ -18,6 +18,9 @@ import static org.junit.Assert.assertTrue;
  */
 
 public class RequestControllerTest{
+<<<<<<< HEAD
+/*
+=======
 
 
   //  @Test
@@ -53,6 +56,7 @@ public class RequestControllerTest{
 //
 //    }
 
+>>>>>>> 2385fd7675cceed014c43f673d174e9e36f67d58
     @Test
     public void testRequestControllerAccept(){
         LatLng coords = new LatLng(1,2);
