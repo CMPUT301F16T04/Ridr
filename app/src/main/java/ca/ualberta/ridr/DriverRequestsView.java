@@ -12,10 +12,10 @@ import android.widget.Toast;
 import java.util.ArrayList;
 
 /**
- * This view displays requests when logged in as a rider. Implements ACallback, which uses the update()
+ * This view displays requests when logged in as a Driver. Implements ACallback, which uses the update()
  * method to update the rider's request list.
  */
-public class RequestsFromRidersView extends Activity implements ACallback{
+public class DriverRequestsView extends Activity implements ACallback{
 
     private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
@@ -57,7 +57,7 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         //update gets called from Acallback
 
 
-        RequestAdapter customAdapter = new RequestAdapter(RequestsFromRidersView.this, requests, userName);
+        RequestAdapter customAdapter = new RequestAdapter(DriverRequestsView.this, requests, userName);
         requestList.setAdapter(customAdapter);
 
         //this is to recognize listview item presses within the view
@@ -65,15 +65,15 @@ public class RequestsFromRidersView extends Activity implements ACallback{
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Request request = requests.get(position);
                 String clickedRequestIDStr = request.getID().toString();
-                Intent intent = new Intent(RequestsFromRidersView.this, AcceptRiderView.class);
-                intent.putExtra("RequestUUID", request.getID().toString());
+                Intent intent = new Intent(DriverRequestsView.this, AcceptRiderView.class);
+                intent.putExtra("RequestUUID", clickedRequestIDStr);
                 intent.putExtra("userName", userName);
                 startActivity(intent);
             }
         });
 
         if(requests.size() <= 0){
-            Toast.makeText(RequestsFromRidersView.this, "You haven't accepted any requests yet!", Toast.LENGTH_LONG).show();
+            Toast.makeText(DriverRequestsView.this, "You haven't accepted any requests yet!", Toast.LENGTH_LONG).show();
         }
 
     }
@@ -84,8 +84,9 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         requests.clear();
         ArrayList<Request> requestControllerList = requestController.getList();
         for (int i = 0; i < requestControllerList.size(); ++i){
-            if(requestControllerList.get(i).isValid()){
-                //add to our request list, if the request is a valid request (not cancelled)
+            if(requestControllerList.get(i).isValid() && !requestControllerList.get(i).isAccepted()){
+                //add to our request list, if the request is a valid request (not cancelled),
+                // and not accepted by anybody else
                 requests.add(requestControllerList.get(i));
             }
         }
