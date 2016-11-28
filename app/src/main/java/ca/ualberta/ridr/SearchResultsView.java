@@ -21,7 +21,8 @@ import java.util.UUID;
 
 /**
  * The view that shows keyword search results for a driver
- * Also allows new keyword searches to be performed
+ * Also allows new keyword searches to be performed.
+ * Can also launch to searching for rides by geolocation, and viewing a Drivers Requests and Rides.
  */
 public class SearchResultsView extends Activity {
 
@@ -155,6 +156,12 @@ public class SearchResultsView extends Activity {
                         Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
                         viewRequestsIntent.putExtra("Name", username);
                         startActivity(viewRequestsIntent);
+                        return true;
+                    case R.id.mainRiderMenuViewRides:
+                        Toast.makeText(SearchResultsView.this, "View Rides", Toast.LENGTH_SHORT).show();
+                        Intent viewRidesIntent = new Intent(SearchResultsView.this, DriverRideView.class);
+                        viewRidesIntent.putExtra("Name", username);
+                        startActivity(viewRidesIntent);
                         return true;
                     default:
                         return false;

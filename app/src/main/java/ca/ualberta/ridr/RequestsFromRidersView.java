@@ -10,6 +10,10 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 
+/**
+ * This view displays requests when logged in as a rider. Implements ACallback, which uses the update()
+ * method to update the rider's request list.
+ */
 public class RequestsFromRidersView extends Activity implements ACallback{
 
     private String userName;

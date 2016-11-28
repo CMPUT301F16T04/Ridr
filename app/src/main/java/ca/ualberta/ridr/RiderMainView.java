@@ -54,7 +54,8 @@ import com.google.gson.Gson;
 import android.location.Location;
 
 /**
- * This view allows for a rider to create a new request
+ * This view allows for a rider to create a new request. Allows Rider to also see his requests and
+ * rides from the menu option. Implements google maps methods, as well as ACallback.
  */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
@@ -73,7 +74,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private PlaceAutocompleteFragment pickupAutocompleteFragment;
     private PlaceAutocompleteFragment dropoffAutocompleteFragment;
 
-    private String riderName; // string of the curretn UUID
+    private String riderName; // string of the current UUID
     private Rider currentRider;
 
     private String defaultStartText = "Enter Pick Up Location";
@@ -97,10 +98,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private float distance;
     private float fare;
 
-
-
     RequestController reqController;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -124,8 +122,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     .build();
         }
 
-
-
         //retrieve the current rider's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
@@ -140,11 +136,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                //startLocation.setText(place.getAddress().toString());
-                //Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
                 pickupStr = place.getAddress().toString();
                 pickupCoord = place.getLatLng();
-                //addMarkers(pickupCoord, "Pickup");
                 addMarkers(pickupCoord, true);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
                 if(dropoffCoord != null){
@@ -161,11 +154,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         dropoffAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
-                //endLocation.setText(place.getAddress().toString());
-                //Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
                 dropoffStr = place.getAddress().toString();
                 dropoffCoord = place.getLatLng();
-                //addMarkers(dropoffCoord, "Dropoff");
                 addMarkers(dropoffCoord, false);
                 gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dropoffCoord, 11));
                 if(pickupCoord != null){
@@ -406,6 +396,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
                         viewRequestsIntent.putExtra("Name", riderName);
                         startActivity(viewRequestsIntent);
+                        return true;
+                    case R.id.mainRiderMenuViewRides:
+                        resetText();
+                        Intent viewRidesIntent = new Intent(RiderMainView.this, RiderRidesView.class);
+                        viewRidesIntent.putExtra("Name", riderName);
+                        startActivity(viewRidesIntent);
                         return true;
                     default:
                         return false;

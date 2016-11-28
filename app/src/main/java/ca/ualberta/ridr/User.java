@@ -9,6 +9,8 @@ import io.searchbox.annotations.JestId;
 
 /**
  * Created by mackenzie on 12/10/16.
+ *
+ * A user object that represents a user using our app. Both Drivers and Riders are based off of users.
  */
 public class User {
     private String name;
@@ -86,19 +88,10 @@ public class User {
         this.phoneNumber = phoneNumber;
     }
 
-    public boolean isOffline() {
-        return false;
-    }
-
-    public void goOffline() {
-    }
-
-    public void goOnline() {
-    }
-
     public void setRiderStatus(boolean status) {
         this.isRider = status;
     }
+
     public boolean isRider(){
         return isRider;
     }

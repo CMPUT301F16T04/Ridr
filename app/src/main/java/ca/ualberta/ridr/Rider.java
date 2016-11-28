@@ -11,15 +11,15 @@ import io.searchbox.annotations.JestId;
 /**
  * Created by jferris on 22/10/16.
  * Worked on by Marc-O and Kristy on 03/11/2016
+ *
+ * This object represents a Rider, which extends a User.
  */
 public class Rider extends User {
     @JestId
-    private transient ArrayList<Ride> rideArrayList;
     private transient ArrayList<Request> requestArrayList;
 
     public Rider (String name, Date dateOfBirth, String creditCard, String email, String phoneNumber) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
-        this.rideArrayList = new ArrayList<Ride>();
         this.requestArrayList = new ArrayList<Request>();
         super.setRiderStatus(true);
     }
@@ -32,14 +32,6 @@ public class Rider extends User {
         super.setRiderStatus(status);
     }
 
-    public ArrayList<Ride> getRides() {
-        return rideArrayList;
-    }
-
-    public void setRides(ArrayList<Ride> rideArrayList) {
-        this.rideArrayList = rideArrayList;
-    }
-
     public ArrayList<Request> getRequests() {
         return requestArrayList;
     }
@@ -48,24 +40,8 @@ public class Rider extends User {
         this.requestArrayList = requestArrayList;
     }
 
-
-    public void acceptRideOffer(Driver driver) {
-    }
-
-    public void requestRide(String s, String s1) {
-    }
-
     public void removeRequest(Request currentRequest) {
         requestArrayList.remove(currentRequest);
-    }
-
-    public void confirmDriver(Ride ride){
-            rideArrayList.add(ride);
-
-    }
-
-    public void addRequest(Request request){
-        requestArrayList.add(request);
     }
 
 

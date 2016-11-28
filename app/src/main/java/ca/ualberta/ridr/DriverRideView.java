@@ -18,6 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This is the view that shows all of the rides that the Driver is fulfilling. It implements the
+ * ACallback interface, which updates code based on our controllers.
+ */
 public class DriverRideView extends Activity implements ACallback {
     ListView rideList;
     RideController rides;
@@ -34,7 +38,7 @@ public class DriverRideView extends Activity implements ACallback {
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            driver = extras.getString("username");
+            driver = extras.getString("Name");
         }
         // If no driver is passed in go to login page
         if(driver == null) {
@@ -43,7 +47,7 @@ public class DriverRideView extends Activity implements ACallback {
             finish();
         }
         rideList = (ListView) findViewById(R.id.driverRidesList);
-        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
+        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>(), "driver");
 
 
         rideList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
@@ -72,7 +76,8 @@ public class DriverRideView extends Activity implements ACallback {
     }
 
     @Override
-    /* Used when the ride controller is finishes fetching rides from the server or file storage
+    /**
+     * Used when the ride controller is finishes fetching rides from the server or file storage
      */
     public void update() {
         rideAdapter.clear();

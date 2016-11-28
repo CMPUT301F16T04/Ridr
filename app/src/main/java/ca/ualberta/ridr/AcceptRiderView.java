@@ -21,7 +21,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -39,6 +38,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.UUID;
 
+/**
+ * This view displays a request object from a drivers perspective, on top of a google maps
+ * view of the ride. It lets a driver accept a request from a rider.
+ */
 public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallback, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener {
 
     private TextView requestFrom;
@@ -331,7 +334,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      * @param requestId used to find the possible drivers list
      */
     private void checkIfUserAccepted(String requestId) {
-        ArrayList<String> drivers = requestController.getPossibleDrivers(requestId);
+        ArrayList<String> drivers = requestController.getPossibleDriversWithRequestID(requestId);
         for (int i = 0; i < drivers.size(); ++i) {
             if (drivers.get(i).equals(username)) {
                 agreedToFulfill = true;
@@ -351,7 +354,11 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     }
 
     //    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
-// How to disable a button during animations
+    //    How to disable a button during animations
+
+    /**
+     * Does a slide up animation for our request info
+     */
     private void slideUp(){
         LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.requestInfo);
         if(hiddenPanel.getVisibility() == View.VISIBLE){
