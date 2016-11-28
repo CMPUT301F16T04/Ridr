@@ -14,8 +14,12 @@ import java.util.Date;
 import java.util.UUID;
 
 /**
- * Created by jferris on 22/10/16.
+ * Created by jferris on 22/10/16, modified by Justin Barclay
+ * This is a controller for the rides object that can fetch rides from the server
+ * Store them in an array and modify rides and store them on the server
+ * 
  */
+
 public class RideController {
     ArrayList<Ride> rides;
     ACallback cbInterface;
@@ -47,6 +51,12 @@ public class RideController {
 
     }
 
+
+    /**
+     * Gets all rides for a driver from the server
+     * If a parsing a ride fails log it.
+     * @param userID the user id
+     */
     public void getDriverRides(final String userID) {
         // Get all user rides from the database
         AsyncController controller = new AsyncController();
@@ -66,7 +76,12 @@ public class RideController {
         }
     }
 
-    public void getRiderRides(final UUID userID) {
+    /**
+     * Get all rider rides for a particular rider
+     * Log any exceptions to console
+     * @param userID the user id
+     */
+    public void getRiderRides(final String userID) {
         // Get all user rides from the database
         AsyncController controller = new AsyncController();
         try {
@@ -85,6 +100,13 @@ public class RideController {
         }
     }
 
+
+    /**
+     * Use merge sort to sort a rides array list by uncompleted, completed, and completed and paid.
+     *
+     * @param toSort the to sort
+     * @return the array list
+     */
     public ArrayList<Ride> sortRides(ArrayList<Ride> toSort){
         if(toSort.size() <= 1){
             return toSort;
@@ -105,6 +127,12 @@ public class RideController {
         return mergeRides(left, right);
     }
 
+    /**
+     * Helper function for merge sort
+     * @param left
+     * @param right
+     * @return
+     */
     private ArrayList<Ride> mergeRides(ArrayList<Ride> left, ArrayList<Ride> right){
         ArrayList<Ride> result = new ArrayList<>();
 
@@ -141,13 +169,22 @@ public class RideController {
 
         return result;
     }
-    
+
+    /**
+     * Get a single ride from the rides array list
+     * @param id
+     * @return
+     */
     @Nullable
     public Ride getRide(String id){
         Ride ride = findRideInList(id);
         return ride;
     }
 
+    /**
+     * Grab a single ride from the server
+     * @param rideID
+     */
     public void findRide(String rideID) {
         JsonObject ride = controller.get("ride", "id", rideID);
         try {
@@ -159,18 +196,23 @@ public class RideController {
         }
     }
 
-    public void updateRide(String id){
-        Ride ride = findRideInList(id);
-        controller.create("ride", ride.getId().toString(), ride.toJsonString());
-    }
-
+    /**
+     * Complete a ride and then notify the server the ride is complete
+     * @param rideid
+     */
     public void completeRide(String rideid){
         Ride ride = findRideInList(rideid);
         ride.setCompleted(true);
         controller.create("ride", ride.getId().toString(), ride.toJsonString());
     }
+
+    /**
+     * Helper function to find all rides in a list
+     * @param id
+     * @return
+     */
     @Nullable
-    public Ride findRideInList(String id){
+    private Ride findRideInList(String id){
         for(int i=0; i<rides.size(); ++i){
             Ride ride = rides.get(0);
             if(ride.getId().equals(UUID.fromString(id))){
