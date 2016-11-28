@@ -30,6 +30,8 @@ public class AcceptDriverView extends Activity {
 
     private TextView driverEmail;
     private TextView driverPhone;
+    private TextView vehicleInfo;
+    private TextView vehicleTitle;
     private Button accept;
     private TextView xProfile;
 
@@ -50,6 +52,8 @@ public class AcceptDriverView extends Activity {
 
         driverEmail = (Button) findViewById(R.id.driver_email);
         driverPhone = (Button) findViewById(R.id.driver_phone);
+        vehicleTitle = (TextView) findViewById(R.id.vehicle_title_driver);
+        vehicleInfo = (TextView) findViewById(R.id.vehicle_info_driver);
         xProfile = (TextView) findViewById(R.id.x_profile);
         accept = (Button) findViewById(R.id.accept_button);
 
@@ -75,6 +79,7 @@ public class AcceptDriverView extends Activity {
 
         driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
+        vehicleInfo.setText(driver.getVehicleDescription());
         xProfile.setText(capitalizeName(driverName));
 
         //if the user clicks the accept button state of the request is modified, a ride is created
