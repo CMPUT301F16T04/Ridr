@@ -145,7 +145,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         endLocation.setText(endLocText);
 
         //have to check if the user previously accepted
-        checkIfUserAccepted(requestID.toString());
+        checkIfUserAccepted(request);
 
         //display two diff strings based on status of acceptance
         if(agreedToFulfill){
@@ -342,10 +342,10 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      * iterate through the requests possibleDriver arraylist, and see if we are in it
      * if we are we will set the flag to true so cannot try to reaccept
      *
-     * @param requestId used to find the possible drivers list
+     * @param request used to find the possible drivers list
      */
-    private void checkIfUserAccepted(String requestId) {
-        ArrayList<String> drivers = requestController.getPossibleDriversWithRequestID(requestId);
+    private void checkIfUserAccepted(Request request) {
+        ArrayList<String> drivers = request.getPossibleDrivers();
         for (int i = 0; i < drivers.size(); ++i) {
             if (drivers.get(i).equals(username)) {
                 agreedToFulfill = true;

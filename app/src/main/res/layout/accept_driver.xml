@@ -43,12 +43,32 @@
         android:id="@+id/driver_email"
         android:layout_weight="0.15" />
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="25dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/vehicle_title_driver"
+        android:text="Vehicle Description"
+        android:textSize="20sp" />
+
+    <TextView
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:id="@+id/vehicle_info_driver"
+        android:textSize="20sp"
+        android:layout_weight="0.06" />
+
 
     <Button
         android:text="Accept"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:layout_marginTop="250dp"
+        android:layout_marginTop="200dp"
         android:layout_marginBottom="5dp"
         android:background="@color/tertiary_colour"
         android:layout_width="match_parent"
