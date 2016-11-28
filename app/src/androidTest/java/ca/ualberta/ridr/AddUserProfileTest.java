@@ -44,7 +44,7 @@ public class AddUserProfileTest {
         User user = new User("testyyy", date1, "321", "goodemail", "9999999");
 
         //add user
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         try{
             controller.create("user", user.getID().toString(), new Gson().toJson(user));
         } catch (Exception e){

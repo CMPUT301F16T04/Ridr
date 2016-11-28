@@ -75,7 +75,7 @@ public class RequestController {
      */
     public void accept(Request request){
         request.setAccepted(Boolean.TRUE);
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         String requestId = request.getID().toString();
         try{
             controller.create("request", requestId, request.toJsonString());
@@ -94,7 +94,7 @@ public class RequestController {
     public void addDriverToList(Request request, String driverName){
         if(isConnected()) {
             request.addAccepted(driverName);
-            AsyncController controller = new AsyncController();
+            AsyncController controller = new AsyncController(context);
             String requestId = request.getID().toString();
             try {
                 controller.create("request", requestId, request.toJsonString());
@@ -115,7 +115,7 @@ public class RequestController {
      * @param date Date at which the rider wishes to be picked up
      */
     public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date, float fare, float costDistance){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(context);
         currenRequest = new Request(rider.getName(), pickup, dropoff, pickupCoords, dropOffCoords, date);
         currenRequest.setFare(fare);
         currenRequest.setCostDistance(costDistance);
@@ -185,7 +185,7 @@ public class RequestController {
         Pattern p = Pattern.compile(keyword);
         Request request;
         try {
-            Log.i("doesContain", jsonElement.toString());
+            //Log.i("doesContain", jsonElement.toString());
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
 
             stringArray = request.queryableRequestVariables();
@@ -204,7 +204,7 @@ public class RequestController {
 
 
     public ArrayList<String> getPossibleDrivers(String requestId) {
-        AsyncController con = new AsyncController();
+        AsyncController con = new AsyncController(context);
         try {
             JsonObject requestJson = con.get("request", "id" , requestId).getAsJsonObject();
             Request request = new Request(requestJson);
@@ -306,7 +306,7 @@ public class RequestController {
     }
 
     public void findAllRequestsWithDataMember(String dataType, String variable, String variableValue){
-        AsyncController controller = new AsyncController();
+        AsyncController controller = new AsyncController(this.context);
         JsonArray queryResults = controller.getFromIndexObjectInArray(dataType, variable, variableValue);
 
         for (JsonElement result : queryResults) {
@@ -323,7 +323,7 @@ public class RequestController {
                 "fulfill your Ride! Check your Requests for more info.");
         if(isConnected()) {
             request.addAccepted(driverName);
-            AsyncController controller = new AsyncController();
+            AsyncController controller = new AsyncController(this.context);
             String requestId = request.getID().toString();
             try {
                 controller.create("request", requestId, request.toJsonString());

@@ -101,7 +101,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
 
 
-    RequestController reqController;
+    private RequestController reqController;
+    private RiderController riderController;
 
 
     @Override
@@ -110,6 +111,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
 
         setContentView(R.layout.rider_main);
         reqController = new RequestController(this, context);
+        riderController = new RiderController(context);
 
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.newRequestMap);
         mapFragment.getMapAsync(this);
@@ -227,27 +229,32 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         //from the name, get the rider object
         //we want this in onStart, because we want to pull notification every time we go back to the activity
         try {
-            currentRider = new Gson().fromJson(new AsyncController().get("user", "name", riderName), Rider.class);
+            currentRider = new Gson().fromJson(new AsyncController(context).get("user", "name", riderName), Rider.class);
         } catch(Exception e){
             Log.i("Error parsing Rider", e.toString());
         }
 
         //check for notifications, display
-        if(currentRider.getPendingNotification() != null){
-            Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_LONG).show();
-            currentRider.setPendingNotification(null);
-            //update the user object in the database
-            try {
-                AsyncController asyncController = new AsyncController();
-                asyncController.create("user", currentRider.getID().toString(), new Gson().toJson(currentRider));
-                //successful account updating
-            } catch (Exception e){
-                Log.i("Communication Error", "Could not communicate with the elastic search server");
+        try {
+            if (currentRider.getPendingNotification() != null) {
+                Toast.makeText(this, currentRider.getPendingNotification(), Toast.LENGTH_LONG).show();
+                currentRider.setPendingNotification(null);
+                //update the user object in the database
+                try {
+                    AsyncController asyncController = new AsyncController(context);
+                    asyncController.create("user", currentRider.getID().toString(), new Gson().toJson(currentRider));
+                    //successful account updating
+                } catch (Exception e) {
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                }
             }
+        } catch(Exception e) {
+            Log.i("error check notify", e.toString());
         }
 
         //Executes any pending functions from offline functionality once online
         reqController.executeAllPending(riderName);
+        riderController.pushPendingNotifications();
     }
     protected void onResume(){
         super.onResume();

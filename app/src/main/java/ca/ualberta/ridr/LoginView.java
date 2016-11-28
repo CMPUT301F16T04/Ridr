@@ -47,7 +47,7 @@ public class LoginView extends Activity {
      * The As driver.
      */
     boolean asDriver;
-    Context context = this;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

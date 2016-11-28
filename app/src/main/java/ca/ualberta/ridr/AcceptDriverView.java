@@ -91,7 +91,7 @@ public class AcceptDriverView extends Activity {
                 driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides " +
                         "for more info.");
                 try {
-                    AsyncController asyncController = new AsyncController();
+                    AsyncController asyncController = new AsyncController(context);
                     asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
                     //successful account updating
                 } catch (Exception e){
@@ -145,6 +145,7 @@ public class AcceptDriverView extends Activity {
 
         //Executes any pending functions from offline functionality once online
         reqCon.executeAllPending(riderName);
+        riderCon.pushPendingNotifications();
 
     }
 

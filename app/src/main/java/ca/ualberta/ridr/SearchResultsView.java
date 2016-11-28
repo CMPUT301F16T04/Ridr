@@ -30,7 +30,8 @@ public class SearchResultsView extends Activity {
 
     private ArrayList<Request> requestList = new ArrayList<>();
     private Context context = this;
-    final RequestController requestController = new RequestController(context);
+    private RequestController requestController = new RequestController(context);
+    private RiderController riderController = new RiderController(context);
     private String keyword;
     private ListView searchResults;
     private RequestAdapter requestAdapter;
@@ -109,7 +110,7 @@ public class SearchResultsView extends Activity {
         //get driver object from server, and display notification if there is one
         //we want this in OnStart, as every time we load up this activity we want to check for notifications
         if(isConnected()) {
-            DriverController driverController = new DriverController();
+            DriverController driverController = new DriverController(context);
             driver = driverController.getDriverFromServerUsingName(driverName);
             //check for notifications, display
             if (driver.getPendingNotification() != null) {
@@ -117,7 +118,7 @@ public class SearchResultsView extends Activity {
                 driver.setPendingNotification(null);
                 //update the user object in the database
                 try {
-                    AsyncController asyncController = new AsyncController();
+                    AsyncController asyncController = new AsyncController(context);
                     asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
                     //successful account updating
                 } catch (Exception e) {
@@ -129,11 +130,9 @@ public class SearchResultsView extends Activity {
         requestAdapter = new RequestAdapter(this, requestList);
         searchResults.setAdapter(requestAdapter);
 
-        //Check for pending acceptance of requests made offline
-        if(requestController.isPendingExecutableAcceptance()) {
-            requestController.executePendingAcceptance(driverName);
-            Toast.makeText(context, "Now online, pending acceptance of request sent", Toast.LENGTH_SHORT).show();
-        }
+        //Executes any pending functions from offline functionality once online
+        requestController.executeAllPending(driverName);
+        riderController.pushPendingNotifications();
     }
 
     /**

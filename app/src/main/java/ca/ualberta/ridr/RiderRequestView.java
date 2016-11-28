@@ -53,7 +53,8 @@ public class RiderRequestView extends Activity {
     ListView oldRequestsList;
 
     private RequestController reqCon = new RequestController(context);
-    private DriverController driverCon = new DriverController();
+    private DriverController driverCon = new DriverController(context);
+    private RiderController riderCon = new RiderController(context);
 
 
     @Override
@@ -109,6 +110,7 @@ public class RiderRequestView extends Activity {
 
         //Executes any pending functions from offline functionality once online
         reqCon.executeAllPending(riderName);
+        riderCon.pushPendingNotifications();
             
     }
 

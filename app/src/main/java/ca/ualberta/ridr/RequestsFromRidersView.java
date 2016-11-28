@@ -17,8 +17,9 @@ public class RequestsFromRidersView extends Activity implements ACallback{
     private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
-    private RequestController requestController;
-    Context context = this;
+    private Context context = this;
+    private RequestController requestController = new RequestController(context);
+    private RiderController riderController = new RiderController(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +42,10 @@ public class RequestsFromRidersView extends Activity implements ACallback{
         if(requests != null){
             requests.clear();
         }
+
+        //Executes any pending functions from offline functionality once online
+        requestController.executeAllPending(userName);
+        riderController.pushPendingNotifications();
 
         //We need to get the list of requests that has this drivers UUID in their possibleDrivers list
         requestController = new RequestController(this, context);

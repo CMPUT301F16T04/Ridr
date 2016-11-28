@@ -9,6 +9,7 @@ import android.util.Log;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.reflect.TypeToken;
 
@@ -24,6 +25,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.regex.Pattern;
 
 /**
  * Created by Justin on 2016-11-10.
@@ -59,13 +61,19 @@ public class AsyncController {
     public JsonObject get(String dataClass, String attribute, String value) {
         // This takes an objectType, attribute, and value and returns the first match that elastic
         // search finds
-        controller = new AsyncDatabaseController("get");
-        try{
-            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ attribute+"\":\"" + value + "\"}}}}}";
-
-            return extractFirstElement(controller.execute(dataClass, searchString).get());
-        } catch(Exception e){
-            return null;
+        String file = getFile(dataClass, attribute);
+        if(isConnected()) {
+            controller = new AsyncDatabaseController("get");
+            try {
+                String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"" + attribute + "\":\"" + value + "\"}}}}}";
+                JsonArray jsonArray = extractAllElements(controller.execute(dataClass, searchString).get());
+                saveInFile(jsonArray, file);
+                return jsonArray.get(0).getAsJsonObject().getAsJsonObject("_source");
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            return searchInFile(dataClass, attribute, value);
         }
     }
 
@@ -90,6 +98,17 @@ public class AsyncController {
             }
 
         } catch(Exception e) {
+            return null;
+        }
+    }
+
+    private JsonArray getSaveData(String dataClass) {
+        controller = new AsyncDatabaseController("getAllFromIndex");
+        try {
+            String searchString = "{\"query\": { \"match_all\": { }}}";
+            return extractAllElements(controller.execute(dataClass, searchString).get());
+        } catch(Exception e) {
+            Log.i("error getting save data", e.toString());
             return null;
         }
     }
@@ -169,8 +188,15 @@ public class AsyncController {
                         "}" +
                     "}"+
                 "}";
+        String file = getFile(dataClass, "");
         try{
-            return extractAllElements(controller.execute(dataClass, query).get());
+            if(isConnected()) {
+                JsonArray jsonArray = extractAllElements(controller.execute(dataClass, query).get());
+                saveInFile(jsonArray, file);
+                return jsonArray;
+            } else {
+                return loadFromFile(file);
+            }
         } catch(Exception e){
             Log.d("Elastic search filter", e.toString());
             return null;
@@ -195,8 +221,16 @@ public class AsyncController {
                         "}" +
                     "}"+
                 "}";
+
+        String file = getFile(dataClass, variable);
         try{
-            return extractAllElements(controller.execute(dataClass, query).get());
+            if(isConnected()) {
+                JsonArray jsonArray = extractAllElements(controller.execute(dataClass, query).get());
+                saveInFile(jsonArray, file);
+                return jsonArray;
+            } else {
+                return loadFromFile(file);
+            }
         } catch(Exception e){
             Log.d("Elastic search filter", "getFromIndexObjectInArray: " + e.toString());
             return null;
@@ -280,5 +314,26 @@ public class AsyncController {
                 activeNetwork.isConnectedOrConnecting();
 
         return isConnected;
+    }
+
+    private JsonObject searchInFile(String dataClass, String attribute, String keyword) {
+        String file = getFile(dataClass, attribute);
+        JsonArray jsonArray = loadFromFile(file);
+
+        keyword = keyword.toLowerCase();
+        Pattern p = Pattern.compile(keyword);
+        String searchTerm = "";
+
+        try {
+            for (JsonElement jsonElement: jsonArray) {
+                searchTerm = jsonArray.getAsString().toLowerCase();
+                if (p.matcher(searchTerm).find()) {
+                    return jsonElement.getAsJsonObject().getAsJsonObject("_source");
+                }
+            }
+        } catch(Exception e) {
+            Log.i("Error searching keyword", e.toString());
+        }
+        return null;
     }
 }

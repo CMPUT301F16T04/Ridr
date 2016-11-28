@@ -64,7 +64,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
     private Context context = this;
     private RequestController requestController = new RequestController(context);
     private RiderController riderController = new RiderController(context);
-    private DriverController driverController = new DriverController();
+    private DriverController driverController = new DriverController(context);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,25 +172,16 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     //driver is now willing to fulfill the ride
                     requestController.addDriverToList(request, driverName);
                     //set pending notification on riders account
-                    requestRider.setPendingNotification("A driver is willing to " +
-                            "fulfill your Ride! Check your Requests for more info.");
-                    try {
-                        AsyncController asyncController = new AsyncController();
-                        asyncController.create("user", requestRider.getID().toString(), new Gson().toJson(requestRider));
-                        //successful account creation
-                        Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
+                    riderController.setPendingNotification(requestRider);
+                    Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
                                 "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
-                    } catch (Exception e) {
-                        Log.i("Communication Error", "Could not communicate with the elastic search server");
-                        return;
-                    }
-
                     agreedToFulfill = true;
                     String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
                     status.setText(statusText);
 
                     //Executes any pending functions from offline functionality once online
                     requestController.executeAllPending(driverName);
+                    riderController.pushPendingNotifications();
                 }
             }
 
@@ -205,6 +196,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
         //Executes any pending functions from offline functionality once online
         requestController.executeAllPending(driverName);
+        riderController.pushPendingNotifications();
     }
     protected void onResume() {
         super.onResume();

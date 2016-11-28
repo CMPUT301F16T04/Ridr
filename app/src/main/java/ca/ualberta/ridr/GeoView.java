@@ -54,6 +54,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
+    private RiderController riders;
     private boolean firstLoad;
     private boolean test;
     private Context context = this;
@@ -67,6 +68,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         mapFragment.getMapAsync(this);
         firstLoad = false;
         requests = new RequestController(this, context);
+        riders = new RiderController(context);
         if (mGoogleApiClient == null && !test) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -95,6 +97,10 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         }
 
         super.onStart();
+
+        //Executes any pending functions from offline functionality once online
+        requests.executeAllPending(user);
+        riders.pushPendingNotifications();
     }
     protected void onResume(){
 
