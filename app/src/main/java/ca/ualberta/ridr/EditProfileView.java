@@ -15,6 +15,10 @@ import com.google.gson.JsonObject;
 
 import java.util.UUID;
 
+/**
+ * This is the view that is called when a user profile would like to be edited. It's populated with
+ * info from the current user calling the activity.
+ */
 public class EditProfileView extends Activity {
 
     private UUID currentUUID; // UUID of the currently logged-in rider
