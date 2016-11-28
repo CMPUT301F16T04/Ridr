@@ -18,14 +18,14 @@ import java.util.Date;
  * Created by Justin on 2016-11-12.
  */
 
-public class RideViewTest extends ActivityInstrumentationTestCase2<RideView> {
+public class DriverRidesViewTest extends ActivityInstrumentationTestCase2<DriverRidesView> {
 
     private Solo solo;
     /**
      * Instantiates a new Lonely twitter activity test.
      */
-    public RideViewTest() {
-        super(RideView.class);
+    public DriverRidesViewTest() {
+        super(DriverRidesView.class);
     }
 
     /**
@@ -39,24 +39,16 @@ public class RideViewTest extends ActivityInstrumentationTestCase2<RideView> {
     public void setUp() throws Exception{
         solo = new Solo(getInstrumentation(), getActivity());
     }
-//      A map should load
-//    public void initializeMap(){
-//        RideView maps = (RideView) solo.getCurrentActivity();
-//        solo.assertCurrentActivity("Wrong activity", RideView.class);
-//        //make sure map has no marker
-//        assertEquals(maps.countMarkers(), 0);
-//    }
-//    //      A Driver should be able to see their rides
-//    public void getDriver Rides(){
-//        RideView rideView = (RideView) solo.getCurrentActivity();
-//        rideView.setTest(true);
+//    A Driver should be able to see their rides
+//    public void getDriverRides(){
+//        DriverRidesView ridesView = (DriverRidesView) solo.getCurrentActivity();
 //
 //        // Set user
-//        rideList.setUser("kristy");
-//        solo.assertCurrentActivity("Wrong activity", GeoView.class);
+//        ridesView.setUser("kristy");
+//        solo.assertCurrentActivity("Wrong activity", DriverRidesView.class);
 //
 //        // Check to see the user has more than one ride
-//        RideController controller = rideList.getrideController();
+//        RideController controller = driverRidesList.getrideController();
 //        assert(controller.size() > 0);
 //    }
 //
