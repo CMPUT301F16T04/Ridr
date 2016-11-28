@@ -96,7 +96,7 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginBottom="10dp"
-                android:hint="@string/dob_add_account_edit_text"
+                android:hint="@string/driver_dob_hint"
                 android:textColorHint="@android:color/darker_gray"/>
             <TextView
                 android:text="@string/email_add_account"
