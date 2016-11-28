@@ -79,7 +79,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         complete = (Button) findViewById(R.id.completeRideButton);
 
         viewingAsDriver = false;
-        rides = new RideController(this);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -102,7 +101,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
         // Markers so we can count how many exist
         markers = new ArrayList<>();
-
+        rides = new RideController(this, context);
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
         if(extra != null){
@@ -128,6 +127,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
     protected void onStart() {
         mGoogleApiClient.connect();
+
         super.onStart();
     }
     protected void onResume(){
