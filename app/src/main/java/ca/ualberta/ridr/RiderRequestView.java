@@ -63,7 +63,7 @@ public class RiderRequestView extends Activity {
         }
 
     @Override
-    protected void onStart() {
+    protected void onResume() {
         super.onStart();
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
