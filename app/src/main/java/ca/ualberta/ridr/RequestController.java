@@ -167,6 +167,8 @@ public class RequestController {
 
     /**
      * Checks if the JsonElement for request contains the string keyword
+     * entering fare # searches for fare > #
+     * entering costdistance # searches for cost distance > #
      * @param keyword
      * @param jsonElement
      * @return Boolean
@@ -174,20 +176,29 @@ public class RequestController {
     public Boolean doesJsonContainKeyword(String keyword, JsonElement jsonElement) {
         ArrayList<String> stringArray;
         keyword = keyword.toLowerCase();
-        Pattern p = Pattern.compile(keyword);
+        Pattern p;
         Request request;
         int fare;
         try{
-            fare = Integer.parseInt(keyword);
+            fare = Integer.parseInt(keyword.replaceAll("[\\D]", ""));
         } catch(Exception e) {
             fare = 999999; //set as some high number
         }
         try {
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
-            if(fare < request.getFare()) {
-                return true;
+            p = Pattern.compile("fare");
+            if(p.matcher(keyword).find()) {
+                if(fare < request.getFare()) {
+                    return true;
+                }
             }
-
+            p = Pattern.compile("costdistance");
+            if(p.matcher(keyword).find()) {
+                if(fare < request.getCostDistance()) {
+                    return true;
+                }
+            }
+            p = Pattern.compile(keyword);
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();

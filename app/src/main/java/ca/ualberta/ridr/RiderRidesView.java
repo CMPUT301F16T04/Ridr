@@ -72,7 +72,7 @@ public class RiderRidesView extends Activity implements ACallback {
     protected void onStart(){
         super.onStart();
         //Get driver rides from the server
-        rides = new RideController(this);
+        rides = new RideController(this, context);
         rides.getRiderRides(rider);
 
         // Set ride adapter
