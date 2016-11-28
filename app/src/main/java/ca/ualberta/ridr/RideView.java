@@ -267,8 +267,10 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     public void update(){
         try {
             Ride ride = rides.getRide(rideID);
+            Log.i("user", user.toLowerCase());
+            Log.i("Driver", ride.getDriver().toLowerCase());
 
-            viewingAsDriver = ride.getDriver() == user;
+            viewingAsDriver = ride.getDriver().toLowerCase().equals(user.toLowerCase());
             showRide(ride);
         } catch (Exception e){
             Log.i("Update failed", String.valueOf(e));
