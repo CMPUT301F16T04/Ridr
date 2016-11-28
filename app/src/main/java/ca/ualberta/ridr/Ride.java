@@ -42,7 +42,7 @@ public class Ride {
         return dropOffCoords;
     }
 
-    public Ride(String driverName, String riderName, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
+    public Ride(String driverName, String riderName, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords, Float fare){
         this.rideDate = date;
         this.driver = driverName;
         this.rider = riderName;
@@ -53,7 +53,7 @@ public class Ride {
         this.isCompleted = false;
         this.paid = false;
         this.id = UUID.randomUUID();
-        this.fare  = 20;
+        this.fare  = fare;
     }
 
 
