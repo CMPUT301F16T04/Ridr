@@ -71,9 +71,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
         info = (Button) findViewById(R.id.accept_rider_button);
         complete = (Button) findViewById(R.id.completeRideButton);
         rides = new RideController(this);
+
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
                     .addConnectionCallbacks(this)
@@ -196,7 +198,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
             topDown.setAnimationListener(listener);
             hiddenPanel.startAnimation(topDown);
             hiddenPanel.setVisibility(View.INVISIBLE);
-
         } else {
             Animation bottomUp = AnimationUtils.loadAnimation(context,
                     R.anim.slide_from_bottom);
@@ -211,6 +212,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         public void onClick(View v) {
             Toast.makeText(RideView.this, "Your account has been charged $" + rides.getRide(rideID).getFare(), Toast.LENGTH_LONG).show();
             complete.setVisibility(View.INVISIBLE);
+            // Also set paid to true;
             rides.completeRide(rideID);
         }
 
@@ -230,6 +232,43 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         @Override
         public void onAnimationRepeat(Animation animation) {}
     };
+
+
+
+    /**
+     * Callback for an outside Class to get the view to check for new data
+     * This interface is used when a controller updates it's data
+     * It will call this callback on whoever instantiated that controller
+     */
+    public void update(){
+        try {
+            Ride ride = rides.getRide(rideID);
+            showRide(ride);
+        } catch (Exception e){
+            Log.i("Update failed", String.valueOf(e));
+        }
+    }
+
+    public void showRide(Ride ride){
+        markers.clear();
+        map.clear();
+        Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()).title("Pickup: " + ride.getPickupAddress()));
+        //pickup.setTitle(ride.getPickupAddress());
+        markers.add(pickup);
+
+        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()).title("Drop off: " + ride.getDropOffAddress()));
+        //dropoff.setTitle(ride.getDropOffAddress());
+        markers.add(dropoff);
+
+        // Constrain map
+        LatLngBounds.Builder boundedMap = new LatLngBounds.Builder();
+        boundedMap.include(ride.getPickupCoords());
+        boundedMap.include(ride.getDropOffCoords());
+
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 320));
+
+        updateRideInfo(ride);
+    }
 
 
     public void updateRideInfo(Ride ride){
@@ -252,39 +291,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
         rideFare.setText("Is paid" + Double.toString(ride.getFare()));
     }
-    /**
-     * Callback for an outside Class to get the view to check for new data
-     * This interface is used when a controller updates it's data
-     * It will call this callback on whoever instantiated that controller
-     */
-    public void update(){
-        try {
-            Ride ride = rides.getRide(rideID);
-            showRide(ride);
-        } catch (Exception e){
-            Log.i("Update failed", String.valueOf(e));
-        }
-    }
-
-    public void showRide(Ride ride){
-        Marker pickup = map.addMarker(new MarkerOptions().position(ride.getPickupCoords()).title("Pickup: " + ride.getPickupAddress()));
-        //pickup.setTitle(ride.getPickupAddress());
-        markers.add(pickup);
-
-        Marker dropoff = map.addMarker(new MarkerOptions().position(ride.getDropOffCoords()).title("Drop off: " + ride.getDropOffAddress()));
-        //dropoff.setTitle(ride.getDropOffAddress());
-        markers.add(dropoff);
-
-        // Constrain map
-        LatLngBounds.Builder boundedMap = new LatLngBounds.Builder();
-        boundedMap.include(ride.getPickupCoords());
-        boundedMap.include(ride.getDropOffCoords());
-
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 320));
-
-        updateRideInfo(ride);
-    }
-
     /**
      * A function to check if it's night time or not
      * Plus this is easier on the eyes in night

@@ -42,10 +42,7 @@ public class RideController {
     @Nullable
     public Ride getRide(String id){
         Ride ride = findRideInList(id);
-        if(ride != null){
-            return ride;
-        }
-        return null;
+        return ride;
     }
 
     public void findRide(String rideID) {
@@ -58,6 +55,7 @@ public class RideController {
             Log.i("Failed to make ride", String.valueOf(e));
         }
     }
+
     public void updateRide(String id){
         Ride ride = findRideInList(id);
         asyncController.create("ride", ride.getId().toString(), ride.toJsonString());
