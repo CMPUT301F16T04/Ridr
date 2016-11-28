@@ -93,7 +93,9 @@ public class RideController {
         // Get all user rides from the database
         AsyncController controller = new AsyncController(context);
         try {
+            Log.i("before", "here");
             JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "rider", userID.toString());
+            Log.i("after", queryResults.toString());
             for (JsonElement result : queryResults) {
                 try {
                     rides.add(new Ride(result.getAsJsonObject().getAsJsonObject("_source")));

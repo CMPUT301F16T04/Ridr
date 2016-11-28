@@ -155,7 +155,9 @@ public class RequestController {
                 try {
                     request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
                     //System.out.println(request);
-                    requestsKeyword.add(request);
+                    if (!request.isAccepted() && request.isValid()){
+                        requestsKeyword.add(request);
+                    }
                 } catch(Exception e) {
                     Log.i("Error returning keyword", e.toString());
                 }

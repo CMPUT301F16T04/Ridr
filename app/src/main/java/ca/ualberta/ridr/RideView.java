@@ -62,13 +62,12 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     private String rideID;
     private Button info;
     private Button complete;
-    private Context context;
+    private Context context = this;
     private boolean viewingAsDriver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
 
         setContentView(R.layout.ride_view);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -79,7 +78,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         complete = (Button) findViewById(R.id.completeRideButton);
 
         viewingAsDriver = false;
-        rides = new RideController(this);
 
         if (mGoogleApiClient == null) {
             mGoogleApiClient = new GoogleApiClient.Builder(this)
@@ -102,7 +100,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
         // Markers so we can count how many exist
         markers = new ArrayList<>();
-
+        rides = new RideController(this, context);
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
         if(extra != null){
@@ -128,6 +126,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
     protected void onStart() {
         mGoogleApiClient.connect();
+
         super.onStart();
     }
     protected void onResume(){
@@ -268,8 +267,10 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     public void update(){
         try {
             Ride ride = rides.getRide(rideID);
+            Log.i("user", user.toLowerCase());
+            Log.i("Driver", ride.getDriver().toLowerCase());
 
-            viewingAsDriver = ride.getDriver() == user;
+            viewingAsDriver = ride.getDriver().toLowerCase().equals(user.toLowerCase());
             showRide(ride);
         } catch (Exception e){
             Log.i("Update failed", String.valueOf(e));
@@ -297,7 +298,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         boundedMap.include(ride.getPickupCoords());
         boundedMap.include(ride.getDropOffCoords());
 
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 320));
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 500));
 
         updateRideInfo(ride);
     }

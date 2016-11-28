@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 /**
@@ -46,6 +47,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         TextView requestFare = (TextView) convertView.findViewById(R.id.request_fare);
         TextView requestStatus = (TextView) convertView.findViewById(R.id.request_status);
 
+        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm a 'on' dd MMM yyyy");
 
         Request request = getItem(position);
 
@@ -56,7 +58,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
         requestPickup.setText(placeholder);
         placeholder = "Drop off: " + request.getDropoff();
         requestDropoff.setText(placeholder);
-        placeholder = "Date: " + request.getDate().toString();
+        placeholder = "Date: " + rideDate.format(request.getDate());
         requestDate.setText(placeholder);
         placeholder = "Fare: " + Float.toString(request.getFare());
         requestFare.setText(placeholder);

@@ -1,0 +1,656 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN" "http://www.w3.org/TR/2001/PR-SVG-20010719/DTD/svg10.dtd">
+<svg width="236cm" height="94cm" viewBox="-2103 -683 4707 1865" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+  <g>
+    <rect style="fill: #ffffff" x="-2101.34" y="-110" width="363.3" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-2101.34" y="-110" width="363.3" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-1919.69" y="-91">User</text>
+    <rect style="fill: #ffffff" x="-2101.34" y="-82" width="363.3" height="148"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-2101.34" y="-82" width="363.3" height="148"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="-68">+name: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="-52">+dateOfBirth: Date</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="-36">+creditCard: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="-20">+email: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="-4">+phoneNumber: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="12">+isRider: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="28">+isDriver: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="44">+id: UUID</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="60">+pendingNotification: String</text>
+    <rect style="fill: #ffffff" x="-2101.34" y="66" width="363.3" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-2101.34" y="66" width="363.3" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="80">+user(name:String,dateOfBirth:Date,creditCard:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="96">      email:String,phoneNumber:String)</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="112">+goOnline()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-2098.34" y="128">+goOffline()</text>
+    <rect style="fill: #ffffff" x="-1784.04" y="-112" width="54" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke-dasharray: 6; stroke: #000000" x="-1784.04" y="-112" width="54" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-1309.33" y="-461.334" width="441.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1309.33" y="-461.334" width="441.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-1088.73" y="-442.334">Driver</text>
+    <rect style="fill: #ffffff" x="-1309.33" y="-433.334" width="441.2" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1309.33" y="-433.334" width="441.2" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-419.334">+vehicle: Vehicle</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-403.334">+bankAccountNo: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-387.334">+rideArrayList: ArrayList&lt;Ride&gt;</text>
+    <rect style="fill: #ffffff" x="-1309.33" y="-381.334" width="441.2" height="212"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1309.33" y="-381.334" width="441.2" height="212"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-367.334">+Driver(name:String,dateOfBirth:Date,creditCard:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-351.334">        email:String,phoneNumber:String,vehicle:Vehicle,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-335.334">        bankAccountNo:String)</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-319.334">+getRides(): ArrayList&lt;Ride&gt; </text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-303.334">+add Ride(): Ride</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-287.334">+keywordSearch(input:String): Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-271.334">+geoSort(s:String,myLocation:String): boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-255.334">+acceptRide(ride:Ride): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-239.334">+completeRide(ride:Ride): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-223.334">+isPayed(): Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-207.334">+getPendingRides(): boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-191.334">+getCompletedRides(): boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1306.33" y="-175.334">+riderAcceptedRide(ride:Ride): boolean</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-1486" y="877.712" width="433.5" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1486" y="877.712" width="433.5" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-1269.25" y="896.712">Rider</text>
+    <rect style="fill: #ffffff" x="-1486" y="905.712" width="433.5" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1486" y="905.712" width="433.5" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="919.712">+rideArrayList: ArrayList&lt;Ride&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="935.712">+requestArrayList: ArrayList&lt;Request&gt; </text>
+    <rect style="fill: #ffffff" x="-1486" y="941.712" width="433.5" height="116"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1486" y="941.712" width="433.5" height="116"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="955.712">+Rider(name:String ,dateOfBirth:Date,creditCard:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="971.712">       email:String,phoneNumber:String)</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="987.712">+createRide(): Ride</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="1003.71">+acceptRideOffer(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="1019.71">+requestRide(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="1035.71">+removeRequest(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1483" y="1051.71">+confirmDriver(): void</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-1719.8,-24 -1604.02,-24 -1604.02,891.712 -1486,891.712 "/>
+    <polygon style="fill: #ffffff" points="-1719.8,-32 -1735.8,-24 -1719.8,-16 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-1719.8,-32 -1735.8,-24 -1719.8,-16 "/>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-1720.3,-96 -1574.56,-96 -1574.56,-259.334 -1309.33,-259.334 "/>
+    <polygon style="fill: #ffffff" points="-1720.3,-104 -1736.3,-96 -1720.3,-88 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-1720.3,-104 -1736.3,-96 -1720.3,-88 "/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-1219.94" y="154.082" width="371.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1219.94" y="154.082" width="371.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-1033.99" y="173.082">Requests</text>
+    <rect style="fill: #ffffff" x="-1219.94" y="182.082" width="371.9" height="180"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1219.94" y="182.082" width="371.9" height="180"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="196.082">-rider: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="212.082">-pickup: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="228.082">-dropoff: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="244.082">-possibleDrivers: ArrayList&lt;Drivers&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="260.082">-accepted: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="276.082">-pickupCoord: LatLng</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="292.082">-dropOffCoord: LatLng</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="308.082">-fare: float</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="324.082">-id: UUID</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="340.082">-isValid: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="356.082">-costDistance: float</text>
+    <rect style="fill: #ffffff" x="-1219.94" y="362.082" width="371.9" height="116"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-1219.94" y="362.082" width="371.9" height="116"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="376.082">+addAccepted(driver:Driver): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="392.082">+toJson(): String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="408.082">-buildGeoPoint(): JSONObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="424.082">+buildLatLng(): LatLng</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="440.082">+toJsonString(): String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="456.082">+queryableRequestVariables(): ArrayList&lt;String&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1216.94" y="472.082">+buildGeoPoint(coords:LatLng): JSONObject</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-880.58" y="707.594" width="271.8" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-880.58" y="707.594" width="271.8" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-744.68" y="726.594">Ride</text>
+    <rect style="fill: #ffffff" x="-880.58" y="735.594" width="271.8" height="212"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-880.58" y="735.594" width="271.8" height="212"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="749.594">-Pickup: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="765.594">-Dropoff: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="781.594">-rideDate: Date</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="797.594">-driver: Driver</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="813.594">-rider: Rider</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="829.594">-isCompleted: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="845.594">-pickup: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="861.594">-dropoff: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="877.594">-pickupCoords: LatLng</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="893.594">-dropoffCoords: LatLng</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="909.594">-paid: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="925.594">+id: UUID</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="941.594">-fare: float</text>
+    <rect style="fill: #ffffff" x="-880.58" y="947.594" width="271.8" height="84"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-880.58" y="947.594" width="271.8" height="84"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="961.594">+pushAcceptedByRider(): boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="977.594">+complete(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="993.594">+hasDriver(driver:Driver): boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="1009.59">+toJsonString(): String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-877.58" y="1025.59">-buildGeoPoint(): JSONObject</text>
+  </g>
+  <text font-size="22.5778" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-1150.67" y="-528.666">
+    <tspan x="-1150.67" y="-528.666">Model</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="290" y="-289" width="441.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="290" y="-289" width="441.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="510.6" y="-270">DriverController</text>
+    <rect style="fill: #ffffff" x="290" y="-261" width="441.2" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="290" y="-261" width="441.2" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="293" y="-247">+controller: AsyncController</text>
+    <rect style="fill: #ffffff" x="290" y="-241" width="441.2" height="84"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="290" y="-241" width="441.2" height="84"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="293" y="-227">+acceptRequest(driver:Driver,request:Request,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="293" y="-211">               ): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="293" y="-195">+getDriverFromServerUsingName(driverName:String): Driver</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="293" y="-179">+saveChanges(driverName:String,phone:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="293" y="-163">             email:String,vehicle:String): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-556" y="-90" width="564.4" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-556" y="-90" width="564.4" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-273.8" y="-71">RequestsController</text>
+    <rect style="fill: #ffffff" x="-556" y="-62" width="564.4" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-556" y="-62" width="564.4" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="-48">+controller: AsyncController</text>
+    <rect style="fill: #ffffff" x="-556" y="-42" width="564.4" height="228"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-556" y="-42" width="564.4" height="228"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="-28">+findAllRequestsWithinDistance(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="-12">+getAllRequests(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="4">+getUserRequest(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="20">+size(): int</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="36">+createRequest(rider:Rider,pickup:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="52">               dropoff:String,pickupCoords:LatLng,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="68">               dropOffCoords:LatLng,,date:Date): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="84">+searchRequestsKeyword(keyword:String): Arraylist&lt;Request&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="100">+doesJsonContainKeyword(keyword:String,jsonElement:JsonElement): Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="116">+getAllRequests(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="132">+findAllRequestsWithinDistance(center:latLng): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="148">+findAllRequestsWithinDataMember(dataType:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="164">                                 variable:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-553" y="180">                                 variableValue:String): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-395" y="914" width="364.2" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-395" y="914" width="364.2" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-212.9" y="933">RideController</text>
+    <rect style="fill: #ffffff" x="-395" y="942" width="364.2" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-395" y="942" width="364.2" height="8"/>
+    <rect style="fill: #ffffff" x="-395" y="950" width="364.2" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-395" y="950" width="364.2" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-392" y="964">+getAll(): ArrayList&lt;Ride&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-392" y="980">+createRide(driverName:String,request:Request,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-392" y="996">            riderName:String): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-392" y="1012">+getDriverRides(userID:final String): void</text>
+  </g>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="420" y="20">
+    <tspan x="420" y="20"></tspan>
+  </text>
+  <text font-size="22.5778" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="-329" y="-510">
+    <tspan x="-329" y="-510">Controllers</tspan>
+    <tspan x="-329" y="-481.778"></tspan>
+  </text>
+  <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1020" y="0">
+    <tspan x="1020" y="0"></tspan>
+  </text>
+  <text font-size="56.4444" style="fill: #000000;text-anchor:start;font-family:sans-serif;font-style:normal;font-weight:normal" x="1594" y="-630">
+    <tspan x="1594" y="-630">Views</tspan>
+  </text>
+  <g>
+    <rect style="fill: #ffffff" x="462" y="80" width="294.9" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="462" y="80" width="294.9" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="609.45" y="99">SearchRequestsView</text>
+    <rect style="fill: #ffffff" x="462" y="108" width="294.9" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="462" y="108" width="294.9" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="465" y="122">+requestList: ArrayList&lt;Request&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="465" y="138">+adapter: ArrayAdapter&lt;Request&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="465" y="154">+requestController: RequestController</text>
+    <rect style="fill: #ffffff" x="462" y="160" width="294.9" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="462" y="160" width="294.9" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="417" y="331" width="348.8" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="417" y="331" width="348.8" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="591.4" y="350">SearchResultsView</text>
+    <rect style="fill: #ffffff" x="417" y="359" width="348.8" height="116"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="417" y="359" width="348.8" height="116"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="373">+requestList: ArrayList&lt;Request&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="389">+requestControll: RequestContoller</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="405">+keyword: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="421">+searchResults: ListView</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="437">+requestAdapter: RequestAdapter</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="453">+bodyText: EditText</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="469">+userID: UUID</text>
+    <rect style="fill: #ffffff" x="417" y="475" width="348.8" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="417" y="475" width="348.8" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="420" y="489">+searchResultByKeyword(keyword:String): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="476" y="700" width="241.05" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="476" y="700" width="241.05" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="596.525" y="719">RequestsFromRidersView</text>
+    <rect style="fill: #ffffff" x="476" y="728" width="241.05" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="476" y="728" width="241.05" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="479" y="742">-userName: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="479" y="758">-requests: ArrayList&lt;Request&gt;</text>
+    <rect style="fill: #ffffff" x="476" y="764" width="241.05" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="476" y="764" width="241.05" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1187" y="120" width="225.6" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1187" y="120" width="225.6" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1299.8" y="139">ProfileView</text>
+    <rect style="fill: #ffffff" x="1187" y="148" width="225.6" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1187" y="148" width="225.6" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1190" y="162">-driverCon: DriverController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1190" y="178">-riderCon: RiderController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1190" y="194">-username: String</text>
+    <rect style="fill: #ffffff" x="1187" y="200" width="225.6" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1187" y="200" width="225.6" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1206" y="344" width="325.7" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1206" y="344" width="325.7" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1368.85" y="363">EditProfileView</text>
+    <rect style="fill: #ffffff" x="1206" y="372" width="325.7" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1206" y="372" width="325.7" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1209" y="386">-userName: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1209" y="402">-driverController: DriverController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1209" y="418">-riderController: RiderController</text>
+    <rect style="fill: #ffffff" x="1206" y="424" width="325.7" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1206" y="424" width="325.7" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1209" y="438">-getUser(username:String): User</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1209" y="454">-getInfo(user:User,username:String): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1836" y="472" width="302.6" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1836" y="472" width="302.6" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1987.3" y="491">AcceptDriverView</text>
+    <rect style="fill: #ffffff" x="1836" y="500" width="302.6" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1836" y="500" width="302.6" height="100"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="514">-username: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="530">-driverName: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="546">-requestID: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="562">-driverCon: DriverController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="578">-rideCon: RiderController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="594">-reqCon: RequestController</text>
+    <rect style="fill: #ffffff" x="1836" y="600" width="302.6" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1836" y="600" width="302.6" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="614">+getDriver(driverName:String): Driver</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1839" y="630">+getRequest(requestID:String): Request</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1681" y="199" width="610.6" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1681" y="199" width="610.6" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1986.3" y="218">RiderRequestView</text>
+    <rect style="fill: #ffffff" x="1681" y="227" width="610.6" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1681" y="227" width="610.6" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1684" y="241">+requests: ArrayList&lt;Request&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1684" y="257">-riderName: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1684" y="273">+reqCon: RequestController</text>
+    <rect style="fill: #ffffff" x="1681" y="279" width="610.6" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1681" y="279" width="610.6" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1684" y="293">+displayDrivers(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1684" y="309">+cancelRequest(request:final Request,customAdapter:final RequestAdapter): void</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="-1088.73,-143.16 -1088.73,120 -1033.99,120 -1033.99,154.082 "/>
+    <polygon style="fill: #ffffff" points="-1088.73,-168.332 -1083.93,-154.332 -1088.73,-140.332 -1093.53,-154.332 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="-1088.73,-168.332 -1083.93,-154.332 -1088.73,-140.332 -1093.53,-154.332 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="-1061.36" y="117"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1077.73" y="-156.332">1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1029.99" y="150.082">Many</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-1269.25,851.534 -1269.25,571 -1033.99,571 -1033.99,479.085 "/>
+    <polygon style="fill: #ffffff" points="-1269.25,876.706 -1274.05,862.706 -1269.25,848.706 -1264.45,862.706 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-1269.25,876.706 -1274.05,862.706 -1269.25,848.706 -1264.45,862.706 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="-1151.62" y="568"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1258.25" y="856.706"> 1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1258.25" y="872.706"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1029.99" y="491.085"> Many</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1029.99" y="507.085"></text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="-1033.99,503.254 -1033.99,515 -744.68,515 -744.68,707.594 "/>
+    <polygon style="fill: #ffffff" points="-1033.99,478.082 -1029.19,492.082 -1033.99,506.082 -1038.79,492.082 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="-1033.99,478.082 -1029.19,492.082 -1033.99,506.082 -1038.79,492.082 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="-889.335" y="512"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1022.99" y="490.082">1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-740.68" y="703.594">Many</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="9.39904,72.3681 461.038,111.23 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="9.38085,167.465 416.013,339.01 "/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="606.643" y1="168.945" x2="596.583" y2="330.008"/>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="591.4" y1="495" x2="595.739" y2="699.02"/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1734.35,-207.01 1734.35,-10.9983 1546.56,-10.9983 1546.56,13.5061 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-327.544,-395.594 -327.544,-417.75 1532.43,-417.75 1532.43,31.0086 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-117.496,-395.594 779.338,-395.594 779.338,177.236 1021.36,177.236 1021.36,164 1186,164 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="9.4031,48 813.838,48 813.838,295.236 1368.84,295.236 1368.84,257 1681.19,257 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="-212.9,912.994 -212.9,843.001 596.525,843.001 596.525,773.009 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1185.99,164 1140.01,164 1140.01,736 717.8,736 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1986.3,198.033 1986.3,175.236 1412.6,175.236 1412.6,174 "/>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="1057.44,-335.75 996.602,-335.75 996.602,-223 757.371,-223 "/>
+    <polygon style="fill: #ffffff" points="732.199,-223 746.199,-227.8 760.199,-223 746.199,-218.2 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="732.199,-223 746.199,-227.8 760.199,-223 746.199,-218.2 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="998.602" y="-282.375"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="1053.44" y="-338.75">1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="764.199" y="-226">1</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-1052.5,1047.71 229.058,1047.71 229.058,-343.594 -93.322,-343.594 "/>
+    <polygon style="fill: #ffffff" points="-118.494,-343.594 -104.494,-348.394 -90.4936,-343.594 -104.494,-338.794 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-118.494,-343.594 -104.494,-348.394 -90.4936,-343.594 -104.494,-338.794 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="231.058" y="349.059"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1048.5" y="1044.71">1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-86.4936" y="-346.594">1</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="34.5772,48 365.126,48 365.126,208.082 -848.04,208.082 "/>
+    <polygon style="fill: #ffffff" points="9.40559,48 23.4056,43.2 37.4056,48 23.4056,52.8 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="9.40559,48 23.4056,43.2 37.4056,48 23.4056,52.8 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="367.126" y="125.041"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="41.4056" y="45">1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-844.04" y="205.082">1</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-421.172,966 -483.15,966 -483.15,869.594 -607.777,869.594 "/>
+    <polygon style="fill: #ffffff" points="-396,966 -410,970.8 -424,966 -410,961.2 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="-396,966 -410,970.8 -424,966 -410,961.2 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-481.15" y="914.797"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:end;font-family:monospace;font-style:normal;font-weight:normal" x="-428" y="963">1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-603.777" y="866.594">1</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-670" y="240.5" width="780" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-670" y="240.5" width="780" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-280" y="259.5">AsyncDatabaseController</text>
+    <rect style="fill: #ffffff" x="-670" y="268.5" width="780" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-670" y="268.5" width="780" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="282.5">+client: JestDroidClient</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="298.5">+action: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="314.5">+databaseLink: String = "https://search-ridr-3qapqm6n4kj3r37pbco5esgwrm.us-west-2.es.amazonaws.com/"</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="330.5">+databaseName: String = "ridr"</text>
+    <rect style="fill: #ffffff" x="-670" y="336.5" width="780" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-670" y="336.5" width="780" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="350.5">+()</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="366.5">+doInBackground(parameters:String...): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="382.5">-getRequest(type:String,searchString:String): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-667" y="398.5">-createRequest(type:String,ID:String,jsonValue:String): JestResult</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-531" y="510" width="510.5" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-531" y="510" width="510.5" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-275.75" y="529">AsyncController</text>
+    <rect style="fill: #ffffff" x="-531" y="538" width="510.5" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-531" y="538" width="510.5" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="552">+controller: AsyncDatabaseController</text>
+    <rect style="fill: #ffffff" x="-531" y="558" width="510.5" height="228"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-531" y="558" width="510.5" height="228"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="572">+get(dataClass:String,attribute:String,value:String): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="588">+getAllFromIndex(dataClass:String): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="604">+getAllFromIndexFiltered(dataClass:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="620">                         variable:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="636">                         variableValue:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="652">                         ): JsonArray</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="668">+create(dataClass:String,id:String,jsonObject:String): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="684">+geoDistanceQuery(dataClass:String,center:LatLng,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="700">                  kmDistance:String): JsonArray</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="716">+extractAllElements(result:JsonObject): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="732">+extractFirstElement(result:JsonObject): JsonObject</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="748">+getFromIndexInObjectArray(dataClass:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="764">                           variable:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-528" y="780">                           variableValue:String): JsonArray</text>
+  </g>
+  <g>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-1269.25,852.54 -1269.25,658.394 -880.58,658.394 -880.58,707.594 "/>
+    <polygon style="fill: #ffffff" points="-1269.25,877.712 -1274.05,863.712 -1269.25,849.712 -1264.45,863.712 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #0000ff" points="-1269.25,877.712 -1274.05,863.712 -1269.25,849.712 -1264.45,863.712 "/>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:middle;font-family:monospace;font-style:normal;font-weight:normal" x="-1074.92" y="655.394"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1258.25" y="857.712"> 1</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-1258.25" y="873.712"></text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-876.58" y="687.594"> Many</text>
+    <text font-size="12.7998" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-876.58" y="703.594"></text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1057.44" y="-373.75" width="233.3" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1057.44" y="-373.75" width="233.3" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1174.09" y="-354.75">RequestAdapter</text>
+    <rect style="fill: #ffffff" x="1057.44" y="-345.75" width="233.3" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1057.44" y="-345.75" width="233.3" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1060.44" y="-331.75">-context: Context</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1060.44" y="-315.75">-requests: Arraylist&lt;Request&gt;</text>
+    <rect style="fill: #ffffff" x="1057.44" y="-309.75" width="233.3" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1057.44" y="-309.75" width="233.3" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-475.498" y="-315.25" width="402.7" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-475.498" y="-315.25" width="402.7" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-274.148" y="-296.25">RideController</text>
+    <rect style="fill: #ffffff" x="-475.498" y="-287.25" width="402.7" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-475.498" y="-287.25" width="402.7" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-273.25">+rides: ArrayList&lt;Ride&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-257.25">+ACallback: cbInterface</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-241.25">+controller: AsyncController</text>
+    <rect style="fill: #ffffff" x="-475.498" y="-235.25" width="402.7" height="100"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-475.498" y="-235.25" width="402.7" height="100"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-221.25">+createRide(driverID:String,request:Request,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-205.25">            riderID:String): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-189.25">+getDriverRides(userID:final String): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-173.25">+sortRides(toSort:ArrayList&lt;Ride&gt;): ArrayList&lt;Ride&gt;</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-157.25">+completeRide(rideid:String): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-472.498" y="-141.25">-findRideInList(id:String): Ride</text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #ff0000" points="510.6,-155.992 510.6,-59.75 1187,-59.75 1187,120 "/>
+  <g>
+    <rect style="fill: #ffffff" x="1965.29" y="-571" width="102.4" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1965.29" y="-571" width="102.4" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="2016.49" y="-552">ACallback</text>
+    <rect style="fill: #ffffff" x="1965.29" y="-543" width="102.4" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1965.29" y="-543" width="102.4" height="8"/>
+    <rect style="fill: #ffffff" x="1965.29" y="-535" width="102.4" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1965.29" y="-535" width="102.4" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1968.29" y="-521">+ACallback()</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="2277.88" y="473.3" width="325.7" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2277.88" y="473.3" width="325.7" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="2440.73" y="492.3">AcceptRiderView</text>
+    <rect style="fill: #ffffff" x="2277.88" y="501.3" width="325.7" height="116"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2277.88" y="501.3" width="325.7" height="116"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="515.3">-username: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="531.3">-requestID: UUID</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="547.3">-driverCon: DriverController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="563.3">-rideCon: RiderController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="579.3">-reqCon: RequestController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="595.3">-requestRider: Rider</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="611.3">-request: Request</text>
+    <rect style="fill: #ffffff" x="2277.88" y="617.3" width="325.7" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2277.88" y="617.3" width="325.7" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="631.3">+onMapReady(googleMap:GoogleMap): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="647.3">+setupMap(request:Request): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2280.88" y="663.3">+checkIfUserAccepted(name:String): String</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-342.674" y="1097.5" width="264.1" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-342.674" y="1097.5" width="264.1" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-210.624" y="1116.5">AccountController</text>
+    <rect style="fill: #ffffff" x="-342.674" y="1125.5" width="264.1" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-342.674" y="1125.5" width="264.1" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-339.674" y="1139.5">-currentUser: USer</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-339.674" y="1155.5">+controller: AsyncController</text>
+    <rect style="fill: #ffffff" x="-342.674" y="1161.5" width="264.1" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-342.674" y="1161.5" width="264.1" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-339.674" y="1175.5">+loginUser(username:String): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="2107.6" y="-229" width="271.8" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2107.6" y="-229" width="271.8" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="2243.5" y="-210">AddDriverView</text>
+    <rect style="fill: #ffffff" x="2107.6" y="-201" width="271.8" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2107.6" y="-201" width="271.8" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-187">-username: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-171">-addAccount: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-155">-updateUser: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-139">-newDriver: Driver</text>
+    <rect style="fill: #ffffff" x="2107.6" y="-133" width="271.8" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2107.6" y="-133" width="271.8" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-119">-checkForBadInformation(): Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-103">-addUserToInfoField(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2110.6" y="-87">+update(): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="2108.2" y="-15.7" width="271.8" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2108.2" y="-15.7" width="271.8" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="2244.1" y="3.3">AddRiderView</text>
+    <rect style="fill: #ffffff" x="2108.2" y="12.3" width="271.8" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2108.2" y="12.3" width="271.8" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="26.3">-username: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="42.3">-addAccount: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="58.3">-updateUser: Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="74.3">-newDriver: Driver</text>
+    <rect style="fill: #ffffff" x="2108.2" y="80.3" width="271.8" height="52"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2108.2" y="80.3" width="271.8" height="52"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="94.3">-checkForBadInformation(): Boolean</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="110.3">-addUserToInfoField(): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2111.2" y="126.3">+update(): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1443.61" y="-541" width="425.8" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1443.61" y="-541" width="425.8" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1656.51" y="-522">geoView</text>
+    <rect style="fill: #ffffff" x="1443.61" y="-513" width="425.8" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1443.61" y="-513" width="425.8" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1446.61" y="-499">-map: GoogleMap</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1446.61" y="-483">-userS: String</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1446.61" y="-467">-requests: RequestController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1446.61" y="-451">-lastKnownPlace: LatLng</text>
+    <rect style="fill: #ffffff" x="1443.61" y="-445" width="425.8" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1443.61" y="-445" width="425.8" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1446.61" y="-431">-getCurrentLocation(): private</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1446.61" y="-415">+addMarkers(filteredRequests:ArrayList&lt;Request&gt;): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1256.6" y="552.5" width="225.6" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1256.6" y="552.5" width="225.6" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1369.4" y="571.5">ProfileView</text>
+    <rect style="fill: #ffffff" x="1256.6" y="580.5" width="225.6" height="84"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1256.6" y="580.5" width="225.6" height="84"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1259.6" y="594.5">-driver: Driver</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1259.6" y="610.5">-rider: Rider</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1259.6" y="626.5">-driverCon: DriverController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1259.6" y="642.5">-riderCon: RiderController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1259.6" y="658.5">-username: String</text>
+    <rect style="fill: #ffffff" x="1256.6" y="664.5" width="225.6" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1256.6" y="664.5" width="225.6" height="8"/>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1046.33" y="-225.25" width="356.5" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1046.33" y="-225.25" width="356.5" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1224.58" y="-206.25">RideAdapter</text>
+    <rect style="fill: #ffffff" x="1046.33" y="-197.25" width="356.5" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1046.33" y="-197.25" width="356.5" height="8"/>
+    <rect style="fill: #ffffff" x="1046.33" y="-189.25" width="356.5" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1046.33" y="-189.25" width="356.5" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1049.33" y="-175.25">+getView(position:final int,convertView:View,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1049.33" y="-159.25">         parent:ViewGroup): View</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="-536.594" y="-447.594" width="418.1" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-536.594" y="-447.594" width="418.1" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="-327.544" y="-428.594">RiderController</text>
+    <rect style="fill: #ffffff" x="-536.594" y="-419.594" width="418.1" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-536.594" y="-419.594" width="418.1" height="8"/>
+    <rect style="fill: #ffffff" x="-536.594" y="-411.594" width="418.1" height="68"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="-536.594" y="-411.594" width="418.1" height="68"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-533.594" y="-397.594">+getRiderFromServer(riderId:String): Rider</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-533.594" y="-381.594">+getRiderFromServerUsingName(riderName:String): Rider</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-533.594" y="-365.594">+saveChanges(riderName:String,phone:String,</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="-533.594" y="-349.594">             email:String): void</text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="1376.01" y="14.5" width="341.1" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1376.01" y="14.5" width="341.1" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1546.56" y="33.5">RiderMainView</text>
+    <rect style="fill: #ffffff" x="1376.01" y="42.5" width="341.1" height="20"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1376.01" y="42.5" width="341.1" height="20"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1379.01" y="56.5">+riderName: String</text>
+    <rect style="fill: #ffffff" x="1376.01" y="62.5" width="341.1" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1376.01" y="62.5" width="341.1" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1379.01" y="76.5">+getCurrentLocation(): LatLng</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1379.01" y="92.5">-estimateFare(pickup:LatLng,dropoff:LatLng)</text>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="-278.916" y1="405.484" x2="-277.565" y2="509.001"/>
+  <g>
+    <polygon style="fill: #ffffff" points="1258.6,680.468 1464.8,680.468 1476.8,692.468 1476.8,714.468 1258.6,714.468 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1258.6,680.468 1464.8,680.468 1476.8,692.468 1476.8,714.468 1258.6,714.468 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="1464.8,680.468 1464.8,692.468 1476.8,692.468 "/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1265.6" y="705.368">
+      <tspan x="1265.6" y="705.368">Called from multiple views</tspan>
+    </text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="1203.2,464.268 1409.4,464.268 1421.4,476.268 1421.4,498.268 1203.2,498.268 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1203.2,464.268 1409.4,464.268 1421.4,476.268 1421.4,498.268 1203.2,498.268 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="1409.4,464.268 1409.4,476.268 1421.4,476.268 "/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1210.2" y="489.168">
+      <tspan x="1210.2" y="489.168">Called from multiple views</tspan>
+    </text>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="1986.5" y1="315.996" x2="1987.02" y2="471.004"/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1740.6,-247.532 1924.4,-247.532 1924.4,54.3 2108.2,54.3 "/>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1858.7,-218 1982.65,-218 1982.65,-155 2106.59,-155 "/>
+  <g>
+    <rect style="fill: #ffffff" x="1610" y="-280" width="248.7" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1610" y="-280" width="248.7" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="1734.35" y="-261">LoginView</text>
+    <rect style="fill: #ffffff" x="1610" y="-252" width="248.7" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1610" y="-252" width="248.7" height="8"/>
+    <rect style="fill: #ffffff" x="1610" y="-244" width="248.7" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="1610" y="-244" width="248.7" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1613" y="-230">-loginRider(myUser:User): void</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1613" y="-214">-loginDriver(myUser:User): void</text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="1047.19,-153.732 1253.39,-153.732 1265.39,-141.732 1265.39,-119.732 1047.19,-119.732 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1047.19,-153.732 1253.39,-153.732 1265.39,-141.732 1265.39,-119.732 1047.19,-119.732 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="1253.39,-153.732 1253.39,-141.732 1265.39,-141.732 "/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1054.19" y="-128.832">
+      <tspan x="1054.19" y="-128.832">Called from multiple views</tspan>
+    </text>
+  </g>
+  <g>
+    <polygon style="fill: #ffffff" points="1059.19,-309.232 1265.39,-309.232 1277.39,-297.232 1277.39,-275.232 1059.19,-275.232 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1059.19,-309.232 1265.39,-309.232 1277.39,-297.232 1277.39,-275.232 1059.19,-275.232 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="1265.39,-309.232 1265.39,-297.232 1277.39,-297.232 "/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1066.19" y="-284.332">
+      <tspan x="1066.19" y="-284.332">Called from multiple views</tspan>
+    </text>
+  </g>
+  <polyline style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1546.56,99.5052 1546.56,149.253 2291.6,149.253 2291.6,199 "/>
+  <g>
+    <polygon style="fill: #ffffff" points="1965.19,-513.232 2171.39,-513.232 2183.39,-501.232 2183.39,-479.232 1965.19,-479.232 "/>
+    <polygon style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" points="1965.19,-513.232 2171.39,-513.232 2183.39,-501.232 2183.39,-479.232 1965.19,-479.232 "/>
+    <polyline style="fill: none; fill-opacity:0; stroke-width: 1; stroke: #000000" points="2171.39,-513.232 2171.39,-501.232 2183.39,-501.232 "/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="1972.19" y="-488.332">
+      <tspan x="1972.19" y="-488.332">Called from multiple views</tspan>
+    </text>
+  </g>
+  <g>
+    <rect style="fill: #ffffff" x="2366.58" y="239.666" width="179.4" height="28"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2366.58" y="239.666" width="179.4" height="28"/>
+    <text font-size="16" style="fill: #000000;text-anchor:middle;font-family:sans-serif;font-style:normal;font-weight:700" x="2456.28" y="258.666">DriverRideView</text>
+    <rect style="fill: #ffffff" x="2366.58" y="267.666" width="179.4" height="36"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2366.58" y="267.666" width="179.4" height="36"/>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2369.58" y="281.666">+rides: RideController</text>
+    <text font-size="12.8" style="fill: #000000;text-anchor:start;font-family:monospace;font-style:normal;font-weight:normal" x="2369.58" y="297.666">+driver: String</text>
+    <rect style="fill: #ffffff" x="2366.58" y="303.666" width="179.4" height="8"/>
+    <rect style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x="2366.58" y="303.666" width="179.4" height="8"/>
+  </g>
+  <line style="fill: none; fill-opacity:0; stroke-width: 2; stroke: #000000" x1="2445.94" y1="472.301" x2="2454.33" y2="312.665"/>
+</svg>
