@@ -67,13 +67,16 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         context = this;
+
         setContentView(R.layout.ride_view);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-
+        // Initiallize buttons
         info = (Button) findViewById(R.id.accept_rider_button);
         complete = (Button) findViewById(R.id.completeRideButton);
+
+
         rides = new RideController(this);
 
         if (mGoogleApiClient == null) {
@@ -86,6 +89,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
                     .build();
         }
 
+        // on click listeners for user interaction
         complete.setOnClickListener(completeRide);
         info.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,16 +97,25 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
                 slideUp();
             }
         });
+
+        // Markers so we can count how many exist
         markers = new ArrayList<>();
+
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
         if(extra != null){
             user = extra.getString("username");
             rideID = extra.getString("rideID");
+        } else{
+            // If user or rideID don't exist we somehow got into the wrong view
+            finish();
         }
-        rideID = "513eb9ed-9c45-4468-97ae-73cdcfe5619a";
     }
 
+    /**
+     * The Show info window.
+     */
+// Custom Click listener to display Ride info and stop map centering
     OnMarkerClickListener showInfoWindow = new OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
@@ -181,15 +194,15 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         // Let's listen for clicks on our markers to display information
         map.setOnMarkerClickListener(showInfoWindow);
 
-//        map.setInfoWindowAdapter(displayRequest);
 
     }
 
-    //    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
-// How to disable a button during animations
+    /**
+     * Animtation to slide up from bottom
+     */
     private void slideUp(){
         LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.rideInfo);
-        if(rides.getRide(rideID).getCompleted()){
+        if(rides.getRide(rideID).isCompleted()){
             complete.setVisibility(View.INVISIBLE);
         }
         if(hiddenPanel.getVisibility() == View.VISIBLE){
@@ -207,6 +220,9 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         }
     }
 
+    /**
+     * On click listener to set a ride as completed
+     */
     Button.OnClickListener completeRide = new Button.OnClickListener(){
         @Override
         public void onClick(View v) {
@@ -214,10 +230,17 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
             complete.setVisibility(View.INVISIBLE);
             // Also set paid to true;
             rides.completeRide(rideID);
+            finish();
         }
 
     };
 
+    /**
+     * Animation listener to stop user from spamming the show info button.
+     */
+//    http://stackoverflow.com/questions/31394829/how-to-disable-button-while-alphaanimation-running
+    // November 25th, 2016
+    // How to disable a button during animations
     Animation.AnimationListener listener = new Animation.AnimationListener() {
         @Override
         public void onAnimationStart(Animation animation) {
@@ -249,6 +272,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         }
     }
 
+    /**
+     * A function to show two points of a ride on the map
+     *
+     * @param ride the ride
+     */
     public void showRide(Ride ride){
         markers.clear();
         map.clear();
@@ -271,6 +299,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     }
 
 
+    /**
+     * Sets text of the ride info in for dialog box
+     *
+     * @param ride the ride
+     */
     public void updateRideInfo(Ride ride){
         TextView rideCompleted = (TextView) findViewById(R.id.rideCompleted);
         TextView ridePickup = (TextView) findViewById(R.id.ridePickup);
@@ -309,6 +342,11 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         return false;
     }
 
+    /**
+     * Count markers int.
+     *
+     * @return the int
+     */
     public int countMarkers(){
         if(markers != null){
             return markers.size();

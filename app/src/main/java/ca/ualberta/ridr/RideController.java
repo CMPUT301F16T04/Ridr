@@ -17,7 +17,7 @@ import java.util.UUID;
  * Created by jferris on 22/10/16, modified by Justin Barclay
  * This is a controller for the rides object that can fetch rides from the server
  * Store them in an array and modify rides and store them on the server
- * 
+ *
  */
 
 public class RideController {

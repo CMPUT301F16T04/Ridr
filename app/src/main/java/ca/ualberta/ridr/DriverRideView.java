@@ -32,11 +32,10 @@ public class DriverRideView extends Activity implements ACallback {
         //retrieve the current driver's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        driver = "joe";
-//        if (extras != null) {
-//            String driverID = extras.getString("username");
-//            driver = UUID.fromString(driverID);
-//        }
+        if (extras != null) {
+            String driver = extras.getString("username");
+        }
+        // If no driver is passed in go to login page
         if(driver == null) {
             Intent loginPage = new Intent(DriverRideView.this, LoginView.class);
             startActivity(loginPage);
@@ -49,8 +48,10 @@ public class DriverRideView extends Activity implements ACallback {
     @Override
     protected void onStart(){
         super.onStart();
+        //Get driver rides from the server
         rides.getDriverRides(driver);
 
+        // Set ride adapter
         rideList.setAdapter(rideAdapter);
     }
 
