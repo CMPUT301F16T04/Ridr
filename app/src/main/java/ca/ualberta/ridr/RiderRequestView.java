@@ -78,7 +78,7 @@ public class RiderRequestView extends Activity {
         if(extras != null){
             loggedInRiderName = extras.getString("name");
         }
-        loggedInRiderName = "kirsty";
+        loggedInRiderName = "kristy";
         AsyncController controller = new AsyncController();
         JsonArray queryResults = controller.getAllFromIndexFiltered("request", "rider",
                 loggedInRiderName);
@@ -111,8 +111,9 @@ public class RiderRequestView extends Activity {
         oldRequestsList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+
                 Request request = requests.get(position);
-                clickedRequestIDStr = request.getID().toString();
+
                 cancelRequest(request, customAdapter);
 
                 return true;
@@ -222,11 +223,11 @@ public class RiderRequestView extends Activity {
         // Displaying the popup at the specified location, + offsets.
         cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
 
-
         // Getting a reference to Close button, and close the popup when clicked.
         Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
         TextView textView = (TextView) cancelLayout.findViewById(R.id.request_state);
         // Display state of request
+
         if (request.getPossibleDrivers().size() > 0){
             String size = Integer.toString(request.getPossibleDrivers().size());
             textView.setText("Request is accepted by " + size + "drivers");
