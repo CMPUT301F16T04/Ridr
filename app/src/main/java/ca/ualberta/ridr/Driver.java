@@ -22,6 +22,7 @@ public class Driver extends User {
                     String vechileDescription) {
         super(name, dateOfBirth, creditCard, email, phoneNumber);
         this.vehicleDescription = vechileDescription;
+        super.setDriverStatus(true);
     }
 
     public Driver(User user){
