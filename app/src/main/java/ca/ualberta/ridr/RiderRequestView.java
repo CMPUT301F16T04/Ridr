@@ -61,7 +61,7 @@ public class RiderRequestView extends Activity {
             final Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                riderName = extras.getString("name");
+                riderName = extras.getString("Name");
 
             }
         }
