@@ -7,8 +7,6 @@ import com.google.gson.Gson;
 
 /**
  * Created by Justin on 2016-11-24.
- */
-/*
  * A controller for the creation of new users and for logging them into the system
  */
 
