@@ -64,7 +64,7 @@ public class EditProfileView extends Activity {
         saveChangesButton.setOnClickListener(new View.OnClickListener(){
             public void onClick(View v){
                 getNewUserInfo(driverStatus(user));
-                Toast.makeText(EditProfileView.this, "saving changes", Toast.LENGTH_SHORT).show();
+                Toast.makeText(EditProfileView.this, "Saving changes", Toast.LENGTH_SHORT).show();
                 if(driverStatus(user)){
                     driverController.saveChanges(userName, phoneStr, emailStr, vehicleStr);
                 } else{
