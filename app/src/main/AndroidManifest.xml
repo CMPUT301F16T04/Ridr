@@ -36,7 +36,6 @@
         <activity android:name=".ProfileView" />
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView" />
-        <activity
             android:name=".AddDriverView"
             android:label="@string/title_activity_add_driver_view"
             android:windowSoftInputMode="adjustPan"
@@ -70,6 +69,11 @@
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
+
+        <activity
+            android:name=".DriverRideView"
+            android:exported="true"
+            android:label="@string/title_activity_driver_ride_view"></activity>
     </application>
 
 </manifest>

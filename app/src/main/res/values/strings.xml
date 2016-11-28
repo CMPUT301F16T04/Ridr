@@ -28,6 +28,7 @@
     <string name="create_driver_button">Create</string>
     <string name="driver_dob_hint">Enter date of birth...</string>
     <string name="create_driver_text">Create Driver:</string>
+    <string name="title_activity_driver_ride_view">Rides</string>
 
 
 </resources>
