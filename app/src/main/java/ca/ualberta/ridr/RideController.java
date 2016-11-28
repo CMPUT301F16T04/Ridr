@@ -45,11 +45,11 @@ public class RideController {
 
     }
 
-    public void getDriverRides(final UUID userID) {
+    public void getDriverRides(final String userID) {
         // Get all user rides from the database
         AsyncController controller = new AsyncController();
         try {
-            JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "driver", userID.toString());
+            JsonArray queryResults = controller.getAllFromIndexFiltered("ride", "driver", userID);
             for (JsonElement result : queryResults) {
                 try {
                     rides.add(new Ride(result.getAsJsonObject().getAsJsonObject("_source")));
@@ -82,6 +82,7 @@ public class RideController {
             Log.i("Null request", e.toString());
         }
     }
+
     public ArrayList<Ride> sortRides(ArrayList<Ride> toSort){
         if(toSort.size() <= 1){
             return toSort;

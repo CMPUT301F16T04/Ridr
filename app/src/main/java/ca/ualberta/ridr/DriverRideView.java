@@ -20,7 +20,7 @@ import java.util.UUID;
 public class DriverRideView extends Activity implements ACallback {
     ListView rideList;
     RideController rides;
-    UUID driver;
+    String driver;
     RideAdapter rideAdapter;
 
     @Override
@@ -32,11 +32,11 @@ public class DriverRideView extends Activity implements ACallback {
         //retrieve the current driver's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
-        driver = UUID.fromString("5469bc7d-c9ab-46ba-9405-62901cd1a20a");
-        if (extras != null) {
-            String driverID = extras.getString("UUID");
-            driver = UUID.fromString(driverID);
-        }
+        driver = "joe";
+//        if (extras != null) {
+//            String driverID = extras.getString("username");
+//            driver = UUID.fromString(driverID);
+//        }
         if(driver == null) {
             Intent loginPage = new Intent(DriverRideView.this, LoginView.class);
             startActivity(loginPage);
