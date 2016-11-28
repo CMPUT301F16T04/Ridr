@@ -56,8 +56,8 @@ public class AcceptDriverView extends Activity {
         Intent intent = getIntent();
         ArrayList<String> ids = intent.getStringArrayListExtra("ids");
         if (ids != null) {
-            username = ids.get(0);
-            driverName = ids.get(1);
+            driverName = ids.get(0);
+            username = ids.get(1);
             requestId = ids.get(2);
         }
         else{

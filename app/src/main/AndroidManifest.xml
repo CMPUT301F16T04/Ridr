@@ -38,6 +38,8 @@
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView"
             android:exported="true"/>
+        <activity android:name=".AcceptDriverView"
+            android:exported="true"/>
         <activity android:name=".RiderRequestView"
             android:exported="true"/>
         <activity android:name=".RiderMainView"
