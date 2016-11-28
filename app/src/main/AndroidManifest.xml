@@ -28,7 +28,6 @@
         <activity
             android:name=".GeoView"
             android:exported="true" />
-        <activity android:name=".SearchRequestsView" />
         <activity android:name=".SearchResultsView" />
         <activity android:name=".RequestsFromRidersView" />
         <activity android:name=".ProfileView"
