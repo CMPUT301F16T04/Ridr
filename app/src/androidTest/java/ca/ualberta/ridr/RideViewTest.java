@@ -46,18 +46,20 @@ public class RideViewTest extends ActivityInstrumentationTestCase2<RideView> {
 //        //make sure map has no marker
 //        assertEquals(maps.countMarkers(), 0);
 //    }
-//    //      A Driver should be able to see their rides
+//    A user should be able to see a ride and there should be more than to markers
 //    public void getDriver Rides(){
 //        RideView rideView = (RideView) solo.getCurrentActivity();
 //        rideView.setTest(true);
 //
 //        // Set user
 //        rideList.setUser("kristy");
+//        rideList.setUset(someRideID);
 //        solo.assertCurrentActivity("Wrong activity", GeoView.class);
 //
 //        // Check to see the user has more than one ride
-//        RideController controller = rideList.getrideController();
+//        RideController controller = rideList.getRideController();
 //        assert(controller.size() > 0);
+//        assert(rideView.markers > 0);
 //    }
 //
 //    @Override
