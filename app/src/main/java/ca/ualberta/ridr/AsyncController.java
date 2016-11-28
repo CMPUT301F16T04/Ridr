@@ -67,13 +67,12 @@ public class AsyncController {
             try {
                 String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \"" + attribute + "\":\"" + value + "\"}}}}}";
                 JsonArray jsonArray = extractAllElements(controller.execute(dataClass, searchString).get());
-                saveInFile(jsonArray, file);
                 return jsonArray.get(0).getAsJsonObject().getAsJsonObject("_source");
             } catch (Exception e) {
                 return null;
             }
         } else {
-            return searchInFile(dataClass, attribute, value);
+            return searchInFileObject(dataClass, attribute, value);
         }
     }
 
@@ -98,17 +97,6 @@ public class AsyncController {
             }
 
         } catch(Exception e) {
-            return null;
-        }
-    }
-
-    private JsonArray getSaveData(String dataClass) {
-        controller = new AsyncDatabaseController("getAllFromIndex");
-        try {
-            String searchString = "{\"query\": { \"match_all\": { }}}";
-            return extractAllElements(controller.execute(dataClass, searchString).get());
-        } catch(Exception e) {
-            Log.i("error getting save data", e.toString());
             return null;
         }
     }
@@ -251,10 +239,15 @@ public class AsyncController {
      * @param result  the result of a query
      * @return a jsonObject
      */
-    private JsonObject extractFirstElement(JsonObject result){
+    private JsonObject extractFirstElement(JsonObject result) {
         return result.getAsJsonObject("hits").getAsJsonArray("hits").get(0).getAsJsonObject().getAsJsonObject("_source");
     }
 
+    /**
+     * loads a json array from the given file
+     * @param file JsonArray
+     * @return
+     */
     private JsonArray loadFromFile(String file) {
         JsonArray jsonArray;
         try {
@@ -279,6 +272,11 @@ public class AsyncController {
         return jsonArray;
     }
 
+    /**
+     * Saves the jsonArray into a file
+     * @param jsonArray
+     * @param file
+     */
     private void saveInFile(JsonArray jsonArray, String file) {
         try {
             FileOutputStream fos = context.openFileOutput(file,
@@ -300,11 +298,22 @@ public class AsyncController {
         }
     }
 
+    /**
+     * Returns a file name used to make a file to save the data found from
+     * dataclass and variable
+     * @param dataClass
+     * @param variable
+     * @return String
+     */
     private String getFile(String dataClass, String variable) {
         String file = dataClass + variable + ".sav";
         return file;
     }
 
+    /**
+     * Check if connected to the internet
+     * @return Boolean
+     */
     private Boolean isConnected() {
         ConnectivityManager cm =
                 (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -316,23 +325,29 @@ public class AsyncController {
         return isConnected;
     }
 
-    private JsonObject searchInFile(String dataClass, String attribute, String keyword) {
-        String file = getFile(dataClass, attribute);
+    /**
+     * Searches a file for the field attribute with data that matches keyword
+     * @param dataClass
+     * @param attribute
+     * @param keyword
+     * @return JsonObject
+     */
+    private JsonObject searchInFileObject(String dataClass, String attribute, String keyword) {
+        String file = getFile(dataClass, "");
         JsonArray jsonArray = loadFromFile(file);
+        JsonObject jsonObject;
+        JsonElement temp;
+        String string;
+        keyword = keyword.trim();
+        keyword = "cb301ddf-483e-49fa-ba43-aab1ee4e1098";
 
-        keyword = keyword.toLowerCase();
-        Pattern p = Pattern.compile(keyword);
-        String searchTerm = "";
-
-        try {
-            for (JsonElement jsonElement: jsonArray) {
-                searchTerm = jsonArray.getAsString().toLowerCase();
-                if (p.matcher(searchTerm).find()) {
-                    return jsonElement.getAsJsonObject().getAsJsonObject("_source");
-                }
+        for(JsonElement jsonElement: jsonArray) {
+            jsonObject = jsonElement.getAsJsonObject();
+            temp = jsonObject.get("_" + attribute);
+            string = temp.getAsString();
+            if(temp.equals(keyword)) {
+                return jsonObject;
             }
-        } catch(Exception e) {
-            Log.i("Error searching keyword", e.toString());
         }
         return null;
     }

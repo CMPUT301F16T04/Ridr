@@ -38,7 +38,7 @@ public class EditProfileView extends Activity {
     private RiderController riderController;
 
     private User user;
-    private Context context;
+    private Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

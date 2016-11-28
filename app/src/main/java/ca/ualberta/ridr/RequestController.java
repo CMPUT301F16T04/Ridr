@@ -179,10 +179,18 @@ public class RequestController {
         keyword = keyword.toLowerCase();
         Pattern p = Pattern.compile(keyword);
         Request request;
+        int fare;
+        try{
+            fare = Integer.parseInt(keyword);
+        } catch(Exception e) {
+            fare = 999999; //set as some high number
+        }
         try {
             //Log.i("doesContain", jsonElement.toString());
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
-
+            if(fare < request.getFare()) {
+                return true;
+            }
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();
@@ -335,6 +343,10 @@ public class RequestController {
         }
     }
 
+    /**
+     * Executes all the pending driver acceptance and rider requests
+     * @param driverName
+     */
     public void executeAllPending(String driverName) {
         try {
             //For offline functionality if went online and started this view send pending acceptance of requests
@@ -354,6 +366,9 @@ public class RequestController {
         }
     }
 
+    /**
+     * Sends pending requests to the elastic search server
+     */
     public void executePendingRequests() {
         AsyncController controller = new AsyncController(this.context);
         for(Request r: offlineSingleton.getRiderRequests()) {
@@ -362,6 +377,10 @@ public class RequestController {
         offlineSingleton.clearRiderRequests();
     }
 
+    /**
+     * Sends pending acceptance to the elastic search server
+     * @param driver
+     */
     public void executePendingAcceptance(String driver) {
         for(Request r: offlineSingleton.getDriverRequests()) {
             addDriverToList(r, driver);
