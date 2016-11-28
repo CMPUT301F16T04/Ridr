@@ -34,6 +34,7 @@ public class Request {
     private Boolean accepted;
     private UUID id;
     private float fare;
+    private float costDistance;
     private Date date;
 
     public void setIsValid(Boolean valid) {
@@ -146,19 +147,25 @@ public class Request {
         this.fare = estimate;
     }
 
-    public float estimateFare(float distance){
-        float gasCostFactor = 4; // calculate something later
-        //return distance * gasCostFactor;
-        float tempVal = 20;
-        return tempVal;
+    public float getCostDistance(){
+        return costDistance;
     }
+
+    /**
+     * sets the cost per KM
+     * @param cost
+     */
+    public void setCostDistance(float cost){
+        this.costDistance = cost;
+    }
+
 
     public UUID getID() {
         return id;
     }
 
     public String toJsonString(){
-        // Attempt to conver request into a JsonObject
+        // Attempt to convert request into a JsonObject
         // If fail return a null pointer
         // Need to use the java standard JSON object here because we are nesting JSON items
         JSONObject toReturn = new JSONObject();

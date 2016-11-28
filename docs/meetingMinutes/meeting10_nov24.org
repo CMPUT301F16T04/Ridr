@@ -1,0 +1,4 @@
+- Everything pertinent must be switched to use names
+- Need to handle removal of request after completion into ride
+- Add ridiculous testing
+- Notifications will be flag

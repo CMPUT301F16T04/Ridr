@@ -44,7 +44,6 @@ import java.util.UUID;
 public class RequestController {
 
     private Request currenRequest;
-    private JsonArray jsonArray;
     private ArrayList<Request> requests;
     private ACallback cbInterface;
 
@@ -97,9 +96,12 @@ public class RequestController {
      * @param dropOffCoords Coordinates of dropoff location
      * @param date Date at which the rider wishes to be picked up
      */
-    public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date){
+
+    public void createRequest(Rider rider, String pickup, String dropoff,LatLng pickupCoords, LatLng dropOffCoords, Date date, float fare, float costDistance){
         AsyncController controller = new AsyncController();
         currenRequest = new Request(rider.getName(), pickup, dropoff, pickupCoords, dropOffCoords, date);
+        currenRequest.setFare(fare);
+        currenRequest.setCostDistance(costDistance);
         rider.setRequests(new ArrayList<Request>());
         //commented for now so that we can actually create the request without breaking
         //rider.addRequest(currenRequest);
@@ -110,16 +112,6 @@ public class RequestController {
         } catch (Exception e){
             Log.i("Error creating request", e.toString());
         }
-    }
-
-
-    /**
-     * Estimates a fare based on distance
-     * @param distance distance from pickup to dropoff
-     * @return a recommended fare
-     */
-    public float getFareEstimate(float distance){
-        return currenRequest.estimateFare(distance);
     }
 
     public void updateFare(float newFare) {
@@ -134,7 +126,7 @@ public class RequestController {
      * @return ArrayList<Request>
      */
     public ArrayList<Request> searchRequestsKeyword(String keyword) {
-        jsonArray = new AsyncController().getAllFromIndex("request");
+        JsonArray jsonArray = new AsyncController().getAllFromIndex("request");
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
 
@@ -180,7 +172,6 @@ public class RequestController {
 
         return false;
     }
-
 
     public ArrayList<String> getPossibleDrivers(String requestId) {
         AsyncController con = new AsyncController();

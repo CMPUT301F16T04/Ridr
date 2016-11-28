@@ -8,6 +8,9 @@ import android.location.Address;
 import android.location.Geocoder;
 
 import android.os.Bundle;
+
+import android.support.annotation.Nullable;
+
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,11 +22,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.UUID;
 
 import android.support.v4.app.FragmentActivity;
@@ -32,8 +35,12 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.GoogleApiClient.ConnectionCallbacks;
 import com.google.android.gms.common.api.GoogleApiClient.OnConnectionFailedListener;
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
+import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -42,16 +49,16 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
-
+import android.location.Location;
 
 /**
  * This view allows for a rider to create a new request
  */
 public class RiderMainView extends FragmentActivity implements ACallback, OnMapReadyCallback, ConnectionCallbacks, OnConnectionFailedListener{
 
-    private EditText startLocation;
-    private EditText endLocation;
+
     private EditText fareInput;
+
 
     private TextView dateTextView;
     private TextView timeTextView;
@@ -61,22 +68,36 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     private Button timeButton;
     private Button menuButton;
 
-    private UUID currentUUID; // UUID of the currently logged-in rider
+    private PlaceAutocompleteFragment pickupAutocompleteFragment;
+    private PlaceAutocompleteFragment dropoffAutocompleteFragment;
+
     private String riderName; // string of the curretn UUID
     private Rider currentRider;
 
-    private String defaultStartText = "Enter Start Location";
+    private String defaultStartText = "Enter Pick Up Location";
     private String defaultDestinationText = "Enter Destination";
+    private String defaultFareText = "Enter a Fare";
 
     private GoogleMap gMap;
     private GoogleApiClient mGoogleApiClient;
     private LatLng lastKnownPlace;
     private boolean firstLoad;
     private ArrayList<Marker> markers;
+    private Marker startMarker;
+    private Marker endMarker;
     private Geocoder geocoder;
 
+    private LatLng pickupCoord;
+    private LatLng dropoffCoord;
+    private String pickupStr;
+    private String dropoffStr;
+
+    private float distance;
+    private float fare;
+
+
+
     RequestController reqController;
-    //RiderController riderController = new RiderController();
 
 
     @Override
@@ -101,59 +122,63 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     .build();
         }
 
+
+
         //retrieve the current rider's UUID
         Intent intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            riderName = extras.getString("Name");
+            riderName = extras.getString("username");
         }
 
 
         setViews();
-        //TODO afterTextChanged for destination, and start location, get distance and estimate fare
-//  work in progress
-//        startLocation.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                return;
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                return;
-//            }
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if(!endLocation.getText().toString().matches("") || !endLocation.getText().toString().matches(defaultStartText)){
-//                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
-//                    //end location has also changed, so get a fare estimate
-//                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
-//                } else{
-//                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-//        endLocation.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                return;
-//            }
-//
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//                return;
-//            }
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//                if(!startLocation.getText().toString().matches("") || !startLocation.getText().toString().matches(defaultStartText)){
-//                    Toast.makeText(RiderMainView.this, "both changed", Toast.LENGTH_SHORT).show();
-//                    //end location has also changed, so get a fare estimate
-//                    fareInput.setText(String.format("%2f",reqController.getFareEstimate(10))); // using a dumy value of 10 as distance for now
-//                }else{
-//                    Toast.makeText(RiderMainView.this, "only one changed", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
+        // autocomplete for the pick up location
+        pickupAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                //startLocation.setText(place.getAddress().toString());
+                //Toast.makeText(RiderMainView.this, "start location selected", Toast.LENGTH_SHORT).show();
+                pickupStr = place.getAddress().toString();
+                pickupCoord = place.getLatLng();
+                //addMarkers(pickupCoord, "Pickup");
+                addMarkers(pickupCoord, true);
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(pickupCoord, 11));
+                if(dropoffCoord != null){
+                    estimateFare(pickupCoord, dropoffCoord);
+                }
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("Places", "An error occurred: " + status);
+            }
+        });
+
+        //autocomplete for the drop off location
+        dropoffAutocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+            @Override
+            public void onPlaceSelected(Place place) {
+                //endLocation.setText(place.getAddress().toString());
+                //Toast.makeText(RiderMainView.this, "destination location selected", Toast.LENGTH_SHORT).show();
+                dropoffStr = place.getAddress().toString();
+                dropoffCoord = place.getLatLng();
+                //addMarkers(dropoffCoord, "Dropoff");
+                addMarkers(dropoffCoord, false);
+                gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dropoffCoord, 11));
+                if(pickupCoord != null){
+                    estimateFare(pickupCoord, dropoffCoord);
+                }
+
+            }
+
+            @Override
+            public void onError(Status status) {
+                Log.i("Places", "An error occurred: " + status);
+            }
+        });
+
 
         //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {
@@ -242,11 +267,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     @Override
     //On connected listener, required to be able to zoom to users location at login
     public void onConnected(Bundle connectionHint){
-        //lastKnownPlace = getCurrentLocation();
+        lastKnownPlace = getCurrentLocation();
+        //Toast.makeText(RiderMainView.this, "connected!", Toast.LENGTH_SHORT).show();
+
         if(lastKnownPlace != null && !firstLoad) {
             firstLoad = true;
-            //gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
-            gMap.moveCamera(CameraUpdateFactory.newLatLng(new LatLng(53.5, 133.5)));
+            gMap.moveCamera(CameraUpdateFactory.newLatLngZoom(lastKnownPlace, 12));
         }
 
     }
@@ -254,6 +280,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     // This should eventually be updated to quit the app or go back to a view that doesn't require geolocation
     // Currently this shows an alert notifying the user that the connection failed
     public void onConnectionFailed(ConnectionResult result) {
+        //Toast.makeText(RiderMainView.this, "connection failed", Toast.LENGTH_SHORT).show();
         new AlertDialog.Builder(this)
                 .setTitle("Connection Failure")
                 .setMessage(result.getErrorMessage())
@@ -269,6 +296,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
     @Override
     public void onMapReady(GoogleMap googleMap){
         gMap = googleMap;
+        // Allow the user to go home at any time
+        gMap.setMyLocationEnabled(true);
     }
 
     public void update(){}
@@ -277,8 +306,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      * finds views by their ID's and assigns them to their respective variable
      */
     private void setViews(){
-        startLocation = (EditText) findViewById(R.id.editStartLocationText);
-        endLocation = (EditText) findViewById(R.id.editEndLocationText);
         fareInput = (EditText) findViewById(R.id.editFare);
 
         dateTextView = (TextView) findViewById(R.id.dateText);
@@ -288,16 +315,25 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         dateButton = (Button) findViewById(R.id.dateButton);
         timeButton = (Button) findViewById(R.id.timeButton);
         menuButton = (Button) findViewById(R.id.riderMainMenuButton);
+
+        pickupAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.pickup_autocomplete_fragment);
+        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setHint(defaultStartText);
+
+        dropoffAutocompleteFragment = (PlaceAutocompleteFragment)
+                getFragmentManager().findFragmentById(R.id.dropoff_autocomplete_fragment);
+        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setHint(defaultDestinationText);
     }
 
     /**
      * reset text inputs in the view
      */
     private void resetText(){
-        startLocation.setText(defaultStartText);
-        endLocation.setText(defaultStartText);
+        ((EditText)pickupAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText("");
+        ((EditText)dropoffAutocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input)).setText("");
         dateTextView.setText("");
         timeTextView.setText("");
+        fareInput.setText("");
     }
 
     /**
@@ -306,11 +342,11 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
      */
     private void addRequestEvent(Rider rider){
 
-        if(startLocation.getText().toString().matches("") || startLocation.getText().toString().matches(defaultStartText)){
+        if(pickupCoord == null){
             Toast.makeText(RiderMainView.this, "Please enter the address from where you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
         }
-        if(endLocation.getText().toString().matches("") || endLocation.getText().toString().matches(defaultDestinationText)){
+        if(dropoffCoord == null){
             Toast.makeText(RiderMainView.this, "Please enter the address of your destination", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -322,18 +358,27 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             Toast.makeText(RiderMainView.this, "Please enter the time at which you would like to be picked up", Toast.LENGTH_SHORT).show();
             return;
         }
-        String pickupStr = startLocation.getText().toString();
-        String dropoffStr = endLocation.getText().toString();
-        //LatLng pickupCoord = getLocationFromAddress(pickupStr);
-        //LatLng dropoffCoord = getLocationFromAddress(dropoffStr);
-        LatLng pickupCoord = new LatLng(53.525288, -113.525454);
-        LatLng dropoffCoord =  new LatLng(53.484775, -113.505067);
+        if(fareInput.getText().toString().matches("") || fareInput.getText().toString().matches(defaultFareText)){
+            Toast.makeText(RiderMainView.this, "Please enter a fare", Toast.LENGTH_SHORT).show();
+            return;
+        }
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
-        reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate);
+
+        Float costDist = fare/distance;
+        costDist = roundFloatToTwoDec(costDist);
+        fare = roundFloatToTwoDec(fare);
+        reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, costDist);
         Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
         resetText();
+        //clear map of markers
+        gMap.clear();
+
+        //reset coordinates
+        pickupCoord = null;
+        dropoffCoord = null;
+
     }
 
     /**
@@ -348,14 +393,12 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             public boolean onMenuItemClick(MenuItem item){
                 switch(item.getItemId()){
                     case R.id.mainRiderMenuEditUserInfo:
-                        Toast.makeText(RiderMainView.this, "Edit User Info", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent editInfoIntent = new Intent(RiderMainView.this, EditProfileView.class);
                         editInfoIntent.putExtra("Name", riderName);
                         startActivity(editInfoIntent);
                         return true;
                     case R.id.mainRiderMenuViewRequests:
-                        Toast.makeText(RiderMainView.this, "View Requests", Toast.LENGTH_SHORT).show();
                         resetText();
                         Intent viewRequestsIntent = new Intent(RiderMainView.this, RiderRequestView.class);
                         viewRequestsIntent.putExtra("Name", riderName);
@@ -388,68 +431,65 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
     }
 
-//    @Nullable
-//    /**
-//     * When called this function checks uses LocationServices to grab the lastLocation and returns
-//     * that LatLng to the caller
-//     * @nullable
-//     * @return currentLocation
-//     */
-//    // Simple function to grab current location in LatLong
-//    private LatLng getCurrentLocation(){
-//        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-//        if(currentLocation != null) {
-//            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
-//        }
-//        return null;
-//    }
+    @Nullable
+    /**
+     * When called this function checks uses LocationServices to grab the lastLocation and returns
+     * that LatLng to the caller
+     * @nullable
+     * @return currentLocation
+     */
+    // Simple function to grab current location in LatLong
+    private LatLng getCurrentLocation(){
+        Location currentLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+        if(currentLocation != null) {
+            return new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude());
+        }
+        //Toast.makeText(RiderMainView.this, "failed to get current location", Toast.LENGTH_SHORT).show();
+        return null;
+    }
 
     /**
      * Add markers to the map.
-     * Takes in a list of requests and adds them as maps to the marker and keeps track of the markers
-     * place on the map
-     * @param filteredReqeusts the filtered reqeusts
+     *
+     * @param coords coordinates of the marker
+     * @param isStart true if it is the start location marker, false if it is the destination
      */
-    public void addMarkers(ArrayList<Request> filteredReqeusts){
-        gMap.clear();
-
-        if(filteredReqeusts.size() > 0) {
-            if(markers == null){
-                markers = new ArrayList<>();
+    public void addMarkers(LatLng coords, Boolean isStart){
+        if(isStart){
+            if(startMarker != null){
+                startMarker.remove();
             }
-            for (Request request : filteredReqeusts) {
-                markers.clear();
-                Marker newMarker = gMap.addMarker(new MarkerOptions().position(request.getPickupCoords()).title(request.getPickup()));
-                newMarker.setTag(request);
-                markers.add((newMarker));
+            startMarker = gMap.addMarker((new MarkerOptions().position(coords).title("Pick up")));
+        } else{
+            if(endMarker != null){
+                endMarker.remove();
             }
+            endMarker = gMap.addMarker((new MarkerOptions().position(coords).title("Destination")));
         }
     }
 
     /**
-     * converts a street address into a geo location using geocoder
-     * @param addressString a street address
-     * @return a LatLng geo location
+     * estimate a fare based on the distance between two locations
+     * @param pickup coordinates of the pick up address
+     * @param dropoff coordinates of the drop off address
      */
-    private LatLng getLocationFromAddress(String addressString){
-        List<Address> addressList;
-        LatLng point = null;
-        try{
-            addressList = geocoder.getFromLocationName(addressString,5);
-            if (addressList == null){
-                // nothing found
-                return null;
-            }
-            Address location = addressList.get(0);
-            location.getLatitude();
-            location.getLongitude();
-
-            point = new LatLng(location.getLatitude(), location.getLongitude());
-        } catch (Exception e){
-            e.printStackTrace();
-
-        }
-        return point;
+    private void estimateFare(LatLng pickup, LatLng dropoff){
+        float[] results = new float[1];
+        Location.distanceBetween(pickup.latitude, pickup.longitude,
+                dropoff.latitude, dropoff.longitude, results);
+        //Toast.makeText(RiderMainView.this, "distance is " + Float.toString(results[0]), Toast.LENGTH_SHORT).show();
+        distance = results[0] / 1000; // in KM
+        float gasCostFactor = 4; // calculate something later
+        fare =  distance *gasCostFactor;
+        //fareInput.setText((String.format("%.2f", fare)));
+        fareInput.setText(String.valueOf(roundFloatToTwoDec(fare)));
     }
+
+    private float roundFloatToTwoDec(Float number){
+        BigDecimal dec = new BigDecimal(Float.toString(number));
+        dec = dec.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return dec.floatValue();
+    }
+
 
 }

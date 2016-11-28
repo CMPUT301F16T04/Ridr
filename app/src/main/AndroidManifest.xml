@@ -9,10 +9,8 @@
     -->
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
-
 
     <application
         android:allowBackup="true"
@@ -27,25 +25,40 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".GeoView"
-                  android:exported="true"/>
+        <activity
+            android:name=".GeoView"
+            android:exported="true" />
         <activity android:name=".DriverMainView" />
         <activity android:name=".SearchRequestsView" />
         <activity android:name=".SearchResultsView" />
         <activity android:name=".RequestsFromRidersView" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ProfileView" />
+        <activity android:name=".ProfileView"
+            android:exported="true"/>
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView"
+            android:exported="true"/>
+        <activity android:name=".AcceptDriverView"
             android:exported="true"/>
         <activity android:name=".RiderRequestView"
             android:exported="true"/>
         <activity android:name=".RiderMainView"
             android:exported="true"/>
         <activity android:name=".RideConfirmationView" />
-        <activity android:name=".AcceptDriverView"
-            android:exported="true"></activity>
-        <activity android:name=".AddUserView"></activity>
+        <activity
+            android:name=".AddRiderView"
+            android:exported="true" />
+        <activity
+            android:name=".AddDriverView"
+            android:exported="true" />
+        <activity
+            android:name=".DriverRideView"
+            android:exported="true"
+            android:label="@string/title_activity_driver_ride_view"/>
+
+        <activity android:name=".RideView"
+            android:label="@string/title_activity_ride_view"
+            android:exported="true"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -56,12 +69,14 @@
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="@string/google_maps_key" /><!-- ATTENTION: This was auto-generated to add Google Play services to your project for
-     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information. -->
+            android:value="@string/google_maps_key" />
+        <!--
+ ATTENTION: This was auto-generated to add Google Play services to your project for
+     App Indexing.  See https://g.co/AppIndexing/AndroidStudio for more information.
+        -->
         <meta-data
             android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
-
     </application>
 
 </manifest>

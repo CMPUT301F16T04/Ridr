@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class RequestsFromRidersView extends Activity implements ACallback{
     //must extend activity, not appcompatactivity
 
+
     private String userName;
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;

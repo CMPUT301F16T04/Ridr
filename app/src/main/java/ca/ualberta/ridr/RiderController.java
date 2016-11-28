@@ -26,6 +26,12 @@ public class RiderController {
 
     RiderController(){
     }
+
+    public Rider getRiderFromServer(String riderName) {
+        Rider rider = new Gson().fromJson(new AsyncController().get("user", "name", riderName), Rider.class);
+        return (rider);
+    }
+
     public Rider getRiderFromServerUsingId(String riderId){
         Rider rider = new Gson().fromJson(new AsyncController().get("user", "id", riderId), Rider.class);
         return(rider);
@@ -37,6 +43,14 @@ public class RiderController {
     }
     public ArrayList<Request> getRequests(Rider rider){
         return(rider.getRequests());
+    }
+
+    public void saveChanges(String riderName, String phone, String email){
+        Rider rider = getRiderFromServerUsingName(riderName);
+        rider.setPhoneNumber(phone);
+        rider.setEmail(email);
+        AsyncController controller = new AsyncController();
+        controller.create("user", rider.getID().toString(), new Gson().toJson(rider));
     }
 
 }

@@ -32,8 +32,8 @@ public class AcceptDriverView extends Activity {
     private Button accept;
     private TextView xProfile;
 
-    private String riderName;
-    private String driverId;
+    private String username;
+    private String driverName;
     private String requestId;
 
     private DriverController driverCon = new DriverController();
@@ -56,8 +56,8 @@ public class AcceptDriverView extends Activity {
         Intent intent = getIntent();
         ArrayList<String> ids = intent.getStringArrayListExtra("ids");
         if (ids != null) {
-            riderName = ids.get(0);
-            driverId= ids.get(1);
+            driverName = ids.get(0);
+            username = ids.get(1);
             requestId = ids.get(2);
         }
         else{
@@ -66,7 +66,7 @@ public class AcceptDriverView extends Activity {
         }
 
 
-        final Driver driver = getDriver(driverId);
+        final Driver driver = getDriver(driverName);
         final Request request  = getRequest(requestId);
 
         final String driverEmailStr = driver.getEmail();
@@ -74,7 +74,7 @@ public class AcceptDriverView extends Activity {
 
         driverEmail.setText(driverEmailStr);
         driverPhone.setText(driverPhoneStr);
-        xProfile.setText(capitalizeName(driver.getName()));
+        xProfile.setText(capitalizeName(driverName));
 
         //if the user clicks the accept button state of the request is modified, a ride is created
         //and stored on server, and then we return to prev activity
@@ -82,8 +82,7 @@ public class AcceptDriverView extends Activity {
             @Override
             public void onClick(View v) {
 
-
-                rideCon.createRide(driver.getName(), request, riderName);
+                rideCon.createRide(driverName, request, username);
                 reqCon.accept(request);
 
                 //save pendingNotification for driver, upload to elastic search
@@ -142,11 +141,11 @@ public class AcceptDriverView extends Activity {
     /**
      * gets the driver for the data we display on this view
      *
-     * @param driverId used to fetch the driver
+     * @param driverName used to fetch the driver
      * @return Driver object
      */
-    public Driver getDriver(String driverId){
-        Driver driver = driverCon.getDriverFromServerUsingId(driverId);
+    public Driver getDriver(String driverName){
+        Driver driver = driverCon.getDriverFromServerUsingName(driverName);
         return(driver);
     }
 

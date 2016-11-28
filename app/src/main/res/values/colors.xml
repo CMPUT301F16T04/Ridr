@@ -5,9 +5,13 @@
     <color name="secondary_colour">#8e4497</color>
     <color name="primary">#8e4497</color>
     <color name="primaryDark">#62156d</color>
-    <color name="light_secondary_colour">#B08e4497</color>
+    <color name="light_secondary_colour">#808e4497</color>
     <color name="dark_tertiary_colour">#CA535D</color>
     <color name="light_gray">#dddddd</color>
     <color name="black">#000</color>
     <color name="light_tertiary_colour">#ca535d</color>
+    <color name="completed">#8E4199</color>
+    <color name="paid">#62156D</color>
+    <color name="uncompleted">#CF9CD6</color>
 </resources>
+
