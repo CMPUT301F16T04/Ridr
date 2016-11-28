@@ -1,6 +1,10 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
+
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
 import junit.framework.Assert;
 
@@ -17,10 +21,21 @@ import static org.junit.Assert.assertTrue;
  * Created by kristynewbury on 2016-11-07.
  */
 
-public class RequestControllerTest{
-<<<<<<< HEAD
+public class RequestControllerTest {
+    @Test
+    public void searchTest() throws Exception {
+        Gson gson = new Gson();
+        Context context = null;
+        RequestController requestController = new RequestController(context);
+        Request request = new Request("Justin Barclay", "University of Alberta", "10615 47 Avenue Northwest, Edmonton", new LatLng(53.525288, -113.525454), new LatLng(53.484775, -113.505067), new Date() );
+        String jsonString = gson.toJson(request);
+        JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);
+        Assert.assertTrue(requestController.doesJsonContainKeyword("Justin",jsonElement));
+        Assert.assertTrue(requestController.doesJsonContainKeyword("Alberta",jsonElement));
+        Assert.assertTrue(requestController.doesJsonContainKeyword("Edmonton",jsonElement));
+    }
+
 /*
-=======
 
 
   //  @Test

@@ -407,10 +407,6 @@ public class RequestController {
         return offlineSingleton.isPendingAcceptance() && isConnected();
     }
 
-    public boolean isPendingExecutableNotification() {
-        return offlineSingleton.isPendingNotification() && isConnected();
-    }
-
     private Boolean isConnected() {
         ConnectivityManager cm =
                 (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
