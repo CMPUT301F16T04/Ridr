@@ -53,7 +53,7 @@ public class Request {
         this.rider = rider;
         this.id = UUID.randomUUID();
         this.date = date;
-        this.fare = 20;
+        this.fare = 0;
         this.accepted = false;
         this.possibleDrivers = new ArrayList<String>();
         this.isValid = true;
