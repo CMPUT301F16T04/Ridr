@@ -53,7 +53,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
             contractPartner = "Rider: " + ride.getRider();
         }
 
-        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
+        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm a 'on' dd MMM yyyy");
 
         String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
         String completed = ride.isCompleted().toString();

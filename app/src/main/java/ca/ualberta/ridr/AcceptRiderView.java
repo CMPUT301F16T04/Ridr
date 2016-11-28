@@ -130,7 +130,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
 
         String isFrom = "Request from " + capitalizeName(requestRider.getName()) + ":";
 
-        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
+        SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm a 'on' dd MMM yyyy");
 
 
         //set all the text that needs to be set
