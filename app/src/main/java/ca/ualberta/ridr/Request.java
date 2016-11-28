@@ -195,7 +195,9 @@ public class Request {
         // currently I don't have or store a list of possible drivers
         // Because of the differences between JsonObject and JSONObject.
         DateFormat formatter = new SimpleDateFormat("E MMM dd HH:mm:ss Z yyyy");
-
+        /*if(request.get("rider") == null) {
+            request = request.getAsJsonObject("_source");
+        }*/
         this.rider = request.get("rider").getAsString();
         this.pickup = request.get("pickup").getAsString();
         this.dropoff = request.get("dropoff").getAsString();
@@ -205,7 +207,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-        this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
+        this.possibleDrivers = buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
         this.isValid = request.get("isValid").getAsBoolean();
 
     }

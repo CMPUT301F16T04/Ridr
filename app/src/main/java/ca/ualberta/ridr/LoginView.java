@@ -70,6 +70,10 @@ public class LoginView extends Activity implements ACallback {
             public void onClick(View view) {
                 //launches to next activity activity
                 //check for empty textbox
+                //Call to save requests to file for offline functionality
+                new AsyncController(context).getAllFromIndex("request");
+                new AsyncController(context).getAllFromIndex("user");
+                new AsyncController(context).getAllFromIndex("ride");
                 String username = usernameLogin.getText().toString();
                 if(TextUtils.isEmpty(username)){
                     Toast.makeText(LoginView.this, "Please enter in a username to log in.", Toast.LENGTH_SHORT).show();
@@ -89,8 +93,6 @@ public class LoginView extends Activity implements ACallback {
                 }
                 //code for switching between a rider login and a driver login
                 if(asDriver){
-                    //Call to save requests to file for offline functionality
-                    new AsyncController(context).getAllFromIndex("request");
                     loginDriver(myUser);
                 } else {
                     new AsyncController(context).getAllFromIndexFiltered("request", "rider", myUser.getName());
@@ -123,6 +125,11 @@ public class LoginView extends Activity implements ACallback {
                 startActivity(addAccountIntent);
             }
         });
+
+    }
+
+    protected void onStart() {
+        super.onStart();
 
     }
 

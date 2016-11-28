@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.util.Log;
@@ -123,7 +125,12 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         requestFrom.setText(isFrom);
         String paymentText = payment.getText() + space+ Float.toString(request.getFare());
         payment.setText(paymentText);
-        String contactInfoText = contactInfo.getText() + space + requestRider.getPhoneNumber();
+        String contactInfoText;
+        if(requestRider != null) {
+            contactInfoText = contactInfo.getText() + space + requestRider.getPhoneNumber();
+        } else {
+            contactInfoText = contactInfo.getText() + space + "cannot find #";
+        }
         contactInfo.setText(contactInfoText);
         String pickupTimeText = pickupTime.getText() + space + rideDate.format(request.getDate());
         pickupTime.setText(pickupTimeText);
@@ -151,7 +158,9 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
             @Override
             public void onClick(View view){
                 Intent intent = new Intent(AcceptRiderView.this, ProfileView.class);
-                intent.putExtra("RiderUUID", requestRider.getID().toString());
+                if(requestRider != null) {
+                    intent.putExtra("RiderUUID", requestRider.getID().toString());
+                }
                 startActivity(intent);
             }
         });
@@ -161,27 +170,29 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
         acceptRider.setOnClickListener(new View.OnClickListener(){
             @Override
             public void onClick(View view){
-
-                if(agreedToFulfill) {
-                    //chose this particular toast over "accepted already" so
-                    //they dont think that someone accepting prevents their own acceptance
-                    Toast.makeText(AcceptRiderView.this, "You've already accepted", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                else {
-                    //driver is now willing to fulfill the ride
-                    requestController.addDriverToList(request, driverName);
-                    //set pending notification on riders account
-                    riderController.setPendingNotification(requestRider);
-                    Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
+                try {
+                    if (agreedToFulfill) {
+                        //chose this particular toast over "accepted already" so
+                        //they dont think that someone accepting prevents their own acceptance
+                        Toast.makeText(AcceptRiderView.this, "You've already accepted", Toast.LENGTH_SHORT).show();
+                        return;
+                    } else {
+                        //driver is now willing to fulfill the ride
+                        requestController.addDriverToList(request, driverName);
+                        //set pending notification on riders account
+                        riderController.setPendingNotification(requestRider);
+                        Toast.makeText(AcceptRiderView.this, "You have agreed to fulfill a riders request! " +
                                 "Wait to see if you're chosen as a driver.", Toast.LENGTH_LONG).show();
-                    agreedToFulfill = true;
-                    String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
-                    status.setText(statusText);
+                        agreedToFulfill = true;
+                        String statusText = getResources().getString(R.string.status_accept_rider) + " Accepted";
+                        status.setText(statusText);
 
-                    //Executes any pending functions from offline functionality once online
-                    requestController.executeAllPending(driverName);
-                    riderController.pushPendingNotifications();
+                        //Executes any pending functions from offline functionality once online
+                        requestController.executeAllPending(driverName);
+                        riderController.pushPendingNotifications();
+                    }
+                } catch(Exception e) {
+                    return;
                 }
             }
 
@@ -315,6 +326,17 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      */
     private String capitalizeName(String name){
         return (name.substring(0,1).toUpperCase().concat(name.substring(1)));
+    }
+
+    private Boolean isConnected() {
+        ConnectivityManager cm =
+                (ConnectivityManager)this.context.getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo activeNetwork = cm.getActiveNetworkInfo();
+        boolean isConnected = activeNetwork != null &&
+                activeNetwork.isConnectedOrConnecting();
+
+        return isConnected;
     }
 
 

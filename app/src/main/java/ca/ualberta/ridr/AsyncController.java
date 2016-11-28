@@ -97,6 +97,7 @@ public class AsyncController {
             }
 
         } catch(Exception e) {
+            e.printStackTrace();
             return null;
         }
     }
@@ -307,6 +308,7 @@ public class AsyncController {
      */
     private String getFile(String dataClass, String variable) {
         String file = dataClass + variable + ".sav";
+        file = file.trim().toLowerCase();
         return file;
     }
 
@@ -333,22 +335,26 @@ public class AsyncController {
      * @return JsonObject
      */
     private JsonObject searchInFileObject(String dataClass, String attribute, String keyword) {
-        String file = getFile(dataClass, "");
-        JsonArray jsonArray = loadFromFile(file);
-        JsonObject jsonObject;
-        JsonElement temp;
-        String string;
-        keyword = keyword.trim();
-        keyword = "cb301ddf-483e-49fa-ba43-aab1ee4e1098";
+        try {
+            String file = getFile(dataClass, "");
+            JsonArray jsonArray = loadFromFile(file);
+            JsonObject jsonObject = null;
+            JsonElement temp;
+            String string;
+            keyword = keyword.trim();
 
-        for(JsonElement jsonElement: jsonArray) {
-            jsonObject = jsonElement.getAsJsonObject();
-            temp = jsonObject.get("_" + attribute);
-            string = temp.getAsString();
-            if(temp.equals(keyword)) {
-                return jsonObject;
+            for (JsonElement jsonElement : jsonArray) {
+                jsonObject = jsonElement.getAsJsonObject().getAsJsonObject("_source");
+                temp = jsonObject.get(attribute);
+                string = temp.getAsString().trim();
+                if (string.equalsIgnoreCase(keyword)) {
+                    return jsonObject;
+                }
             }
+            return jsonObject;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
         }
-        return null;
     }
 }
