@@ -114,9 +114,6 @@ public class Driver extends User {
         return false;
     }
 
-    public String getVehicleDescription() {
-        return vehicleDescription;
-    }
 }
 
 
