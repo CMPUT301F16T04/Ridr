@@ -298,7 +298,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
         boundedMap.include(ride.getPickupCoords());
         boundedMap.include(ride.getDropOffCoords());
 
-        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 320));
+        map.moveCamera(CameraUpdateFactory.newLatLngBounds(boundedMap.build(), 500));
 
         updateRideInfo(ride);
     }
