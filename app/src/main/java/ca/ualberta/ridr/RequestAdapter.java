@@ -76,7 +76,7 @@ public class RequestAdapter extends ArrayAdapter<Request> {
             return "No Drivers willing to fulfill yet";
         } else if(request.getPossibleDrivers().size() > 0) {
             if(userName != null && request.getPossibleDrivers().contains(userName)){
-                return "You are willing to fulfill"; //only happens if calling as a driver, from RequestsFromRidersView
+                return "You are willing to fulfill"; //only happens if calling as a driver, from DriverRequestsView
             }
             return "A few Drivers willing to fulfill";
         } else {

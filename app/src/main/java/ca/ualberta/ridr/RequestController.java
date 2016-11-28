@@ -150,7 +150,6 @@ public class RequestController {
         JsonArray jsonArray = new AsyncController(context).getAllFromIndex("request");
         ArrayList<Request> requestsKeyword = new ArrayList<>();
         Request request;
-
         for (JsonElement element: jsonArray) {
             if(doesJsonContainKeyword(keyword, element)) {
                 try {

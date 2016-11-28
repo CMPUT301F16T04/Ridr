@@ -179,7 +179,7 @@ public class SearchResultsView extends Activity {
                         return true;
                     case R.id.mainRiderMenuViewRequests:
                         Toast.makeText(SearchResultsView.this, "View Requests", Toast.LENGTH_SHORT).show();
-                        Intent viewRequestsIntent = new Intent(SearchResultsView.this, RequestsFromRidersView.class);
+                        Intent viewRequestsIntent = new Intent(SearchResultsView.this, DriverRequestsView.class);
                         viewRequestsIntent.putExtra("Name", username);
                         startActivity(viewRequestsIntent);
                         return true;

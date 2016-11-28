@@ -83,8 +83,9 @@ public class AsyncController {
         controller = new AsyncDatabaseController("getAllFromIndex");
         String file = getFile(dataClass, "");
         try{
+
             if(isConnected()) {
-                String searchString = "{\"query\": { \"match_all\": { }}}";
+                String searchString = "{\"from\": 0, \"size\": 1000, \"query\": { \"match_all\": { }}}";
 
                 JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
                 saveInFile(jArray, file);
@@ -111,8 +112,9 @@ public class AsyncController {
         controller = new AsyncDatabaseController("get");
         String file = getFile(dataClass, variable);
         try{
+
             if(isConnected()) {
-                String searchString = "{\"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
+                String searchString = "{ \"from\": 0, \"size\": 1000, \"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
                         "fields: [ \"" + variable + "\"]}}}";
 
                 JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
@@ -157,22 +159,23 @@ public class AsyncController {
         controller = new AsyncDatabaseController("get");
         String query =
                 "{"+
-                    "\"query\": {" +
-                        "\"bool\" : {"+
-                            "\"must\" : {"+
-                                "\"match_all\" : {}" +
-                            "}," +
-                            "\"filter\" : {"+
-                                "\"geo_distance\" : {" +
-                                    "\"distance\" : \""+ kmDistance+ "km\"," +
-                                    "\"pickupCoord\" : {" +
-                                            "\"lat\" :" + center.latitude + "," +
-                                            "\"lon\" :" + center.longitude +
-                                    "}" +
-                                "}" +
-                            "}" +
-                        "}" +
-                    "}"+
+                "\"from\": 0 , \"size\": 1000," +
+                "\"query\": {" +
+                "\"bool\" : {" +
+                "\"must\" : {" +
+                "\"match_all\" : {}" +
+                "}," +
+                "\"filter\" : {" +
+                "\"geo_distance\" : {" +
+                "\"distance\" : \"" + kmDistance + "km\"," +
+                "\"pickupCoord\" : {" +
+                "\"lat\" :" + center.latitude + "," +
+                "\"lon\" :" + center.longitude +
+                "}" +
+                "}" +
+                "}" +
+                "}" +
+                "}" +
                 "}";
         String file = getFile(dataClass, "");
         try{
@@ -194,6 +197,7 @@ public class AsyncController {
         //got help with query from http://www.tugberkugurlu.com/archive/elasticsearch-array-contains-search-with-terms-filter -Tugberk Ugurlu
         String query =
                 "{"+
+                    "\"from\": 0 , \"size\": 1000," +
                     "\"query\": {" +
                         "\"filtered\" : {"+
                             "\"query\": {" +

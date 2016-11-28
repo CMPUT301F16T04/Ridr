@@ -214,7 +214,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
-        this.costDistance = request.get("costDistance").getAsFloat();
+        this.costDistance = new Float(request.get("costDistance").getAsLong());
         this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
         this.isValid = request.get("isValid").getAsBoolean();
 
