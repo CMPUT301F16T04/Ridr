@@ -224,7 +224,7 @@ public class RiderRequestView extends Activity {
             String size = Integer.toString(request.getPossibleDrivers().size());
             textView.setText("Request is accepted by " + size + "drivers");
         } else{
-            textView.setText("Request is hasn't been accepted by any drivers");
+            textView.setText("Request hasn't been accepted by any drivers");
 
         }
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 
@@ -11,6 +12,7 @@ import android.os.Bundle;
 
 import android.support.annotation.Nullable;
 
+import android.support.v4.content.res.ResourcesCompat;
 import android.util.Log;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -141,7 +143,6 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                     estimateFare(pickupCoord, dropoffCoord);
                 }
             }
-
             @Override
             public void onError(Status status) {
                 Log.i("Places", "An error occurred: " + status);
@@ -168,7 +169,8 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
             }
         });
 
-
+        pickupAutocompleteFragment.getView().findViewById(R.id.pickup_autocomplete_fragment).setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.primary_colour, null));
+        dropoffAutocompleteFragment.getView().findViewById(R.id.dropoff_autocomplete_fragment).setBackgroundColor(ResourcesCompat.getColor(getResources(), R.color.primary_colour, null));
         //open date picker
         dateButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
@@ -358,7 +360,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         costDist = roundFloatToTwoDec(costDist);
         fare = roundFloatToTwoDec(fare);
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, costDist);
-        Toast.makeText(RiderMainView.this, "request made", Toast.LENGTH_SHORT).show();
+        Toast.makeText(RiderMainView.this, "You request has been made", Toast.LENGTH_SHORT).show();
 
         // reset text fields
         resetText();
