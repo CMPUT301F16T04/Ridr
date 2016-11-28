@@ -357,7 +357,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
 
         fare = Float.parseFloat(fareInput.getText().toString());
-        Float costDist = fare/distance;
+        float costDist = fare/distance;
         costDist = roundFloatToTwoDec(costDist);
         fare = roundFloatToTwoDec(fare);
         reqController.createRequest(rider, pickupStr, dropoffStr, pickupCoord, dropoffCoord, pickupDate,fare, costDist);
@@ -484,7 +484,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         fareInput.setText(String.valueOf(roundFloatToTwoDec(fare)));
     }
 
-    private float roundFloatToTwoDec(Float number){
+    private float roundFloatToTwoDec(float number){
         BigDecimal dec = new BigDecimal(Float.toString(number));
         dec = dec.setScale(2, BigDecimal.ROUND_HALF_UP);
         return dec.floatValue();
