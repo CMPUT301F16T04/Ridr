@@ -8,7 +8,7 @@
     android:paddingTop="0dp"
     android:orientation="vertical"
     android:background="@color/secondary_colour"
-    tools:context="ca.ualberta.ridr.DriverRideView">
+    tools:context="ca.ualberta.ridr.DriverRidesView">
     <ListView
         android:id="@+id/driverRidesList"
         android:layout_width="match_parent"

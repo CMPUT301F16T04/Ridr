@@ -51,7 +51,7 @@ public class RiderRequestView extends Activity {
             final Intent intent = getIntent();
             Bundle extras = intent.getExtras();
             if (extras != null) {
-                riderName = extras.getString("name");
+                riderName = extras.getString("Name");
 
             }
         }
@@ -72,7 +72,10 @@ public class RiderRequestView extends Activity {
         requests.clear(); // Fix for duplicates in list
         for (JsonElement result : queryResults) {
             try {
-                requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                Request localReq = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
+                if(localReq.isValid() && !localReq.isAccepted()){
+                    requests.add(localReq);
+                }
             } catch (Exception e) {
                 Log.i("Error parsing requests", e.toString());
             }
@@ -147,6 +150,11 @@ public class RiderRequestView extends Activity {
 
         ListView popupList = (ListView) layout.findViewById(R.id.drivers_list);
         ArrayAdapter<String> adapter_popup = new ArrayAdapter<>(activity, R.layout.driver_who_accepted, possibleDrivers);
+
+        if(possibleDrivers.size() == 0){
+            possibleDrivers.add("No Drivers Yet!");
+        }
+
         popupList.setAdapter(adapter_popup);
 
         //this is to recognize listview item presses within the popup
@@ -156,21 +164,26 @@ public class RiderRequestView extends Activity {
 
                 clickedDriverNameStr = possibleDrivers.get(position);
                 //must close popup before going to next activity
-                driverPopUp.dismiss();
 
-
-                Intent intent = new Intent(activity, AcceptDriverView.class);
-                ArrayList<String> ids = new ArrayList<>();
-                ids.add(clickedDriverNameStr);
-                ids.add(riderName); //pass the current user
-                ids.add(clickedRequestIDStr);
-                intent.putStringArrayListExtra("ids", ids);
-                startActivity(intent);
-                //go to driver profile
+                if(possibleDrivers.get(0).equals("No Drivers Yet!")) {
+                    driverPopUp.dismiss();
+                }
+                else{
+                    driverPopUp.dismiss();
+                    Intent intent = new Intent(activity, AcceptDriverView.class);
+                    ArrayList<String> ids = new ArrayList<>();
+                    ids.add(clickedDriverNameStr);
+                    ids.add(riderName); //pass the current user
+                    ids.add(clickedRequestIDStr);
+                    intent.putStringArrayListExtra("ids", ids);
+                    startActivity(intent);
+                    //go to driver profile
+                }
             }
         });
 
     }
+
     /** capitalizes all of the names in the possible drivers list so that when we
      *  display them in the popup they are guaranteed to be capitalized
      *  this may become obsolete if we enforce qualities on the usernames
@@ -202,12 +215,8 @@ public class RiderRequestView extends Activity {
         cancelPopUp.setHeight(LinearLayout.LayoutParams.WRAP_CONTENT);
         cancelPopUp.setFocusable(true);
 
-        // Some offset to align the popup a bit to the left, and a bit down, relative to button's position.
-        int CANCEL_OFFSET_X = 1000;
-        int CANCEL_OFFSET_Y = 300;
-
         // Displaying the popup at the specified location, + offsets.
-        cancelPopUp.showAtLocation(cancelLayout, Gravity.NO_GRAVITY, CANCEL_OFFSET_X, CANCEL_OFFSET_Y);
+        cancelPopUp.showAtLocation(cancelLayout,  Gravity.CENTER, 0, 0);
 
         // Getting a reference to Close button, and close the popup when clicked.
         Button cancelRequest = (Button) cancelLayout.findViewById(R.id.Confirm_Cancel);
@@ -221,6 +230,20 @@ public class RiderRequestView extends Activity {
             textView.setText("Request hasn't been accepted by any drivers");
 
         }
+        cancelRequest.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // Cancel request
+                AsyncController controller = new AsyncController();
+
+                request.setIsValid(false);
+
+                System.out.println( controller.create("request", request.getID().toString(), request.toJsonString()));
+                requests.remove(request);
+                customAdapter.notifyDataSetChanged();
+                cancelPopUp.dismiss();
+            }
+        });
 
     }
 }

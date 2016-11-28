@@ -64,7 +64,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());
         rideFare.setText(fareText + Float.toString(ride.getFare()));
 
-        if(ride.isCompleted() && ride.isPaid()) {
+        if(ride.isCompleted() && ride.isPaid() && userType == "driver") {
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.paid));
         } else if(ride.isCompleted() && !ride.isPaid()){
             convertView.setBackgroundColor(ContextCompat.getColor(context, R.color.primary));
