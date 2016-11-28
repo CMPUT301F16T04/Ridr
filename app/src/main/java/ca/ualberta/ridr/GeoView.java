@@ -49,7 +49,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
     private GoogleMap map;
     private GoogleApiClient mGoogleApiClient;
     private ArrayList<Marker> markers;
-    private String user;
+    private String username;
     private LatLng lastKnownPlace;
     private LatLng restrictToPlace;
     private RequestController requests;
@@ -83,7 +83,7 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
         Intent intent = getIntent();
         Bundle extra = intent.getExtras();
         if(extra != null){
-            user = extra.getString("username");
+            username = extra.getString("username");
         }
     }
 
@@ -173,12 +173,33 @@ public class GeoView extends FragmentActivity implements OnMapReadyCallback, Con
 
         // Let's listen for clicks on our markers to display information
         map.setOnMarkerClickListener(showInfoWindow);
-
+        map.setOnMarkerDragListener(goToRequest);
         map.setInfoWindowAdapter(displayRequest);
 
     }
 
+    GoogleMap.OnMarkerDragListener goToRequest = new GoogleMap.OnMarkerDragListener(){
 
+        @Override
+        public void onMarkerDragStart(Marker marker) {
+            Intent requestIntent = new Intent(GeoView.this, AcceptRiderView.class);
+            Request request = (Request) marker.getTag();
+            requestIntent.putExtra("username", username);
+            requestIntent.putExtra("RequestUUID", request.getID());
+            startActivity(requestIntent);
+        }
+
+        @Override
+        public void onMarkerDrag(Marker marker) {
+
+        }
+
+        @Override
+        public void onMarkerDragEnd(Marker marker) {
+
+        }
+    };
+    
     OnMarkerClickListener showInfoWindow = new OnMarkerClickListener() {
         @Override
         public boolean onMarkerClick(Marker marker) {
