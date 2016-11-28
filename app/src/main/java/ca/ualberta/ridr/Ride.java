@@ -149,7 +149,7 @@ public class Ride {
             toReturn.put("fare", fare);
             return toReturn.toString();
         } catch(Exception e){
-            Log.d("Error", e.toString());
+            Log.d("Error", String.valueOf(e));
             return null;
 
         }

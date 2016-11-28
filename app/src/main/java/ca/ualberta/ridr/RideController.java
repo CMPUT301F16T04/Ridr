@@ -1,13 +1,14 @@
 package ca.ualberta.ridr;
-
 import android.util.Log;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
-
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.UUID;
@@ -26,6 +27,7 @@ public class RideController {
     RideController(ACallback rideInterface) {
         this.cbInterface = rideInterface;
         this.rides = new ArrayList<>();
+        controller = new AsyncController();
     }
 
     public ArrayList<Ride> getAll() {
@@ -139,5 +141,42 @@ public class RideController {
 
         return result;
     }
+    
+    @Nullable
+    public Ride getRide(String id){
+        Ride ride = findRideInList(id);
+        return ride;
+    }
 
+    public void findRide(String rideID) {
+        JsonObject ride = controller.get("ride", "id", rideID);
+        try {
+            Ride aRide = new Ride(ride);
+            rides.add(new Ride(ride));
+            cbInterface.update();
+        } catch (Exception e){
+            Log.i("Failed to make ride", String.valueOf(e));
+        }
+    }
+
+    public void updateRide(String id){
+        Ride ride = findRideInList(id);
+        controller.create("ride", ride.getId().toString(), ride.toJsonString());
+    }
+
+    public void completeRide(String rideid){
+        Ride ride = findRideInList(rideid);
+        ride.setCompleted(true);
+        controller.create("ride", ride.getId().toString(), ride.toJsonString());
+    }
+    @Nullable
+    public Ride findRideInList(String id){
+        for(int i=0; i<rides.size(); ++i){
+            Ride ride = rides.get(0);
+            if(ride.getId().equals(UUID.fromString(id))){
+                return ride;
+            }
+        }
+        return null;
+    }
 }
