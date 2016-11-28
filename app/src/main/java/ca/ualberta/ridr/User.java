@@ -20,6 +20,8 @@ public class User {
     private Boolean isDriver;
     private UUID id;
 
+    private String pendingNotification;
+
     public User(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber){
         this.name = name;
         this.dateOfBirth = dateOfBirth;
@@ -116,4 +118,13 @@ public class User {
     public UUID getID(){
         return id;
     }
+
+    public String getPendingNotification() {
+        return pendingNotification;
+    }
+
+    public void setPendingNotification(String pendingNotification) {
+        this.pendingNotification = pendingNotification;
+    }
+
 }

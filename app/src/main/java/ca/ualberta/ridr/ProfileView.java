@@ -30,11 +30,9 @@ public class ProfileView extends Activity {
     private DriverController driverCon = new DriverController();
     private RiderController riderCon = new RiderController();
 
-    //just hardcoded for now
-    private String username; //= "Kristy";
+    private String username;
     private String userEmailStr;
     private  String userPhoneStr;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -219,7 +219,7 @@ public class AddDriverView extends Activity implements ACallback {
     }
 
     /**
-     *      * A function to validate a phone number, and if it fails give an appropriate error message
+     * A function to validate a phone number, and if it fails give an appropriate error message
      * explaining the failure
      * @param email
      * @return boolean

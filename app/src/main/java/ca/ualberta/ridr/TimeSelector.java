@@ -12,7 +12,8 @@ import android.widget.TimePicker;
 import java.util.Calendar;
 
 /**
- * Created by Marco on 11-Nov-2016.
+ * fragment that allows the user to chose a time from a clock
+ * sets the text in a text view to a time of hh:mm am/pm
  */
 
 public class TimeSelector extends DialogFragment implements TimePickerDialog.OnTimeSetListener {

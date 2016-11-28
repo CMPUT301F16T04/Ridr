@@ -26,7 +26,7 @@ public class AccountController {
     public void loginUser(String username){
         try {
             currentUser = new Gson().fromJson(controller.get("user", "name", username), User.class);
-            Log.i("User", currentUser.getName());
+            Log.i("User", String.valueOf(currentUser.isDriver()));
         } catch(Exception e){
             Log.i("Invalid User", e.toString());
             currentUser = null;

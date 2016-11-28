@@ -291,8 +291,8 @@ public class RidrTest{
         assertTrue(driver.geoSort("100.0.0, 100.0.0", myLocation));
     }
 
-    @Test
     /** Test for keyword search US 04.02.01 */
+    /*@Test
     public void keywordRideSearchTest() throws Exception{
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
         //Add open ride to driver
@@ -301,7 +301,7 @@ public class RidrTest{
         //Search driver's list of rides for the keyword
         assertTrue(driver.keywordSearch("James"));
 
-    }
+    }*/
 
     @Test
     //** Test for driver request accept US 05.01.01*/

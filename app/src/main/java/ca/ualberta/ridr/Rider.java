@@ -14,7 +14,6 @@ import io.searchbox.annotations.JestId;
  */
 public class Rider extends User {
     @JestId
-    private String elasticID;
     private transient ArrayList<Ride> rideArrayList;
     private transient ArrayList<Request> requestArrayList;
 
@@ -33,14 +32,6 @@ public class Rider extends User {
         super.setRiderStatus(status);
     }
 
-    public String getElasticID() {
-        return elasticID;
-    }
-
-    public void setElasticID(String elasticID) {
-        this.elasticID = elasticID;
-    }
-
     public ArrayList<Ride> getRides() {
         return rideArrayList;
     }
@@ -52,8 +43,6 @@ public class Rider extends User {
     public ArrayList<Request> getRequests() {
         return requestArrayList;
     }
-
-    public UUID getId(){return super.getID();}
 
     public void setRequests(ArrayList<Request> requestArrayList) {
         this.requestArrayList = requestArrayList;

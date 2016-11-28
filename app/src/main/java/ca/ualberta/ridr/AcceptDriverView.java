@@ -1,27 +1,18 @@
 package ca.ualberta.ridr;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.net.Uri;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.style.UnderlineSpan;
+import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.UUID;
 
 
 /**
@@ -65,6 +56,7 @@ public class AcceptDriverView extends Activity {
         Intent intent = getIntent();
         ArrayList<String> ids = intent.getStringArrayListExtra("ids");
         if (ids != null) {
+
             username = ids.get(0);
             driverName = ids.get(1);
             requestId = ids.get(2);
@@ -94,6 +86,18 @@ public class AcceptDriverView extends Activity {
 
                 rideCon.createRide(driverName, request, username);
                 reqCon.accept(request);
+
+                //save pendingNotification for driver, upload to elastic search
+                driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides " +
+                        "for more info.");
+                try {
+                    AsyncController asyncController = new AsyncController();
+                    asyncController.create("user", driver.getID().toString(), new Gson().toJson(driver));
+                    //successful account updating
+                } catch (Exception e){
+                    Log.i("Communication Error", "Could not communicate with the elastic search server");
+                    return;
+                }
 
                 finish();
 
@@ -142,6 +146,7 @@ public class AcceptDriverView extends Activity {
      * @param driverName used to fetch the driver
      * @return Driver object
      */
+
     public Driver getDriver(String driverName){
         Driver driver = driverCon.getDriverFromServerUsingName(driverName);
         return(driver);

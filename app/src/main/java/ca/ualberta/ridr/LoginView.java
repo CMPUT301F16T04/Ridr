@@ -54,6 +54,7 @@ public class LoginView extends Activity implements ACallback {
         accountController = new AccountController(this);
 
         asDriver = true;
+
         driverLogin = (TextView) findViewById(R.id.DriverLogin);
         riderLogin = (TextView) findViewById(R.id.RiderLogin);
         loginButton = (Button) findViewById(R.id.loginButton);

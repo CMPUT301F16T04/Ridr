@@ -9,14 +9,12 @@ import io.searchbox.annotations.JestId;
  * Created by mackenzie on 12/10/16.
  */
 public class Driver extends User {
-    @JestId
-    private String elasticID;
-    String vehicleDescription;
+
+
     // These are all marked transient as we don't want them serialized when we pass this object to
     // our AsyncDatabaseController
     //private transient Vehicle vehicle;
-    private transient String bankAccountNo;
-    private transient ArrayList<Ride> rideArrayList;
+    private  String vehicleDescription;
 
     public Driver(String name, Date dateOfBirth, String creditCard, String email, String phoneNumber,
                     String vechileDescription) {
@@ -45,27 +43,6 @@ public class Driver extends User {
         super.setDateOfBirth(dateOfBirth);
     }
 
-
-    public String getBankAccountNo() {
-        return bankAccountNo;
-    }
-    public String getElasticID() {
-        return elasticID;
-
-    }
-
-    public void setElasticID(String elasticID) {
-        this.elasticID = elasticID;
-    }
-
-    public ArrayList<Ride> getRides() {
-        return rideArrayList;
-    }
-
-    public void setRides(ArrayList<Ride> rideArrayList) {
-        this.rideArrayList = rideArrayList;
-    }
-
     public void addRide() {
     }
 
@@ -78,6 +55,8 @@ public class Driver extends User {
     }
 
     public void acceptRide(Ride ride) {
+    }
+    public void acceptRequest(Request request) {
     }
 
     public boolean completeRide(Ride ride) {
@@ -104,9 +83,6 @@ public class Driver extends User {
         return super.getPhoneNumber();
     }
 
-    public void setVehicleDescription(String vehicleDescription){
-        this.vehicleDescription = vehicleDescription;
-    }
     public String getEmail() {
         return super.getEmail();
     }
@@ -116,6 +92,14 @@ public class Driver extends User {
     }
     public String getVehicleDescription() {
         return vehicleDescription;
+    }
+
+    public String getVehicleDescription() {
+        return vehicleDescription;
+    }
+
+    public void setVehicleDescription(String vehicleDescription) {
+        this.vehicleDescription = vehicleDescription;
     }
 
 }
