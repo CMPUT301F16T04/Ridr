@@ -71,4 +71,8 @@ public class OfflineSingleton {
     public void clearRiderList() {
         riderList.clear();
     }
+
+    public boolean isPendingRequest() {
+        return riderRequests.size() > 0;
+    }
 }

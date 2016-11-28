@@ -396,7 +396,7 @@ public class RequestController {
     }
 
     public boolean isPendingExecutableRequests() {
-        return offlineSingleton.getRiderRequests().size() > 0 && isConnected();
+        return offlineSingleton.isPendingRequest() && isConnected();
     }
 
     public boolean isPendingExecutableAcceptance() {
