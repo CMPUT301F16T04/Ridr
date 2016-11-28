@@ -21,7 +21,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Places;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.GoogleMapOptions;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -335,7 +334,7 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
      * @param requestId used to find the possible drivers list
      */
     private void checkIfUserAccepted(String requestId) {
-        ArrayList<String> drivers = requestController.getPossibleDrivers(requestId);
+        ArrayList<String> drivers = requestController.getPossibleDriversWithRequestID(requestId);
         for (int i = 0; i < drivers.size(); ++i) {
             if (drivers.get(i).equals(username)) {
                 agreedToFulfill = true;

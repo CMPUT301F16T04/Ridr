@@ -12,9 +12,9 @@ import android.widget.Toast;
 import com.google.gson.JsonObject;
 
 /**
- * this view displays the info of the user when a username was presented and clicked on
+ * This view displays the info of the user when a username was presented and clicked on
  * one note is that the user in prev activity could have been either a rider or a driver
- * and each has specific info , so we will need to have their type passed to us
+ * and each has specific info , so we will need to have their type passed to us.
  */
 
 public class ProfileView extends Activity {

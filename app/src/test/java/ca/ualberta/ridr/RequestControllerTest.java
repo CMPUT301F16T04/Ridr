@@ -31,7 +31,7 @@ public class RequestControllerTest{
 //
 //        RequestController RC = new RequestController();
 //
-//        ArrayList<Driver> testdrivers = RC.getPossibleDrivers(request);
+//        ArrayList<Driver> testdrivers = RC.getPossibleDriversWithRequestID(request);
 //
 //        assertTrue(testdrivers.get(0).equals(john));
 //    }
@@ -78,8 +78,8 @@ public class RequestControllerTest{
 
         RC.addDriver(request, driver);
 
-        assertEquals(request.getPossibleDrivers().size(), 1);
-        assertTrue(request.getPossibleDrivers().get(0).equals(driver));
+        assertEquals(request.getPossibleDriversWithRequestID().size(), 1);
+        assertTrue(request.getPossibleDriversWithRequestID().get(0).equals(driver));
     }
     */
 
@@ -96,7 +96,7 @@ public class RequestControllerTest{
 
         RequestController RC = new RequestController();
 
-        ArrayList<Driver> testdrivers = RC.getPossibleDrivers(request);
+        ArrayList<Driver> testdrivers = RC.getPossibleDriversWithRequestID(request);
 
         assertTrue(testdrivers.get(0).equals(john));
     }

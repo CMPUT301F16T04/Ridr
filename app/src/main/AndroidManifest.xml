@@ -42,7 +42,6 @@
             android:exported="true"/>
         <activity android:name=".RiderMainView"
             android:exported="true"/>
-        <activity android:name=".RideConfirmationView" />
         <activity
             android:name=".AddRiderView"
             android:exported="true" />
