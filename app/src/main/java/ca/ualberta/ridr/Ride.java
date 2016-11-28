@@ -17,7 +17,8 @@ import java.util.UUID;
 /**
  * Created by mackenzie on 12/10/16.
  *
- * This object is a Ride object
+ * This object is a Ride object. It represents a ride between a rider and a driver between two locations.
+ *
  */
 public class Ride {
     private String pickup;
@@ -37,18 +38,9 @@ public class Ride {
         return pickupCoords;
     }
 
-    public void setPickupCoords(LatLng pickupCoords) {
-        this.pickupCoords = pickupCoords;
-    }
-
     public LatLng getDropOffCoords() {
         return dropOffCoords;
     }
-
-    public void setDropOffCoords(LatLng dropOffCoords) {
-        this.dropOffCoords = dropOffCoords;
-    }
-
 
     public Ride(String driverName, String riderName, String pickup, String dropoff, Date date, LatLng pickupCoords, LatLng dropOffCoords){
         this.rideDate = date;
@@ -62,7 +54,6 @@ public class Ride {
         this.paid = false;
         this.id = UUID.randomUUID();
         this.fare  = 20;
-
     }
 
 
@@ -79,10 +70,6 @@ public class Ride {
 
     public Date getRideDate() {
         return rideDate;
-    }
-
-    public void setRideDate(Date rideDate) {
-        this.rideDate = rideDate;
     }
 
     public String getDriver() {
@@ -111,18 +98,6 @@ public class Ride {
 
     public String getDropOffAddress() {
         return dropoff;
-    }
-
-    public boolean pushAcceptedByRider() {
-        return false;
-    }
-
-    public void complete() {
-        this.isCompleted = true;
-    }
-
-    public boolean hasDriver(Driver driver){
-        return false;
     }
 
     public boolean equals(Ride ride) {

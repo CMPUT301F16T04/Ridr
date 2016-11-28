@@ -22,12 +22,6 @@ import com.google.gson.JsonElement;
 
 import java.util.ArrayList;
 
-/**
- * Displays information pertaining to a rider's active requests. Allows them to accept requests, as
- * wel as cancel requests
- *
- */
-
 /** The RiderRequestView displays a list of active requests for a logged in rider
  * @author mackenzie
  * */
@@ -112,6 +106,10 @@ public class RiderRequestView extends Activity {
     //thinking of popup window as outlined in http://stackoverflow.com/questions/15153651/set-own-layout-in-popup-window-in-android
     //date link accessed : Nov 5 2016
     //author: Emil Adz ,edited Vladimir Kulyk
+
+    /**
+     * Displaying a popup containing possibleDrivers.
+     */
     public void displayDrivers() {
 
         // Inflate the popup_layout.xml

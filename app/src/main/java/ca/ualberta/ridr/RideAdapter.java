@@ -14,7 +14,7 @@ import java.util.ArrayList;
 /**
  * Created by Justin Barclay on 20/11/16.
  *
- * This is a simple view adapter that display a single ride request
+ * This is a simple view adapter that display a single ride request.
  */
 public class RideAdapter extends ArrayAdapter<Ride> {
     private Context context;
