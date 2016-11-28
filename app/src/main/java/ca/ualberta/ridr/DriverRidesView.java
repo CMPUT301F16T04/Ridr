@@ -1,5 +1,6 @@
 package ca.ualberta.ridr;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
@@ -18,12 +19,13 @@ public class DriverRidesView extends Activity implements ACallback {
     RideController rides;
     String driver;
     RideAdapter rideAdapter;
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.driver_ride_view);
-
+        context = this;
 
         //retrieve the current driver's UUID
         Intent intent = getIntent();
@@ -60,7 +62,7 @@ public class DriverRidesView extends Activity implements ACallback {
     protected void onStart(){
         super.onStart();
         //Get driver rides from the server
-        rides = new RideController(this);
+        rides = new RideController(this, context);
         rides.getDriverRides(driver);
 
         // Set ride adapter

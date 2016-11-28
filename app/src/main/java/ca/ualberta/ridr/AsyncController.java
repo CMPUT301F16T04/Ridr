@@ -112,12 +112,15 @@ public class AsyncController {
         controller = new AsyncDatabaseController("get");
         String file = getFile(dataClass, variable);
         try{
-
+            Log.i("JArray", isConnected().toString());
             if(isConnected()) {
-                String searchString = "{ \"from\": 0, \"size\": 1000, \"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
+                String searchString = "{ \"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
                         "fields: [ \"" + variable + "\"]}}}";
 
-                JsonArray jArray = extractAllElements(controller.execute(dataClass, searchString).get());
+                Log.i("thing", searchString);
+                JsonObject thing = controller.execute(dataClass, searchString).get();
+                JsonArray jArray = extractAllElements(thing);
+                Log.i("JArray", jArray.toString());
                 saveInFile(jArray, file);
                 return jArray;
             } else {
