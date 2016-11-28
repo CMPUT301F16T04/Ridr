@@ -67,7 +67,7 @@ public class DriverRequestsView extends Activity implements ACallback{
                 String clickedRequestIDStr = request.getID().toString();
                 Intent intent = new Intent(DriverRequestsView.this, AcceptRiderView.class);
                 intent.putExtra("RequestUUID", clickedRequestIDStr);
-                intent.putExtra("userName", userName);
+                intent.putExtra("username", userName);
                 startActivity(intent);
             }
         });
