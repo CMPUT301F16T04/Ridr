@@ -53,7 +53,7 @@
             android:name=".AddDriverView"
             android:exported="true" />
         <activity
-            android:name=".DriverRideView"
+            android:name=".DriverRidesView"
             android:exported="true"
             android:label="@string/title_activity_driver_ride_view" />
         <activity
