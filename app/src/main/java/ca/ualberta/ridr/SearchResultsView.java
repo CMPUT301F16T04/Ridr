@@ -63,7 +63,7 @@ public class SearchResultsView extends Activity {
                 Intent intent = new Intent(SearchResultsView.this, AcceptRiderView.class);
                 Request clickedRequest = (Request)searchResults.getItemAtPosition(position);
                 intent.putExtra("RequestUUID", clickedRequest.getID().toString());
-                intent.putExtra("userName", username);
+                intent.putExtra("username", username);
                 startActivity(intent);
             }
         });

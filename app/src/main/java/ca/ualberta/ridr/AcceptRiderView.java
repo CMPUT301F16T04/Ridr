@@ -179,7 +179,6 @@ public class AcceptRiderView extends FragmentActivity implements OnMapReadyCallb
                     return;
                 }
                 else {
-<
                     //driver is now willing to fulfill the ride
                     requestController.addDriverToList(request, username);
                     //set pending notification on riders account

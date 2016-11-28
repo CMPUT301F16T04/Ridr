@@ -42,12 +42,8 @@
     <string name="end_location_accept_rider">Dropoff:  </string>
     <string name="status_accept_rider">Status:  </string>
     <string name="accept_rider_button">Accept This Request</string>
-<<<<<<< HEAD
     <string name="view_request_info_button">View Request Info</string>
-
-=======
     <string name="complete_ride">Complete</string>
     <string name="view_ride_info">View Ride Info</string>
->>>>>>> FETCH_HEAD
 
 </resources>

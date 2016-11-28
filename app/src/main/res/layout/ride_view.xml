@@ -4,14 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-<<<<<<< HEAD
-    tools:context="ca.ualberta.ridr.AcceptRiderView"
-    android:weightSum="1">
-
-=======
     tools:context="ca.ualberta.ridr.RideView"
     android:weightSum="1">
->>>>>>> FETCH_HEAD
     <fragment
         xmlns:map="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
@@ -20,23 +14,6 @@
         map:mapType="normal"
         map:uiCompass="true"
         map:uiZoomControls="false"
-<<<<<<< HEAD
-        tools:context="ca.ualberta.ridr.RiderMainView"
-        class="com.google.android.gms.maps.SupportMapFragment"
-        >
-
-    <Button
-        android:background="@color/tertiary_colour"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/accept_rider_button"
-        android:layout_gravity="bottom|center"
-        android:layout_marginBottom="10dp"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:text="@string/accept_rider_button" />
-=======
         map:uiRotateGestures="false"
         map:uiScrollGestures="false"
         map:uiTiltGestures="false"
@@ -56,42 +33,10 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:text="@string/view_ride_info" />
->>>>>>> FETCH_HEAD
     />
     </fragment>
     <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:orientation="vertical"
-<<<<<<< HEAD
-        android:layout_width="300dp"
-        android:layout_height="200dp"
-        android:background="@color/secondary_colour"
-        android:layout_marginBottom="200dp"
-        android:layout_centerInParent="true"
-        android:id="@+id/rideInfo"
-        android:layout_alignParentBottom="true"
-        android:visibility="invisible">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:fontFamily="sans-serif"
-            android:text="Driven"
-            android:id="@+id/textView"
-            android:textColor="@color/primary_colour" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Item2"
-            android:textColor="@color/primary_colour" />
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Item3"
-            android:textColor="@color/primary_colour" />
-
-
-=======
         android:layout_width="match_parent"
         android:id="@+id/rideInfo"
         android:visibility="invisible"
@@ -151,6 +96,5 @@
             android:layout_gravity="bottom"
             android:id="@+id/completeRideButton"
             android:text="@string/complete_ride"/>
->>>>>>> FETCH_HEAD
     </LinearLayout>
 </RelativeLayout>
