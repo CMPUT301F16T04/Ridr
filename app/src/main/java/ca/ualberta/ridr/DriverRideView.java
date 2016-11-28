@@ -47,7 +47,7 @@ public class DriverRideView extends Activity implements ACallback {
             finish();
         }
         rideList = (ListView) findViewById(R.id.driverRidesList);
-        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>());
+        rideAdapter = new RideAdapter((Activity) this, new ArrayList<Ride>(), "driver");
 
 
         rideList.setOnItemClickListener(new AdapterView.OnItemClickListener(){
