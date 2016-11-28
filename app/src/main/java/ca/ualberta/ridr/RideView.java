@@ -62,13 +62,12 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     private String rideID;
     private Button info;
     private Button complete;
-    private Context context;
+    private Context context = this;
     private boolean viewingAsDriver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        context = this;
 
         setContentView(R.layout.ride_view);
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
