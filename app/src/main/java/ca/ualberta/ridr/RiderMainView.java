@@ -366,6 +366,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
         }
         Date pickupDate = stringToDate(dateTextView.getText().toString(), timeTextView.getText().toString());
 
+        fare = Float.parseFloat(fareInput.getText().toString());
         Float costDist = fare/distance;
         costDist = roundFloatToTwoDec(costDist);
         fare = roundFloatToTwoDec(fare);
@@ -481,7 +482,7 @@ public class RiderMainView extends FragmentActivity implements ACallback, OnMapR
                 dropoff.latitude, dropoff.longitude, results);
         //Toast.makeText(RiderMainView.this, "distance is " + Float.toString(results[0]), Toast.LENGTH_SHORT).show();
         distance = results[0] / 1000; // in KM
-        float gasCostFactor = 4; // calculate something later
+        float gasCostFactor = 2; // calculate something later
         fare =  distance *gasCostFactor;
         //fareInput.setText((String.format("%.2f", fare)));
         fareInput.setText(String.valueOf(roundFloatToTwoDec(fare)));

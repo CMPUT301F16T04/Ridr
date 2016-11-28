@@ -179,6 +179,7 @@ public class Request {
             toReturn.put("accepted", this.accepted);
             toReturn.put("date", date.toString());
             toReturn.put("fare", fare);
+            toReturn.put("costDistance", costDistance);
             toReturn.put("possibleDrivers", new JSONArray(possibleDrivers));
             toReturn.put("isValid", isValid);
             return toReturn.toString();
@@ -204,6 +205,7 @@ public class Request {
         this.date = formatter.parse(request.get("date").getAsString());
         this.id = UUID.fromString(request.get("id").getAsString());
         this.fare = request.get("fare").getAsFloat();
+        this.costDistance = request.get("costDistance").getAsFloat();
         this.possibleDrivers =  buildPossibleDriversList(request.getAsJsonArray("possibleDrivers"));
         this.isValid = request.get("isValid").getAsBoolean();
 
