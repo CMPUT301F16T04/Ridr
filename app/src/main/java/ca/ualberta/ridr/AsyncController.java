@@ -39,7 +39,7 @@ public class AsyncController {
         // search finds
         controller = new AsyncDatabaseController("get");
         try{
-            String searchString = "{\"query\": { \"bool\": { \"must\": { \"match\": { \""+ attribute+"\":\"" + value + "\"}}}}}";
+            String searchString = "{ \"query\": { \"bool\": { \"must\": { \"match\": { \""+ attribute+"\":\"" + value + "\"}}}}}";
 
             return extractFirstElement(controller.execute(dataClass, searchString).get());
         } catch(Exception e){
@@ -56,7 +56,7 @@ public class AsyncController {
     public JsonArray getAllFromIndex(String dataClass) {
         controller = new AsyncDatabaseController("getAllFromIndex");
         try{
-            String searchString = "{\"query\": { \"match_all\": { }}}";
+            String searchString = "{\"from\": 0, \"size\": 1000, \"query\": { \"match_all\": { }}}";
 
             return extractAllElements(controller.execute(dataClass, searchString).get());
         } catch(Exception e){
@@ -75,7 +75,7 @@ public class AsyncController {
     public JsonArray getAllFromIndexFiltered(String dataClass, String variable, String variableValue ) {
         controller = new AsyncDatabaseController("get");
         try{
-            String searchString = "{\"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
+            String searchString = "{ \"from\": 0, \"size\": 1000, \"query\": { \"multi_match\": { \"query\": \"" + variableValue + "\", " +
                     "fields: [ \"" + variable + "\"]}}}";
 
             return extractAllElements(controller.execute(dataClass, searchString).get());
@@ -115,22 +115,23 @@ public class AsyncController {
         controller = new AsyncDatabaseController("get");
         String query =
                 "{"+
-                    "\"query\": {" +
-                        "\"bool\" : {"+
-                            "\"must\" : {"+
-                                "\"match_all\" : {}" +
-                            "}," +
-                            "\"filter\" : {"+
-                                "\"geo_distance\" : {" +
-                                    "\"distance\" : \""+ kmDistance+ "km\"," +
-                                    "\"pickupCoord\" : {" +
-                                            "\"lat\" :" + center.latitude + "," +
-                                            "\"lon\" :" + center.longitude +
-                                    "}" +
-                                "}" +
-                            "}" +
-                        "}" +
-                    "}"+
+                "\"from\": 0 , \"size\": 1000," +
+                "\"query\": {" +
+                "\"bool\" : {" +
+                "\"must\" : {" +
+                "\"match_all\" : {}" +
+                "}," +
+                "\"filter\" : {" +
+                "\"geo_distance\" : {" +
+                "\"distance\" : \"" + kmDistance + "km\"," +
+                "\"pickupCoord\" : {" +
+                "\"lat\" :" + center.latitude + "," +
+                "\"lon\" :" + center.longitude +
+                "}" +
+                "}" +
+                "}" +
+                "}" +
+                "}" +
                 "}";
         try{
             return extractAllElements(controller.execute(dataClass, query).get());
@@ -145,6 +146,7 @@ public class AsyncController {
         //got help with query from http://www.tugberkugurlu.com/archive/elasticsearch-array-contains-search-with-terms-filter -Tugberk Ugurlu
         String query =
                 "{"+
+                    "\"from\": 0 , \"size\": 1000," +
                     "\"query\": {" +
                         "\"filtered\" : {"+
                             "\"query\": {" +
