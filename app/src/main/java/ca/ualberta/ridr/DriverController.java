@@ -22,9 +22,12 @@ import io.searchbox.core.SearchResult;
  * Created by jferris on 22/10/16.
  */
 public class DriverController {
+
+
     ACallback cbInterface;
     Driver currentDriver;
     AsyncController controller;
+
 
     DriverController(ACallback cbInterface){
         this.cbInterface = cbInterface;
@@ -41,6 +44,11 @@ public class DriverController {
     //is this supposed to be a driver controller item or a request controller item... look at UML in the morning
     public void acceptRequest(Driver driver, Request request){
         driver.acceptRequest(request);
+    }
+
+    public Driver getDriverFromServerUsingId(String driverId){
+        Driver driver = new Gson().fromJson(new AsyncController().get("user", "id", driverId), Driver.class);
+        return(driver);
     }
 
     public Driver getDriverFromServerUsingName(String driverName){

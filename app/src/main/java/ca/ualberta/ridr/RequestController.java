@@ -114,8 +114,6 @@ public class RequestController {
         }
     }
 
-
-
     public void updateFare(float newFare) {
         currenRequest.setFare(newFare);
     }
@@ -188,9 +186,7 @@ public class RequestController {
         return (null);
     }
 
-    public void removeRequest(Request request, Rider rider){
-        rider.removeRequest(request);
-    }
+    public void removeRequest(Request request, Rider rider){rider.removeRequest(request);}
 
     public Request getRequestFromServer(String requestId) {
         AsyncController con = new AsyncController();

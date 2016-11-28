@@ -74,7 +74,7 @@ public class RidrTest{
         rider.requestRide("University of Alberta", "West Edmonton Mall");
         Driver driver = new Driver("Jeff", new Date(), "111", "email", "123", "bankno");
 
-        rider.getRequests().get(0).addAccepted(driver);
+        //rider.getRequests().get(0).addAccepted(driver);
 
         ArrayList<Request> requests = rider.getRequests();
 
@@ -299,7 +299,7 @@ public class RidrTest{
         driver.addRide();
 
         //Search driver's list of rides for the keyword
-        assertTrue(driver.kewordSearch("James"));
+        assertTrue(driver.keywordSearch("James"));
 
     }*/
 

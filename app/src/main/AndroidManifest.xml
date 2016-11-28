@@ -33,7 +33,8 @@
         <activity android:name=".SearchResultsView" />
         <activity android:name=".RequestsFromRidersView" />
         <activity android:name=".MainActivity" />
-        <activity android:name=".ProfileView" />
+        <activity android:name=".ProfileView"
+            android:exported="true"/>
         <activity android:name=".EditProfileView" />
         <activity android:name=".AcceptRiderView"
             android:exported="true"/>

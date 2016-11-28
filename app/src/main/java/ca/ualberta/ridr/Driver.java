@@ -90,10 +90,10 @@ public class Driver extends User {
     public boolean isOffline() {
         return false;
     }
-
     public String getVehicleDescription() {
         return vehicleDescription;
     }
+
 
     public void setVehicleDescription(String vehicleDescription) {
         this.vehicleDescription = vehicleDescription;
