@@ -17,7 +17,6 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 
 import java.util.ArrayList;
-import java.util.UUID;
 
 /**
  * The view that shows keyword search results for a driver
@@ -159,7 +158,7 @@ public class SearchResultsView extends Activity {
                         return true;
                     case R.id.mainRiderMenuViewRides:
                         Toast.makeText(SearchResultsView.this, "View Rides", Toast.LENGTH_SHORT).show();
-                        Intent viewRidesIntent = new Intent(SearchResultsView.this, DriverRideView.class);
+                        Intent viewRidesIntent = new Intent(SearchResultsView.this, DriverRidesView.class);
                         viewRidesIntent.putExtra("Name", username);
                         startActivity(viewRidesIntent);
                         return true;

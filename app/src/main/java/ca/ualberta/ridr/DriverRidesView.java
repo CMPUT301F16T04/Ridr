@@ -1,28 +1,19 @@
 package ca.ualberta.ridr;
 
 import android.content.Intent;
-import android.database.DataSetObserver;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
-
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 /**
  * This is the view that shows all of the rides that the Driver is fulfilling. It implements the
  * ACallback interface, which updates code based on our controllers.
  */
-public class DriverRideView extends Activity implements ACallback {
+public class DriverRidesView extends Activity implements ACallback {
     ListView rideList;
     RideController rides;
     String driver;
@@ -42,7 +33,7 @@ public class DriverRideView extends Activity implements ACallback {
         }
         // If no driver is passed in go to login page
         if(driver == null) {
-            Intent loginPage = new Intent(DriverRideView.this, LoginView.class);
+            Intent loginPage = new Intent(DriverRidesView.this, LoginView.class);
             startActivity(loginPage);
             finish();
         }
@@ -56,7 +47,7 @@ public class DriverRideView extends Activity implements ACallback {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Ride ride = rideAdapter.getItemAtPosition(position);
 
-                Intent intent = new Intent(DriverRideView.this, RideView.class);
+                Intent intent = new Intent(DriverRidesView.this, RideView.class);
                 //based on item add info to intent
                 intent.putExtra("username", driver);
                 intent.putExtra("rideID", ride.getId().toString());
