@@ -21,7 +21,7 @@ public class NotificationsTest {
 
     @Test
     public void pendingNotificationDriverTest(){
-        Driver driver = new Driver("John", new Date(), "1111222233334444", "123@hotmail.com", "780 450 1111");
+        Driver driver = new Driver("John", new Date(), "1111222233334444", "123@hotmail.com", "780 450 1111", "Honda");
         //save pendingNotification for driver
         driver.setPendingNotification("You have been chosen as a Driver for a Ride! View Rides " +
                 "for more info.");
