@@ -155,7 +155,9 @@ public class RequestController {
                 try {
                     request = new Request(element.getAsJsonObject().getAsJsonObject("_source"));
                     //System.out.println(request);
-                    requestsKeyword.add(request);
+                    if (!request.isAccepted() && request.isValid()){
+                        requestsKeyword.add(request);
+                    }
                 } catch(Exception e) {
                     Log.i("Error returning keyword", e.toString());
                 }
@@ -166,6 +168,8 @@ public class RequestController {
 
     /**
      * Checks if the JsonElement for request contains the string keyword
+     * entering fare # searches for fare > #
+     * entering costdistance # searches for cost distance > #
      * @param keyword
      * @param jsonElement
      * @return Boolean
@@ -173,20 +177,29 @@ public class RequestController {
     public Boolean doesJsonContainKeyword(String keyword, JsonElement jsonElement) {
         ArrayList<String> stringArray;
         keyword = keyword.toLowerCase();
-        Pattern p = Pattern.compile(keyword);
+        Pattern p;
         Request request;
-        int fare;
+        float fare;
         try{
-            fare = Integer.parseInt(keyword);
+            fare = Float.valueOf(keyword.replaceAll("[^\\d.]+|\\.(?!\\d)", ""));
         } catch(Exception e) {
             fare = 999999; //set as some high number
         }
         try {
             request = new Request(jsonElement.getAsJsonObject().getAsJsonObject("_source"));
-            if(fare < request.getFare()) {
-                return true;
+            p = Pattern.compile("fare");
+            if(p.matcher(keyword).find()) {
+                if(fare <= request.getFare()) {
+                    return true;
+                }
             }
-
+            p = Pattern.compile("costdistance");
+            if(p.matcher(keyword).find()) {
+                if(fare <= request.getCostDistance()) {
+                    return true;
+                }
+            }
+            p = Pattern.compile(keyword);
             stringArray = request.queryableRequestVariables();
             for (String s : stringArray) {
                 s = s.toLowerCase();
@@ -291,7 +304,11 @@ public class RequestController {
             requests.clear();
             for (JsonElement result : queryResults) {
                 try {
-                    requests.add(new Request(result.getAsJsonObject().getAsJsonObject("_source")));
+                    Request request = new Request(result.getAsJsonObject().getAsJsonObject("_source"));
+                    //System.out.println(request);
+                    if (!request.isAccepted() && request.isValid()){
+                        requests.add(request);
+                    }
                 } catch (Exception e) {
                     Log.i("Error parsing requests", e.toString());
                 }
@@ -383,15 +400,11 @@ public class RequestController {
     }
 
     public boolean isPendingExecutableRequests() {
-        return offlineSingleton.getRiderRequests().size() > 0 && isConnected();
+        return offlineSingleton.isPendingRequest() && isConnected();
     }
 
     public boolean isPendingExecutableAcceptance() {
         return offlineSingleton.isPendingAcceptance() && isConnected();
-    }
-
-    public boolean isPendingExecutableNotification() {
-        return offlineSingleton.isPendingNotification() && isConnected();
     }
 
     private Boolean isConnected() {

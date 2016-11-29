@@ -91,8 +91,12 @@ public class RiderController {
             rider.setPendingNotification("A driver is willing to " +
                     "fulfill your Ride! Check your Requests for more info.");
             try {
-                AsyncController asyncController = new AsyncController(context);
-                asyncController.create("user", rider.getID().toString(), new Gson().toJson(rider));
+                if(isConnected()) {
+                    AsyncController asyncController = new AsyncController(context);
+                    asyncController.create("user", rider.getID().toString(), new Gson().toJson(rider));
+                } else {
+                    offlineSingleton.addRider(rider);
+                }
 
             } catch (Exception e) {
                 Log.i("Communication Error", "Could not communicate with the elastic search server");
