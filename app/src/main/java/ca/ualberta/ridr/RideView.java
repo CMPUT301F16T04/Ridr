@@ -205,7 +205,7 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     private void slideUp(){
         LinearLayout hiddenPanel = (LinearLayout)findViewById(R.id.rideInfo);
         if(rides.getRide(rideID).isCompleted() || viewingAsDriver){
-            complete.setVisibility(View.INVISIBLE);
+            complete.setVisibility(View.GONE);
         }
         if(hiddenPanel.getVisibility() == View.VISIBLE){
             Animation topDown = AnimationUtils.loadAnimation(context,
