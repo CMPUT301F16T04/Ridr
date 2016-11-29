@@ -268,8 +268,6 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
     public void update(){
         try {
             Ride ride = rides.getRide(rideID);
-            Log.i("user", user.toLowerCase());
-            Log.i("Driver", ride.getDriver().toLowerCase());
 
             viewingAsDriver = ride.getDriver().toLowerCase().equals(user.toLowerCase());
             showRide(ride);
@@ -320,10 +318,16 @@ public class RideView extends FragmentActivity implements OnMapReadyCallback, Co
 
         SimpleDateFormat rideDate = new SimpleDateFormat("HH:mm 'on' dd MMM yyyy");
 
+        String rideText;
+        if(user.equals(ride.getRider())){
+            rideText ="Driver: " + ride.getDriver();
+        } else {
+            rideText = "Rider: " + ride.getRider();
+        }
         String fareText = ride.isPaid()? "Fare(Paid): $": "Fair: $";
         String completed = ride.isCompleted().toString();
         rideCompleted.setText("Completed: " + completed.substring(0, 1).toUpperCase() + completed.substring(1));
-        riderName.setText("Rider: " + ride.getRider());
+        riderName.setText(rideText);
         ridePickup.setText("Pickup: " + ride.getPickupAddress());
         ridePickupTime.setText("Time: " + rideDate.format(ride.getRideDate()));
         rideDropoff.setText("Drop off: " + ride.getDropOffAddress());

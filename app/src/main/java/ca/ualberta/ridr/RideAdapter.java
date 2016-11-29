@@ -48,7 +48,7 @@ public class RideAdapter extends ArrayAdapter<Ride> {
 
         String contractPartner;
         if(userType == "rider"){
-            contractPartner = "Driver: " + ride.getRider();
+            contractPartner = "Driver: " + ride.getDriver();
         } else{
             contractPartner = "Rider: " + ride.getRider();
         }
