@@ -204,7 +204,7 @@ public class AsyncController {
                                 "\"match_all\": {}" +
                             "}," +
                             "\"filter\": {" +
-                                "\"terms\": {" +
+                                "\"match\": {" +
                                     "\"" + variable + "\": [\"" + variableValue + "\"]" +
                                 "}" +
                             "}" +
