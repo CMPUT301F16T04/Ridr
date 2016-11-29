@@ -195,9 +195,12 @@ public class AsyncController {
     public JsonArray getFromIndexObjectInArray(String dataClass, String variable, String variableValue){
         controller = new AsyncDatabaseController("get");
         //got help with query from http://www.tugberkugurlu.com/archive/elasticsearch-array-contains-search-with-terms-filter -Tugberk Ugurlu
+        Log.i("variable", variable);
+        Log.i("value", variableValue);
         String query =
+
                 "{"+
-                    "\"from\": 0 , \"size\": 1000," +
+                        "\"from\": 0 , \"size\": 1000," +
                     "\"query\": {" +
                         "\"filtered\" : {"+
                             "\"query\": {" +
@@ -205,7 +208,7 @@ public class AsyncController {
                             "}," +
                             "\"filter\": {" +
                                 "\"match\": {" +
-                                    "\"" + variable + "\": [\"" + variableValue + "\"]" +
+                                    "\"" + variable + "\": \"" + variableValue + "\"" +
                                 "}" +
                             "}" +
                         "}" +
@@ -216,6 +219,7 @@ public class AsyncController {
         try{
             if(isConnected()) {
                 JsonArray jsonArray = extractAllElements(controller.execute(dataClass, query).get());
+                Log.i("jsonArray", jsonArray.toString());
                 saveInFile(jsonArray, file);
                 return jsonArray;
             } else {

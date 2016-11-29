@@ -21,7 +21,7 @@ public class DriverRequestsView extends Activity implements ACallback{
     private ArrayList<Request> requests = new ArrayList<>();
     private ListView requestList;
     private Context context = this;
-    private RequestController requestController = new RequestController(context);
+    private RequestController requestController = new RequestController(this, context);
     private RiderController riderController = new RiderController(this);
 
     @Override

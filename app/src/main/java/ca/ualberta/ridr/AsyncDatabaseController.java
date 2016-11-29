@@ -110,7 +110,7 @@ public class AsyncDatabaseController extends AsyncTask<String, Void, JsonObject>
                 .addType(type)
                 .build();
         JestResult result = client.execute(search);
-        System.out.println(result);
+        System.out.println(search.toString());
         System.out.println(result.getJsonObject());
         if (result.isSucceeded()) {
             return result;
