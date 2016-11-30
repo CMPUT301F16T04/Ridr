@@ -91,6 +91,7 @@ public class RiderRequestView extends Activity {
         final RequestAdapter customAdapter = new RequestAdapter(activity, requests);
         oldRequestsList.setAdapter(customAdapter);
 
+        customAdapter.notifyDataSetChanged();
         //this is to recognize listview item presses within the view
         oldRequestsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
